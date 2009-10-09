@@ -6,20 +6,28 @@
 </head>
 <body bgcolor = white>
 <a name="Using the Student Lesson Screen">
-<h3>
+<h2>
 2.4.  Using the Student Lesson Screen
-</h3>
+</h2>
 </a>
 <p>
-This scenario shows a student going through an interactive code lesson.
+This scenario introduces the interactive code lesson interface.
 Interactive coding lessons will be one of the most commonly used aspects
 of the CSTutor system.
 </p>
 
-After logging in or choosing anonymous access, the student will be presented
-with the main lesson screen.  The student will select a lesson from the 
-navigation pane.  Selecting a lesson will populate the interactive code shell
-and the lesson pane and the lesson will begin.
+<a name"Select_Lesson">
+<h3>2.4.1 Selecting a Lesson</h3>
+</a>
+After logging in or choosing anonymous access (see 
+<a href="login-screen.html#Logging in">Logging In</a>), the student will be 
+presented with the main lesson screen.  The leftmost frame presents each lesson
+and sublesson in a tree structure.  The student can select a lesson or 
+or sublesson from the navigation pane.  Selecting a lesson will populate the
+interactive code shell and the lesson pane.
+
+After selecting a lesson, a student may select a new lesson in the navigation
+pane at any time.
 <br>
 <br>
 <hr>
@@ -33,45 +41,52 @@ and the lesson pane and the lesson will begin.
 </a>
 <br>
 
-The student should now read the text in the lesson pane. Should the lesson call
-for it, the student can execute code in the interactive code shell.  
-Depending on the language used in the shell, the behavior of the shell may vary.
+<a name="Interactive_Code_Lesson">
+<h3>2.4.2 Interactive Code Lesson</h3>
+</a>
+The lesson pane and the interactive code shell are now populated, and the 
+student can now read the text and images presented to them.  The interactive
+code shell (discussed in more detail below) can be used to verify
+understanding of concepts and examples in the lesson.  
 
-<br>
+<a name="Interactive_Code_Shell">
+<h3>2.4.3 Interactive Code Shell</h3>
+</a>
 <br>
 <hr>
 <a name="Figure Interactive Code Shell">
 <p align=center>
-
 <img src="images/Lesson_beanshell_1.png">
 </p>
-<p align=center> Figure 2: Interactive Code Shell</p>
+
+<p align=center> Figure 2: Interactive Java Code Shell</p>
 <hr>
 </a>
 <br>
-<br>
+Lessons can include an interactive code shell to allow the student to 
+experiment with the content of the lesson. The code shell can optionally be
+populated by the lesson creator.  The code shell (examples show a Java shell) 
+take lines of code one at a time, and execute them upon entering. 
 
-For a java shell, code is entered one line at a time, and each statement is 
-executed as it is entered.  Students will be able to execute their own 
-code or copy/modify the code provided by the lesson. The "clear" button will 
-reset the code shell to a "blank" state. Although not applicable to java, an 
-"execute" button may appear if the language requires it.
+The shell is not restricted to code specified by examples, giving the student
+freedom to experiment within the confines of the code shell language.
+
+While not applicable to the Java shell, an "execute" button may be present for
+languages where an interactive shell is not available.
 
 <br>
 <br>
 
 <hr>
-<a name="Figure Interactive Code Shell">
+<a name="Figure Interactive Code Shell with Code">
 <p align=center>
 
 <img src="images/Lesson_beanshell_2.png">
 </p>
-<p align=center> Figure 3: Interactive Code Shell</p>
+<p align=center> Figure 3: Interactive Java Code Shell with Code</p>
 <hr>
 </a>
 
-At any time a student may select a new lesson in the navigation pane and 
-change lessons. 
 <hr width=80% size=3>
 <center>
 <font size=-1>
