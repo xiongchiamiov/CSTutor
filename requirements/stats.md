@@ -1,3 +1,9 @@
+<html>
+<head>
+<title>2.5 Statistics Page</title>
+</head>
+<body>
+
 ## 2.5 Statistics Page
 
 This scenario shows an instructor viewing various statistics relating to a class.
@@ -219,3 +225,12 @@ Figure 2.5.4: Lesson Statistics
 
 ---
 
+<font size=-1>
+<font color=black> Prev: </font><a href="student-lesson-screen.html">Using the Student Lesson Screen</a>
+ | <font color=black> Next: </font><a href="FIXME.html">FIXME</a>
+ | <font color=black> Up: </font><a href="functional.html">functional</a>
+ | <font color=black> Top: </font><a href="index.html">index</a></font>
+</center>
+
+</body>
+</html>
