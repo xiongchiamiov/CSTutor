@@ -77,18 +77,18 @@ The figure shows the result of the blank quiz after having it the '<tt>Add New Q
 <p>To confirm deleting the quiz, the instructor must select the '<tt>Yes</tt>' button. To leave the question, the instructor must select the '<tt>No</tt>' button and no changes will be made. Once a quiz is deleted, all associated student statistics will also be removed. This operation cannot be undone.</p>
 <p><br>
 </p>
-<h4><a name="Managing_Quiz_Pointers"> 2.3.2.4. Managing Quiz Pointers</a></h4>
+<h4><a name="Managing_Quiz_Paths"> 2.3.2.4. Managing Quiz Paths</a></h4>
 </p>
-<p> To direct the student to different sections of CSTutor based on their result of taking the quiz, the user can specify one of three different quiz pointers by editing the '<tt>Quiz Pointer</tt>' field as shown in Figure 5. In response, the system will direct the student to the lesson after submitting the quiz</p>
+<p> To direct the student to different sections of CSTutor based on their result from the quiz, the user can specify an unlimited number of quiz paths by editing the '<tt>Quiz Pointer</tt>' fields as shown in Figure 5. In response, the system will direct the student to the specified lesson after submitting the quiz and receiving their grade.</p>
 <hr>
 <a name="Quiz Deletion Confirmation">
 <p align="center">
 <img src="images/quiz-fresh.png">
 </p>
-<p align="center"> Figure 5:  Quiz Pointers.  </p>
+<p align="center"> Figure 5:  Quiz Paths.  </p>
 <hr>
 </a>
-<p>First, the instructor must specify the grading threshold by filling in the blanks. Second, the instructor must select the lesson to be pointed at by clicking in the '<tt>Lesson</tt>' dropdown. In response, the system will display all available lessons. Finally, the user can specify if they would like a dialogue to be displayed. To do this, the user must check the '<tt>Dialogue?</tt>' checkbox. In response, the system will display a window asking you for the prompt as shown in Figure 6.<br>
+<p>First, the instructor must select the appropriate mathematical symbol from the drop down menu. The options are '<tt><</tt>', '<tt><=</tt>', '<tt>=</tt>', '<tt>Between</tt>', '<tt>></tt>', and '<tt>>=</tt>'. After selecting the operator, the instructor must fill in the blank values with the numerical values, such as '<tt>< 65%</tt>'. Next, the instructor must select the lesson to be directed at by clicking in the '<tt>Lesson</tt>' dropdown. In response, the system will display all available lessons pages. Finally, the user can specify if they would like a dialogue to be displayed. To do this, the user must check the '<tt>Dialogue?</tt>' checkbox. In response, the system will display a window asking you for the prompt as shown in Figure 6.<br>
 </p>
 <hr>
 <a name="Quiz Deletion Confirmation">
@@ -107,7 +107,7 @@ The figure shows the result of the blank quiz after having it the '<tt>Add New Q
 <p align="center"> Figure 7:  Example Quiz Pointers.  </p>
 <hr>
 </a>
-<p>In this sample, if the student scores below 60% they will be met with a friendly dialogue explaining that they need to retake the lesson, and will be brought back to the beginning of the lesson. If the student scores between a 61% and 74%, the student is not directed anywhere and is prompted that they are encouraged to retake the lesson but are not being forced to. Finally, if the student scores 75% or above, they are not given a dialogue and are brought to the next lesson.</p>
+<p>In this sample, if the student scores below 60% they will be met with a friendly dialogue explaining that they need to retake the lesson, and will be brought back to the beginning of the lesson. If the student scores between a 61% and 74%, the student is not directed anywhere and is prompted that they are encouraged to retake the lesson but will not be forced to retake it. Finally, if the student scores 75% or above, they are not given a dialogue and are brought to the next lesson.</p>
 <p>&nbsp;</p>
 <h4><a name="Managing_Prerequisites"> 2.3.2.5. Managing Prerequisites</a></h4>
 <p>&nbsp;</p>
@@ -121,7 +121,7 @@ To require a lesson as a prerequisite, the instructor clicks into the dropdown b
 <p align="center"> Figure 8:  Prerequisite Dropdown.  </p>
 <hr>
 </a>
-<p>The user then selects the appropriate lesson to require as a prerequsite. While it is only possible to select one particular lesson as a prerequsite, you can chain prerequsites together to create a flow for the student. For example, Lesson 2 could require Lesson 1, and the quiz could require Lesson 1 which means the user would have to complete both lessons before taking the quiz.</p>
+<p>The user then selects the appropriate lesson to require as a prerequsite. Quizzes are essentially specialed lesson pages and are eligible to be selected as a prerequisite as well. While it is only possible to select one lesson as a prerequsite, you can chain prerequsites together to create a flow for the student. For example, '<tt>Nesting</tt>' could require '<tt>Do Loops</tt>' which requires '<tt>While Loops</tt>' which requires '<tt>For Loops</tt>'. If the quiz were to require '<tt>Nesting</tt>', then the quiz would effectivly require all of the above lessons as a prerequisite.</p>
 <p></p>
 <h4><a name="Managing_Quiz_Visibility"> 2.3.2.6. Managing Quiz Visibility</a></h4>
 </p>
