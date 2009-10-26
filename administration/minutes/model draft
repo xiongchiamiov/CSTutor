@@ -1,0 +1,88 @@
+object Course
+	components: Page* and Roster, bool private, String text* and String chatRoom;
+	operations: AddPage and RemovePage and SetPrivate and EditCourseText; 
+end Course; 
+
+operation AddPage
+end AddPage;
+
+operation RemovePage
+end RemovePage;
+
+operation SetPrivate
+end SetPrivate;
+
+object Page
+	compenents: prevPage and nextPage and prereq;
+end Page;
+
+object Lesson implements Page
+	components: STring text* and String code* and Image* andPage*;
+end Lesson;
+
+object Quiz implements Page
+	components: Question* and String text*;
+end Quiz;
+
+object Question
+	componets: String text and int value;
+end Question;
+
+object MultipleChoiceQuestion implements QUestion
+	components: string answer+ and int correct+;
+end MultipleChoiceQuestion;
+
+object Roster
+	components: (User, Permissions)*;
+end Roster; 
+
+object User
+	components: boolean isInstructor and String userName and String password Course enrolled* and (Lesson, Quiz, int score)* (work in progress);
+end User;
+
+object Permissions
+	components: bool view and bool edit and bool manage and bool stats;
+end Permissions;
+
+
+
+OPERATIONS LIST:
+
+Jon - user related
+
+addUser
+removeUser
+setUserPermissions
+updateRoster
+
+Russell 
+
+login
+logout
+
+Matt
+
+createCourse
+removeCourse
+createLesson
+removeLesson
+removePage
+
+Evan
+
+createQuiz
+addQuestion
+removeQuestion
+
+James
+
+clearStatistics
+displayStats
+getStats
+
+Mark
+
+getNextPage
+getPrevPage
+displayPage
+movePage
