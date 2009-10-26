@@ -1,5 +1,5 @@
 object Course
-	components: Page* and Roster, bool private, String text* and String chatRoom;
+	components: p:Page* and r:Roster and privateClass:bool and text:string* and chatRoom:string;
 	operations: AddPage and RemovePage and SetPrivate and EditCourseText; 
 end Course; 
 
