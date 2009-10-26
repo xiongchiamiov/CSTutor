@@ -1,0 +1,124 @@
+<html>
+<head>
+  <title>
+Minutes of the Macrosoft Team Meeting, 25 October 2009
+</title>
+</head>
+<body>
+
+<p align=center>
+<font size=+2>
+<strong>Minutes of the Macrosoft Team Meeting
+<br>
+03:15 - 05:15 PM, 25 October 2009</strong>
+</font>
+</p>
+
+<strong>Present</strong>: Russ, Jon, Mark, James, Matt.
+<br>
+<br>
+<strong>Absent</strong>:
+<br>
+<br>
+<strong>Excused</strong>: Evan
+<br>
+
+<p>
+UML design <br>
+
+<br><br>object Course
+<br>	components: Page* and Roster, bool private, String text* and String chatRoom;
+<br>	operations: AddPage and RemovePage and SetPrivate and EditCourseText; 
+<br>end Course; 
+
+<br><br>operation AddPage
+<br>end AddPage;
+
+<br><br>operation RemovePage
+<br>end RemovePage;
+
+<br><br>operation SetPrivate
+<br>end SetPrivate;
+
+<br><br>object Page
+<br>	compenents: prevPage and nextPage and prereq;
+<br>end Page;
+
+<br>object Lesson implements Page
+<br>	components: STring text* and String code* and Image* andPage*;
+<br>end Lesson;
+
+<br><br>object Quiz implements Page
+<br>	components: Question* and String text*;
+<br>end Quiz;
+
+<br><br>object Question
+<br>	componets: String text and int value;
+<br>end Question;
+
+<br><br>object MultipleChoiceQuestion implements QUestion
+<br>	components: string answer+ and int correct+;
+<br>end MultipleChoiceQuestion;
+
+<br><br>object Roster
+<br>	components: (User, Permissions)*;
+<br>end Roster; 
+
+<br><br>object User
+<br>	components: boolean isInstructor and String userName and String password Course enrolled* and (Lesson, Quiz, int score)* (work in progress);
+<br>end User;
+
+<br><br>object Permissions
+<br>	components: bool view and bool edit and bool manage and bool stats;
+<br>end Permissions;
+
+
+
+<br><br><br>OPERATIONS LIST:
+
+<br><br>Jon - user related
+
+<br><br>addUser
+<br>removeUser
+<br>setUserPermissions
+<br>updateRoster
+
+<br><br>Russell 
+
+<br><br>login
+<br>logout
+
+<br><br>Matt
+
+<br><br>createCourse
+<br>removeCourse
+<br>createLesson
+<br>removeLesson
+<br>removePage
+
+<br><br>Evan
+
+<br><br>createQuiz
+<br>addQuestion
+<br>removeQuestion
+
+<br><br>James
+
+<br><br>clearStatistics
+<br>displayStats
+<br>getStats
+
+<br><br>Mark
+
+<br><br>getNextPage
+<br>getPrevPage
+<br>displayPage
+<br>movePage
+
+</p>
+
+<p>Minutes recorded by Russell Mezzetta</p>
+
+
+</body>
+</html>
