@@ -106,3 +106,18 @@ operation movePage;
                  the "next" of the second Page.  Returns boolean indicating 
                  success *);
 end movePage;
+
+//RUSSELL MEZZETTA
+
+operation login
+	inputs: username, password, database;
+	outputs: ...;
+	description: (* Takes in username and password then checks server to see if there is a
+						match. If so then it grants access *);
+end login;
+	
+operation logout
+	inputs: userdata, database;
+	outputs: ...;
+	description: (* saves all user data to the server *);
+end logout;
