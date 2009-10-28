@@ -80,9 +80,29 @@ clearStatistics
 displayStats
 getStats
 
-Mark
+operation getNextPage
+   inputs: Page;
+   outputs: Page;
+   description: (*Takes in a Page, and returns the next logical page.*);
+end getNextPage;
 
-getNextPage
-getPrevPage
-displayPage
-movePage
+operation getPrevPage
+   inputs: Page;
+   outputs: Page;
+   description: (*Takes in a Page, and returns the previous logical page.*);
+end getPrevPage;
+
+operation displayPage
+   inputs: Page;
+   outputs: String;
+   description:  (*Takes in a page and returns the content to display *);
+end displayPage;
+
+operation movePage;
+   inputs: Page, Page;
+   outputs: bool;
+   description: (*Takes in two pages, the page to move and the page to 
+                 place the moved page after, and moves the first page to be
+                 the "next" of the second Page.  Returns boolean indicating 
+                 success *);
+end movePage;
