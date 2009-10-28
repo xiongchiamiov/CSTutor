@@ -121,3 +121,34 @@ operation logout
 	outputs: ...;
 	description: (* saves all user data to the server *);
 end logout;
+
+
+//JON INLOES
+
+operation addUser
+	components:
+	inputs: name:string and roster:Roster;
+	outputs: updatedRoster:Roster;
+	description: (* addUser adds the given string name into the Roster and produces an updated Roster. *);
+end addUser;
+
+operation removeUser
+	components:
+	inputs: name:string* and roster:Roster;
+	outputs: ouputs updatedRoster:Roster;
+	description: (* removeUser removes the inputed string names from the roster and produces an updated Roster. *);
+end removeUser;
+
+operation setUserPermissions
+	components:
+	inputs: (name:string and edit:boolean and manage:boolean and states:boolean)*;
+	outputs: updatedRoster:Roster;
+	description: (* setUserPermissions will take in a list of tuples consisting of a string name, boolean edit, boolean manage, and boolean states and will produce an updated Roster with the new user permissions. *)
+end setUserPermissions;
+
+operation updateRoster
+	components:
+	inputs: roster:Roster
+	outputs: updated:roster
+	description: (* updateRoster will take in a roster and make the changes to a roster final. *)
+end updateRoster;
