@@ -11,7 +11,7 @@
 </h2>
 </a>
 <p>
-This will introduce all functionality of the Login Screen.
+This page introduces all functionality of the Login Screen.
 </p>
 
 <a name="Logging In">
@@ -23,13 +23,13 @@ This will introduce all functionality of the Login Screen.
 This scenario shows how a user (student or instructor) logs in.
 </p>
 
-The login screen (see Figure 1 below) is the first screen that a user will see upon opening CSTutor. 
+The login screen (see Figure 1 below) is the first screen presented to the user by CSTutor. 
 
 <hr>
 <a name="Figure 1: Initial Login Screen">
 <p align=center>
 
-<img src="images/Interface_Design-login.png">
+<img src="images/Interface_Design-login2.png">
 </p>
 <p align=center> Figure 1: Initial Login Screen </p>
 <hr>
@@ -39,8 +39,17 @@ The login screen (see Figure 1 below) is the first screen that a user will see u
 The user may type in their Username and Password then click the Login button in order to login.
 </p>
 <p>
-Once logged in the user will be presented with either the </font><a href="using-admin-page.html">Instructor page </a>  
-or the </font><a href="student-lesson-screen.html">Student page</a> depending on their account.
+Once logged in CSTutor presents the user with either the </font><a href="using-admin-page.html">Instructor page </a>  
+or the </font><a href="student-lesson-screen.html">Student page</a> depending on their account. NOTE: Several
+permissions exist that conditionally effect the user's feature set but CSTutor does not present the user
+with features (buttons, options, etc) for which the user has insufficient permissions to use.
+<br><br>
+Checking the Remember Me checkbox saves the Username field such that CSTutor now automatically fills in 
+the Username field at startup.
+<br><br>
+Checking the Auto Login checkbox saves both the Username and Password fields such that CSTutor now automatically
+fills in both fields and logs the user in.
+
 </p>
 <a name="Logging In Anonymously">
 <h3>
@@ -49,8 +58,9 @@ or the </font><a href="student-lesson-screen.html">Student page</a> depending on
 </a>
 <p>
 A user may choose to log in anonymously by selecting the Anonymous checkbox. When this box 
-is checked statistics are tracked as an anonymous user.  No identifying information about the user is kept.
-A user who wishes to log in anonymously can check the Anonymous box and continue without entering credentials.
+is checked CSTutor records the statistics to an anonymous account.  
+CSTutor keeps no identifying information about the anonymous user.
+The Anonymous login allows an anonymous user to continue without entering credentials.
 </p>
 <a name="Registering a New Account">
 <h3>
@@ -59,7 +69,7 @@ A user who wishes to log in anonymously can check the Anonymous box and continue
 </a>
 <p> 
 If a user wishes to create a new account the user must click the Register New Account button.
-The program will respond by opening the New Account Registration window (see Figure 2 below). 
+The program responds by opening the New Account Registration window (see Figure 2 below). 
 </p>
 
 <hr>
@@ -74,9 +84,8 @@ The program will respond by opening the New Account Registration window (see Fig
 
 Once in the New Account Registration window, the user must enter their desired Username into the username field.
 Next the user must type a password twice in order to verify it was a correct typing.
-When the user is satisfied with the entered information, clicking Submit will request the 
-username from the server (details of how this process works not decided yet) and the window will
-close.
+After entering all the above information, a click of Submit requests the 
+username from the server and the window closes. 
 
 <br>
 <br>
