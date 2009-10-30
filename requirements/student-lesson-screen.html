@@ -52,17 +52,8 @@ navigate within the lesson.  At the end of the lesson, select "next"
 or "previous" to move to the next or previous lesson.
 </p>
 
-<a name="Interactive_Code_Shell" />
-<h3>2.4.2.1 Interactive Code Shell</h3>
-<hr />
-<a name="Figure_Interactive_Code_Shell" />
-<p align="center">
-<img src="images/Lesson_beanshell_1.png" alt="Interactive code shell (beanshell)" />
-</p>
+<h4>2.4.2.1 Editable / Executable Code</h4>
 
-<p align="center"> Figure 2: Interactive Java Code Shell</p>
-<hr />
-<br />
 <p>
 Interactive Code Lessons may include editable or executable code.  
 </p>
@@ -76,28 +67,97 @@ execute button and the code in the box run.  Output from the program is
 displayed below the code.  
 </p>
 <p>
-Lessons can include an interactive code shell to allow the student to 
-experiment with the content of the lesson. The code shell can optionally be
-populated by the lesson creator.  The code shell (examples show a Java shell) 
-take lines of code one at a time, and execute them upon entering. 
-</p>
-<br />
-<p>
-The shell is not restricted to code specified by examples, giving the student
-freedom to experiment within the confines of the code shell language.
-</p>
-<p>
-While not applicable to the Java shell, an "execute" button may be present for
-languages where an interactive shell is not available.
+The figure below demonstrates how a lesson might use editable code to teach
+about initializing arrays.
 </p>
 
 <hr />
-<a name="Figure_Interactive_Code_Shell_with_Code" />
+<a name="Figure_Lesson_View_CodeError" />
 <p align="center">
-<img src="images/Lesson_beanshell_2.png" alt="Interactive code shell (beanshell) with code" />
+<img src="images/ui-lesson-view_2.png" alt="Array lesson with an error in it"/>
+<br />
+Figure 2.4.2.1-1: Array Lesson with error for student to fix
 </p>
-<p align="center"> Figure 3: Interactive Java Code Shell with Code</p>
 <hr />
+
+<p>
+Here, the lesson explicitly asks the student to edit the code and fix a 
+problem.  The student selects "run" and realizes that all of the baskets
+contain nothing.  He adds a single line and selects run again, this time
+the baskets contain items.
+</p>
+
+<hr />
+<a name="Figure_Lesson_View_CodeGood" />
+<p align="center">
+<img src="images/ui-lesson-view.png" 
+     alt="Array lesson with no error and code output" />
+<br />
+Figure 2.4.2.1-2: Array Lesson with error corrected
+</p>
+<hr />
+
+<p>
+The shell is not restricted to code specified by examples, giving the student
+freedom to experiment within the confines of the code language.
+</p>
+
+<a name="Quiz_Lesson" />
+<h3>2.4.3 Quizzes</h3>
+<p>
+This section is a work in progress
+</p>
+
+<p>
+Quiz lessons give the student immediate feedback on their understanding of 
+lesson material.  A quiz consists of one or more questions that should be 
+answered by the student.
+</p>
+
+<hr />
+<a name="Figure_Quiz_Initial" />
+<p align="center">
+<img src="images/quiz-view.png" alt="Uncompleted Quiz" />
+<br />
+Figure 2.4.3-1: Uncompleted Quiz
+</p>
+<hr />
+
+<p>
+The student answers the mutliple choice questions by clicking on of the
+radio buttons next to the answer of his choice.  The answer can be changed
+as many times as the student wants.  Once the student finishes the quiz, he
+selects the "submit" button to receive his score.
+</p>
+
+<hr />
+<a name="Figure_Quiz_Filled" />
+<p align="center">
+<img src="images/quiz-view_2.png" alt="Completed Quiz" />
+<br />
+Figure 2.4.3-2: Completed Quiz
+</p>
+<hr />
+
+<p>
+After the student completes the quiz, they will be presented with the results.
+In this example, you are able to see which questions you got wrong, and 
+what the right answer was.
+</p>
+
+<hr />
+<a name=Figure_Quiz_Corrected" />
+<p align="center">
+<img src="images/quiz-view_3.png" alt="Corrected Quiz" />
+<br />
+Figure 2.4.3-3: Corrected Quiz
+</p>
+<hr />
+
+<p>
+At this point, the user can retake the quiz, review previous lessons,
+or go on to the next lesson.
+</p>
 
 <hr width="80%" size="3" />
 <center>
