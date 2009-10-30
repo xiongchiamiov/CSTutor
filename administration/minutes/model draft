@@ -1,6 +1,6 @@
 object Course
-	components: p:Page* and r:Roster and privateClass:bool and text:string* and chatRoom:string;
-	operations: AddPage and RemovePage and SetPrivate and EditCourseText; 
+	components: p:Page* and r:Roster and privateClass:bool and name:string and chatRoom:string and Stats and text:string*;
+	operations: AddPage and RemovePage and SetPrivate and EditCourse; 
 end Course; 
 
 operation AddPage
@@ -17,20 +17,32 @@ object Page
 end Page;
 
 object Lesson implements Page
-	components: STring text* and String code* and Image* andPage*;
+	components: text:string* and code:string* and subtopic:Page*;
+	operations: AddPage and RemovePage EditLesson;
 end Lesson;
 
 object Quiz implements Page
-	components: Question* and String text*;
+	components: Question* and text:string* and title:string and prereq and Path and hidden:boolean;
+	operations: AddQuestion and RemoveQuestion and EditQuiz and SubmitAnswers and CheckAnswers;
 end Quiz;
 
 object Question
-	componets: String text and int value;
+	componets: text:string* and question:string;
+	operations:  
 end Question;
 
-object MultipleChoiceQuestion implements QUestion
-	components: string answer+ and int correct+;
+object MultipleChoiceQuestion implements Question
+	components: Answer+;
+	operations:
 end MultipleChoiceQuestion;
+
+object Answer
+	componenets: answer:string correct:boolean;
+	operations:
+end Answer
+object CodeQuestion implements Questions
+	components: 
+end CodeQuestion;
 
 object Roster
 	components: (User, Permissions)*;
