@@ -13,30 +13,29 @@
 2.4.  Using the Student Lesson Screen
 </h2>
 <p>
-This scenario introduces the interactive code lesson interface.
-Interactive coding lessons are lessons that allow users the opportunity
-to modify and execute provided code and see output immediately.
+This scenario introduces the lesson interface. Lessons include 
+<a href="#Interactive_Code_Lesson">Interactive Code Lessons</a> and 
+<a href="#Quiz_Lesson">Quizzes</a>.
 </p>
 
 <a name="Select_Lesson" />
 <h3>2.4.1 Selecting a Lesson</h3>
 <p>
-After logging in or choosing anonymous access (see 
-<a href="login-screen.html#Logging in">Logging In</a>), the student will be 
-presented with the main lesson screen.  The leftmost frame presents each lesson
-and sublesson in a tree structure.  The student can select a lesson or 
-or sublesson from the navigation pane.  Selecting a lesson will populate the
-interactive code shell and the lesson pane.
-<br />
+After logging in (see <a href="login-screen.html#Logging in">Logging In</a>), 
+the student selects a lesson from the navigation pane.  After selecting a 
+lesson, the content of the lesson is displayed in the right pane. 
+</p>
+
+<p>
 After selecting a lesson, a student may select a new lesson in the navigation
 pane at any time.
 </p>
-<br />
-<br />
+
 <hr />
 <a name="Figure_Initial_Lesson_Screen" />
 <p align="center">
-<img src="images/Interface_Design-Lesson.png" alt="Intial view of the lesson screen" />
+<img src="images/Interface_Design-Lesson.png" 
+     alt="Intial view of the lesson screen" />
 </p>
 <p align="center"> Figure 1: Initial Lesson Screen </p>
 <hr />
@@ -44,14 +43,17 @@ pane at any time.
 <a name="Interactive_Code_Lesson" />
 <h3>2.4.2 Interactive Code Lesson</h3>
 <p>
-The lesson pane and the interactive code shell are now populated, and the 
-student can now read the text and images presented to them.  The interactive
-code shell (discussed in more detail below) can be used to verify
-understanding of concepts and examples in the lesson.  
+An interactive code lesson is a lesson that combines instructional text with
+code examples.  The code examples may be modifiable and executable. 
+</p>
+<p>
+The student can use the scroll bar on the right hand side of the page to 
+navigate within the lesson.  At the end of the lesson, select "next"
+or "previous" to move to the next or previous lesson.
 </p>
 
 <a name="Interactive_Code_Shell" />
-<h3>2.4.3 Interactive Code Shell</h3>
+<h3>2.4.2.1 Interactive Code Shell</h3>
 <hr />
 <a name="Figure_Interactive_Code_Shell" />
 <p align="center">
@@ -62,14 +64,29 @@ understanding of concepts and examples in the lesson.
 <hr />
 <br />
 <p>
+Interactive Code Lessons may include editable or executable code.  
+</p>
+<p>
+Editable code will be contained in a text box.  Students type code into the box 
+use it like a standard GUI text editor (like gedit or notepad).
+</p>
+<p>
+The sample code may also be executable.  In this case, the student presses the
+execute button and the code in the box run.  Output from the program is
+displayed below the code.  
+</p>
+<p>
 Lessons can include an interactive code shell to allow the student to 
 experiment with the content of the lesson. The code shell can optionally be
 populated by the lesson creator.  The code shell (examples show a Java shell) 
 take lines of code one at a time, and execute them upon entering. 
+</p>
 <br />
+<p>
 The shell is not restricted to code specified by examples, giving the student
 freedom to experiment within the confines of the code shell language.
-<br />
+</p>
+<p>
 While not applicable to the Java shell, an "execute" button may be present for
 languages where an interactive shell is not available.
 </p>
