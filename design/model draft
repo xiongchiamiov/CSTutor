@@ -1,6 +1,7 @@
 object Course
 	components: p:Page* and r:Roster and privateClass:bool and name:string and chatRoom:string and Stats and text:string*;
-	operations: AddPage and RemovePage and SetPrivate and EditCourse; 
+	operations: AddPage and RemovePage and SetPrivate and EditCourse;
+	description: (* A course is a course. It contains zero or more pages, a course roster, a boolean determining whether or not the course is public or private, a string for the name of the course, a string for the chat room, a Stats object containing all of the course specific statistics, and a string containing a welcome text for the course *);
 end Course; 
 
 operation AddPage
@@ -13,47 +14,76 @@ operation SetPrivate
 end SetPrivate;
 
 object Page
-	compenents: prevPage and nextPage and prereq;
+	compenents: prevPage:Page and nextPage:Page and prereq:Page*;
+	description: (* A Page has a link to the previous and next pages, as well as zero or more Page prerequisites.*); 
 end Page;
 
 object Lesson implements Page
 	components: text:string* and code:string* and subtopic:Page*;
 	operations: AddPage and RemovePage EditLesson;
+	description: (* A lesson is a specific type of Page. It contains zero or more text fields, zero or more code fields, and links to any subpages *);
 end Lesson;
 
 object Quiz implements Page
-	components: Question* and text:string* and title:string and prereq and Path and hidden:boolean;
+	components: Question* and text:string* and title:string and prereq:Page and Path and hidden:boolean;
 	operations: AddQuestion and RemoveQuestion and EditQuiz and SubmitAnswers and CheckAnswers;
+	description: (* A quiz is a specific type of Page. It contains zero or more Questions, a title string, zero or more text fields. It also contains a link to a Page being required as a prerequisite and a boolean for visibility.*);
 end Quiz;
 
 object Question
 	componets: text:string* and question:string;
-	operations:  
+	description: (* A Question is question. It contains a string for the prompt, and a string for the title *);
 end Question;
 
 object MultipleChoiceQuestion implements Question
 	components: Answer+;
-	operations:
+	description: (* A multiple choice question is a specific type of question. It contains a list of possible Answers. *);
 end MultipleChoiceQuestion;
 
 object Answer
-	componenets: answer:string correct:boolean;
-	operations:
+	componenets: answer:string and correct:boolean;
+	description: (* A answer is a possible answer for a multiple choice question. It contains a string for the answer and a boolean determining whether or not the answer is correct.*);
 end Answer
-object CodeQuestion implements Questions
-	components: 
+
+object CodeQuestion implements Question
+	components: code:string and output:string
+	operations: compareOutput;
+	description: (* A code question is a specific type of question. It allows for code to be entered which is then ran and the output is compared against predefined output. It contains a string for their code, and a string for the correct output *);
 end CodeQuestion;
 
+operation compareOutput
+	input: userCode:string and correctOutput:string;
+	output: correct: boolean and output:string;
+	description: (*This operation takes in a users code snippet, runs it, and compares the output. It returns a boolean whether the output matched, as well as the correct output.*);
+end compareOutput;
+
 object Roster
-	components: (User, Permissions)*;
-end Roster; 
+	components: (User, Permissions, Stats)*;
+	operations: addUser and deleteUser and editPermissions;
+	description: (* A roster keeps track of the permissions and statistics for all associated users. *);
+end Roster;
+
+operation editPermissions
+	input: user:User and modifiedPermissions:Permissions;
+	output: newPermissions:Permissions:
+	description: (*This operation takes a user and a set of modified permissions, replaces the old permissions, and returns an updated permissions*)
+end editPermissions;
 
 object User
-	components: boolean isInstructor and String userName and String password Course enrolled* and (Lesson, Quiz, int score)* (work in progress);
+	components: isInstructor:boolean and userName:string and password:string and enrolled:Course* and email:string;
+	operations: editProfile;
+	description: (* A user contains a boolean determining whether or not the user has instructor permissions, a string for the username, a string for the password, and a list of Courses that the user is enrolled in. Additionally, a user may provide an email address. *);
 end User;
 
+operation editProfile
+	input: currentProfile:User and modifiedProfile:User;
+	output: newProfile:User;
+	description: (*This operation takes a users profile and any modifications and merges them together, returning an updated profile*)
+end editProfile;
+
 object Permissions
-	components: bool view and bool edit and bool manage and bool stats;
+	components: view:boolean and edit:boolean and stats:boolean and manage:boolean;
+	description: (* Permissions are a set of booleans that map the permissions for users. The view permission allows the user to view the course material. The edit permission allows the user to edit the course material. The stats permission allows the user to view class-wide statistics and roster. The manage permission allows the user to modify the roster and all associated permissions *);
 end Permissions;
 
 
