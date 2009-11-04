@@ -149,6 +149,23 @@ operation movePage;
                  success *);
 end movePage;
 
+//MATT TYTEL
+
+operation createCourse
+end createCourse;
+
+operation removeCourse
+end removeCourse;
+
+operation createLesson
+end createLesson;
+
+operation removeLesson
+end removeLesson;
+
+operation removePage
+end removePage;
+
 //RUSSELL MEZZETTA
 
 operation login
