@@ -32,6 +32,7 @@ end Lesson;
 (* TODO: define a path *)
 object Path
 end Path;
+
 object Quiz extends Page
 	components: Question* and text:string* and title:string and Path and hidden:boolean;
 	operations: AddQuestion, RemoveQuestion, EditQuiz, SubmitAnswers, CheckAnswers;
@@ -115,12 +116,21 @@ end removePage;
 (* TODO: define createQuiz, addQuestion, removeQuestion *)
 
 operation createQuiz
+  inputs: blankPage:Page and newQuiz:Quiz;
+  outputs: quiz:Quiz;
+  description: (* Takes a blank page as well as the form submitted containing the new quiz and creates a new Quiz page containing the quiz *);
 end createQuiz;
 
 operation addQuestion
+  inputs: quiz:Quiz and q:Question;
+  outputs; newQuiz:Quiz;
+  description: (* Takes the quiz being worked on and the question being added, and adds the question to the quiz *);
 end addQuestion;
 
 operation removeQuestion
+  inputs: quiz:Quiz and q:Question;
+  inputs: neeQuiz:Quiz;
+  description: (* Takes the quiz being worked on and the question being removed, and removes the question from the quiz *);
 end removeQuestion;
 
 (* TODO: define clearStatistics, displayStats, getStats *)
