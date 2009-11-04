@@ -114,8 +114,8 @@ operation removePage
 end removePage;
 
 operation createQuiz
-  inputs: course:Course and newQuiz:Quiz;
-  outputs: course:Course;
+  inputs: oldCourse:Course and newQuiz:Quiz;
+  outputs: newCourse:Course;
   description: (* Takes a course as well as the form submitted containing the new quiz and creates a new Course page containing the quiz *);
 end createQuiz;
 
@@ -133,13 +133,13 @@ end editQuiz;
 
 operation addQuestion
   inputs: quiz:Quiz and q:Question;
-  outputs; newQuiz:Quiz;
+  outputs: newQuiz:Quiz;
   description: (* Takes the quiz being worked on and the question being added, and adds the question to the quiz *);
 end addQuestion;
 
 operation removeQuestion
   inputs: quiz:Quiz and q:Question;
-  inputs: neeQuiz:Quiz;
+  outputs: newQuiz:Quiz;
   description: (* Takes the quiz being worked on and the question being removed, and removes the question from the quiz *);
 end removeQuestion;
 
