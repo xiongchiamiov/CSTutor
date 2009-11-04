@@ -113,13 +113,22 @@ end removeLesson;
 operation removePage
 end removePage;
 
-(* TODO: define createQuiz, addQuestion, removeQuestion *)
-
 operation createQuiz
-  inputs: blankPage:Page and newQuiz:Quiz;
-  outputs: quiz:Quiz;
-  description: (* Takes a blank page as well as the form submitted containing the new quiz and creates a new Quiz page containing the quiz *);
+  inputs: course:Course and newQuiz:Quiz;
+  outputs: course:Course;
+  description: (* Takes a course as well as the form submitted containing the new quiz and creates a new Course page containing the quiz *);
 end createQuiz;
+
+operation deleteQuiz
+  inputs: quiz:Quiz and course:Course;
+  outputs: newCourse:Course;
+  description: (* Takes a course and a specified quiz and deletes the quiz from the course. It also deletes any corresponding statistics *);
+end deleteQuiz;
+
+operation editQuiz
+  inputs: oldQuiz:Quiz and modifiedQuiz:Quiz;
+  outputs: newQuiz:Quiz;
+  description: (* Takes an old Quiz, the Quiz containing the changes, and merges the changes in the modified quiz into the old Quiz *);
 
 operation addQuestion
   inputs: quiz:Quiz and q:Question;
