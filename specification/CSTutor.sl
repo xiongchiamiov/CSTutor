@@ -129,6 +129,7 @@ operation editQuiz
   inputs: oldQuiz:Quiz and modifiedQuiz:Quiz;
   outputs: newQuiz:Quiz;
   description: (* Takes an old Quiz, the Quiz containing the changes, and merges the changes in the modified quiz into the old Quiz *);
+end editQuiz;
 
 operation addQuestion
   inputs: quiz:Quiz and q:Question;
