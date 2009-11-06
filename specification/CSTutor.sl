@@ -116,33 +116,33 @@ operation removePage
 end removePage;
 
 operation createQuiz
-  inputs: oldCourse:Course and newQuiz:Quiz;
-  outputs: newCourse:Course;
-  description: (* Takes a course as well as the form submitted containing the new quiz and creates a new Course page containing the quiz *);
+	inputs: oldCourse:Course and newQuiz:Quiz;
+	outputs: newCourse:Course;
+	description: (* Takes a course as well as the form submitted containing the new quiz and creates a new Course page containing the quiz *);
 end createQuiz;
 
 operation deleteQuiz
-  inputs: quiz:Quiz and course:Course;
-  outputs: newCourse:Course;
-  description: (* Takes a course and a specified quiz and deletes the quiz from the course. It also deletes any corresponding statistics *);
+	inputs: quiz:Quiz and course:Course;
+	outputs: newCourse:Course;
+	description: (* Takes a course and a specified quiz and deletes the quiz from the course. It also deletes any corresponding statistics *);
 end deleteQuiz;
 
 operation editQuiz
-  inputs: oldQuiz:Quiz and modifiedQuiz:Quiz;
-  outputs: newQuiz:Quiz;
-  description: (* Takes an old Quiz, the Quiz containing the changes, and merges the changes in the modified quiz into the old Quiz *);
+	inputs: oldQuiz:Quiz and modifiedQuiz:Quiz;
+	outputs: newQuiz:Quiz;
+	description: (* Takes an old Quiz, the Quiz containing the changes, and merges the changes in the modified quiz into the old Quiz *);
 end editQuiz;
 
 operation addQuestion
-  inputs: quiz:Quiz and q:Question;
-  outputs: newQuiz:Quiz;
-  description: (* Takes the quiz being worked on and the question being added, and adds the question to the quiz *);
+	inputs: quiz:Quiz and q:Question;
+	outputs: newQuiz:Quiz;
+	description: (* Takes the quiz being worked on and the question being added, and adds the question to the quiz *);
 end addQuestion;
 
 operation removeQuestion
-  inputs: quiz:Quiz and q:Question;
-  outputs: newQuiz:Quiz;
-  description: (* Takes the quiz being worked on and the question being removed, and removes the question from the quiz *);
+	inputs: quiz:Quiz and q:Question;
+	outputs: newQuiz:Quiz;
+	description: (* Takes the quiz being worked on and the question being removed, and removes the question from the quiz *);
 end removeQuestion;
 
 operation clearStatistics
@@ -164,30 +164,30 @@ operation getStats
 end getStats;
 
 operation getNextPage
-   inputs: Page;
-   outputs: Page;
-   description: (*Takes in a Page, and returns the next logical page.*);
+	inputs: Page;
+	outputs: Page;
+	description: (*Takes in a Page, and returns the next logical page.*);
 end getNextPage;
 
 operation getPrevPage
-   inputs: Page;
-   outputs: Page;
-   description: (*Takes in a Page, and returns the previous logical page.*);
+	inputs: Page;
+	outputs: Page;
+	description: (*Takes in a Page, and returns the previous logical page.*);
 end getPrevPage;
 
 operation displayPage
-   inputs: Page;
-   outputs: string;
-   description:  (*Takes in a page and returns the content to display *);
+	inputs: Page;
+	outputs: string;
+	description:  (*Takes in a page and returns the content to display *);
 end displayPage;
 
 operation movePage
-   inputs: Page and Page;
-   outputs: boolean;
-   description: (*Takes in two pages, the page to move and the page to 
-                 place the moved page after, and moves the first page to be
-                 the "next" of the second Page.  Returns boolean indicating 
-                 success *);
+	inputs: Page and Page;
+	outputs: boolean;
+	description: (*Takes in two pages, the page to move and the page to 
+	              place the moved page after, and moves the first page to be
+	              the "next" of the second Page.  Returns boolean indicating 
+	              success *);
 end movePage;
 
 operation login
