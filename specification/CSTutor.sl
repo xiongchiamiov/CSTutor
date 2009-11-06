@@ -1,7 +1,7 @@
 (* TODO: define a path *)
 object Stats
-	components: (Page, date:string, notes:string)*;
-	description: (* A Stats is tied to a particular user, through the roster, and has a list of notable actions performed by said user, along with the datetime of the action, and any notes that are useful for later data crunching. *);
+	components: (User, Page, date:string, notes:string)*;
+	description: (* A Stats is tied to a particular user, and has a list of notable actions performed by said user, along with the datetime of the action, and any notes that are useful for later data crunching. *);
 end Stats;
 
 object Course
