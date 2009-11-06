@@ -97,9 +97,6 @@ object Permissions
 	description: (* Permissions are a set of booleans that map the permissions for users. The view permission allows the user to view the course material. The edit permission allows the user to edit the course material. The stats permission allows the user to view class-wide statistics and roster. The manage permission allows the user to modify the roster and all associated permissions *);
 end Permissions;
 
-
-(* TODO: define createCourse, removeCourse, createLesson, removeLesson, removePage *)
-
 operation createCourse
 	inputs: name:string and private:boolean and instructor:User; 
 	outputs: newCourse:Course;
