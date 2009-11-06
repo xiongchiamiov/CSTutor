@@ -115,7 +115,7 @@ end removeCourse;
 operation createLesson
 	inputs: name:string and course:Course;
 	outputs: newLesson:Lesson;
-	description; (* A lesson is created when an user with manage permissions for a Course clicks Submit on the Add Lesson page.  createLesson takes in a string for the name and a Course in which the lesson will be contained. createLesson returns the new created Lesson *)
+	description: (* A lesson is created when an user with manage permissions for a Course clicks Submit on the Add Lesson page.  createLesson takes in a string for the name and a Course in which the lesson will be contained. createLesson returns the new created Lesson *);
 end createLesson;
 
 operation removePage
