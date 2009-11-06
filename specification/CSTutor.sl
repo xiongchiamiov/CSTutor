@@ -101,19 +101,28 @@ end Permissions;
 (* TODO: define createCourse, removeCourse, createLesson, removeLesson, removePage *)
 
 operation createCourse
+	inputs: name:string and private:boolean and instructor:User; 
+	outputs: newCourse:Course;
+	description: (* A new course is created when an Instructor user clicks on the Create Class button.  createCourse takes in a string for the class name, a boolean that specifies if the class is privately or publicly available and a User which is the creator of the class.  createCourse returns a new Course in which the User passed in as the intructor has Manage permissions *);
 end createCourse;
 
 operation removeCourse
+	inputs: toRemove:Course;
+	outputs: success:boolean;
+	description: (* A course is removed from CSTutor when the delete button is hit for the Course.  removeCourse takes in a Course to be removed and returns a boolean saying if the delete succeeded or not *);
 end removeCourse;
 
 operation createLesson
+	inputs: name:string and course:Course;
+	outputs: newLesson:Lesson;
+	description; (* A lesson is created when an user with manage permissions for a Course clicks Submit on the Add Lesson page.  createLesson takes in a string for the name and a Course in which the lesson will be contained. createLesson returns the new created Lesson *)
 end createLesson;
 
-operation removeLesson
-end removeLesson;
-
 operation removePage
-end removePage;
+	inputs: toRemove:Page;
+	outputs: success:boolean;
+	description: (* A page is removed from CSTutor when the delete button is hit for the Course.  removeCourse takes in a Page, either a Lesson or Quiz, to be removed and returns a boolean saying if the delete succeeded or not *);
+end removeLesson;
 
 operation createQuiz
 	inputs: oldCourse:Course and newQuiz:Quiz;
