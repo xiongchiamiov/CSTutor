@@ -32,7 +32,7 @@ object Page
 	description: (* A Page has a link to the previous and next pages, as well as zero or more Page prerequisites.*); 
 end Page;
 
-operation validate
+operation Validate
 	inputs: requestedPage:int and score:Stats;
 	outputs: authenticated:boolean;
 	decscription: (* Takes a requested page and checks to see if all of the prerequisites have been successfully completed for the student. Returns a boolean *);
