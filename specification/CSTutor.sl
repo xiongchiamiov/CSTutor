@@ -1,6 +1,7 @@
 (* TODO: define a path *)
 object Stats
 	components: (User, Page, date:string, notes:string)*;
+	operations: getStats, clearStats, displayStats();
 	description: (* A Stats is tied to a particular user, and has a list of notable actions performed by said user, along with the datetime of the action, and any notes that are useful for later data crunching. *);
 end Stats;
 
@@ -151,7 +152,7 @@ operation removeQuestion
 	description: (* Takes the quiz being worked on and the question being removed, and removes the question from the quiz *);
 end removeQuestion;
 
-operation clearStatistics
+operation clearStats
 	inputs: stats:Stats;
 	outputs: freshStats:Stats;
 	description: (* Clear a set of statistics. *);
