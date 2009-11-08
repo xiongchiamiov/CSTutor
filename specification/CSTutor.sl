@@ -32,10 +32,11 @@ object Page
 	description: (* A Page has a link to the previous and next pages, as well as zero or more Page prerequisites.*); 
 end Page;
 
-operation Validate
-	inputs: pageToLookAt:int and Stats;
-	outputs: canViewPage:boolean;
-end Validate
+operation validate
+	inputs: requestedPage:int and score:Stats;
+	outputs: authenticated:boolean;
+	decscription: (* Takes a requested page and checks to see if all of the prerequisites have been successfully completed for the student. Returns a boolean *);
+end validate;
 
 object Lesson extends Page
 	components: text:string* and code:string* and subtopic:Page*;
@@ -45,8 +46,7 @@ end Lesson;
 
 (* TODO: define a path *)
 object Path
-	components: maxScore:int and minScore:int and dialog:string and page:int;
-	operation DeterminePath
+	components: maxScore:int and minScore:int and dialog:string and page:int and passed:boolean;
 	description: (*A path determines where a student is sent after his quiz has been graded *);
 end Path;
 
@@ -57,8 +57,8 @@ operation DeterminePath
 end DeterminePath;
 
 object Quiz extends Page
-	components: Question* and text:string* and title:string and *Path and hidden:boolean and passed:boolean;
-	operations: AddQuestion, RemoveQuestion, EditQuiz, SubmitAnswers, CheckAnswers;
+	components: Question* and text:string* and title:string and *Path and hidden:boolean;
+	operations: AddQuestion, RemoveQuestion, EditQuiz, SubmitAnswers, CheckAnswers, DeterminePath;
 	description: (* A quiz is a specific type of Page. It contains zero or more Questions, a title string, zero or more text fields. It also contains a link to a Page being required as a prerequisite and a boolean for visibility.*);
 end Quiz;
 
