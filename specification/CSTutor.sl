@@ -22,7 +22,7 @@ operation SetPrivate
 end SetPrivate;
 
 object Page
-	components: prevPage:Page and nextPage:Page and prereq:Page*;
+	components: pageId:int: prevPage:int and nextPage:int and prereq:int*;
 	description: (* A Page has a link to the previous and next pages, as well as zero or more Page prerequisites.*); 
 end Page;
 
@@ -34,7 +34,16 @@ end Lesson;
 
 (* TODO: define a path *)
 object Path
+	components: maxScore:int and minScore:int and dialog:string and page:int;
+	operation DeterminePath
+	description: (*A path determines where a student is sent after his quiz has been graded *);
 end Path;
+
+operation DeterminePath
+	inputs: quizScore:int and quiz:Quiz;
+	outputs: Path;
+	description: (* DeterminePath takes in the score of a quiz and then determines the right path for a student. *);
+end DeterminePath;
 
 object Quiz extends Page
 	components: Question* and text:string* and title:string and Path and hidden:boolean;
