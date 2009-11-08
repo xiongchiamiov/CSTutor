@@ -1,9 +1,14 @@
 (* TODO: define a path *)
 object Stats
-	components: (User, Page, date:string, notes:string)*;
+	components: User and StatsObject*;
 	operations: getStats, clearStats, displayStats();
 	description: (* A Stats is tied to a particular user, and has a list of notable actions performed by said user, along with the datetime of the action, and any notes that are useful for later data crunching. *);
 end Stats;
+
+object StatsObject
+	components: pageId:int and score:int and passed:boolean date:string and notes:string;
+	description (*A stats object stores the related stats information about a page *);
+end StatsObject;
 
 object Course
 	components: p:Page* and r:Roster and privateClass:boolean and name:string and chatRoom:string and Stats and text:string*;
@@ -23,8 +28,14 @@ end SetPrivate;
 
 object Page
 	components: pageId:int: prevPage:int and nextPage:int and prereq:int*;
+	operation: Validate;	
 	description: (* A Page has a link to the previous and next pages, as well as zero or more Page prerequisites.*); 
 end Page;
+
+operation Validate
+	inputs: pageToLookAt:int and Stats;
+	outputs: canViewPage:boolean;
+end Validate
 
 object Lesson extends Page
 	components: text:string* and code:string* and subtopic:Page*;
@@ -46,7 +57,7 @@ operation DeterminePath
 end DeterminePath;
 
 object Quiz extends Page
-	components: Question* and text:string* and title:string and Path and hidden:boolean;
+	components: Question* and text:string* and title:string and *Path and hidden:boolean and passed:boolean;
 	operations: AddQuestion, RemoveQuestion, EditQuiz, SubmitAnswers, CheckAnswers;
 	description: (* A quiz is a specific type of Page. It contains zero or more Questions, a title string, zero or more text fields. It also contains a link to a Page being required as a prerequisite and a boolean for visibility.*);
 end Quiz;
