@@ -20,9 +20,6 @@ end Course;
 operation AddPage
 end AddPage;
 
-operation RemovePage
-end RemovePage;
-
 operation SetPrivate
 end SetPrivate;
 
