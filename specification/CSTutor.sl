@@ -16,11 +16,10 @@ object Course
 	description: (* A course is a course. It contains zero or more pages, a course roster, a boolean determining whether or not the course is public or private, a string for the name of the course, a string for the chat room, a Stats object containing all of the course specific statistics, and a string containing a welcome text for the course *);
 end Course; 
 
-(* TODO: define AddPage, RemovePage, SetPrivate *)
-operation AddPage
-end AddPage;
-
 operation SetPrivate
+	inputs: current:Course;
+	ouput: updatedCourse:Course;
+	description: (*Takes in a course and sets the course to be private*);
 end SetPrivate;
 
 object Page
