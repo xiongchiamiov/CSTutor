@@ -6,8 +6,8 @@ object Stats
 end Stats;
 
 object StatsObject
-	components: pageId:int and score:int and passed:boolean date:string and notes:string;
-	description (*A stats object stores the related stats information about a page *);
+	components: pageId:number and score:number and passed:boolean and date:string and notes:string;
+	description: (*A stats object stores the related stats information about a page *);
 end StatsObject;
 
 object Course
@@ -18,20 +18,20 @@ end Course;
 
 operation SetPrivate
 	inputs: current:Course;
-	ouput: updatedCourse:Course;
+	outputs: updatedCourse:Course;
 	description: (*Takes in a course and sets the course to be private*);
 end SetPrivate;
 
 object Page
-	components: pageId:int: prevPage:int and nextPage:int and prereq:int*;
-	operation: Validate;	
+	components: pageId:number and prevPage:number and nextPage:number and prereq:number*;
+	operations: Validate;	
 	description: (* A Page has a link to the previous and next pages, as well as zero or more Page prerequisites.*); 
 end Page;
 
 operation Validate
-	inputs: requestedPage:int and score:Stats;
+	inputs: requestedPage:number and score:Stats;
 	outputs: authenticated:boolean;
-	decscription: (* Takes a requested page and checks to see if all of the prerequisites have been successfully completed for the student. Returns a boolean *);
+	description: (* Takes a requested page and checks to see if all of the prerequisites have been successfully completed for the student. Returns a boolean *);
 end validate;
 
 object Lesson extends Page
@@ -42,18 +42,18 @@ end Lesson;
 
 (* TODO: define a path *)
 object Path
-	components: maxScore:int and minScore:int and dialog:string and page:int and passed:boolean;
+	components: maxScore:number and minScore:number and dialog:string and page:number and passed:boolean;
 	description: (*A path determines where a student is sent after his quiz has been graded *);
 end Path;
 
 operation DeterminePath
-	inputs: quizScore:int and quiz:Quiz;
+	inputs: quizScore:number and quiz:Quiz;
 	outputs: Path;
 	description: (* DeterminePath takes in the score of a quiz and then determines the right path for a student. *);
 end DeterminePath;
 
 object Quiz extends Page
-	components: Question* and text:string* and title:string and *Path and hidden:boolean;
+	components: Question* and text:string* and title:string and Path* and hidden:boolean;
 	operations: AddQuestion, RemoveQuestion, EditQuiz, SubmitAnswers, CheckAnswers, DeterminePath;
 	description: (* A quiz is a specific type of Page. It contains zero or more Questions, a title string, zero or more text fields. It also contains a link to a Page being required as a prerequisite and a boolean for visibility.*);
 end Quiz;
