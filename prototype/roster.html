@@ -30,14 +30,12 @@
 	}
 	function importRoster()
 	{
+		var name = document.right-col.main-content.getElementById("fileInput").value;
+		alert(" " + name);
 	}
 	function submit()
 	{
 		alert("Changes saved to database");
-	}
-	function whatFile() 
-	{
-		alert("'file:///" + document.fileInput.value);
 	}
 	</script>
 </head>
@@ -96,19 +94,44 @@
 				<p align=center>
 					<h2 align=center>CPE102 Roster</h2>
 				</p>
-				<p> <input type="checkbox" name="option1" value="ALL">Username Last Used Edit Stats Manage 
-				<p><input type="checkbox" name="option1" value="JS">John Smith<input type="checkbox" name="option1" value="JS" checked><input type="checkbox" name="option1" value="JS" checked><input type="checkbox" name="option1" value="JS" checked><br></p>
+				<p> 
+				<table>
+				<tr>
+				<td><input type="checkbox" name="option1" value="ALL"></td> 
+				<td>Username</td> 
+				<td>Last Used</td> 
+				<td>Edit</td> 
+				<td>Stats</td> 
+				<td>Manage</td>
+				</tr>
+				<tr>
+				<td><input type="checkbox" name="option1" value="JS"></td>
+				<td>John Smith</td>
+				<td>11/14/09</td>
+				<td><input type="checkbox" name="option1" value="JS" checked></td>
+				<td><input type="checkbox" name="option1" value="JS" checked></td>
+				<td><input type="checkbox" name="option1" value="JS" checked>
+				</table> </p>
 				<p>
 					<BUTTON TYPE=SUBMIT onclick="addUser()">
 					<STRONG>Add User</STRONG></BUTTON>
 					<BUTTON TYPE=SUBMIT onclick="removeUser()">
 					<STRONG>Remove User</STRONG></BUTTON>
-					<BUTTON TYPE=SUBMIT onclick= "whatFile()">
-					<STRONG>Import Roster</STRONG></BUTTON>
-					<input type="file" name="fileInput">
+					<BUTTON TYPE=SUBMIT onclick= "importRoster()">
+					<STRONG>Import Roster</STRONG></BUTTON>				
+					<input type="file" value="" name="fileInput">
 				</p>
 				<p align=center><h2 align=center>Pending Requests</h2></p>
-				<p>Username Date Confirm Deny</p>
+				<p>
+				<table>
+				<tr>
+				<td>Username</td> 
+				<td>Date</td>
+				<td>Confirm</td>
+				<td>Deny</td>
+				</tr>
+				</table>
+				</p>
 				<p><BUTTON TYPE=SUBMIT onclick="submit()">
 				<STRONG>Submit</STRONG></BUTTON></p>
 			</div><!-- #main-content -->
