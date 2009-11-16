@@ -9,7 +9,37 @@
 	<!--[if lt IE 8]><link rel="stylesheet" href="media/css/blueprint/ie.css" type="text/css" media="screen, projection" /><![endif]-->
 	<link rel="stylesheet" href="media/css/style.css" type="text/css" />
 	
-	<script type="text/javascript" src="media/js/jquery.min.js"></script>
+	<script type="text/javascript" src="media/js/jquery.min.js">
+	</script>
+	<script type="text/javascript">
+   function addUser()
+	{
+		var name = prompt("Enter in the username to be added:");
+		if(name != null && name != "")
+		{
+			alert("Username added: " + name);
+		}
+	}
+	function removeUser()
+	{
+		var name = prompt("Enter in the username to be removed:");
+		if(name != null && name != "")
+		{
+			alert(name + " removed from the database.");
+		}
+	}
+	function importRoster()
+	{
+	}
+	function submit()
+	{
+		alert("Changes saved to database");
+	}
+	function whatFile() 
+	{
+		alert("'file:///" + document.fileInput.value);
+	}
+	</script>
 </head>
 <body>
 	<div class="container showgrid">
@@ -69,16 +99,17 @@
 				<p> <input type="checkbox" name="option1" value="ALL">Username Last Used Edit Stats Manage 
 				<p><input type="checkbox" name="option1" value="JS">John Smith<input type="checkbox" name="option1" value="JS" checked><input type="checkbox" name="option1" value="JS" checked><input type="checkbox" name="option1" value="JS" checked><br></p>
 				<p>
-					<BUTTON TYPE=SUBMIT>
+					<BUTTON TYPE=SUBMIT onclick="addUser()">
 					<STRONG>Add User</STRONG></BUTTON>
-					<BUTTON TYPE=SUBMIT>
+					<BUTTON TYPE=SUBMIT onclick="removeUser()">
 					<STRONG>Remove User</STRONG></BUTTON>
-					<BUTTON TYPE=SUBMIT>
+					<BUTTON TYPE=SUBMIT onclick= "whatFile()">
 					<STRONG>Import Roster</STRONG></BUTTON>
+					<input type="file" name="fileInput">
 				</p>
 				<p align=center><h2 align=center>Pending Requests</h2></p>
 				<p>Username Date Confirm Deny</p>
-				<p><BUTTON TYPE=SUBMIT>
+				<p><BUTTON TYPE=SUBMIT onclick="submit()">
 				<STRONG>Submit</STRONG></BUTTON></p>
 			</div><!-- #main-content -->
 			<!--<div id="bottom-bar" class="span-18 last">
