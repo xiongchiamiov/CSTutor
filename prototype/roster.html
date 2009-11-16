@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<title>Roster Management</title>
+	
+	<link rel="stylesheet" href="media/css/blueprint/screen.css" type="text/css" media="screen, projection" />
+	<link rel="stylesheet" href="media/css/blueprint/print.css" type="text/css" media="print" />
+	<!--[if lt IE 8]><link rel="stylesheet" href="media/css/blueprint/ie.css" type="text/css" media="screen, projection" /><![endif]-->
+	<link rel="stylesheet" href="media/css/style.css" type="text/css" />
+	
+	<script type="text/javascript" src="media/js/jquery.min.js"></script>
+</head>
+<body>
+	<div class="container showgrid">
+		<div id="left-nav" class="span-6">
+			<ul>
+				<li>Create Class</li>
+				<li>Join Class</li>
+				<li>
+					<ul id="course-list">
+						<li>
+							CPE 102
+							<ul class="page-list">
+								<li>Creating Arrays</li>
+								
+								<li>Loops
+								<ul>
+									<li>For Loops</li>
+									<li>While Loops</li>
+									<li>Do Loops</li>
+									<li>Quiz 1</li>
+								</ul>
+                        </li>
+								
+								<li>Pointers</li>
+							</ul><!-- .page-list -->
+						</li>
+					</ul><!-- #course-list -->
+				</li>
+				<li>Create Quiz</li>
+				<li>Create Lesson</li>
+			</ul>
+		</div><!-- #left-nav .span-4 -->
+		<div id="right-col" class="span-18 last">
+			<div id="top-nav" class="span-18 last">
+				<div class="span-2"><a href="index.html">Home</a></div>
+				<div class="span-2"><a href="stats.html">Stats</a></div>
+				<div class="span-2"><a href="roster.html">Roster</a></div>
+				<div class="span-2"><a href="chat.html" target="_blank">Chat</a></div>
+				<div class="span-2"><a href="edit.html">Edit</a></div>
+				<div class="span-2"><a href="help.html">Help</a></div>
+				<div class="span-6 last" style="line-height: normal;">
+					<div class="span-6 last" style="line-height: 2.5em;">
+						Welcome, John Smith
+					</div>
+					<div class="span-3">
+						<a href = "login.html">Logout</a>
+					</div>
+					<div class="span-3 last">
+						Profile
+					</div>
+				</div>
+			</div><!-- #top-nav -->
+			<div id="main-content">
+				<p align=center>
+					<h2 align=center>CPE102 Roster</h2>
+				</p>
+				<p> <input type="checkbox" name="option1" value="ALL">Username Last Used Edit Stats Manage 
+				<p><input type="checkbox" name="option1" value="JS">John Smith<input type="checkbox" name="option1" value="JS" checked><input type="checkbox" name="option1" value="JS" checked><input type="checkbox" name="option1" value="JS" checked><br></p>
+				<p>
+					<BUTTON TYPE=SUBMIT>
+					<STRONG>Add User</STRONG></BUTTON>
+					<BUTTON TYPE=SUBMIT>
+					<STRONG>Remove User</STRONG></BUTTON>
+					<BUTTON TYPE=SUBMIT>
+					<STRONG>Import Roster</STRONG></BUTTON>
+				</p>
+				<p align=center><h2 align=center>Pending Requests</h2></p>
+				<p>Username Date Confirm Deny</p>
+				<p><BUTTON TYPE=SUBMIT>
+				<STRONG>Submit</STRONG></BUTTON></p>
+			</div><!-- #main-content -->
+			<!--<div id="bottom-bar" class="span-18 last">
+<pre><code>>>> print "hello, world!"
+hello, world!
+>>></code></pre>
+			</div>-->
+		</div><!-- #right-col .span-20 -->
+	</div><!-- .container -->
+</body>
+</html>
