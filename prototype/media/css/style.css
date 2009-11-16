@@ -63,3 +63,15 @@ code {
    border-left-style:none;
    width:647px;
 }
+
+.static-code {
+   border: 3px black double;
+}
+
+.code-output {
+   border: 3px red double;
+}
+
+.code-button {
+   float: right;
+}

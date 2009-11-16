@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<title>CPE 102 - Arrays</title>
+	
+	<link rel="stylesheet" href="media/css/blueprint/screen.css" type="text/css" media="screen, projection" />
+	<link rel="stylesheet" href="media/css/blueprint/print.css" type="text/css" media="print" />
+	<!--[if lt IE 8]><link rel="stylesheet" href="media/css/blueprint/ie.css" type="text/css" media="screen, projection" /><![endif]-->
+	<link rel="stylesheet" href="media/css/style.css" type="text/css" />
+	
+	<script type="text/javascript" src="media/js/jquery.min.js"></script>
+</head>
+<body>
+	<div class="container showgrid">
+		<div id="left-nav" class="span-6">
+			<ul>
+				<li><button type="submit" onclick="">
+					<strong>Create Class</strong></button></li>
+				<li><button type="submit" onclick="">
+					<strong>Join Class</strong></button></li>
+				<li>
+					<ul id="course-list">
+						<li>
+							<a href="cpe102.html">CPE 102</a>
+							<ul class="page-list">
+								<li><a href="arrays.html">Creating Arrays</a></li>
+								
+								<li><a href="loops.html">Loops</a>
+								<ul>
+									<li><a href="forloops.html">For Loops</a></li>
+									<li><a href="whileloops.html">While Loops</a></li>
+									<li><a href="doloops.html">Do Loops</a></li>
+									<li><a href="loopquiz.html">Quiz 1</a></li>
+								</ul>
+                        </li>
+								
+								<li>Pointers</li>
+							</ul><!-- .page-list -->
+						</li>
+					</ul><!-- #course-list -->
+				</li>
+				<li><button type="submit" onclick="">
+					<strong>Create Quiz</strong></button></li>
+				<li><button type="submit" onclick="">
+					<strong>Create Lesson</strong></button></li>
+			</ul>
+		</div><!-- #left-nav .span-4 -->
+		<div id="right-col" class="span-18 last">
+			<div id="top-nav" class="span-18 last">
+				<div class="span-2"><a href="index.html">Home</a></div>
+				<div class="span-2"><a href="stats.html">Stats</a></div>
+				<div class="span-2"><a href="roster.html">Roster</a></div>
+				<div class="span-2"><a href="chat.html" target="_blank">Chat</a></div>
+				<div class="span-2"><a href="edit.html">Edit</a></div>
+				<div class="span-2"><a href="help.html">Help</a></div>
+				<div class="span-6 last" style="line-height: normal;">
+					<div class="span-6 last" style="line-height: 2.5em;">
+						Welcome, John Smith
+					</div>
+					<div class="span-3">
+						<a href = "login.html">Logout</a>
+					</div>
+					<div class="span-3 last">
+						Profile
+					</div>
+				</div>
+			</div><!-- #top-nav -->
+			<div id="main-content">
+			   <h3>What are Arrays</h3>
+				<p>
+					Arrays are a convenient way of grouping data together.  For
+					example, if you need to keep track of the number of people
+					who came to my amusement park each day for a month, you could
+					use an array of 31 integers represent this.
+				</p>
+			   <h3>Declaring Arrays</h3>
+				<p>
+					Continuing with the amusement park example, without Arrays, 
+					you would need a separate integer for each day of the month
+					like so:
+				</p>
+				<div class="static-code">
+				<pre><code><font size="+1">int day1, day2, day3, day4;
+int day5, day6, day7, day8;
+...</font></code></pre>
+            </div>
+				<br />
+				<!-- Gotta be a better way to code this to make it less ugly -->
+				<p>
+					With arrays, we can represent all 31 days using a single
+					identifier.
+				</p>
+				<div class="static-code">
+				<pre><code><font size="+1">int [] foo;
+foo = new int[31];</font></code></pre>
+            </div>
+				<br />
+				<p>
+					We can access individual elementes of the array using the index
+					operator.  You should note that indexes begin at 0. The following
+					code when ran will cause an ArrayIndexOutOfBoundsException.
+				</p>
+				<div class="static-code">
+				<pre><code><font size="+1">int [] foo;
+foo = new int[31];
+foo[0] = 153;
+System.out.println(foo[0]);
+foo[31] = 142;
+System.out.println(foo[31]);</font></code></pre>
+            </div>
+				<div class="code-output">
+					<pre><code><font size="+1">Exception in thread "main" java.lang.ArrayIndexOutOfBoundsException: 31
+					at Test.main(Test.java:7)</font></code></pre>
+		      </div>
+				<div class="span-18">
+					<button class="code-button" name="executeButton">Execute</button>
+					<button class="code-button" name="resetButton">Reset</button>
+				</div>
+				<br />
+			</div><!-- #main-content -->
+		</div><!-- #right-col .span-20 -->
+	</div><!-- .container -->
+</body>
+</html>
