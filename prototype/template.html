@@ -10,6 +10,19 @@
 	<link rel="stylesheet" href="media/css/style.css" type="text/css" />
 	
 	<script type="text/javascript" src="media/js/jquery.min.js"></script>
+	<script type="text/javascript">
+	function joinClass()
+	{
+		var name = prompt("Enter in the class to join: ");
+
+		$('#course-list').append('<li>' + name + '</li');
+
+		if(name != null && name != "")
+		{
+			alert(name + " joined.");
+		}
+	}
+	</script>
 </head>
 <body>
 	<div class="container showgrid">
@@ -17,7 +30,7 @@
 			<ul>
 				<li><button type="submit" onclick="">
 					<strong>Create Class</strong></button></li>
-				<li><button type="submit" onclick="">
+				<li><button type="submit" onclick="joinClass()">
 					<strong>Join Class</strong></button></li>
 				<li>
 					<ul id="course-list">
