@@ -15,6 +15,14 @@
    function addUser()
 	{
 		var name = prompt("Enter in the username to be added:");
+
+		$('#user-table').append('<tr><td><input type="checkbox" name="checkboxArray" value=name></td>' +
+		                   '<td>'+name+'</td>' +
+		                   '<td>N/A</td>' +
+		                   '<td><input type="checkbox" name="option1" value="1"></td>' +
+		                   '<td><input type="checkbox" name="option1" value="2"></td>' +
+		                   '<td><input type="checkbox" name="option1" value="3"></td></tr>');
+
 		if(name != null && name != "")
 		{
 			alert("Username added: " + name);
@@ -37,15 +45,34 @@
 	{
 		alert("Changes saved to database");
 	}
+	/*function checkAll(field)
+	{
+		for(i = 0; i < $(field).length; i++)
+		{
+			$(field)s[i].checked = true;
+		}
+		alert("all users selected");
+	}*/
+	function joinClass()
+	{
+		var name = prompt("Enter in the class to join: ");
+
+		$('#course-list').append('<li>' + name + '</li');
+
+		if(name != null && name != "")
+		{
+			alert(name + " joined.");
+		}
+	}
 	</script>
 </head>
 <body>
 	<div class="container showgrid">
 		<div id="left-nav" class="span-6">
 			<ul>
-				<li><BUTTON TYPE=SUBMIT onclick="addUser()">
+				<li><BUTTON TYPE=SUBMIT onclick="">
 					<STRONG>Create Class</STRONG></BUTTON></li>
-				<li><BUTTON TYPE=SUBMIT onclick="addUser()">
+				<li><BUTTON TYPE=SUBMIT onclick="joinClass()">
 					<STRONG>Join Class</STRONG></BUTTON></li>
 				<li>
 					<ul id="course-list">
@@ -68,9 +95,9 @@
 						</li>
 					</ul><!-- #course-list -->
 				</li>
-				<li><BUTTON TYPE=SUBMIT onclick="addUser()">
+				<li><BUTTON TYPE=SUBMIT onclick="">
 					<STRONG>Create Quiz</STRONG></BUTTON></li>
-				<li><BUTTON TYPE=SUBMIT onclick="addUser()">
+				<li><BUTTON TYPE=SUBMIT onclick="">
 					<STRONG>Create Lesson</STRONG></BUTTON></li>
 			</ul>
 		</div><!-- #left-nav .span-4 -->
@@ -99,23 +126,25 @@
 					<h2 align=center>CPE102 Roster</h2>
 				</p>
 				<p> 
-				<table>
+				<table id="user-table">
 				<tr>
-				<td><input type="checkbox" name="option1" value="ALL"></td> 
+				<td><input type="checkbox" name="checkAll" value="ALL" onclick="checkAll('.username')"></td> 
 				<td>Username</td> 
 				<td>Last Used</td> 
 				<td>Edit</td> 
 				<td>Stats</td> 
 				<td>Manage</td>
 				</tr>
-				<tr>
-				<td><input type="checkbox" name="option1" value="JS"></td>
+				<tr name ="John Smith">
+				<td><input type="checkbox" name="checkboxList" value="John Smith" class="username"></td>
 				<td>John Smith</td>
 				<td>11/14/09</td>
-				<td><input type="checkbox" name="option1" value="JS" checked></td>
-				<td><input type="checkbox" name="option1" value="JS" checked></td>
-				<td><input type="checkbox" name="option1" value="JS" checked>
+				<td><input type="checkbox" name="option1" value="1" checked></td>
+				<td><input type="checkbox" name="option1" value="2" checked></td>
+				<td><input type="checkbox" name="option1" value="3" checked></td>
+				</tr>
 				</table> </p>
+
 				<p>
 					<BUTTON TYPE=SUBMIT onclick="addUser()">
 					<STRONG>Add User</STRONG></BUTTON>
