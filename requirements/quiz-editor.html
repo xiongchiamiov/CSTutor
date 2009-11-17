@@ -7,85 +7,138 @@
 </head><body bgcolor="white">
 <a name="Using_the_Quiz_Editor">
 <h4>
-2.3.2. Using the Quiz Editor</h4>
-<p>The quiz editor is accessible to instructors for creating, editing, and deleting quizzs. In spirit of automated feedback, CSTutor only supports multiple choice, true or false, or code snippet questions. The instructor is also able to set and edit properties of the quiz, such as <a href="#Managing_Prerequisites">prerequisites</a>. With prerequisites, the instructor can identiy which quizzes must be completed before being able to take the quiz. In some instances, an instructor may wish to make all quizs available immediatly in order to demonstrate knowledge in the subject without needing to go through the lessons. In other instances, an instructor may wish to unlock quizs and make them <a href="#Managing_Quiz_Visibility">visible</a> as previous quizzes are completed in order to force a student to go through the entire lesson series.</p>
+2.3.2 Using the Quiz Editor</h4>
+<p>The quiz editor is accessible to instructors or other privileged users for creating, editing, and deleting quizzes. In spirit of automated feedback, CSTutor only supports multiple choice, true or false, or code snippet questions. However, the instructor may wish to create several <a href="#Quiz_Versioning">versions</a> of the quiz in order to avoid repeat questions. .
+<p>The instructor is also able to set and edit properties of the quiz, such as <a href="#Managing_Prerequisites">prerequisites</a>. With prerequisites, the instructor can identiy which quizzes must be completed before being able to take the quiz. In some instances, an instructor may wish to make all quizs available immediatly in order to demonstrate knowledge in the subject without needing to go through the lessons. In other instances, an instructor may wish to unlock quizs and make them <a href="#Managing_Quiz_Visibility">visible</a> as previous quizzes are completed in order to create a flow for the course material.</p>
 <p>Another feature of the quiz editor is the capabilities to use <a href="#Managing_Quiz_Paths">paths</a>. With quiz paths, the instructor can direct the student to a particular lesson based on the students score. For example, if a student scores below 50%, the student may be required to retake the lesson. If the student scores between 51% and 75%, the student is encouraged to review the material before moving forward. If the student scores between 76% and 100%, the student is automatically directed to the next lesson in the series.</p>
 </a>
-<p>&nbsp;</p>
-<a name="Adding_a_Question">
+<a name="Creating_A_Quiz">
 <h4>
-2.3.2.1 Adding a Question</h4>
+2.3.2.1 Creating a Quiz</h4>
 </a>
 </p>
-<p>To add a question, the instructor hits the '<tt>Add New Question</tt>' button. In response, the system generates a blank question as shown in Figure 2.3.2.1-1.<br>
+<p>To create a quiz, the instructor presses the '<tt>Create Quiz</tt>' button. In response, the system generates a blank quiz as shown in Figure 2.3.2.1-1.<br>
   <br>
 </p>
 <hr>
 <a name="Figure_Add_Question">
 <p align="center">
-<img src="images/Quiz_Editor_q1.png">
+<img src="images/Create_Quiz.png">
 </p>
-<p align="center"> Figure 2.3.2.1-1:  Adding a Question.  </p>
+<p align="center"> Figure 2.3.2.1-1:  Creating a quiz.  </p>
 <hr>
 </a>
 <br>
 <p>
-The figure shows the result of the blank quiz after having hit the '<tt>Add New Question</tt>' button.</p>
-<p>After having created a blank question, the instructor then needs to type the question. To do this, the user must click into the text box showing '<tt>Enter Question Here</tt>' and replace it with the question being asked. After typing in the question, the instructor then needs to provide options for the answers to the multiple choice question. A question can have as few as two possible answers and no limit on the maximum. To add a possible answer, the user must hit the '<tt>Add New Answer</tt>' button as shown in Figure 2.3.2.1-2.
+The figure shows the result of the blank quiz after having hit the '<tt>Create Quiz</tt>' button.</p>
+<p>After having created a blank quiz question, the instructor can then title the quiz. To do this, the instructor clicks into the text box showing '<tt>Quiz 1</tt>' and enters in the desired name. This name is a standard string.
+</p>
+<a name="Adding_a_Mult_Question">
+<h4>
+2.3.2.2 Adding a Multiple Choice Question</h4>
+</a>
+</p>
+<p>To add a multiple choice question, the instructor hits the '<tt>New Multiple Choice Question</tt>' button. In response, the system generates a blank question as shown in Figure 2.3.2.2-1.<br>
+  <br>
+</p>
+<hr>
+<a name="Figure_Add_Mult_Question">
+<p align="center">
+<img src="images/Add_Mult.png">
+</p>
+<p align="center"> Figure 2.3.2.2-1:  Adding a Multiple Choice Question.  </p>
+<hr>
+</a>
+<br>
+<p>
+The figure shows the result of the blank quiz after having hit the '<tt>Add New Multiple Choice Question</tt>' button. The added elements are strings for the question title and the question. There is also a button below the question for adding a possible answer.</p>
+<p>After having created a blank question, the instructor can than edit the question title or prompt. To do this, the user must click into the text box showing '<tt>Enter Question Here</tt>' and replace it with the question being asked. After typing in the question, the instructor then needs to provide options for the answers to the multiple choice question. To add a possible answer, the user must hit the '<tt>Add New Answer</tt>' button as shown in Figure 2.3.2.2-2.
 </p>
 <hr>
 <a name="Figure_Adding_an_Answer">
 <p align="center">
-<img src="images/Quiz_Editor_q1.png"></p>
-<p align="center"> Figure 2.3.2.1-2:  Adding an Answer.  </p>
+<img src="images/Add_Answer.png"></p>
+<p align="center"> Figure 2.3.2.2-2:  Adding an Answer.  </p>
 <hr>
 </a>
-<p>After adding a possible answer, the instructor then needs to fill in the text for the answer. To do this, the user must click into the text field reading and replace '<tt>Sample Answer</tt>' with the neccessary text.</p>
-<p>The final step in adding a question is to identify the correct answer. This is done by selecting the radio button next to the correct answer.</p><br>
+<p>The system will then generate a blank answer. This includes an text field for the answer, as well as a radio button indicating if this answer is the correct answer or not. This is shown in Figure 2.3.2.2-3.</p>
+<hr>
+<a name="Figure_Adding_an_Answer2">
+<p align="center">
+<img src="images/Add_Answer2.png"></p>
+<p align="center"> Figure 2.3.2.2-3:  Blank Answer.  </p>
+<hr>
+</a>
+<p>After adding a blank answer, the instructor then needs to fill in the text for the answer. To do this, the user must click into the text field reading '<tt>Sample Answer</tt>' and replace it with the neccessary text. The final step in adding a question is to identify the correct answer. This is done by selecting the radio button next to the correct answer. The result of the instructor adding a multiple choice question with 4 different possible answers is shown in figure 2.3.2.2-4.</p>
+<hr>
+<a name="Figure_Added_Mult_Question">
+<p align="center">
+<img src="images/Added_Mult_Question.png"></p>
+<p align="center"> Figure 2.3.2.2-4:  Comepleted Multiple Choice Question.  </p>
+<hr>
+</a>
+<br>
 
 <a name="Removing_a_Question">
 <h4>
-2.3.2.2 Removing a Question</h4>
+2.3.2.3 Removing a Question</h4>
 </a>
 </p>
-<p> To remove a question, the instructor must hit the 
-'<tt>X</tt>' button next to the question being deleted. In response, the system will display a confirmation dialogue as shown in Figure 2.3.2.2-1.<br>
+<p> To remove a question, the instructor must hit the '<tt>X</tt>' button next to the question being deleted.<br>
+<hr>
+<a name="Figure_Question_Deletion_Confirmation">
+<p align="center">
+<img src="images/Question_Deletion.png">
+</p>
+<p align="center"> Figure 2.3.2.4-1:  Question Deletion Confirmation.  </p>
+<hr>
+</a>
+<p>In response, the system will display a dialog confirming the deletion of the question as shown in Figure 2.3.2.4-2.</p>
 <hr>
 <a name="Figure_Question_Deletion_Confirmation">
 <p align="center">
 <img src="images/quiz-question-deletion.png">
 </p>
-<p align="center"> Figure 2.3.2.2-1:  Question Deletion Confirmation.  </p>
+<p align="center"> Figure 2.3.2.4-1:  Question Deletion Confirmation.  </p>
 <hr>
 </a>
 <p>To confirm deleting the question, the instructor must select the '<tt>Yes</tt>' button. To cancel the question deletion, the instructor can select the '<tt>No</tt>' button.</p>
 <br>
 </p>
-<h4><a name="Deleting_a_Quiz"> 2.3.2.3 Deleting a Quiz</a></h4>
+<h4><a name="Deleting_a_Quiz"> 2.3.2.5 Deleting a Quiz</a></h4>
 </p>
 <p>To delete a quiz, the instructor must hit the 
-'<tt>Delete Quiz</tt>' button located near the bottom of the screen. In response, the system will show a confirmation dialogue as shown in Figure 2.3.2.23-1.<br>
+'<tt>Delete</tt>' button as shown in Figure 2.3.2.5-1.<br>
 </p>
 <hr>
 <a name="Figure_Quiz_Deletion_Confirmation">
 <p align="center">
-<img src="images/quiz-deletion.png">
+<img src="images/Quiz-Deletion.png">
 </p>
-<p align="center"> Figure 2.3.2.3-1:  Quiz Deletion Confirmation.  </p>
+<p align="center"> Figure 2.3.2.5-1:  Quiz Deletion Button.  </p>
+<hr>
+</a>
+<p>In response, the system will display a dialog confirming the deletion of the question as shown in Figure 2.3.2.5-2.</p>
+<hr>
+<a name="Figure_Quiz_Deletion_Confirmation">
+<p align="center">
+<img src="images/Quiz-Deletion.png">
+</p>
+<p align="center"> Figure 2.3.2.5-2:  Quiz Deletion Confirmation.  </p>
 <hr>
 </a>
 <p>To confirm deleting the quiz, the instructor must select the '<tt>Yes</tt>' button. To leave the quiz, the instructor must select the '<tt>No</tt>' button and no deletion will be made. Once a quiz is deleted, all associated student statistics are also removed. This operation cannot be undone.</p>
 <p><br>
 </p>
-<h4><a name="Managing_Quiz_Paths"> 2.3.2.4 Managing Quiz Paths</a></h4>
+<h4><a name="Managing_Quiz_Paths"> 2.3.2.5 Managing Quiz Paths</a></h4>
 </p>
-<p> To direct the student to different sections of CSTutor based on their result from the quiz, the user can specify an unlimited number of quiz paths by editing the '<tt>Quiz Pointer</tt>' fields as shown in Figure 2.3.2.4-1. In response, the system directs the student to the specified lesson after submitting the quiz and receiving their grade.</p>
+<p> To direct the student to different sections of CSTutor based on their result from the quiz, the user can specify an unlimited number of quiz paths by editing the '<tt>Quiz Paths</tt>' fields as shown in Figure 2.3.2.5-1. In response, the system directs the student to the specified lesson after submitting the quiz and receiving their grade.</p>
 <hr>
 <a name="Figure_Quiz_Editor_Paths">
 <p align="center">
-<img src="images/Quiz_Editor_paths.png">
+<img src="images/Quiz_Paths.png">
 </p>
-<p align="center"> Figure 2.3.2.4-1:  Quiz Paths.  </p>
+<p align="center"> Figure 2.3.2.5-1:  Quiz Paths.  </p>
 <hr>
 </a>
 <p>First, the instructor must select the appropriate mathematical symbol from the drop down menu. The options are '<tt><</tt>', '<tt><=</tt>', '<tt>=</tt>', '<tt>Between</tt>', '<tt>></tt>', and '<tt>>=</tt>'. After selecting the operator, the instructor must fill in the blank values with the numerical values, such as '<tt>< 65%</tt>'. Next, the instructor must select the lesson to be directed at by clicking in the '<tt>Lesson</tt>' dropdown. In response, the system displays all available lessons pages. Finally, the user can specify if they would like a dialogue to be displayed. To do this, the user must check the '<tt>Dialogue?</tt>' checkbox. In response, the system displays a window asking you for the prompt as shown in Figure 2.3.2.4-2.<br>
