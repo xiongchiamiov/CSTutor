@@ -16,21 +16,21 @@
 	{
 		var name = prompt("Enter in the username to be added:");
 
-		$('#user-table').append('<tr><td><input type="checkbox" name="checkboxArray" value=name></td>' +
+		if(name != null && name != "")
+		{		
+			$('#user-table').append('<tr name='+name+'><td><input type="checkbox" name="checkboxArray" value='+name+' class="username"></td>' +
 		                   '<td>'+name+'</td>' +
 		                   '<td>N/A</td>' +
 		                   '<td><input type="checkbox" name="option1" value="1"></td>' +
 		                   '<td><input type="checkbox" name="option1" value="2"></td>' +
 		                   '<td><input type="checkbox" name="option1" value="3"></td></tr>');
-
-		if(name != null && name != "")
-		{
 			alert("Username added: " + name);
 		}
 	}
 	function removeUser()
 	{
 		var name = prompt("Enter in the username to be removed:");
+
 		if(name != null && name != "")
 		{
 			alert(name + " removed from the database.");
@@ -45,22 +45,17 @@
 	{
 		alert("Changes saved to database");
 	}
-	/*function checkAll(field)
+	function toggleCheckboxes(selector)
 	{
-		for(i = 0; i < $(field).length; i++)
-		{
-			$(field)s[i].checked = true;
-		}
-		alert("all users selected");
-	}*/
+		$(selector).attr('checked', $(selector)[0].checked);
+	}
 	function joinClass()
 	{
 		var name = prompt("Enter in the class to join: ");
 
-		$('#course-list').append('<li>' + name + '</li');
-
 		if(name != null && name != "")
 		{
+			$('#course-list').append('<li>' + name + '</li');
 			alert(name + " joined.");
 		}
 	}
@@ -128,7 +123,7 @@
 				<p> 
 				<table id="user-table">
 				<tr>
-				<td><input type="checkbox" name="checkAll" value="ALL" onclick="checkAll('.username')"></td> 
+				<td><input type="checkbox" name="checkAll" value="ALL" onclick="toggleCheckboxes('.username');" class="username"></td> 
 				<td>Username</td> 
 				<td>Last Used</td> 
 				<td>Edit</td> 
@@ -162,6 +157,12 @@
 				<td>Date</td>
 				<td>Confirm</td>
 				<td>Deny</td>
+				</tr>
+				<tr>
+				<td>Joe Jackson</td> 
+				<td>11/15/09</td>
+				<td><input type="checkbox" name="option1" value="confirm"></td>
+				<td><input type="checkbox" name="option1" value="deny"></td>				
 				</tr>
 				</table>
 				</p>
