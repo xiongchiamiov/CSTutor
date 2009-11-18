@@ -92,8 +92,10 @@ object Roster
 end Roster;
 
 operation editPermissions
-	inputs: user:User and modifiedPermissions:Permissions;
+	inputs: user:User and modifiedPermissions:Permissions and roster:Roster;
 	outputs: newPermissions:Permissions;
+	predcondition: (* The user is a valid user in the roster and the permissions are valid *);
+	postcondition: (* The new permissions of the user are the same ast he modified permissions *);
 	description: (*This operation takes a user and a set of modified permissions, replaces the old permissions, and returns an updated permissions*);
 end editPermissions;
 
@@ -227,12 +229,16 @@ end logout;
 operation addUser
 	inputs: name:string and roster:Roster;
 	outputs: updatedRoster:Roster;
+	precondition: (* The name of the given user must be unique and less than or equal to 25 characters *);
+	postcondition: (* The given name is in the updated roster *);
 	description: (* addUser adds the given string name into the Roster and produces an updated Roster. *);
 end addUser;
 
 operation removeUser
 	inputs: name:string* and roster:Roster;
 	outputs: updatedRoster:Roster;
+	precondition: (* The given name is in the roster. *);
+	postcondition: (* The given name is not in the updated roster*);
 	description: (* removeUser removes the inputed string names from the roster and produces an updated Roster. *);
 end removeUser;
 
@@ -241,13 +247,17 @@ object PermissionSet
 end PermissionSet;
 
 operation setUserPermissions
-	inputs: PermissionSet*;
+	inputs: PermissionSet* and roster:Roster;
 	outputs: updatedRoster:Roster;
+	precondition: (* The inputted permission set is valid *);
+	postcondition: (* The updated roster reflects the changes in the inputted permission set *);
 	description: (* setUserPermissions will take in a list of tuples consisting of a string name, boolean edit, boolean manage, and boolean states and will produce an updated Roster with the new user permissions. *);
 end setUserPermissions;
 
 operation updateRoster
 	inputs: roster:Roster;
 	outputs: updated:Roster;
+	precondition: (* The updated roster is valid *);
+	postcondition: (* The updated roster reflects the changes given by the inputed roster *);
 	description: (* updateRoster will take in a roster and make the changes to a roster final. *);
 end updateRoster;
