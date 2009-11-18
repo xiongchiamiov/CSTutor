@@ -15,10 +15,9 @@
 	{
 		var name = prompt("Enter in the class to join: ");
 
-		$('#course-list').append('<li>' + name + '</li');
-
 		if(name != null && name != "")
 		{
+			$('#course-list').append('<li>' + name + '</li');
 			alert(name + " joined.");
 		}
 	}
