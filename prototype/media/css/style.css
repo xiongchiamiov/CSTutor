@@ -75,3 +75,11 @@ code {
 .code-button {
    float: right;
 }
+
+.nav-button-back {
+   float: left;
+}
+
+.nav-button-forward {
+   float: right;
+}

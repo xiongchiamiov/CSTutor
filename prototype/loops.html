@@ -2,7 +2,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-	<title>CPE 102 - Arrays</title>
+	<title>CPE 102 - Loops</title>
 	
 	<link rel="stylesheet" href="media/css/blueprint/screen.css" type="text/css" media="screen, projection" />
 	<link rel="stylesheet" href="media/css/blueprint/print.css" type="text/css" media="print" />
@@ -67,61 +67,16 @@
 				</div>
 			</div><!-- #top-nav -->
 			<div id="main-content">
-			   <h3>What are Arrays</h3>
+			   <h3>What are Loops</h3>
 				<p>
-					Arrays are a convenient way of grouping data together.  For
-					example, if you need to keep track of the number of people
-					who came to my amusement park each day for a month, you could
-					use an array of 31 integers represent this.
+               Loops are a programming construct that allow you to perform
+               repetive actions in a compact, elegant manner.  They are 
+               especially useful when dealing with arrays.
 				</p>
-			   <h3>Declaring Arrays</h3>
-				<p>
-					Continuing with the amusement park example, without Arrays, 
-					you would need a separate integer for each day of the month
-					like so:
-				</p>
-				<div class="static-code">
-				<pre><code><font size="+1">int day1, day2, day3, day4;
-int day5, day6, day7, day8;
-...</font></code></pre>
-            </div>
-				<br />
-				<!-- Gotta be a better way to code this to make it less ugly -->
-				<p>
-					With arrays, we can represent all 31 days using a single
-					identifier.
-				</p>
-				<div class="static-code">
-				<pre><code><font size="+1">int [] foo;
-foo = new int[31];</font></code></pre>
-            </div>
-				<br />
-				<p>
-					We can access individual elementes of the array using the index
-					operator.  You should note that indexes begin at 0. The following
-					code when ran will cause an ArrayIndexOutOfBoundsException.
-				</p>
-				<div class="static-code">
-				<pre><code><font size="+1">int [] foo;
-foo = new int[31];
-foo[0] = 153;
-System.out.println(foo[0]);
-foo[31] = 142;
-System.out.println(foo[31]);</font></code></pre>
-            </div>
-				<div class="code-output">
-					<pre><code><font size="+1">Exception in thread "main" java.lang.ArrayIndexOutOfBoundsException: 31
-					at Test.main(Test.java:7)</font></code></pre>
-		      </div>
-				<div class="span-18">
-					<button class="code-button" name="executeButton">Execute</button>
-					<button class="code-button" name="resetButton">Reset</button>
-				</div>
-				<br />
             <p>
-               This code causes an ArrayIndexOutOfBoundsException because the
-               last index in an array of 31 is 30, not 31. Just remember, that
-               an array of size N has indexes from 0 to N-1.
+               There are many types of loops, and each is useful in different 
+               situations.  The next few lessons illustrate the different types
+               of loops.
             </p>
             <div class="span-18">
                <button class="nav-button-back" name="backButton">Previous Lesson</button>
