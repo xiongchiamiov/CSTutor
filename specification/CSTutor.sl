@@ -31,6 +31,7 @@ end Page;
 operation Validate
 	inputs: requestedPage:number and score:Stats;
 	outputs: authenticated:boolean;
+   precondition: (*input sanity check*);
 	description: (* Takes a requested page and checks to see if all of the prerequisites have been successfully completed for the student. Returns a boolean *);
 end validate;
 
@@ -137,6 +138,8 @@ end createLesson;
 operation removePage
 	inputs: toRemove:Page;
 	outputs: success:boolean;
+   precondition: (*page exists*);
+   postcondition: (*page structure of course still intact*);
 	description: (* A page is removed from CSTutor when the delete button is hit for the Course.  removeCourse takes in a Page, either a Lesson or Quiz, to be removed and returns a boolean saying if the delete succeeded or not *);
 end removeLesson;
 
@@ -203,6 +206,7 @@ end getPrevPage;
 operation displayPage
 	inputs: Page;
 	outputs: string;
+   precondition: (*Page is valid...sanity check*);
 	description:  (*Takes in a page and returns the content to display *);
 end displayPage;
 
@@ -217,12 +221,15 @@ end movePage;
 
 operation login
 	inputs: username:string, password:string, database:string;
+   output: databaseAccess:string;
+   precondition: (*username not empty, password not empty, database exists*);
 	description: (* Takes in username and password then checks server to see if there is a
 						match. If so then it grants access *);
 end login;
 	
 operation logout
 	inputs: userdata:string, database:string;
+   precondition: (*User is logged in, inputs all valid*);
 	description: (* saves all user data to the server *);
 end logout;
 
