@@ -1,4 +1,3 @@
-(* TODO: define a path *)
 object Stats
 	components: User and StatsObject*;
 	operations: getStats, clearStats, displayStats();
@@ -41,7 +40,6 @@ object Lesson extends Page
 	description: (* A lesson is a specific type of Page. It contains zero or more text fields, zero or more code fields, and links to any subpages *);
 end Lesson;
 
-(* TODO: define a path *)
 object Path
 	components: maxScore:number and minScore:number and dialog:string and page:number and passed:boolean;
 	description: (*A path determines where a student is sent after his quiz has been graded *);
@@ -50,11 +48,13 @@ end Path;
 operation DeterminePath
 	inputs: quizScore:number and quiz:Quiz;
 	outputs: Path;
+   precondition: exists(p in quiz.paths) (p.minScore <= quizScore and p.maxScore > quizScore);
+   postcondition: (* Path returned exists and is a path of the Quiz? *);
 	description: (* DeterminePath takes in the score of a quiz and then determines the right path for a student. *);
 end DeterminePath;
 
 object Quiz extends Page
-	components: Question* and text:string* and title:string and Path* and hidden:boolean;
+	components: Question* and text:string* and title:string and paths:Path* and hidden:boolean;
 	operations: AddQuestion, RemoveQuestion, EditQuiz, SubmitAnswers, CheckAnswers, DeterminePath;
 	description: (* A quiz is a specific type of Page. It contains zero or more Questions, a title string, zero or more text fields. It also contains a link to a Page being required as a prerequisite and a boolean for visibility.*);
 end Quiz;
@@ -83,6 +83,8 @@ end CodeQuestion;
 operation compareOutput
 	inputs: userCode:string and correctOutput:string;
 	outputs: correct: boolean and output:string;
+   precondition: (* NONE *);
+   postcondition: if (userCode = correctOutput) then correct = true else correct = false;
 	description: (*This operation takes in a users code snippet, runs it, and compares the output. It returns a boolean whether the output matched, as well as the correct output.*);
 end compareOutput;
 
@@ -95,7 +97,7 @@ end Roster;
 operation editPermissions
 	inputs: user:User and modifiedPermissions:Permissions and roster:Roster;
 	outputs: newPermissions:Permissions;
-	predcondition: (* The user is a valid user in the roster and the permissions are valid *);
+	precondition: (* The user is a valid user in the roster and the permissions are valid *);
 	postcondition: (* The new permissions of the user are the same ast he modified permissions *);
 	description: (*This operation takes a user and a set of modified permissions, replaces the old permissions, and returns an updated permissions*);
 end editPermissions;
@@ -192,14 +194,18 @@ operation getStats
 end getStats;
 
 operation getNextPage
-	inputs: Page;
-	outputs: Page;
+	inputs: current:Page;
+   outputs: next:Page;
+   precondition: current.nextPage != -1;
+   postcondition: next.pageId = current.nextPage;
 	description: (*Takes in a Page, and returns the next logical page.*);
 end getNextPage;
 
 operation getPrevPage
-	inputs: Page;
-	outputs: Page;
+	inputs: current:Page;
+   outputs: prev:Page;
+   precondition: current.prevPage != -1;
+   postcondition: prev.pageId = current.nextPage;
 	description: (*Takes in a Page, and returns the previous logical page.*);
 end getPrevPage;
 
@@ -221,7 +227,7 @@ end movePage;
 
 operation login
 	inputs: username:string, password:string, database:string;
-   output: databaseAccess:string;
+   outputs: databaseAccess:string;
    precondition: (*username not empty, password not empty, database exists*);
 	description: (* Takes in username and password then checks server to see if there is a
 						match. If so then it grants access *);
@@ -263,13 +269,13 @@ end setUserPermissions;
 
 operation updateRoster
 	inputs: roster:Roster and userDB:UserDB;
-	outputs: updated:Roster and userDB;
+	outputs: updated:Roster and UserDB;
 	precondition: (* The updated roster is valid *);
 	postcondition: (* The updated database roster reflects the changes given by the inputed roster *);
 	description: (* updateRoster will take in a roster and update the user database. *);
 end updateRoster;
 
 object UserDB
-	components userList:User*;
+	components: userList:User*;
 	description: (* A UserDB is the database that contains the userlist for a class. *);
 end UserDB;
