@@ -46,8 +46,31 @@
 		var name = $(selector)[0].value;
 		alert(" " + name);
 	};
-	function submit()
+	function submit(list_selector)
 	{
+		var list = $(list_selector);
+
+        // start at one so that we don't remove the "select all" row
+        for(var i = 1; i < list.length; i++)
+        {	
+			var name = $(list[i]).attr('name');
+            // if the deny box is selected
+            if($('.deny:checked', list[i]).length != 0)
+            {
+                $(list[i]).remove();
+            }
+			else if($('.confirm:checked', list[i]).length !=0)
+			{
+				$('#user-table').append('<tr id='+name+'><td><input type="checkbox" name="checkboxArray" name='+name+' class="username"></td>' +
+		                   '<td>'+name+'</td>' +
+		                   '<td>N/A</td>' +
+		                   '<td><input type="checkbox" name="option1" value="1"></td>' +
+		                   '<td><input type="checkbox" name="option1" value="2"></td>' +
+		                   '<td><input type="checkbox" name="option1" value="3"></td></tr>');
+			alert("Username added: " + name);
+				$(list[i]).remove();
+			}
+        }
 		alert("Changes saved to database");
 	};
 	function toggleCheckboxes(selector)
@@ -176,22 +199,22 @@
 				</p>
 				<p align=center><h2 align=center>Pending Requests</h2></p>
 				<p>
-				<table>
+				<table id="request-table">
 				<tr>
 				<td>Username</td> 
 				<td>Date</td>
 				<td>Confirm</td>
 				<td>Deny</td>
 				</tr>
-				<tr>
+				<tr name="Joe Jackson">
 				<td>Joe Jackson</td> 
 				<td>11/15/09</td>
-				<td><input type="checkbox" name="option1" value="confirm"></td>
-				<td><input type="checkbox" name="option1" value="deny"></td>				
+				<td><input type="checkbox" class="confirm" value="confirm"></td>
+				<td><input type="checkbox" class="deny" value="deny"></td>				
 				</tr>
 				</table>
 				</p>
-				<p><BUTTON TYPE=SUBMIT onclick="submit()">
+				<p><BUTTON TYPE=SUBMIT onclick="submit('#request-table tr')">
 				<STRONG>Submit</STRONG></BUTTON></p>
 			</div><!-- #main-content -->
 			<!--<div id="bottom-bar" class="span-18 last">
