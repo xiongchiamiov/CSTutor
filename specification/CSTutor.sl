@@ -11,7 +11,7 @@ object StatsObject
 end StatsObject;
 
 object Course
-	components: p:Page* and r:Roster and privateClass:boolean and name:string and chatRoom:string and Stats and text:string*;
+	components: p:Page* and r:Roster and privateClass:boolean and name:string and chatRoom:string and Stats and text:string* and userDB:UserDB;
 	operations: AddPage, RemovePage, SetPrivate, EditCourse;
 	description: (* A course is a course. It contains zero or more pages, a course roster, a boolean determining whether or not the course is public or private, a string for the name of the course, a string for the chat room, a Stats object containing all of the course specific statistics, and a string containing a welcome text for the course *);
 end Course; 
@@ -262,9 +262,14 @@ operation setUserPermissions
 end setUserPermissions;
 
 operation updateRoster
-	inputs: roster:Roster;
-	outputs: updated:Roster;
+	inputs: roster:Roster and userDB:UserDB;
+	outputs: updated:Roster and userDB;
 	precondition: (* The updated roster is valid *);
-	postcondition: (* The updated roster reflects the changes given by the inputed roster *);
-	description: (* updateRoster will take in a roster and make the changes to a roster final. *);
+	postcondition: (* The updated database roster reflects the changes given by the inputed roster *);
+	description: (* updateRoster will take in a roster and update the user database. *);
 end updateRoster;
+
+object UserDB
+	components userList:User*;
+	description: (* A UserDB is the database that contains the userlist for a class. *);
+end UserDB;
