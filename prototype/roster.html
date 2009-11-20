@@ -18,7 +18,7 @@
 
 		if(name != null && name != "")
 		{		
-			$('#user-table').append('<tr name='+name+'><td><input type="checkbox" name="checkboxArray" value='+name+' class="username"></td>' +
+			$('#user-table').append('<tr id='+name+'><td><input type="checkbox" name="checkboxArray" name='+name+' class="username"></td>' +
 		                   '<td>'+name+'</td>' +
 		                   '<td>N/A</td>' +
 		                   '<td><input type="checkbox" name="option1" value="1"></td>' +
@@ -26,29 +26,35 @@
 		                   '<td><input type="checkbox" name="option1" value="3"></td></tr>');
 			alert("Username added: " + name);
 		}
-	}
-	function removeUser()
+	};
+    function removeUser(list_selector)
+    {
+        var list = $(list_selector);
+       
+        // start at one so that we don't remove the "select all" row
+        for(var i = 1; i < list.length; i++)
+        {
+            // if this row is selected
+            if($('.username:checked', list[i]).length != 0)
+            {
+                $(list[i]).remove();
+            }
+        }
+    };
+	function importRoster(selector)
 	{
-		var name = prompt("Enter in the username to be removed:");
-
-		if(name != null && name != "")
-		{
-			alert(name + " removed from the database.");
-		}
-	}
-	function importRoster()
-	{
-		var name = document.right-col.main-content.getElementById("fileInput").value;
+		var name = $(selector)[0].value;
 		alert(" " + name);
-	}
+	};
 	function submit()
 	{
 		alert("Changes saved to database");
-	}
+	};
 	function toggleCheckboxes(selector)
 	{
 		$(selector).attr('checked', $(selector)[0].checked);
-	}
+		return false;
+	};
 	function joinClass()
 	{
 		var name = prompt("Enter in the class to join: ");
@@ -58,7 +64,7 @@
 			$('#course-list').append('<li>' + name + '</li');
 			alert(name + " joined.");
 		}
-	}
+	};
 	</script>
 </head>
 <body>
@@ -121,33 +127,52 @@
 					<h2 align=center>CPE102 Roster</h2>
 				</p>
 				<p> 
-				<table id="user-table">
-				<tr>
-				<td><input type="checkbox" name="checkAll" value="ALL" onclick="toggleCheckboxes('.username');" class="username"></td> 
-				<td>Username</td> 
-				<td>Last Used</td> 
-				<td>Edit</td> 
-				<td>Stats</td> 
-				<td>Manage</td>
-				</tr>
-				<tr name ="John Smith">
-				<td><input type="checkbox" name="checkboxList" value="John Smith" class="username"></td>
-				<td>John Smith</td>
-				<td>11/14/09</td>
-				<td><input type="checkbox" name="option1" value="1" checked></td>
-				<td><input type="checkbox" name="option1" value="2" checked></td>
-				<td><input type="checkbox" name="option1" value="3" checked></td>
-				</tr>
-				</table> </p>
+                <table id="user-table">
+                <tr>
+                <td><input type="checkbox" name="checkAll" value="ALL" onclick="toggleCheckboxes('.username');" class="username"></td>
+                <td>Username</td>
+                <td>Last Used</td>
+                <td>Edit</td>
+                <td>Stats</td>
+                <td>Manage</td>
+                </tr>
+                <tr name ="John Smith">
+                <td><input type="checkbox" name="checkboxList" value="John Smith" class="username"></td>
+
+                <td>John Smith</td>
+                <td>11/14/09</td>
+                <td><input type="checkbox" name="option1" value="1" checked></td>
+                <td><input type="checkbox" name="option1" value="2" checked></td>
+                <td><input type="checkbox" name="option1" value="3" checked></td>
+                </tr>
+                <tr name ="John Smuthers">
+                <td><input type="checkbox" name="checkboxList" value="John Smith" class="username"></td>
+                <td>John Smuthers</td>
+
+                <td>11/14/09</td>
+                <td><input type="checkbox" name="option1" value="1" checked></td>
+                <td><input type="checkbox" name="option1" value="2" checked></td>
+                <td><input type="checkbox" name="option1" value="3" checked></td>
+                </tr>
+                <tr name ="Pa Smuthers">
+                <td><input type="checkbox" name="checkboxList" value="John Smith" class="username"></td>
+                <td>Pa Smuthers</td>
+
+                <td>11/14/09</td>
+                <td><input type="checkbox" name="option1" value="1" checked></td>
+                <td><input type="checkbox" name="option1" value="2" checked></td>
+                <td><input type="checkbox" name="option1" value="3" checked></td>
+                </tr>
+                </table> </p>
 
 				<p>
-					<BUTTON TYPE=SUBMIT onclick="addUser()">
+					<BUTTON TYPE=SUBMIT onclick="addUser();">
 					<STRONG>Add User</STRONG></BUTTON>
-					<BUTTON TYPE=SUBMIT onclick="removeUser()">
+					<BUTTON TYPE=SUBMIT onclick="removeUser('#user-table tr');">
 					<STRONG>Remove User</STRONG></BUTTON>
-					<BUTTON TYPE=SUBMIT onclick= "importRoster()">
+					<BUTTON TYPE=SUBMIT onclick= "importRoster('.fileInput');">
 					<STRONG>Import Roster</STRONG></BUTTON>				
-					<input type="file" value="" name="fileInput">
+					<input type="file" class="fileInput">
 				</p>
 				<p align=center><h2 align=center>Pending Requests</h2></p>
 				<p>
