@@ -28,18 +28,19 @@ object Page
 end Page;
 
 operation Validate
-	inputs: requestedPage:number and score:Stats;
+	inputs: requestedPage:Page and usersStats:Stats and course:Course;
 	outputs: authenticated:boolean;
-   precondition: (*input sanity check*);
+   precondition: exists (page:Page in course.p) (page = requestedPage);
+   postcondition: (* none *);
 	description: (* Takes a requested page and checks to see if all of the prerequisites have been successfully completed for the student. Returns a boolean *);
-end validate;
+end Validate;
 
 object Lesson extends Page
 	components: text:string* and code:string* and subtopic:Page*;
 	operations: AddPage, RemovePage, EditLesson;
 	description: (* A lesson is a specific type of Page. It contains zero or more text fields, zero or more code fields, and links to any subpages *);
 end Lesson;
-
+requestedPage
 object Path
 	components: maxScore:number and minScore:number and dialog:string and page:number and passed:boolean;
 	description: (*A path determines where a student is sent after his quiz has been graded *);
@@ -138,10 +139,10 @@ operation createLesson
 end createLesson;
 
 operation removePage
-	inputs: toRemove:Page;
-	outputs: success:boolean;
-   precondition: (*page exists*);
-   postcondition: (*page structure of course still intact*);
+	inputs: toRemove:Page and course:Course;
+	outputs: success:boolean and newCourse:Course;
+   precondition: exists (page:Page in course.p) (page = toRemove);
+   postcondition: forall (page:Page in course.p) (page = toRemove) or exists (page in newCourse.p) ;
 	description: (* A page is removed from CSTutor when the delete button is hit for the Course.  removeCourse takes in a Page, either a Lesson or Quiz, to be removed and returns a boolean saying if the delete succeeded or not *);
 end removeLesson;
 
@@ -210,9 +211,10 @@ operation getPrevPage
 end getPrevPage;
 
 operation displayPage
-	inputs: Page;
-	outputs: string;
-   precondition: (*Page is valid...sanity check*);
+	inputs: requestedPage:Page and course:Course;
+	outputs: pageSource:string;
+   precondition: exists (page:Page in course.p) (page = requestedPage);
+   postcondition: (* none *);
 	description:  (*Takes in a page and returns the content to display *);
 end displayPage;
 
@@ -226,17 +228,20 @@ operation movePage
 end movePage;
 
 operation login
-	inputs: username:string, password:string, database:string;
-   outputs: databaseAccess:string;
-   precondition: (*username not empty, password not empty, database exists*);
+	inputs: username:string, password:string, userDB:UserDB;
+   outputs: homePage:Page;
+   precondition: exists (u in userDB) (username = u.userName) and (password = u.password);
+   postcondition: (* none *);
 	description: (* Takes in username and password then checks server to see if there is a
 						match. If so then it grants access *);
 end login;
 	
 operation logout
-	inputs: userdata:string, database:string;
-   precondition: (*User is logged in, inputs all valid*);
-	description: (* saves all user data to the server *);
+	inputs: (* none *);
+   outputs: (* display the login page *);
+   precondition: (* none *);
+   postcondition: (* none *);
+	description: (* There is nothing special done when a user logs out *);
 end logout;
 
 operation addUser
@@ -279,3 +284,13 @@ object UserDB
 	components: userList:User*;
 	description: (* A UserDB is the database that contains the userlist for a class. *);
 end UserDB;
+
+object CourseDB
+   components: course:Course*;
+   description: (* An object that contains all courses *);
+end CourseDB;
+
+object CSTutorDB
+   components: userDB:UserDB and courseDB:CourseDB;
+   description: (* A top level directory or database that holds all user/course  information *);
+end CSTutorDB;
