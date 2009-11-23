@@ -2,7 +2,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-	<title><!-- Insert your title here --></title>
+	<title>Home</title>
 	
 	<link rel="stylesheet" href="media/css/blueprint/screen.css" type="text/css" media="screen, projection" />
 	<link rel="stylesheet" href="media/css/blueprint/print.css" type="text/css" media="print" />
@@ -21,13 +21,17 @@
 			alert(name + " joined.");
 		}
 	}
+	function createClass()
+	{
+		window.location = "createclass.html";
+	}
 	</script>
 </head>
 <body>
 	<div class="container showgrid">
 		<div id="left-nav" class="span-6">
 			<ul>
-				<li><button type="submit" onclick="">
+				<li><button type="submit" onclick="createClass()">
 					<strong>Create Class</strong></button></li>
 				<li><button type="submit" onclick="joinClass()">
 					<strong>Join Class</strong></button></li>
