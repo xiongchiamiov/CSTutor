@@ -30,7 +30,7 @@ end Page;
 operation Validate
 	inputs: requestedPage:Page and usersStats:Stats and course:Course;
 	outputs: authenticated:boolean;
-   precondition: exists (page:Page in course.p) (page = requestedPage);
+   precondition: exists (page in course.p) (page = requestedPage);
    postcondition: (* none *);
 	description: (* Takes a requested page and checks to see if all of the prerequisites have been successfully completed for the student. Returns a boolean *);
 end Validate;
@@ -40,7 +40,7 @@ object Lesson extends Page
 	operations: AddPage, RemovePage, EditLesson;
 	description: (* A lesson is a specific type of Page. It contains zero or more text fields, zero or more code fields, and links to any subpages *);
 end Lesson;
-requestedPage
+
 object Path
 	components: maxScore:number and minScore:number and dialog:string and page:number and passed:boolean;
 	description: (*A path determines where a student is sent after his quiz has been graded *);
@@ -141,8 +141,8 @@ end createLesson;
 operation removePage
 	inputs: toRemove:Page and course:Course;
 	outputs: success:boolean and newCourse:Course;
-   precondition: exists (page:Page in course.p) (page = toRemove);
-   postcondition: forall (page:Page in course.p) (page = toRemove) or exists (page in newCourse.p) ;
+   precondition: exists (page in course.p) (page = toRemove);
+   postcondition: forall (page in course.p) ((page = toRemove) or exists (diffpage in newCourse.p) (diffpage = page));
 	description: (* A page is removed from CSTutor when the delete button is hit for the Course.  removeCourse takes in a Page, either a Lesson or Quiz, to be removed and returns a boolean saying if the delete succeeded or not *);
 end removeLesson;
 
@@ -213,7 +213,7 @@ end getPrevPage;
 operation displayPage
 	inputs: requestedPage:Page and course:Course;
 	outputs: pageSource:string;
-   precondition: exists (page:Page in course.p) (page = requestedPage);
+   precondition: exists (page in course.p) (page = requestedPage);
    postcondition: (* none *);
 	description:  (*Takes in a page and returns the content to display *);
 end displayPage;
