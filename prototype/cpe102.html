@@ -10,6 +10,12 @@
 	<link rel="stylesheet" href="media/css/style.css" type="text/css" />
 	
 	<script type="text/javascript" src="media/js/jquery.min.js"></script>
+	<script type="text/javascript">
+	function createLesson()
+	{
+		window.location = "lessoncreated.html";
+	}
+	</script>
 </head>
 <body>
 	<div class="container showgrid">
@@ -42,7 +48,7 @@
 				</li>
 				<li><button type="submit" onclick="">
 					<strong>Create Quiz</strong></button></li>
-				<li><button type="submit" onclick="">
+				<li><button type="submit" onclick="createLesson()">
 					<strong>Create Lesson</strong></button></li>
 			</ul>
 		</div><!-- #left-nav .span-4 -->
