@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<script type="text/javascript">
+	function submit() {
+		alert("Code question edited");
+		history.back();
+	}
+	
+	function cancel() {
+		history.back();
+	}
+	</script>
+</head>
+<body>
+	<center>
+	<table border="1" width="400px">
+		<tr>
+			<td><center><b>Edit Code Question</center></b></td>
+		</tr>
+		<tr>
+			<td>
+				<table border="0">
+					<tr>
+						<td valign="top">Prompt</td>
+						<td><textarea cols="35" rows="4">Write a snippet of code that prints out the integers 1-5 each on a new line, using the looping structure of your choice.</textarea></td>
+					</tr>
+					<tr>
+						<td valign="top">Expected Output</td>
+						<td><textarea cols="35" rows="4">1
+2
+3
+4
+5
+</textarea></td>
+					</tr>
+					<tr>
+						<td colspan="2"><center><input type="submit" value="Submit" onclick="submit()"/><input type="submit" value="cancel" onclick="cancel()"/></center></td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+	</table>
+	</center>
+</body>
+</html>

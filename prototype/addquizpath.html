@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<script type="text/javascript">
+	function submit() {
+		alert("Quiz path added");
+		history.back();
+	}
+	
+	function cancel() {
+		history.back();
+	}
+	</script>
+</head>
+<body>
+	<center>
+	<table border="1" width="300px">
+		<tr>
+			<td><center><b>Quiz Path</center></b></td>
+		</tr>
+		<tr>
+			<td>
+				<table border="0">
+					<tr>
+						<td>
+							Range<br>
+							<select>
+								<option></option>
+								<option><</option>
+								<option><=</option>
+								<option>=</option>
+								<option>>=</option>
+								<option>></option>
+								<option>Between</option>
+							</select>
+							<input type="text" size="3"/>% and <input type="text" size="3"/>%
+						</td>
+					</tr>
+					<tr>
+						<td>
+							Lesson<br>
+							<select>
+								<option></option>
+								<option>Creating Arrays</option>
+								<option>Loops</option>
+								<option>For Loops</option>
+								<option>While Loops</option>
+								<option>Do Loops</option>
+								<option>Pointers</option>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							Dialog<br>
+							<textarea cols="30" rows="4"></textarea>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<center>
+								<input type="submit" value="Submit" onclick="submit()"/>
+								<input type="submit" value="Cancel" onclick="cancel()"/>
+							</center>
+						</td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+	</table>
+	</center>
+</body>
+</html>
