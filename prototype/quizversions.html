@@ -37,6 +37,10 @@
 		window.location = "newquiz.html"
 	}
 	
+	function editCodeQuestion() {
+		window.location = "editcodequestion.html"
+	}
+	
 	function editQuiz() {
 		window.location = "editquiz.html"
 	}
@@ -47,6 +51,48 @@
 	
 	function addAnswer() {
 		alert("Blank answer added");
+	}
+	
+	function newCodeQuestion() {
+		window.location = "newcodequestion.html"
+	}
+	
+	function newMultChoiceQuestion() {
+		alert("Blank multiple choice question added");
+	}
+	
+	function saveQuiz() {
+		alert("Quiz Saved!");
+		history.back();
+	}
+	
+	function cancelQuiz() {
+		history.back();
+	}
+	
+	function deleteQuiz() {
+		alert("Quiz Deleted");
+		window.location="doloops.html"
+	}
+	
+	function publishQuiz() {
+		alert("Quiz Published");
+	}
+	
+	function importQuiz() {
+		window.location = "importquiz.html"
+	}
+	
+	function addPath() {
+		window.location = "addquizpath.html"
+	}
+	
+	function removePath() {
+		alert("Quiz Path deleted");
+	}
+	
+	function editPath() {
+		window.location = "editquizpath.html"
 	}
 	
 	</script>
@@ -114,7 +160,40 @@
 
 			</div><!-- #main-content -->
 			<div id="bottom-bar" class="span-18 last">
-				Options
+				<table>
+				<tr>
+					<td rowspan="3" style="border-width: 1px; padding: 1px; border-style: dashed; border-color: black;">Prerequisites<br><select size="4" multiple="multiple" disabled="disabled"><option selected="selected">Array Quiz 1</option><option selected="selected">Array Quiz 2</option><option>Pointers Quiz</option></select><br>Hidden: <input type="checkbox" disabled="disabled"/></td>
+					<td><input type="submit" value="New Code Question" onclick="newCodeQuestion()"/></td>
+					<td rowspan="2" style="border-width: 1px; padding: 1px; border-style: dashed; border-color: black;">
+					<table s>
+						<tr>
+							<td colspan="2">Quiz Paths</td>
+						</tr>
+						<tr>
+							<td rowspan="3"><select size="4" multiple="multiple" disabled="disabled"><option>< 60% ---> Loops</option><option>Between 60% and 74% ---> </option><option>>= 75% ---> Pointers</option></select></td>
+							<td><input type="submit" value="Add" onclick="addPath()" disabled="disabled"/></td>
+						</tr>
+						<tr>
+							<td><input type="submit" value="Remove" onclick="removePath()"  disabled="disabled"/></td>
+						</tr>
+						<tr>
+							<td><input type="submit" value="Edit" onclick="editPath()"  disabled="disabled"/></td>
+						</tr>
+					</table>
+					</td>
+				</tr>
+				<tr>
+					<td><input type="submit" value="New Multiple Choice Question" onclick="newMultChoiceQuestion()"/></td>
+				</tr>
+				<tr>
+					<td colspan="2">
+					<input type="submit" value="Save" onclick="saveQuiz()"/>
+					<input type="submit" value="Cancel" onclick="cancelQuiz()"/>
+					<input type="submit" value="Delete" onclick="deleteQuiz()"/>
+					<input type="submit" value="Publish" onclick="publishQuiz()"/>
+					<input type="submit" value="Import" onclick="importQuiz()";/>
+					</td>
+				</tr>
 			</div>
 		</div><!-- #right-col .span-20 -->
 	</div><!-- .container -->

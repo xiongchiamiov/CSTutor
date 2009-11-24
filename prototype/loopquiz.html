@@ -41,6 +41,10 @@
 		window.location = "editquiz.html"
 	}
 	
+	function cancel() {
+		history.back();
+	}
+	
 	</script>
 </head>
 <body>
@@ -140,7 +144,7 @@
 				
 				<center>
 				<button type="submit" onclick="submitQuiz()">Submit</button>
-				<button type="button">Cancel</button>
+				<button type="button" onclick="cancel()">Cancel</button>
 				</center>
 			</div><!-- #main-content -->
 		</div><!-- #right-col .span-20 -->
