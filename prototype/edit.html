@@ -86,12 +86,26 @@
 			<div id="main-content">
 				<div class="subnav span-18">
 					<div class="span-3"><a href="#">Preview/Save</a></div>
-					<div class="span-3"><a href="#">Save</a></div>
-					<div class="span-3"><a href="#">Publish</a></div>
-					<div class="span-3"><a href="#">Import</a></div>
-					<div class="span-3"><a href="#">Options</a></div>
+					<div class="span-3"><a href="#" onclick="alert('Saved!'); return false;">Save</a></div>
+					<div class="span-3"><a href="#" onclick="alert('Published!'); return false;">Publish</a></div>
+					<div class="span-3"><a href="#" onclick="$('#import').toggle(); return false;">Import</a></div>
+					<div class="span-3"><a href="#" onclick="$('#options').toggle(); return false;">Options</a></div>
 					<div class="span-3 last"><a href="#" onclick="$('#toolbox').toggle(); return false;">Toolbox</a></div>
 				</div><!-- .subnav .span-18 -->
+				<div id="options" class="subnav hidden span-18">
+					<div class="span-5"><a href="#">Modify Prerequisites</a></div>
+					<div class="span-3"><a href="#">Delete Lesson</a></div>
+					<div class="span-3"><a href="#">Undo All Changes</a></div>
+					<div class="span-3"><a href="#">Export Class</a></div>
+					<div class="span-3"><a href="#">Import Class</a></div>
+				</div><!-- #options .subnav .hidden .span-18 -->
+				<div id="import" class="hidden draggable span-6 last">
+					<div class="span-6 last">Import</div>
+					<input type="file" />
+					<br />
+					<button type="button" onclick="$('#import').toggle();">cancel</button>
+					<button type="button" onclick="$('#import').toggle();">ok</button>
+				</div><!-- #import .hidden .draggable .span-6 .last -->
 				<div id="toolbox" class="hidden draggable span-6 last">
 					<div class="span-6 last">Toolbox</div>
 					<div class="span-2" onclick="$('#image-select-box').toggle(); return false;">IMG</div>
