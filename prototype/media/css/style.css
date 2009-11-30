@@ -88,7 +88,9 @@ code {
 	margin-bottom: 8px;
 }
 
-#main-content .subnav div, #toolbox div {
+#main-content .subnav div,
+#toolbox div,
+#prereqs div {
 	height: 100%;
 	text-align: center;
 	vertical-align: middle;
@@ -108,6 +110,7 @@ code {
 }
 
 #toolbox :first-child,
+#prereqs :first-child,
 .toolbox-dialog > :first-child {
 	background: none;
 	color: #333;

@@ -93,11 +93,11 @@
 					<div class="span-3 last"><a href="#" onclick="$('#toolbox').toggle(); return false;">Toolbox</a></div>
 				</div><!-- .subnav .span-18 -->
 				<div id="options" class="subnav hidden span-18">
-					<div class="span-5"><a href="#">Modify Prerequisites</a></div>
-					<div class="span-3"><a href="#">Delete Lesson</a></div>
-					<div class="span-3"><a href="#">Undo All Changes</a></div>
-					<div class="span-3"><a href="#">Export Class</a></div>
-					<div class="span-3"><a href="#">Import Class</a></div>
+					<div class="span-5"><a href="#" onclick="$('#prereqs').toggle(); return false;">Modify Prerequisites</a></div>
+					<div class="span-3"><a href="#" onclick="alert('Lesson Deleted!'); window.location = 'cpe102.html'; return false;">Delete Lesson</a></div>
+					<div class="span-3"><a href="#" onclick="alert('Changes Undone!');">Undo All Changes</a></div>
+					<div class="span-3"><a href="#" onclick="$('#export').toggle(); return false;">Export Class</a></div>
+					<div class="span-3"><a href="#" onclick="$('#import').toggle(); return false;">Import Class</a></div>
 				</div><!-- #options .subnav .hidden .span-18 -->
 				<div id="import" class="hidden draggable span-6 last">
 					<div class="span-6 last">Import</div>
@@ -106,6 +106,22 @@
 					<button type="button" onclick="$('#import').toggle();">cancel</button>
 					<button type="button" onclick="$('#import').toggle();">ok</button>
 				</div><!-- #import .hidden .draggable .span-6 .last -->
+				<div id="export" class="hidden draggable span-6 last">
+					<div class="span-6 last">Export</div>
+					<label>Filename: </label><br />
+					<input type="text" />
+					<br />
+					<button type="button" onclick="$('#export').toggle();">cancel</button>
+					<button type="button" onclick="$('#export').toggle();">ok</button>
+				</div><!-- #export .hidden .draggable .span-6 .last -->
+				<div id="prereqs" class="hidden draggable span-6 last">
+					<div class="span-6 last">Prerequisites</div>
+					<input type="checkbox" />Quiz 1<br />
+					Minimum Score: <input type="text" />
+					<br />
+					<button type="button" onclick="$('#prereqs').toggle();">cancel</button>
+					<button type="button" onclick="$('#prereqs').toggle();">ok</button>
+				</div><!-- #prereqs .hidden .draggable .span-6 .last -->
 				<div id="toolbox" class="hidden draggable span-6 last">
 					<div class="span-6 last">Toolbox</div>
 					<div class="span-2" onclick="$('#image-select-box').toggle(); return false;">IMG</div>
