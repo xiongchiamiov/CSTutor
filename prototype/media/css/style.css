@@ -107,13 +107,10 @@ code {
 	padding: 8px;
 }
 
-#toolbox :first-child {
+#toolbox :first-child,
+.toolbox-dialog > :first-child {
 	background: none;
 	color: #333;
 	font-weight: bold;
 	font-size: 120%;
-}
-
-#toolbox {
-	display: none;
 }
