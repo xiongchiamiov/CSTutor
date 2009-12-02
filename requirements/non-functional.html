@@ -1,0 +1,125 @@
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+
+<title>
+3.  Non-Functional Requirements
+</title>
+</head><body bgcolor="white">
+<a name="Non-Functional Requirements">
+<h2>
+3.  Non-Functional Requirements
+</h2>
+</a>
+<p>
+For the purposes of a CSC 205 example, the non-functional requirements for the
+Calendar Tool are organized into these categories:
+</p><ul>
+<li>
+<a href="#Performance">
+performance
+</a>
+</li><li>
+<a href="#General%20Characteristics">
+General Characteristics
+</a>
+<ul>
+<li>
+Security and Privacy
+</li><li>
+Simplicity versus Power
+</li></ul><font color="black">
+</font></li></ul><font color="black"><font color="black">
+
+<a name="Performance">
+</a><a name="Performance">
+<h3>
+3.1.  Performance
+</h3>
+</a>
+
+</font></font><p></p><p>
+<font color="black"><font color="black">All scheduling, viewing, and options commands must execute instantaneously,
+except for the following:
+</font></font></p><ul>
+<font color="black"><font color="black"><li>
+the time to execute a meeting scheduling operation must be on the order of
+seconds
+</li><li>
+the time to execute viewing another user's calendar must be instantaneous,
+except for any delays due to network transmission of data from the central host
+to the local computer
+</li></font></font></ul><font color="black"><font color="black"><font color="black">
+</font></font></font><p></p><p>
+<font color="black"><font color="black"><font color="black">The time to execute all administrative commands must be instantaneous, except
+for any delays due to network transmission of data from the central host.
+</font></font></font></p><p>
+<font color="black"><font color="black"><font color="black">In general, the performance of Calendar Tool commands that must access data
+across a network is subject to potential network delays.  The Calendar Tool
+must transmit data as fast as is possible on any given network, but delays due
+to external network circumstances are beyond the control of the Calendar Tool.
+</font></font></font></p><p>
+<font color="black"><font color="black"><font color="black">There are no specific requirements for the allowable size of a calendar in
+terms of the number of scheduled items.  A Calendar on the order of thousands
+of items is the maximum expected size during normal use.
+</font></font></font></p><p>
+<font color="black"><font color="black"><font color="black">The maximum expected sizes of the Calendar Tool databases are the following:
+</font></font></font></p><ul>
+<font color="black"><font color="black"><font color="black"><li>
+user database -- up to tens of thousands of records
+</li><li>
+user database -- up to thousands of records
+</li><li>
+location database -- up to tens of thousands of records
+</li></font></font></font></ul><font color="black"><font color="black"><font color="black"><font color="black">
+</font></font></font></font><p></p><p>
+<font color="black"><font color="black"><font color="black"><font color="black">The Calendar Tool must be able to operate with calendars and databases of sizes
+larger than these normal maximums.  However, the tool need not the meet the
+previously-enumerated time performance requirements for calendars or databases
+larger than normal maximum sizes.
+
+<a name="General_Characteristics">
+</a><a name="General Characteristics">
+<h3>
+3.2.  General Characteristics
+</h3>
+</a>
+
+</font></font></font></font></p><p>
+<font color="black"><font color="black"><font color="black"><font color="black"><a name="Security and Privacy">
+<h4>
+3.2.1.  Security and Privacy
+</h4>
+</a>
+</font></font></font></font></p><p>
+<font color="black"><font color="black"><font color="black"><font color="black">Scheduled items with a security setting other than `<tt>Public</tt>' must have
+only the allowed information viewable to any user other than the calendar's
+owner.  The central host passwords of any user must be kept secure from viewing
+or modification by any other Calendar Tool user, and from any user at all on
+the central host.
+
+<a name="Simplicity versus Power">
+<h4>
+3.2.2.  Simplicity versus Power
+</h4>
+</a>
+</font></font></font></font></p><p>
+<font color="black"><font color="black"><font color="black"><font color="black">On a spectrum of simple-to-use versus powerful, the Calendar Tool is heavily on
+the side of <em>powerful</em>.  Users are assumed to be fully computer literate
+and knowledgeable on the use of computer networks consisting of local computers
+and central data servers.
+
+
+<br>
+<br>
+<br>
+<br>
+</font></font></font></font></p><hr size="3" width="80%">
+<center>
+<font color="black"><font color="black"><font color="black"><font color="black"><font size="-1">
+<font color="black"> Prev: </font><a href="http://users.csc.calpoly.edu/%7Egfisher/classes/308/examples/milestone10/requirements/functional.html">functional</a>
+ | <font color="black"> Next: </font><a href="http://users.csc.calpoly.edu/%7Egfisher/classes/308/examples/milestone10/requirements/developer-overview.html">developer-overview</a>
+ | <font color="black"> Up: </font><a href="http://users.csc.calpoly.edu/%7Egfisher/classes/308/examples/milestone10/requirements/index.html">index</a>
+ | <font color="black"> Top: </font><a href="http://users.csc.calpoly.edu/%7Egfisher/classes/308/examples/milestone10/requirements/index.html">index</a></font>
+</font></font></font></font></center>
+<hr size="3" width="80%">
+</body></html>
