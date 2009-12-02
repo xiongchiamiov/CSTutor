@@ -8,4 +8,20 @@ Jon Inloes		Press Join Class in navigation bar
 				(can only select the file name with the browse button)
 				Press Submit on Roster Management Page 
 				(will also confirm or deny users if they depending on how they are checked)
+				
+Evan Kleist		Press Loops Quiz in the navigation bar (loopquiz.html)
+				Press Create Quiz on any page other than a quiz page (newquiz.html)
+				Press Create Quiz while viewing or editing Loops Quiz (quizversions.html)
+				Press Edit in the top navigation while on Loops Quiz (editquiz.html)
+				Press the X next to question 1 while editing Loops Quiz (Question Deletion Confirmation)
+				Press Add Answer under question 2 while editing Loops Quiz (Add blank answer)
+				Press Edit next to question 2 while editing Loops Quiz (editcodequestion.html)
+				Press New Code Question while editing a quiz (newcodequestion.html)
+				Press New Multiple Choice Question while editing a quiz (New code question dialog)
+				Press Save while editing a quiz (quiz saved dialog)
+				Press Delete while editing a quiz (Quiz Deletion Confirmation)
+				Press Publish while editing a quiz (quiz published dialog)
+				Press Add under quiz paths while editing a quiz (addquizpath.html)
+				Press Remove under quiz paths while editing a quiz (remove quiz path dialog)
+				Press Edit under quiz paths while editing Loops Quiz (editquizpath.html)
 				 

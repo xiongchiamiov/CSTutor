@@ -75,8 +75,11 @@
 	}
 	
 	function deleteQuiz() {
-		alert("Quiz Deleted");
-		history.back();
+		if (true == confirm("Are you sure you want to remove this quiz? This will also delete any statistics regarding the question. Click 'Ok' to confirm deletion or 'Cancel' to return"))
+		{
+			alert("Quiz Deleted!");
+			history.back();
+		}
 	}
 	
 	function publishQuiz() {
@@ -84,7 +87,7 @@
 	}
 	
 	function importQuiz() {
-		window.location = "importquiz.html"
+
 	}
 	
 	function addPath() {
@@ -123,7 +126,7 @@
 									<li>Do Loops</li>
 									<li><a href="loopquiz.html">Loops Quiz</a></li>
 									<ul>
-										<li><a href="loopsquiz.html">Version 2</a></li>
+										<li>Version 2</li>
 									</ul>
 								</ul>
                         </li>

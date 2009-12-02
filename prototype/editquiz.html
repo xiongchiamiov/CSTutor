@@ -50,7 +50,10 @@
 	}
 	
 	function deleteQuestion() {
-		alert("Question deleted");
+		if (true == confirm("Are you sure you want to remove this question? This will also delete any statistics regarding the question. Click 'Ok' to confirm deletion or 'Cancel' to return"))
+		{
+			alert("Question Deleted!");
+		}
 	}
 	
 	function addAnswer() {
@@ -75,8 +78,11 @@
 	}
 	
 	function deleteQuiz() {
-		alert("Quiz Deleted");
-		history.back();
+		if (true == confirm("Are you sure you want to remove this quiz? This will also delete any statistics regarding the question. Click 'Ok' to confirm deletion or 'Cancel' to return"))
+		{
+			alert("Quiz Deleted!");
+			history.back();
+		}
 	}
 	
 	function publishQuiz() {
@@ -84,7 +90,7 @@
 	}
 	
 	function importQuiz() {
-		window.location = "importquiz.html"
+
 	}
 	
 	function addPath() {
