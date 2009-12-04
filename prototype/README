@@ -25,3 +25,13 @@ Evan Kleist		Press Loops Quiz in the navigation bar (loopquiz.html)
 				Press Remove under quiz paths while editing a quiz (remove quiz path dialog)
 				Press Edit under quiz paths while editing Loops Quiz (editquizpath.html)
 				 
+Russell Mezzetta
+				Press Login to log in (open index.html page) on page (login.html)
+				Press Register New Account to open the registerNewAccount.html page (login.html)
+				Press Submit to bring back the Login page (registerNewAccount.html)
+				Press Stats to open the classwide statistics page
+				Press "Quiz 1" to open the stats-quiz1.html page (Loops Quiz)
+				Press "Quiz 2" to open the stats-quiz2.html page
+				Press "RussMezz" to open the stats-russMezz.html page
+				Press "JohnSmith" to open the stats-johnSmith.html page 
+				
