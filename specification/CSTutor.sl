@@ -294,9 +294,9 @@ operation logout
 end logout;
 
 object PermissionSet
-	components: name:string permissions:Permissions;
+	components: name:string and permissions:Permissions;
 	operations: editPermissions;
-	description (* A permissions set links a name to a permissions associated with the name *);
+   description: (* A permissions set links a name to a permissions associated with the name *);
 end PermissionSet;
 
 operation editPermissions
