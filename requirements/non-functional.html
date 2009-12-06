@@ -1,100 +1,58 @@
-<html><head>
-<meta http-equiv="content-type" content="text/html; charset=UTF-8">
-
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
 <title>
-3.  Non-Functional Requirements
+2.4.  Using the Student Lesson Screen
 </title>
-</head><body bgcolor="white">
-<a name="non-functional_requirements">
-<h2>
+</head>
+<body bgcolor="white">
+<h2 id="non_functional_requirements">
 3.  Non-Functional Requirements
 </h2>
-</a>
 <p>
 For the purposes of a CSC 205 example, the non-functional requirements for the
 Calendar Tool are organized into these categories:
-</p><ul>
+</p>
+<ul>
+
 <li>
 <a href="#System_Performance">
 System Performance
 </a>
-</li><li>
-<a href="#General%20Characteristics">
+</li>
+
+<li>
+<a href="#General_Characteristics">
 General Characteristics
 </a>
+
 <ul>
 <li>
 Security and Privacy
-</li><li>
-Simplicity versus Power
-</li></ul><font color="black">
-</font></li></ul><font color="black"><font color="black">
+</li>
 
-<a name="System_Performance">
-</a><a name="System_Performance">
-<h3>
+<li>
+Simplicity versus Power
+</li>
+</ul>
+</li>
+</ul>
+
+<h3 id="System_Performance">
 3.1.  System Performance
 </h3>
-</a>
 
-</font></font><p></p><p>
-<font color="black"><font color="black">All scheduling, viewing, and options commands must execute instantaneously,
-except for the following:
-</font></font></p><ul>
-<font color="black"><font color="black"><li>
-the time to execute a meeting scheduling operation must be on the order of
-seconds
-</li><li>
-the time to execute viewing another user's calendar must be instantaneous,
-except for any delays due to network transmission of data from the central host
-to the local computer
-</li></font></font></ul><font color="black"><font color="black"><font color="black">
-</font></font></font><p></p><p>
-<font color="black"><font color="black"><font color="black">The time to execute all administrative commands must be instantaneous, except
-for any delays due to network transmission of data from the central host.
-</font></font></font></p><p>
-<font color="black"><font color="black"><font color="black">In general, the performance of Calendar Tool commands that must access data
-across a network is subject to potential network delays.  The Calendar Tool
-must transmit data as fast as is possible on any given network, but delays due
-to external network circumstances are beyond the control of the Calendar Tool.
-</font></font></font></p><p>
-<font color="black"><font color="black"><font color="black">There are no specific requirements for the allowable size of a calendar in
-terms of the number of scheduled items.  A Calendar on the order of thousands
-of items is the maximum expected size during normal use.
-</font></font></font></p><p>
-<font color="black"><font color="black"><font color="black">The maximum expected sizes of the Calendar Tool databases are the following:
-</font></font></font></p><ul>
-<font color="black"><font color="black"><font color="black"><li>
-user database -- up to tens of thousands of records
-</li><li>
-user database -- up to thousands of records
-</li><li>
-location database -- up to tens of thousands of records
-</li></font></font></font></ul><font color="black"><font color="black"><font color="black"><font color="black">
-</font></font></font></font><p></p><p>
-<font color="black"><font color="black"><font color="black"><font color="black">The Calendar Tool must be able to operate with calendars and databases of sizes
-larger than these normal maximums.  However, the tool need not the meet the
-previously-enumerated time performance requirements for calendars or databases
-larger than normal maximum sizes.
-
-<a name="Qualitative_System_Characteristics">
-</a><a name="Qualitative_System_Characteristics">
-<h3>
+<h3 id="Qualitative_System_Characteristics">
 3.2.  Qualitative System Characteristics 
 </h3>
-</a>
-
-</font></font></font></font></p>
-
 
 <!-- Evan's Section -->
-<p>
-<a name="Security_Privacy">
-<h4>
+<h4 id="Security_Privacy">
 3.2.1.  Security and Privacy
 </h4>
-</a>
-</p>
+
 <p>Classes with a security setting of '<tt>Private</tt>' must only be viewable by users with the '<tt>View</tt>' 
 permission for the given class. All user account passwords must be kept secure from any CSTutor user. All user 
 account profile information must be kept secure from anyone other than the account owner and any users with the 
@@ -103,13 +61,10 @@ and students with the '<tt>stats</tt>' permission, while each individual user ca
 All class pages and their associated options and answer keys must be kept secure from anyone except the class instructor and any student with the '<tt>edit</tt>' permission.
 </p>
 
-<p>
-<a name="Simplicity_Power">
-<h4>
+<h4 id="Simplicity_Power">
 3.2.2.  Simplicity versus Power
 </h4>
-</a>
-</p>
+
 <p>
 On a spectrum of simple-to-use versus powerful, CSTutor is split depending 
 on the user type.  Instructors have some more <em>powerful</em> 
@@ -121,11 +76,7 @@ fundamentals of using a computer and the internet.
 </p>
 
 
-<br>
-<br>
-<br>
-<br>
-</p><hr size="3" width="80%">
+<hr size="3" width="80%" />
 <center>
 <font color="black"><font color="black"><font color="black"><font color="black"><font size="-1">
 <font color="black"> Prev: </font><a href="functional.html">functional</a>
@@ -133,5 +84,5 @@ fundamentals of using a computer and the internet.
  | <font color="black"> Up: </font><a href="index.html">index</a>
  | <font color="black"> Top: </font><a href="index.html">index</a></font>
 </font></font></font></font></center>
-<hr size="3" width="80%">
+<hr size="3" width="80%" />
 </body></html>
