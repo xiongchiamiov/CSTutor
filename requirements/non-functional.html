@@ -4,7 +4,7 @@
 <head>
 <meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
 <title>
-2.4.  Using the Student Lesson Screen
+3. Non-functional Requirements
 </title>
 </head>
 <body bgcolor="white">
@@ -43,6 +43,31 @@ Simplicity versus Power
 <h3 id="System_Performance">
 3.1.  System Performance
 </h3>
+
+<p>
+All operations in CSTutor should be instantaneous, with the following
+exceptions and caveats.
+</p>
+
+<ul>
+<li>
+the chat interface may experience a delay on the order of seconds, while
+a connection is established to the centralized chat server.  After establishing
+a connection, all communication should be effectively instantaneous.
+</li>
+<li>
+Code execution may experience a delay of unknown order.  Because the code is 
+user supplied, the execution time is entirely dependent upon the user.  An 
+execution timeout will mitigate this issue by preventing code from running 
+indefinitely.
+</li>
+<li>
+an very large import operation (of any type) may experience a delay on the 
+order of seconds while data is processed. An import of trivial size (less than
+a dozen of any imported items) should be effectively instantaneous.
+</li>
+</ul>
+
 
 <h3 id="Qualitative_System_Characteristics">
 3.2.  Qualitative System Characteristics 
