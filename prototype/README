@@ -1,6 +1,7 @@
 Team Member		Actions
 ========================================
-Jon Inloes		Press Join Class in navigation bar
+Jon Inloes	
+				Press Join Class in navigation bar
 				Press Add User on Roster Management Page
 				Press Remove User on Roster Management Page 
 				(have to check a checkbox next to a user to remove or can remove all)
@@ -9,7 +10,8 @@ Jon Inloes		Press Join Class in navigation bar
 				Press Submit on Roster Management Page 
 				(will also confirm or deny users if they depending on how they are checked)
 				
-Evan Kleist		Press Loops Quiz in the navigation bar (loopquiz.html)
+Evan Kleist	
+				Press Loops Quiz in the navigation bar (loopquiz.html)
 				Press Create Quiz on any page other than a quiz page (newquiz.html)
 				Press Create Quiz while viewing or editing Loops Quiz (quizversions.html)
 				Press Edit in the top navigation while on Loops Quiz (editquiz.html)
@@ -35,3 +37,7 @@ Russell Mezzetta
 				Press "RussMezz" to open the stats-russMezz.html page
 				Press "JohnSmith" to open the stats-johnSmith.html page 
 				
+Matthew Tytel
+				Press Create Class in navigation bar in index.html
+				Press Create Lesson in navigation bar in lesson cpe102.html
+				To view the Home page as a student would navigate to studentindex.html
