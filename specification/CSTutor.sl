@@ -22,6 +22,8 @@ end Course;
 operation createLesson
 	inputs: name:string and course:Course;
 	outputs: newLesson:Lesson;
+	precondition: ;
+	postcondition: exists (page in course.p) (page.pageId = newLesson.pageId);
 	description: (* A lesson is created when an user with manage permissions for a Course clicks Submit on the Add Lesson page.  createLesson takes in a string for the name and a Course in which the lesson will be contained. createLesson returns the new created Lesson *);
 end createLesson;
 
@@ -31,23 +33,29 @@ operation removePage
    precondition: exists (page in course.p) (page = toRemove);
    postcondition: forall (page in course.p) ((page = toRemove) or exists (diffpage in newCourse.p) (diffpage = page));
 	description: (* A page is removed from CSTutor when the delete button is hit for the Course.  removeCourse takes in a Page, either a Lesson or Quiz, to be removed and returns a boolean saying if the delete succeeded or not *);
-end removeLesson;
+end removePage;
 
 operation createCourse
-	inputs: name:string and private:boolean and instructor:User; 
+	inputs: db:CourseDB and name:string and private:boolean and instructor:User; 
 	outputs: newCourse:Course;
+   precondition: not exists (course in db.course) (course.name = name);
+   postcondition: exists (course in db.course) (course.name = name);
 	description: (* A new course is created when an Instructor user clicks on the Create Class button.  createCourse takes in a string for the class name, a boolean that specifies if the class is privately or publicly available and a User which is the creator of the class.  createCourse returns a new Course in which the User passed in as the intructor has Manage permissions *);
 end createCourse;
 
 operation removeCourse
-	inputs: toRemove:Course;
+	inputs: db:CourseDB and toRemove:Course;
 	outputs: success:boolean;
-	description: (* A course is removed from CSTutor when the delete button is hit for the Course.  removeCourse takes in a Course to be removed and returns a boolean saying if the delete succeeded or not *);
+	precondition: exists (course in db.course) (course.name = toRemove.name);
+   postcondition: not exists (course in db.course) (course.name = toRemove.name);
+   description: (* A course is removed from CSTutor when the delete button is hit for the Course.  removeCourse takes in a Course to be removed and returns a boolean saying if the delete succeeded or not *);
 end removeCourse;
 
 operation SetPrivate
-	inputs: current:Course;
+	inputs: db:CourseDB and current:Course;
 	outputs: updatedCourse:Course;
+   precondition: exists (course in db.course) (course.name = current.name);
+   postcondition: ;
 	description: (*Takes in a course and sets the course to be private*);
 end SetPrivate;
 
