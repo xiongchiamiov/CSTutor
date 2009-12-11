@@ -15,8 +15,8 @@ The formal specification of our project is defined in the specL code below:
 
 <pre>
 object CSTutorDB
-	components: userDB:UserDB and courseDB:CourseDB;
-	description: (* A top level directory or database that holds all user/course  information *);
+   components: userDB:UserDB and courseDB:CourseDB;
+   description: (* A top level directory or database that holds all user/course  information *);
 end CSTutorDB;
 
 object UserDB
@@ -38,6 +38,8 @@ end Course;
 operation createLesson
 	inputs: name:string and course:Course;
 	outputs: newLesson:Lesson;
+	precondition: ;
+	postcondition: exists (page in course.p) (page.pageId = newLesson.pageId);
 	description: (* A lesson is created when an user with manage permissions for a Course clicks Submit on the Add Lesson page.  createLesson takes in a string for the name and a Course in which the lesson will be contained. createLesson returns the new created Lesson *);
 end createLesson;
 
@@ -47,23 +49,29 @@ operation removePage
    precondition: exists (page in course.p) (page = toRemove);
    postcondition: forall (page in course.p) ((page = toRemove) or exists (diffpage in newCourse.p) (diffpage = page));
 	description: (* A page is removed from CSTutor when the delete button is hit for the Course.  removeCourse takes in a Page, either a Lesson or Quiz, to be removed and returns a boolean saying if the delete succeeded or not *);
-end removeLesson;
+end removePage;
 
 operation createCourse
-	inputs: name:string and private:boolean and instructor:User; 
+	inputs: db:CourseDB and name:string and private:boolean and instructor:User; 
 	outputs: newCourse:Course;
+   precondition: not exists (course in db.course) (course.name = name);
+   postcondition: exists (course in db.course) (course.name = name);
 	description: (* A new course is created when an Instructor user clicks on the Create Class button.  createCourse takes in a string for the class name, a boolean that specifies if the class is privately or publicly available and a User which is the creator of the class.  createCourse returns a new Course in which the User passed in as the intructor has Manage permissions *);
 end createCourse;
 
 operation removeCourse
-	inputs: toRemove:Course;
+	inputs: db:CourseDB and toRemove:Course;
 	outputs: success:boolean;
-	description: (* A course is removed from CSTutor when the delete button is hit for the Course.  removeCourse takes in a Course to be removed and returns a boolean saying if the delete succeeded or not *);
+	precondition: exists (course in db.course) (course.name = toRemove.name);
+   postcondition: not exists (course in db.course) (course.name = toRemove.name);
+   description: (* A course is removed from CSTutor when the delete button is hit for the Course.  removeCourse takes in a Course to be removed and returns a boolean saying if the delete succeeded or not *);
 end removeCourse;
 
 operation SetPrivate
-	inputs: current:Course;
+	inputs: db:CourseDB and current:Course;
 	outputs: updatedCourse:Course;
+   precondition: exists (course in db.course) (course.name = current.name);
+   postcondition: ;
 	description: (*Takes in a course and sets the course to be private*);
 end SetPrivate;
 
@@ -76,8 +84,8 @@ end Page;
 operation Validate
 	inputs: requestedPage:Page and usersStats:Stats and course:Course;
 	outputs: authenticated:boolean;
-	precondition: exists (page in course.p) (page = requestedPage);
-	postcondition: (* none *);
+   precondition: exists (page in course.p) (page = requestedPage);
+   postcondition: (* none *);
 	description: (* Takes a requested page and checks to see if all of the prerequisites have been successfully completed for the student. Returns a boolean *);
 end Validate;
 
@@ -89,25 +97,25 @@ end Lesson;
 
 operation getNextPage
 	inputs: current:Page;
-	outputs: next:Page;
-	precondition: current.nextPage != -1;
-	postcondition: next.pageId = current.nextPage;
+   outputs: next:Page;
+   precondition: current.nextPage != -1;
+   postcondition: next.pageId = current.nextPage;
 	description: (*Takes in a Page, and returns the next logical page.*);
 end getNextPage;
 
 operation getPrevPage
 	inputs: current:Page;
-	outputs: prev:Page;
-	precondition: current.prevPage != -1;
-	postcondition: prev.pageId = current.nextPage;
+   outputs: prev:Page;
+   precondition: current.prevPage != -1;
+   postcondition: prev.pageId = current.nextPage;
 	description: (*Takes in a Page, and returns the previous logical page.*);
 end getPrevPage;
 
 operation displayPage
 	inputs: requestedPage:Page and course:Course;
 	outputs: pageSource:string;
-	precondition: exists (page in course.p) (page = requestedPage);
-	postcondition: (* none *);
+   precondition: exists (page in course.p) (page = requestedPage);
+   postcondition: (* none *);
 	description:  (*Takes in a page and returns the content to display *);
 end displayPage;
 
@@ -169,8 +177,8 @@ end removeQuestion;
 operation DeterminePath
 	inputs: quizScore:number and quiz:Quiz;
 	outputs: Path;
-	precondition: exists(p in quiz.paths) (p.minScore <= quizScore and p.maxScore > quizScore);
-	postcondition: (* Path returned exists and is a path of the Quiz? *);
+   precondition: exists(p in quiz.paths) (p.minScore <= quizScore and p.maxScore > quizScore);
+   postcondition: (* Path returned exists and is a path of the Quiz? *);
 	description: (* DeterminePath takes in the score of a quiz and then determines the right path for a student. *);
 end DeterminePath;
 
@@ -198,8 +206,8 @@ end CodeQuestion;
 operation compareOutput
 	inputs: userCode:string and correctOutput:string;
 	outputs: correct: boolean and output:string;
-	precondition: (* NONE *);
-	postcondition: if (userCode = correctOutput) then correct = true else correct = false;
+   precondition: (* NONE *);
+   postcondition: if (userCode = correctOutput) then correct = true else correct = false;
 	description: (*This operation takes in a users code snippet, runs it, and compares the output. It returns a boolean whether the output matched, as well as the correct output.*);
 end compareOutput;
 
@@ -246,32 +254,39 @@ end Roster;
 operation addUser
 	inputs: name:string and roster:Roster;
 	outputs: updatedRoster:Roster;
-	precondition: (* The name of the given user must be unique and less than or equal to 25 characters *);
-	postcondition: (* The given name is in the updated roster *);
+	precondition: #name <= 25 (* The name of the given user must be unique and less than or equal to 25 characters *);
+	postcondition: exists (name in Roster) (* The given name is in the updated roster *);
 	description: (* addUser adds the given string name into the Roster and produces an updated Roster. *);
 end addUser;
 
 operation removeUser
-	inputs: name:string* and roster:Roster;
+	inputs: nameList:string* and roster:Roster;
 	outputs: updatedRoster:Roster;
-	precondition: (* The given name is in the roster. *);
-	postcondition: (* The given name is not in the updated roster*);
+	precondition: forall(name:nameList)
+						name in roster (* The given name list is in the roster. *);
+	postcondition: forall(name:nameList)
+						name not in roster; (* The given name list is not in the updated roster*);
 	description: (* removeUser removes the inputed string names from the roster and produces an updated Roster. *);
 end removeUser;
 
 operation setUserPermissions
-	inputs: PermissionSet* and roster:Roster;
+	inputs: permission:PermissionSet* and roster:Roster;
 	outputs: updatedRoster:Roster;
 	precondition: (* The inputted permission set is valid *);
 	postcondition: (* The updated roster reflects the changes in the inputted permission set *);
-	description: (* setUserPermissions will take in a list of tuples consisting of a string name, boolean edit, boolean manage, and boolean states and will produce an updated Roster with the new user permissions. *);
+	description: forall(permission)
+						permission.name = roster.name 
+						and
+						permission.permissions = roster.Permissions;
+(* setUserPermissions will take in a list of tuples consisting of a string name, boolean edit, boolean manage, and boolean states and will produce an updated Roster with the new user permissions. *);
 end setUserPermissions;
 
 operation updateRoster
 	inputs: roster:Roster and userDB:UserDB;
 	outputs: updated:Roster and UserDB;
 	precondition: (* The updated roster is valid *);
-	postcondition: (* The updated database roster reflects the changes given by the inputed roster *);
+	postcondition: forall(roster.user)
+						roster.user in userDB;(* The updated database roster reflects the changes given by the inputed roster *);
 	description: (* updateRoster will take in a roster and update the user database. *);
 end updateRoster;
 
@@ -294,34 +309,36 @@ end editProfile;
 
 operation login
 	inputs: username:string, password:string, userDB:UserDB;
-	outputs: homePage:Page;
-	precondition: exists (u in userDB) (username = u.userName) and (password = u.password);
-	postcondition: (* none *);
+   outputs: homePage:Page;
+   precondition: exists (u in userDB) (username = u.userName) and (password = u.password);
+   postcondition: (* none *);
 	description: (* Takes in username and password then checks server to see if there is a
 						match. If so then it grants access *);
 end login;
 	
 operation logout
 	inputs: (* none *);
-	outputs: (* display the login page *);
-	precondition: (* none *);
-	postcondition: (* none *);
+   outputs: (* display the login page *);
+   precondition: (* none *);
+   postcondition: (* none *);
 	description: (* There is nothing special done when a user logs out *);
 end logout;
 
 object PermissionSet
-	components: name:string permissions:Permissions;
+	components: name:string and permissions:Permissions;
 	operations: editPermissions;
-	description (* A permissions set links a name to a permissions associated with the name *);
+   description: (* A permissions set links a name to a permissions associated with the name *);
 end PermissionSet;
 
 operation editPermissions
 	inputs: name:string and modifiedPermissions:Permissions and roster:Roster;
 	outputs: newPermissions:Permissions;
-	precondition: (* The user is a valid user in the roster and the permissions are valid *);
-	postcondition: (* The new permissions of the user are the same ast he modified permissions *);
+	precondition: name in roster(* The user is a valid user in the roster and the permissions are valid *);
+	postcondition: if(name = roster.name)
+						modifiedPermissions = roster.Permissions;(* The new permissions of the user are the same ast he modified permissions *);
 	description: (*This operation takes a user's name and a set of modified permissions, replaces the old permissions, and returns an updated permissions*);
 end editPermissions;
+
 </pre>
 <br>
 <br>
