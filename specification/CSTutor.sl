@@ -121,40 +121,40 @@ end Quiz;
 operation createQuiz
 	inputs: oldCourse:Course and newQuiz:Quiz;
 	outputs: newCourse:Course;
-	precondition: (newQuiz.isValid()) and (forall (q:Quiz | oldCourse.contains(q)) (q.title != newQuiz.title));
-	postcondition: exists(newQuiz in oldCourse.p);
+	precondition: (* (newQuiz.isValid()) and (forall (q:Quiz | oldCourse.contains(q)) (q.title != newQuiz.title)) *);
+	postcondition: (* exists(newQuiz in oldCourse.p) *);
 	description: (* Takes a course as well as the form submitted containing the new quiz and creates a new Course page containing the quiz *);
 end createQuiz;
 
 operation deleteQuiz
 	inputs: quiz:Quiz and course:Course;
 	outputs: newCourse:Course;
-	precondition: exists (quiz in course.p);
-	postcondition: !exists(quiz in course.p);
+	precondition: (* exists (quiz in course.p) *);
+	postcondition: (* not exists(quiz in course.p) *);
 	description: (* Takes a course and a specified quiz and deletes the quiz from the course. It also deletes any corresponding statistics *);
 end deleteQuiz;
 
 operation editQuiz
 	inputs: oldCourse:Course and oldQuiz:Quiz and modifiedQuiz:Quiz;
 	outputs: newCourse:Course;
-	precondition: exists(oldQuiz in oldCourse.p) and modifiedQuiz.isValid();
-	postcondition: exists(modifiedQuiz in newCourse.p) and !exists(oldQuiz in newCourse.p);
+	precondition: (* exists(oldQuiz in oldCourse.p) and modifiedQuiz.isValid() *);
+	postcondition: (* exists(modifiedQuiz in newCourse.p) and not exists(oldQuiz in newCourse.p) *);
 	description: (* Takes an old Quiz, the Quiz containing the changes, as well as the course containing the quiz and merges the changes in the modified quiz into the old Quiz *);
 end editQuiz;
 
 operation addQuestion
-	inputs: course:Course quiz:Quiz and q:Question;
+	inputs: course:Course and quiz:Quiz and q:Question;
 	outputs: newCourse:Course and newQuiz:Quiz;
-	precondition: q.isValid() and exists(quiz in course.p);
-	postcondition: exists(q in newQuiz.q) and exists(newQuiz in newCourse.p);
+	precondition: (* q.isValid() and exists(quiz in course.p) *);
+	postcondition: (* exists(q in newQuiz.q) and exists(newQuiz in newCourse.p) *);
 	description: (* Takes the quiz being worked on and the question being added, and adds the question to the quiz *);
 end addQuestion;
 
 operation removeQuestion
 	inputs: course:Course and quiz:Quiz and q:Question;
 	outputs: newCourse:Course and newQuiz:Quiz;
-	precondition: exists(quiz in course.p) and exists(q in quiz.q);
-	postcondition: !exists(q in newQuiz.q) and exists(newQuiz in newCourse.p);
+	precondition: (* exists(quiz in course.p) and exists(q in quiz.q) *);
+	postcondition: (* not exists(q in newQuiz.q) and exists(newQuiz in newCourse.p) *);
 	description: (* Takes the quiz being worked on and the question being removed, and removes the question from the quiz *);
 end removeQuestion;
 
@@ -238,18 +238,18 @@ end Roster;
 operation addUser
 	inputs: name:string and roster:Roster;
 	outputs: updatedRoster:Roster;
-	precondition: #name <= 25 (* The name of the given user must be unique and less than or equal to 25 characters *);
-	postcondition: name in Roster (* The given name is in the updated roster *);
+	precondition: (* name <= 25 *) (* The name of the given user must be unique and less than or equal to 25 characters *);
+	postcondition: (*name in Roster *) (* The given name is in the updated roster *);
 	description: (* addUser adds the given string name into the Roster and produces an updated Roster. *);
 end addUser;
 
 operation removeUser
 	inputs: nameList:string* and roster:Roster;
 	outputs: updatedRoster:Roster;
-	precondition: forall(name:nameList)
-						name in roster (* The given name list is in the roster. *);
-	postcondition: forall(name:nameList)
-						name not in roster; (* The given name list is not in the updated roster*);
+	precondition: (* forall(name:nameList)
+						name in roster *) (* The given name list is in the roster. *);
+	postcondition: (* forall(name:nameList)
+						name not in roster *) (* The given name list is not in the updated roster*);
 	description: (* removeUser removes the inputed string names from the roster and produces an updated Roster. *);
 end removeUser;
 
@@ -258,10 +258,10 @@ operation setUserPermissions
 	outputs: updatedRoster:Roster;
 	precondition: (* The inputted permission set is valid *);
 	postcondition: (* The updated roster reflects the changes in the inputted permission set *);
-	description: forall(permission)
+	description: (* forall(permission)
 						permission.name = roster.name 
 						and
-						permission.permissions = roster.Permissions;
+						permission.permissions = roster.Permissions *)
 (* setUserPermissions will take in a list of tuples consisting of a string name, boolean edit, boolean manage, and boolean states and will produce an updated Roster with the new user permissions. *);
 end setUserPermissions;
 
@@ -269,8 +269,8 @@ operation updateRoster
 	inputs: roster:Roster and userDB:UserDB;
 	outputs: updated:Roster and UserDB;
 	precondition: (* The updated roster is valid *);
-	postcondition: forall(roster.user)
-						roster.user in userDB;(* The updated database roster reflects the changes given by the inputed roster *);
+	postcondition: (* forall(roster.user)
+						roster.user in userDB *) (* The updated database roster reflects the changes given by the inputed roster *);
 	description: (* updateRoster will take in a roster and update the user database. *);
 end updateRoster;
 
@@ -317,9 +317,9 @@ end PermissionSet;
 operation editPermissions
 	inputs: name:string and modifiedPermissions:Permissions and roster:Roster;
 	outputs: newPermissions:Permissions;
-	precondition: name in roster(* The user is a valid user in the roster and the permissions are valid *);
-	postcondition: if(name = roster.name)
-						modifiedPermissions = roster.Permissions;(* The new permissions of the user are the same ast he modified permissions *);
+	precondition: (* name in roster *) (* The user is a valid user in the roster and the permissions are valid *);
+	postcondition: (* if(name = roster.name)
+						modifiedPermissions = roster.Permissions *) (* The new permissions of the user are the same ast he modified permissions *);
 	description: (*This operation takes a user's name and a set of modified permissions, replaces the old permissions, and returns an updated permissions*);
 end editPermissions;
 
