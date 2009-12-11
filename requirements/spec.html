@@ -255,7 +255,7 @@ operation addUser
 	inputs: name:string and roster:Roster;
 	outputs: updatedRoster:Roster;
 	precondition: #name <= 25 (* The name of the given user must be unique and less than or equal to 25 characters *);
-	postcondition: exists (name in Roster) (* The given name is in the updated roster *);
+	postcondition: name in Roster (* The given name is in the updated roster *);
 	description: (* addUser adds the given string name into the Roster and produces an updated Roster. *);
 end addUser;
 
