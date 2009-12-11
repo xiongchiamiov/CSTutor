@@ -238,32 +238,39 @@ end Roster;
 operation addUser
 	inputs: name:string and roster:Roster;
 	outputs: updatedRoster:Roster;
-	precondition: (* The name of the given user must be unique and less than or equal to 25 characters *);
-	postcondition: (* The given name is in the updated roster *);
+	precondition: #name <= 25 (* The name of the given user must be unique and less than or equal to 25 characters *);
+	postcondition: exists (name in Roster) (* The given name is in the updated roster *);
 	description: (* addUser adds the given string name into the Roster and produces an updated Roster. *);
 end addUser;
 
 operation removeUser
-	inputs: name:string* and roster:Roster;
+	inputs: nameList:string* and roster:Roster;
 	outputs: updatedRoster:Roster;
-	precondition: (* The given name is in the roster. *);
-	postcondition: (* The given name is not in the updated roster*);
+	precondition: forall(name:nameList)
+						name in roster (* The given name list is in the roster. *);
+	postcondition: forall(name:nameList)
+						name not in roster; (* The given name list is not in the updated roster*);
 	description: (* removeUser removes the inputed string names from the roster and produces an updated Roster. *);
 end removeUser;
 
 operation setUserPermissions
-	inputs: PermissionSet* and roster:Roster;
+	inputs: permission:PermissionSet* and roster:Roster;
 	outputs: updatedRoster:Roster;
 	precondition: (* The inputted permission set is valid *);
 	postcondition: (* The updated roster reflects the changes in the inputted permission set *);
-	description: (* setUserPermissions will take in a list of tuples consisting of a string name, boolean edit, boolean manage, and boolean states and will produce an updated Roster with the new user permissions. *);
+	description: forall(permission)
+						permission.name = roster.name 
+						and
+						permission.permissions = roster.Permissions;
+(* setUserPermissions will take in a list of tuples consisting of a string name, boolean edit, boolean manage, and boolean states and will produce an updated Roster with the new user permissions. *);
 end setUserPermissions;
 
 operation updateRoster
 	inputs: roster:Roster and userDB:UserDB;
 	outputs: updated:Roster and UserDB;
 	precondition: (* The updated roster is valid *);
-	postcondition: (* The updated database roster reflects the changes given by the inputed roster *);
+	postcondition: forall(roster.user)
+						roster.user in userDB;(* The updated database roster reflects the changes given by the inputed roster *);
 	description: (* updateRoster will take in a roster and update the user database. *);
 end updateRoster;
 
@@ -310,8 +317,9 @@ end PermissionSet;
 operation editPermissions
 	inputs: name:string and modifiedPermissions:Permissions and roster:Roster;
 	outputs: newPermissions:Permissions;
-	precondition: (* The user is a valid user in the roster and the permissions are valid *);
-	postcondition: (* The new permissions of the user are the same ast he modified permissions *);
+	precondition: name in roster(* The user is a valid user in the roster and the permissions are valid *);
+	postcondition: if(name = roster.name)
+						modifiedPermissions = roster.Permissions;(* The new permissions of the user are the same ast he modified permissions *);
 	description: (*This operation takes a user's name and a set of modified permissions, replaces the old permissions, and returns an updated permissions*);
 end editPermissions;
 
