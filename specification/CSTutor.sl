@@ -121,40 +121,40 @@ end Quiz;
 operation createQuiz
 	inputs: oldCourse:Course and newQuiz:Quiz;
 	outputs: newCourse:Course;
-	precondition: (* newQuiz is a valid Quiz and oldCourse is a valid Course *);
-	postcondition: (* newQuiz exists in newCourse and all other elements in newCourse are identical to oldCourse *);
+	precondition: (newQuiz.isValid()) and (forall (q:Quiz | oldCourse.contains(q)) (q.title != newQuiz.title));
+	postcondition: exists(newQuiz in oldCourse.p);
 	description: (* Takes a course as well as the form submitted containing the new quiz and creates a new Course page containing the quiz *);
 end createQuiz;
 
 operation deleteQuiz
 	inputs: quiz:Quiz and course:Course;
 	outputs: newCourse:Course;
-	precondition: (* quiz exsists in course *);
-	postcondition: (* quiz does not exist in newCourse. All other elements of newCourse match course. *);
+	precondition: exists (quiz in course.p);
+	postcondition: !exists(quiz in course.p);
 	description: (* Takes a course and a specified quiz and deletes the quiz from the course. It also deletes any corresponding statistics *);
 end deleteQuiz;
 
 operation editQuiz
 	inputs: oldCourse:Course and oldQuiz:Quiz and modifiedQuiz:Quiz;
 	outputs: newCourse:Course;
-	precondition: (* oldQuiz exsists in oldCourse. modifiedQuiz is a valid quiz *);
-	postcondition: (* oldCourse and newCourse are identical except for the addition of modifiedQuiz and subtraction of oldQuiz *);
+	precondition: exists(oldQuiz in oldCourse.p) and modifiedQuiz.isValid();
+	postcondition: exists(modifiedQuiz in newCourse.p) and !exists(oldQuiz in newCourse.p);
 	description: (* Takes an old Quiz, the Quiz containing the changes, as well as the course containing the quiz and merges the changes in the modified quiz into the old Quiz *);
 end editQuiz;
 
 operation addQuestion
-	inputs: quiz:Quiz and q:Question;
-	outputs: newQuiz:Quiz;
-	precondition: (* quiz is a valid quiz. q is a valid question *);
-	postcondition: (* newQuiz contains q, otherwise quiz and newQuiz are identical *);
+	inputs: course:Course quiz:Quiz and q:Question;
+	outputs: newCourse:Course and newQuiz:Quiz;
+	precondition: q.isValid() and exists(quiz in course.p);
+	postcondition: exists(q in newQuiz.q) and exists(newQuiz in newCourse.p);
 	description: (* Takes the quiz being worked on and the question being added, and adds the question to the quiz *);
 end addQuestion;
 
 operation removeQuestion
-	inputs: quiz:Quiz and q:Question;
-	outputs: newQuiz:Quiz;
-	precondition: (* quiz is a valid quiz. q exists in quiz *);
-	postcondition: (* newQuiz does not contain q, otherwise quiz and newQuiz are identical *);
+	inputs: course:Course and quiz:Quiz and q:Question;
+	outputs: newCourse:Course and newQuiz:Quiz;
+	precondition: exists(quiz in course.p) and exists(q in quiz.q);
+	postcondition: !exists(q in newQuiz.q) and exists(newQuiz in newCourse.p);
 	description: (* Takes the quiz being worked on and the question being removed, and removes the question from the quiz *);
 end removeQuestion;
 
