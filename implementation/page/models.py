@@ -5,6 +5,8 @@ Contains the Overall "Page" class, plus the Classes that are primarily
 contained within a Page, such as Quiz and Lesson. In addition it contains
 classes for path, question, codeQuestion, multipleChoiceQuestion, and answer.
 
+Author(s): Russell Mezzetta
+
 '''
 from django.db import models
 
