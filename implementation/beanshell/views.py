@@ -1,8 +1,7 @@
 # Create your views here.
 
-def executeCode(code) {
+def executeCode(code):
 	'''
 		Executes java code using Beanshell
 	'''
-
-}
+	pass
