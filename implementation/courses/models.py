@@ -21,29 +21,19 @@ class Course(models.Model):
 	'''
 	pass
 
-class Page(models.Model):
+class Roster(models.Model):
 	'''
-	A single unit of a course
-
-	A page contains links to other pages based on the Course flow.
+	A roster keeps track of the permissions and statistics for all associated users. A user is linked to stats and permissions.
 	'''
-	pass
+	roster = {}
 
-class Lesson(Page):
+class Permissions:
 	'''
 	Model for a Lesson.
 
-	A lesson is a specific type of Page.  It represents a single Topic that
-	is represent on a single "Page."  Lessons can include executable code
-	segments and images.
+	Permissions are a set of booleans that map the permissions for users. The view permission allows the user to view the course material. The edit permission allows the user to edit the course material. The stats permission allows the user to view class-wide statistics and roster. The manage permission allows the user to modify the roster and all associated permissions.
 	'''
-	pass
-
-class Quiz(Page):
-	'''
-	Model for a Quiz.
-
-	A quiz is a specific type of Page.  It contains a number of questions of
-	various types.
-	'''
-	pass
+	view = False
+	edit = False
+	stats = False
+	manage = False
