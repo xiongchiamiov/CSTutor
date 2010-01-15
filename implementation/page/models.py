@@ -77,7 +77,7 @@ class CodeQuestion(Question):
 	'''
 	pass
 
-class Answer(models.Model)
+class Answer(models.Model):
 	'''
 	Model for Answer.
 
