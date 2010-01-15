@@ -2,7 +2,7 @@ from django.db import models
 
 # Create your models here.
 
-class User(models.Models):
+class User(models.Model):
 	''' 
 		Model for a User
 
