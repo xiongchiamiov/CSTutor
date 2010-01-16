@@ -55,7 +55,7 @@ def search(request):
 	'''
 	pass
 
-def import(request):
+def importCourse(request):
 	'''
 	Imports specified information into a Course
 
@@ -63,7 +63,7 @@ def import(request):
 	'''
 	pass
 
-def export(request):
+def exportCourse(request):
 	'''
 	Exports the specified Course
 
