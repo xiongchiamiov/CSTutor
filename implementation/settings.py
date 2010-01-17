@@ -79,3 +79,7 @@ INSTALLED_APPS = (
 	 'courses',
 	 'users',
 )
+
+try:
+	from local_settings import *
+except ImportError: pass
