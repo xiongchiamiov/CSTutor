@@ -1,5 +1,11 @@
 # Django settings for implementation project.
 
+import os
+
+rootPath = os.path.dirname(os.path.realpath(__file__))
+def abs_path(path):
+	return os.path.join(rootPath,path)
+
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
@@ -69,6 +75,7 @@ TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
+	abs_path('templates'),
 )
 
 INSTALLED_APPS = (
