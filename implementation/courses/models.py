@@ -27,7 +27,7 @@ class Roster(models.Model):
 	'''
 	A roster keeps track of the permissions and statistics for all associated users. A user is linked to stats and permissions.
 	'''
-	pass
+	roster = models.OneToOneField()
 
 class Enrollment(models.Model):
 	user = models.ManyToMany(User)
