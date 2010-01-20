@@ -9,21 +9,21 @@ from django.conf import settings
 urlpatterns = patterns('',
 	(r'^/?$', direct_to_template, {'template': 'index.html'}),
 	(r'^course/(.*)$', include(course.urls)),
-    # Example:
-    # (r'^implementation/', include('implementation.foo.urls')),
+	# Example:
+	# (r'^implementation/', include('implementation.foo.urls')),
 
-    # Uncomment the admin/doc line below and add 'django.contrib.admindocs' 
-    # to INSTALLED_APPS to enable admin documentation:
-    # (r'^admin/doc/', include('django.contrib.admindocs.urls')),
+	# Uncomment the admin/doc line below and add 'django.contrib.admindocs' 
+	# to INSTALLED_APPS to enable admin documentation:
+	# (r'^admin/doc/', include('django.contrib.admindocs.urls')),
 
-    # Uncomment the next line to enable the admin:
-    # (r'^admin/(.*)', admin.site.root),
+	# Uncomment the next line to enable the admin:
+	# (r'^admin/(.*)', admin.site.root),
 )
 
 if settings.DEBUG:
-        import os
-        media_dir = os.path.join(os.path.dirname(__file__), 'static/')
+		import os
+		media_dir = os.path.join(os.path.dirname(__file__), 'static/')
 
-        urlpatterns += patterns('',
-                (r'^media/(.*)$', 'django.views.static.serve', {'document_root': media_dir}),
-        )
+		urlpatterns += patterns('',
+				(r'^media/(.*)$', 'django.views.static.serve', {'document_root': media_dir}),
+		)
