@@ -8,7 +8,7 @@ SVN Commit Info:
 $Id$
 '''
 from django.db import models
-from users.model import User
+from django.contrib.auth.models import User
 
 # Create your models here.
 
@@ -21,7 +21,7 @@ class Course(models.Model):
 	landing page. 
 	'''
 	slug = models.SlugField(unique = True)
-	name = models.CharField(maxlength = 255)
+	name = models.CharField(max_length = 255)
 
 # commented out by mgius.  I think that what I've done with enrollment
 # especially in connection with "related_name='roster'" will cover
@@ -49,9 +49,9 @@ class Enrollment(models.Model):
 	course = models.ForeignKey(Course, related_name='roster')
    # removed by mgius.  I believe we were going for implied view?
    #view = models.BooleanField
-	edit = models.BooleanField
-	stats = models.BooleanField
-	manage = models.BooleanField
+	edit = models.BooleanField(default = False)
+	stats = models.BooleanField(default = False)
+	manage = models.BooleanField(default = False)
 
 # remove by mgius.  This makes no sense from a database point of view to
 # be a separate model.  See what I did with the enrollment model above
