@@ -8,7 +8,7 @@ from django.conf import settings
 
 urlpatterns = patterns('',
 	(r'^/?$', direct_to_template, {'template': 'index.html'}),
-	(r'^course/(.*)$', include(course.urls)),
+	(r'^course/(.*)$', include('course.urls')),
 	# Example:
 	# (r'^implementation/', include('implementation.foo.urls')),
 
