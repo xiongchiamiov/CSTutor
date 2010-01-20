@@ -23,16 +23,6 @@ class Course(models.Model):
 	slug = models.SlugField(unique = True)
 	name = models.CharField(max_length = 255)
 
-# commented out by mgius.  I think that what I've done with enrollment
-# especially in connection with "related_name='roster'" will cover
-# the "roster" functionality we're looking for
-#class Roster(models.Model):
-#	'''
-#	A roster keeps track of the permissions and statistics for all associated 
-#	users. A user is linked to stats and permissions.
-#	'''
-#	roster = models.OneToOneField()
-
 class Enrollment(models.Model):
 	''' Model for an Enrollment in a Course
 
@@ -52,18 +42,3 @@ class Enrollment(models.Model):
 	edit = models.BooleanField(default = False)
 	stats = models.BooleanField(default = False)
 	manage = models.BooleanField(default = False)
-
-# remove by mgius.  This makes no sense from a database point of view to
-# be a separate model.  See what I did with the enrollment model above
-#class Permissions:
-#	'''
-#	Model for Permissions for an Enrollment
-#
-#	Permissions are a set of booleans that map the permissions for users. 
-#	The view permission allows the user to view the course material. 
-#	The edit permission allows the user to edit the course material. 
-#	The stats permission allows the user to view class-wide statistics and 
-#	roster. 
-#	The manage permission allows the user to modify the roster and all 
-#	associated permissions.
-#	'''

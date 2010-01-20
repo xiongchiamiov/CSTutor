@@ -5,10 +5,11 @@ Contains the Overall "Page" class, plus the Classes that are primarily
 contained within a Page, such as Quiz and Lesson. In addition it contains
 classes for path, question, codeQuestion, multipleChoiceQuestion, and answer.
 
-Author(s): Russell Mezzetta
+Author(s): Russell Mezzetta, Mark Gius, James Pearson
 
 '''
 from django.db import models
+from courses.models import Course
 
 # Create your models here.
 
@@ -18,7 +19,14 @@ class Page(models.Model):
 
 	A page contains links to other pages based on the Course flow.
 	'''
-	pass
+	course = models.ForeignKey(Course)
+	nextPage = models.OneToOneField("self", related_name='prevPage')
+	# prevPage implied from Page
+	parent = models.ForeignKey("self", related_name='children')
+	# children implied from Page
+	slug = models.SlugField(unique=True)
+	# prereqs: stupid.  Not doing it
+	name = models.TextField()
 
 class Lesson(Page):
 	'''
@@ -28,7 +36,8 @@ class Lesson(Page):
 	is represented on a single "Page."  Lessons can include executable code
 	segments and images.
 	'''
-	pass
+	content = models.TextField()
+	# code?  Not sure how to handle
 
 class Quiz(Page):
 	'''
@@ -37,16 +46,25 @@ class Quiz(Page):
 	A quiz is a specific type of Page.  It contains a number of questions of
 	various types.
 	'''
-	pass
+	text = models.TextField()
+	# paths implied from Path
+	# questions implied from Question
+	hidden = models.BooleanField()
 
 class Path(models.Model):
 	'''
 	Model for a Path.
 
-	A path determines where a student is sent after taking a quiz. It contains a range
-	of scores, a destination page number, and some text to display to the student.
+	A path determines where a student is sent after taking a quiz.  It contains
+	a high and low score (path matches low <= score < high)
+   and an optional message to display to a student.
 	'''
-	pass
+	quiz = models.ForeignKey(Quiz, related_name='paths')
+	highscore = models.IntegerField()
+	lowscore = models.IntegerField()
+	text = models.TextField()
+	toPage = models.ForeignKey(Page)
+	passed = models.BooleanField()
 
 class Question(models.Model):
 	'''
@@ -55,7 +73,9 @@ class Question(models.Model):
 	A Question is a particular question on a quiz. It contains a string for the question
 	text and a title.
 	'''
-	pass
+	text = models.TextField()
+	order = models.IntegerField()
+	quiz = models.ForeignKey(Quiz, related_name='questions')
 
 class MultipleChoiceQuestion(Question):
 	'''
@@ -65,7 +85,8 @@ class MultipleChoiceQuestion(Question):
 	possible answers to the question. Note the data indicating which answer is correct 
 	is contained within the answer object.
 	'''
-	pass
+	# answers is implied from Answer
+	# quiz inherited from Question
 
 class CodeQuestion(Question):
 	'''
@@ -75,7 +96,14 @@ class CodeQuestion(Question):
 	which is then executed and compared against desired output. This class contains a 		
 	string for the code(if some is provided) and a string for the desired output
 	'''
-	pass
+
+	beforeCode = models.TextField()
+	showBeforeCode = models.BooleanField()
+	editableCode = models.TextField()
+	afterCode = models.TextField()
+	showAfterCode = models.BooleanField()
+	expectedOutput = models.TextField()
+	# quiz inherited from Question
 
 class Answer(models.Model):
 	'''
@@ -85,5 +113,7 @@ class Answer(models.Model):
 	the string associated with the Answer and a boolean indicating whether or not it is
 	the correct answer to the multiple choice question.
 	'''
-	pass
-
+	question = models.ForeignKey(MultipleChoiceQuestion, related_name='answers')
+	correct = models.BooleanField(default=False)
+	order = models.IntegerField()
+	text = models.TextField()

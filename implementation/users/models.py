@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 # Create your models here.
 
@@ -11,7 +12,3 @@ class User(models.Model):
 		password, and a list of Courses that the user is enrolled in.
 		Additionally, a user may provide an email address.
 	'''
-        username = models.CharField(maxlength = 255)
-        password = models.CharField(maxlength = 255)
-        email = models.CharField(maxlength = 255)
-        isInstructor = models.BooleanField(deafult = False)
