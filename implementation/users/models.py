@@ -14,4 +14,4 @@ class User(models.Model):
         username = models.CharField(maxlength = 255)
         password = models.CharField(maxlength = 255)
         email = models.CharField(maxlength = 255)
-
+        isInstructor = models.BooleanField(deafult = False)
