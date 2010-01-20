@@ -1,4 +1,4 @@
-def addUser(newUser):
+def addUser(newUser, course):
 	''' 
 	Adds the given string name into the Roster and produces an updated Roster.
 	'''
@@ -18,6 +18,6 @@ pass
 
 def updateRoster(roster):
 	''' 
-	Takes in a roster and update the user database.
+	Takes in a roster and overwrites the old roster.
 	'''
 pass
