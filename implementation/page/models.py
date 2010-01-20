@@ -20,13 +20,14 @@ class Page(models.Model):
 	A page contains links to other pages based on the Course flow.
 	'''
 	course = models.ForeignKey(Course)
-	nextPage = models.OneToOneField("self", related_name='prevPage')
+	# nextPage = models.OneToOneField("self", related_name='prevPage')
 	# prevPage implied from Page
 	parent = models.ForeignKey("self", related_name='children')
 	# children implied from Page
 	slug = models.SlugField(unique=True)
 	# prereqs: stupid.  Not doing it
 	name = models.TextField()
+	order = models.IntegerField()
 
 class Lesson(Page):
 	'''
@@ -49,7 +50,14 @@ class Quiz(Page):
 	text = models.TextField()
 	# paths implied from Path
 	# questions implied from Question
+	# course inherited from Page
 	hidden = models.BooleanField()
+
+	@staticmethod
+	def createQuiz(text_, hidden_, course_, parent_, ):
+		''' Creates a new Quiz object, and returns it unsaved '''
+		q = Quiz(text=text_, hidden = hidden_)
+		return q
 
 class Path(models.Model):
 	'''
@@ -76,6 +84,7 @@ class Question(models.Model):
 	text = models.TextField()
 	order = models.IntegerField()
 	quiz = models.ForeignKey(Quiz, related_name='questions')
+
 
 class MultipleChoiceQuestion(Question):
 	'''
