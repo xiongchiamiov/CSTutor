@@ -1,4 +1,5 @@
 all:
+	@echo "TODO: Makefile documentation section"
 
 doc:
 	cd ../documentation && python ../implementation/manage.py makedoc
@@ -12,6 +13,9 @@ doc:
 runserver:
 	@echo "running Django server in current directory"
 	python manage.py runserver
+
+database:
+	@echo "Unimplemented"
 	
 clean: binclean docclean
 	@echo ""
@@ -28,3 +32,6 @@ docclean:
 		-not -name '*chat.html' \
 		-not -name '*index.html' \
 		-delete
+
+databaseclean:
+	@echo "Unimplemented"
