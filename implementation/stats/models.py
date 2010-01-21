@@ -10,7 +10,7 @@ from page.models import Page
 
 # Create your models here.
 
-class stat(models.Model):
+class Stat(models.Model):
 	course = models.ForeignKey(Course, related_name='stats')
 	page = models.ForeignKey(Page, related_name='stats')
 	user = models.ForeignKey(User, related_name='stats')
