@@ -18,7 +18,7 @@ class Stat(models.Model):
 	date = models.DateTimeField(auto_now_add=True)
 
 	@staticmethod
-	def CreateStat(course_, page_, user_, score):
+	def CreateStat(course, page, user, score):
 		''' Create a new Stat Entry
 
 			 Creates a new entry in the stats table for the passed course, page,
@@ -26,6 +26,6 @@ class Stat(models.Model):
 
 			 Returns the statistic after saving it to the database
 		'''
-		s = stat(course=course_, page=page_, user=user_, score=score_)
+		s = Stat(course=course, page=page, user=user, score=score)
 		s.save()
 		return s
