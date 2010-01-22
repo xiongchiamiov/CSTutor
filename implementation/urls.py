@@ -1,24 +1,13 @@
 from django.conf.urls.defaults import *
-from django.views.generic.simple import direct_to_template
 from django.conf import settings
+
+from courses.models import Course
 
 # Uncomment the next two lines to enable the admin:
 # from django.contrib import admin
 # admin.autodiscover()
 
-urlpatterns = patterns('',
-	(r'^/?$', 'home.views.index'),
-	(r'^course/(.*)$', include('course.urls')),
-	# Example:
-	# (r'^implementation/', include('implementation.foo.urls')),
-
-	# Uncomment the admin/doc line below and add 'django.contrib.admindocs' 
-	# to INSTALLED_APPS to enable admin documentation:
-	# (r'^admin/doc/', include('django.contrib.admindocs.urls')),
-
-	# Uncomment the next line to enable the admin:
-	# (r'^admin/(.*)', admin.site.root),
-)
+urlpatterns = []
 
 if settings.DEBUG:
 		import os
@@ -27,3 +16,15 @@ if settings.DEBUG:
 		urlpatterns += patterns('',
 				(r'^media/(.*)$', 'django.views.static.serve', {'document_root': media_dir}),
 		)
+
+urlpatterns += patterns('',
+	(r'^/?$', 'home.views.index'),
+	(r'^(?P<course>[\w-]+)/', include('courses.urls'), {'courses': Course.objects.all()}),
+
+	# Uncomment the admin/doc line below and add 'django.contrib.admindocs' 
+	# to INSTALLED_APPS to enable admin documentation:
+	# (r'^admin/doc/', include('django.contrib.admindocs.urls')),
+
+	# Uncomment the next line to enable the admin:
+	# (r'^admin/(.*)', admin.site.root),
+)
