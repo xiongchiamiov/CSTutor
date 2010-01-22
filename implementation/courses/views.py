@@ -1,5 +1,5 @@
 # Create your views here.
-show_roster(request):
+def show_roster(request):
 	courseid = request.GET['courseid']
 	course = Courses.objects.filter(id=courseid)
    enrollments = course.roster.all();
