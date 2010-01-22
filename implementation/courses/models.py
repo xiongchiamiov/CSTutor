@@ -23,6 +23,9 @@ class Course(models.Model):
 	'''
 	slug = models.SlugField(unique = True)
 	name = models.CharField(max_length = 255)
+	
+	def __unicode__(self):
+		return self.name
 
 	@staticmethod
 	def CreateCourse(name, user, slug=None):
