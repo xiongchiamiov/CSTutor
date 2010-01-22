@@ -1,9 +1,10 @@
 {% extends "base.html" %}
 
 {% block content %}
-User list
+{{course}} User list
+<p>
 {% for user in users %}
 	{{user}}
 {% endfor%}
-	
+<p>	
 {% endblock %}
