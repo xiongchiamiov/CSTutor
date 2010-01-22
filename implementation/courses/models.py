@@ -25,6 +25,7 @@ class Course(models.Model):
 	name = models.CharField(max_length = 255)
 	
 	def __unicode__(self):
+		''' Returns the Course's name.'''
 		return self.name
 
 	@staticmethod
