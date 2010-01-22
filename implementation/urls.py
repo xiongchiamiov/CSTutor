@@ -7,7 +7,7 @@ from django.conf import settings
 # admin.autodiscover()
 
 urlpatterns = patterns('',
-	(r'^/?$', direct_to_template, {'template': 'index.html'}),
+	(r'^/?$', 'home.views.index'),
 	(r'^course/(.*)$', include('course.urls')),
 	# Example:
 	# (r'^implementation/', include('implementation.foo.urls')),
