@@ -20,7 +20,7 @@ class Page(models.Model):
 	A page contains links to other pages based on the Course flow.
 	'''
 	course = models.ForeignKey(Course)
-	# nextPage = models.OneToOneField("self", related_name='prevPage')
+	nextPage = models.OneToOneField("self", related_name='prevPage')
 	# prevPage implied from Page
 	parent = models.ForeignKey("self", related_name='children')
 	# children implied from Page
@@ -39,7 +39,7 @@ class Lesson(Page):
 	'''
 	content = models.TextField()
 	# code?  Not sure how to handle
-
+	
 class Quiz(Page):
 	'''
 	Model for a Quiz.
