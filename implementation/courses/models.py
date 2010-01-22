@@ -36,6 +36,8 @@ class Course(models.Model):
 			 slug string. Creates a new course, enrolls the user in the course and 
 			 assigns all permissions to them.  Returns the course after saving it
 			 it.  Have to save it so that enrollment gets an id to link to
+
+			 TODO: Also needs to create a "default" landing page
 		'''
 		# check for empty string (or default value)
 		if not slug:
