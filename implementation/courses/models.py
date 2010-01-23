@@ -28,40 +28,6 @@ class Course(models.Model):
 		''' Returns the Course's name.'''
 		return self.name
 
-	@staticmethod
-	def CreateCourse(name, user, slug=None):
-		''' Creates a new course
-
-			 Takes in the name of the course and a user object, and an optional
-			 slug string. Creates a new course, enrolls the user in the course and 
-			 assigns all permissions to them.  Returns the course after saving it
-			 it.  Have to save it so that enrollment gets an id to link to
-
-			 TODO: Also needs to create a "default" landing page
-		'''
-		# check for empty string (or default value)
-		if not slug:
-			slug = slugify(name)
-
-		newcourse = Course(name=name, slug=slug)
-		newcourse.save()
-
-		newcourse.addUser(user, True, True, True)
-
-		return newcourse
-		
-	def addUser(self, user, edit=False, stats=False, manage=False):
-		''' Adds a User to a course 
-			 
-			 Takes in a user, and optional boolean values for edit, stats, and
-			 manage permission, in that order. Creates a new enrollment for that
-			 user and permission level and adds it to the Course.  Returns the 
-			 enrollment after saving it to the database
-		'''
-		enrollment = Enrollment.CreateEnrollment(user, self, \
-		                                         edit, stats, manage)
-		enrollment.save()
-		return enrollment
 
 class Enrollment(models.Model):
 	''' Model for an Enrollment in a Course
