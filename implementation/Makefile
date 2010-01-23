@@ -1,6 +1,5 @@
 help:
 	@echo "Makefile Targets:"
-	@echo "  database doc runserver clean binclean docclean datbaseclean"
 	@echo ""
 	@echo "database      : Builds the database and imports the initial set of data"
 	@echo "doc           : Generates the documentation"
@@ -11,12 +10,12 @@ help:
 	@echo "databaseclean : Cleans up the database"
 
 doc:
-	cd ../documentation && python ../implementation/manage.py makedoc
+	cd ../design/pydoc && python ../../implementation/manage.py makedoc
 	@echo ""
 	@echo "################################################"
-	@echo "Documentation written to documentation directory"
+	@echo "Documentation written to design/pydoc directory"
 	@echo "Note that this is not the documentation module that you see here"
-	@echo "cd ../documentation"
+	@echo "cd ../design/pydoc"
 	@echo "################################################"
 
 runserver:
@@ -42,7 +41,7 @@ binclean:
 	find . -iname '*.pyc' -exec rm {} \;
 
 docclean:
-	find ../documentation -iname '*.html' \
+	find ../design/pydoc -iname '*.html' \
 		-not -name '*chat.html' \
 		-not -name '*index.html' \
 		-delete

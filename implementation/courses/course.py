@@ -9,7 +9,15 @@ Contains operations for Courses
 from courses.models import *
 
 def inject(Class):
-	def injectInner( function ):
+	''' Decorator to Inject the function into the provided class
+
+		 For info on how this works, consider reading 
+		 http://www.linuxtopia.org/online_books/programming_books/python_programming/python_ch26.html
+
+		 @author: Mark Gius
+
+	'''
+	def injectInner(function):
 		try:
 			Class.__dict__[function.__name__]
 		except KeyError:
@@ -55,12 +63,6 @@ def addUser(self, user, edit=False, stats=False, manage=False):
                                             edit, stats, manage)
 	enrollment.save()
 	return enrollment
-
-try:
-	Course.__dict__['addUser']
-except KeyError:
-	print "Attaching addUser"
-	setattr(Course, 'addUser', addUser)
 
 def removePage(request):
 	'''
