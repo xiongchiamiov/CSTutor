@@ -43,6 +43,13 @@ def addPage(self, newPage, parentPage = None, order = None):
 	This operation saves the page to the database, and then returns the new
 	page.
 	'''
+   # get the children of my parent whose order is >= to my new order
+   # if no children, becomes the only child of parent
+   #   self.next = parent.next, parent.next = self
+   # if children, find the child with order = me (in case of no order,
+   #   or no child with order that high, use parent as the new nextpage)
+   # set nextchild.prev.next to self, self.next = nextchild
+	#  
 	pass
 		
 @inject(Course)

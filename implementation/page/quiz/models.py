@@ -23,6 +23,9 @@ class Quiz(Page):
 		q = Quiz(text=text_, hidden = hidden_)
 		return q
 
+	def __unicode__(self):
+		return self.text
+
 class Path(models.Model):
 	'''
 	Model for a Path.
@@ -37,3 +40,6 @@ class Path(models.Model):
 	text = models.TextField()
 	toPage = models.ForeignKey(Page)
 	passed = models.BooleanField()
+
+	def __unicode__(self):
+		return u'Path on Quiz ' + unicode(quiz)

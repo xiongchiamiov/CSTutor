@@ -6,22 +6,45 @@ Contains operations for all pages
 Author(s): Matthew Tytel
 
 '''
+from include.inject import inject, injectstatic
+from Page import *
 
-def getNextPage(request):
+@inject(Page)
+def getNextPage(self):
 	'''
 	Gets the next page in the preorder traversal of the page hierarchy
 
-	This operation returns an http response for viewing the next page
+	Returns the page object that is the "next" page
 	'''
-	pass
+	return Page.objects.get(prevPage=self)
 
-def getPrevPage(request):
+@inject(Page)
+def getPrevPage(self):
 	'''
 	Gets the previous page in the preorder traversal of the page heirarchy
 
-	This operation returns an http response for viewing the previous page
+	Returns the page object that is the "previous" page
+	'''
+	return Page.objects.get(nextPage=self)
+
+def movePage(self, neworder, newparent = None):
+	'''
+	Moves the page to a new location. 
+
+	Removes the page from its current location, and add itself back in at the
+	new location with a potentially new parent.
+
+	If no parent is specified, keep the same parent
+
 	'''
 	pass
+
+
+# Everything below:q
+#
+
+
+
 
 def displayPage(request):
 	'''
@@ -31,13 +54,6 @@ def displayPage(request):
 	'''
 	pass
 
-def movePage(request):
-	'''
-	Moves the specified to a new location specified by the new location's previous page
-
-	This operation returns an http response for viewing the move
-	'''
-	pass
 
 def createPage(request):
 	'''

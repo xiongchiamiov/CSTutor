@@ -29,3 +29,7 @@ class Stat(models.Model):
 		s = Stat(course=course, page=page, user=user, score=score)
 		s.save()
 		return s
+
+	def __unicode__(self):
+		return u'Stat for User ' + unicode(user) + u' and Lesson ' \
+			+ unicode(lesson)
