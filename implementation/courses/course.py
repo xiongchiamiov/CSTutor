@@ -54,8 +54,8 @@ def addUser(self, user, edit=False, stats=False, manage=False):
 	    user and permission level and adds it to the Course.  Returns the 
 	    enrollment after saving it to the database
 	'''
-  	enrollment = Enrollment.CreateEnrollment(user, self, \
-                                            edit, stats, manage)
+	enrollment = Enrollment.CreateEnrollment(user, self, \
+	                                         edit, stats, manage)
 	enrollment.save()
 	return enrollment
 
