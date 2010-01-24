@@ -22,7 +22,7 @@ class Page(models.Model):
 	course = models.ForeignKey(Course)
 	nextPage = models.OneToOneField("self", related_name='prevPage', null=True)	
 	# prevPage implied from Page
-	parent = models.ForeignKey("self", related_name='children')
+	parent = models.ForeignKey("self", related_name='children', null=True)
 	# children implied from Page
 	slug = models.SlugField(unique=True)
 	# prereqs: stupid.  Not doing it
