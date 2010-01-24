@@ -4,7 +4,7 @@ Models file for the stats and related classes.
 These store and load user statistics. 
 '''
 from django.db import models
-from users.models import User
+from django.contrib.auth.models import User
 from courses.models import Course
 from page.models import Page
 

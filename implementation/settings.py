@@ -84,11 +84,14 @@ INSTALLED_APPS = (
 	'django.contrib.contenttypes',
 	'django.contrib.sessions',
 	'django.contrib.sites',
-	'documentation',
 	'courses',
-	'users',
+	'documentation',
 	'page',
+	'page.lesson',
+	'page.quiz',
+	'page.quiz.question',
 	'stats',
+	'users',
 )
 
 try:

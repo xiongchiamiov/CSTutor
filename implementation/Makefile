@@ -22,6 +22,7 @@ runserver:
 	@echo "running Django server in current directory"
 	python manage.py runserver
 
+syncdb: database
 database:
 	python ./manage.py syncdb --noinput
 	@echo "################################################"
@@ -47,4 +48,4 @@ docclean:
 		-delete
 
 databaseclean:
-	rm -f *.sqlite
+	rm -f *.sqlite3

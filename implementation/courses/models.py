@@ -41,7 +41,7 @@ class Enrollment(models.Model):
 		 In the case of a Private course, an enrollment relationship is necessary
 		 to allow the user to view the course.
 	'''
-	user = models.ForeignKey(User)
+	user = models.ForeignKey(User, related_name='enrollments')
 	course = models.ForeignKey(Course, related_name='roster')
    # removed by mgius.  I believe we were going for implied view?
    #view = models.BooleanField
