@@ -20,7 +20,7 @@ class Page(models.Model):
 	A page contains links to other pages based on the Course flow.
 	'''
 	course = models.ForeignKey(Course)
-	nextPage = models.OneToOneField("self", related_name='prevPage')
+	nextPage = models.OneToOneField("self", related_name='prevPage', null=True)	
 	# prevPage implied from Page
 	parent = models.ForeignKey("self", related_name='children')
 	# children implied from Page
@@ -30,4 +30,4 @@ class Page(models.Model):
 	order = models.IntegerField()
 
 	def __unicode__(self):
-		return name
+		return self.name
