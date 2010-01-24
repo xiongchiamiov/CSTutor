@@ -1,3 +1,10 @@
+Attaching CreateCourse
+Attaching addPage
+Attaching addUser
+Attaching remove
+Attaching removePage
+Attaching setPrivate
+Attaching CreateEnrollment
 <?xml version="1.0" encoding="utf-8"?>
 <django-objects version="1.0">
    <object pk="1" model="auth.permission">
@@ -485,17 +492,17 @@
    <object pk="1" model="courses.course">
       <field type="SlugField" name="slug">gene-fishers-cpe102-fall-08</field>
       <field type="CharField" name="name">Gene Fisher's CPE102 Fall 08</field>
-		<field type="BooleanField" name="private">False</field>
+      <field type="BooleanField" name="private">False</field>
    </object>
    <object pk="2" model="courses.course">
       <field type="SlugField" name="slug">john-dalbeys-cpe103-fall-09</field>
       <field type="CharField" name="name">John Dalbey's CPE103 Fall 09</field>
-		<field type="BooleanField" name="private">False</field>
+      <field type="BooleanField" name="private">False</field>
    </object>
    <object pk="3" model="courses.course">
       <field type="SlugField" name="slug">evans-badass-class</field>
       <field type="CharField" name="name">Evan's Badass Class</field>
-		<field type="BooleanField" name="private">False</field>
+      <field type="BooleanField" name="private">False</field>
    </object>
    <object pk="1" model="courses.enrollment">
       <field to="auth.user" name="user" rel="ManyToOneRel">1</field>
@@ -510,5 +517,69 @@
       <field type="BooleanField" name="edit">True</field>
       <field type="BooleanField" name="stats">True</field>
       <field type="BooleanField" name="manage">True</field>
+   </object>
+   <object pk="1" model="page.page">
+      <field to="courses.course" name="course" rel="ManyToOneRel">1</field>
+      <field to="page.page" name="nextPage" rel="OneToOneRel">2</field>
+      <field to="page.page" name="parent" rel="ManyToOneRel"><None></None></field>
+      <field type="SlugField" name="slug">index</field>
+      <field type="TextField" name="name">CPE102 Index</field>
+      <field type="IntegerField" name="order">0</field>
+   </object>
+   <object pk="2" model="page.page">
+      <field to="courses.course" name="course" rel="ManyToOneRel">1</field>
+      <field to="page.page" name="nextPage" rel="OneToOneRel">3</field>
+      <field to="page.page" name="parent" rel="ManyToOneRel">1</field>
+      <field type="SlugField" name="slug">forloops</field>
+      <field type="TextField" name="name">CPE102 forloops</field>
+      <field type="IntegerField" name="order">0</field>
+   </object>
+   <object pk="3" model="page.page">
+      <field to="courses.course" name="course" rel="ManyToOneRel">1</field>
+      <field to="page.page" name="nextPage" rel="OneToOneRel">4</field>
+      <field to="page.page" name="parent" rel="ManyToOneRel">1</field>
+      <field type="SlugField" name="slug">whileloops</field>
+      <field type="TextField" name="name">CPE102 while loops</field>
+      <field type="IntegerField" name="order">1</field>
+   </object>
+   <object pk="4" model="page.page">
+      <field to="courses.course" name="course" rel="ManyToOneRel">1</field>
+      <field to="page.page" name="nextPage" rel="OneToOneRel"><None></None></field>
+      <field to="page.page" name="parent" rel="ManyToOneRel">1</field>
+      <field type="SlugField" name="slug">samplequiz</field>
+      <field type="TextField" name="name">samplequiz</field>
+      <field type="IntegerField" name="order">2</field>
+   </object>
+   <object pk="1" model="lesson.lesson">
+      <field type="TextField" name="content">This is an index page for CPE102</field>
+   </object>
+   <object pk="2" model="lesson.lesson">
+      <field type="TextField" name="content">For loops are orgasmic</field>
+   </object>
+   <object pk="3" model="lesson.lesson">
+      <field type="TextField" name="content">While loops will make you crazy, like a fox</field>
+   </object>
+   <object pk="4" model="quiz.quiz">
+      <field type="TextField" name="text">Sample Quiz</field>
+      <field type="BooleanField" name="hidden">False</field>
+   </object>
+   <object pk="1" model="question.question">
+      <field type="TextField" name="text">What is your name</field>
+      <field type="IntegerField" name="order">0</field>
+      <field to="quiz.quiz" name="quiz" rel="ManyToOneRel">4</field>
+   </object>
+   <object pk="1" model="question.multiplechoicequestion">
+   </object>
+   <object pk="1" model="question.answer">
+      <field to="question.multiplechoicequestion" name="question" rel="ManyToOneRel">1</field>
+      <field type="BooleanField" name="correct">True</field>
+      <field type="IntegerField" name="order">0</field>
+      <field type="TextField" name="text">Russell. (correct)</field>
+   </object>
+   <object pk="2" model="question.answer">
+      <field to="question.multiplechoicequestion" name="question" rel="ManyToOneRel">1</field>
+      <field type="BooleanField" name="correct">False</field>
+      <field type="IntegerField" name="order">1</field>
+      <field type="TextField" name="text">Barney Rubble. (incorrect)</field>
    </object>
 </django-objects>
