@@ -1,6 +1,6 @@
 from django.conf.urls.defaults import *
 from django.views.generic.simple import direct_to_template
 
-urlpatterns = patterns('page.views',
-	(r'/$', 'show_page'),
+urlpatterns = patterns('',
+	(r'', 'page.views.show_page'),
 )
