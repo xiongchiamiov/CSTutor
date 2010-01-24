@@ -1,10 +1,19 @@
 {% extends "base.html" %}
 
 {% block content %}
-{{course}} User list
-<p>
-{% for user in users %}
-	{{user}}
-{% endfor%}
-<p>	
+<center>
+<b><font size="5">{{course}} User list</size></b>
+</center>
+<table>
+	<tr>
+		<td>Name</td><td>Edit</td><td>Manage</td><td>Stats</td>
+	</tr>
+	{% for user in users %}
+	<tr>		
+	<td>{{user}}</td>
+	</tr>
+	{% endfor%}
+</table>	
+<button type=SUBMIT><strong>Add User</strong></button>
+<button type=SUBMIT><strong>Remove User</strong></button>
 {% endblock %}
