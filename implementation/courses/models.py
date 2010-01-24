@@ -59,3 +59,4 @@ class Enrollment(models.Model):
 		'''
 		return Enrollment(user=user, course=course, \
 		                  edit=edit, stats=stats, manage=manage)
+from courses.enrollment import *
