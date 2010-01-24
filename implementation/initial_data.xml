@@ -471,10 +471,12 @@
    <object pk="1" model="courses.course">
       <field type="SlugField" name="slug">gene-fishers-cpe102-fall-08</field>
       <field type="CharField" name="name">Gene Fisher's CPE102 Fall 08</field>
+		<field type="BooleanField" name="private">False</field>
    </object>
    <object pk="2" model="courses.course">
       <field type="SlugField" name="slug">john-dalbeys-cpe103-fall-09</field>
       <field type="CharField" name="name">John Dalbey's CPE103 Fall 09</field>
+		<field type="BooleanField" name="private">False</field>
    </object>
    <object pk="1" model="courses.enrollment">
       <field to="auth.user" name="user" rel="ManyToOneRel">1</field>

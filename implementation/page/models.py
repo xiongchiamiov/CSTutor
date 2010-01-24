@@ -29,4 +29,5 @@ class Page(models.Model):
 	name = models.TextField()
 	order = models.IntegerField()
 
-
+	def __unicode__(self):
+		return name

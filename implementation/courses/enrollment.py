@@ -7,10 +7,9 @@ Contains operations for Courses
 
 '''
 from courses.models import *
-from include.inject import inject
+from include.inject import inject, injectstatic
 
-@staticmethod
-@inject(Enrollment)
+@injectstatic(Enrollment)
 def CreateEnrollment(user, course, \
                      edit=False, stats=False, manage=False):
 	''' Creates a new Enrollment in a course

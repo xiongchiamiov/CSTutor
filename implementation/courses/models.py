@@ -23,6 +23,7 @@ class Course(models.Model):
 	'''
 	slug = models.SlugField(unique = True)
 	name = models.CharField(max_length = 255)
+	private = models.BooleanField(default = False)
 	
 	def __unicode__(self):
 		''' Returns the Course's name.'''
@@ -48,15 +49,8 @@ class Enrollment(models.Model):
 	edit = models.BooleanField(default = False)
 	stats = models.BooleanField(default = False)
 	manage = models.BooleanField(default = False)
+	
+	def __unicode__(self):
+		return unicode(self.user) + u' in ' + unicode(self.course)
 
-	@staticmethod
-	def CreateEnrollment(user, course, \
-	                     edit=False, stats=False, manage=False):
-		''' Creates a new Enrollment in a course
-
-			 Takes in a user, course, and the three permission bits and
-			 sets returns an unsaved enrollment object.
-		'''
-		return Enrollment(user=user, course=course, \
-		                  edit=edit, stats=stats, manage=manage)
 from courses.enrollment import *

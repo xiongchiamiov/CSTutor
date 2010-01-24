@@ -7,10 +7,9 @@ Contains operations for Courses
 
 '''
 from courses.models import *
-from include.inject import inject
+from include.inject import inject, injectstatic
 
-@staticmethod
-@inject(Course)
+@injectstatic(Course)
 def CreateCourse(name, user, slug=None):
 	''' Creates a new course
 
@@ -31,8 +30,21 @@ def CreateCourse(name, user, slug=None):
 	newcourse.addUser(user, True, True, True)
 
 	return newcourse
-		
 
+@inject(Course)
+def addPage(self, newPage, parentPage = None, order = None):
+	'''
+	Adds a page to this course
+
+	If no parent is provided, insert under the "course" page as the last page.
+
+	If no order is provided, insert it as the last page under the parent
+
+	This operation saves the page to the database, and then returns the new
+	page.
+	'''
+	pass
+		
 @inject(Course)
 def addUser(self, user, edit=False, stats=False, manage=False):
 	''' Adds a User to a course 
@@ -47,21 +59,35 @@ def addUser(self, user, edit=False, stats=False, manage=False):
 	enrollment.save()
 	return enrollment
 
-def removePage(request):
+@inject(Course)
+def remove(self):
+	'''
+		Removes this course and all of its pages, statistics, and enrollments
+		from the database (TODO: or doesn't remove them from the database?)
+	'''
+	pass
+
+@inject(Course)
+def removePage(self, page, updateLinks = True):
 	'''
 	Removes the specified page from the specified course
 
-	This operation returns an http response for viewing the deletion
+	To remove a page, the specified page is loaded, its next and prev pages
+	are linked and the page is dropped from the database (or not....)
+
+	this operation returns ???
 	'''
 	pass
 
-def getPrevPage(request):
-	'''
-	Creates a new course with the specified parameters
 
-	This operation returns an http response for viewing the new course
-	'''
-	pass
+@inject(Course)
+def setPrivate(self):
+	self.private = True
+	self.save()
+
+
+# Everything below here is probably supposed to be in views.py -mgius
+
 
 def removeCourse(request):
 	'''
@@ -71,13 +97,6 @@ def removeCourse(request):
 	'''
 	pass
 
-def addPage(request):
-	'''
-	Adds a page to an existing specified Course
-
-	This operation returns an http response for viewing the addition
-	'''
-	pass
 
 def setPrivate(request):
 	'''

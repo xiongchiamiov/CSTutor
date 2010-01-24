@@ -7,13 +7,47 @@ Author(s): James Pearson
 
 '''
 
-def createQuiz(request):
-	'''
-	Takes a course as well as the form submitted containing the new quiz and creates a new Course page containing the quiz.
+from page.quiz.models import *
+from include.inject import inject, staticinject
 
-	Returns an http response for viewing the created quiz.
+@injectstatic(Quiz)
+def CreateQuiz():
+	'''
+		Creates a new quiz object and returns it to the user
+
+		This method is provided to maintain consistent behavior across
+		models
+	'''
+	return Quiz()
+
+@inject(Quiz)
+def checkAnswers(answers, user = None)
+	'''
+	Given a set of answers from the user, checks those answers against the 
+	solution, returning a list of tuples, where each tuple is of the form
+	(boolean, correctanswer), indicating whether or not the user got that
+	question right and the correct answer for that question
+
+	If a user is provided, store a stats entry for this user/quiz
+
+	Returning the answers here because we're going to have to pull them from
+	the database anyway, and if the caller is going to use them, we can save
+	a potentially expensive database operation.
+
+	@author Mark Gius
 	'''
 	pass
+
+@inject(Quiz)
+def determinePath(quiz, score):
+	'''
+	Takes in the score of a quiz and then determines the right path for a 
+	student.
+	
+	Returns a Page.
+	'''
+	pass
+
 
 def deleteQuiz(request):
 	'''
@@ -47,10 +81,3 @@ def removeQuestion(request):
 	'''
 	pass
 
-def determinePath(quiz, score):
-	'''
-	Takes in the score of a quiz and then determines the right path for a student.
-	
-	Returns a Page.
-	'''
-	pass

@@ -21,3 +21,17 @@ def inject(Class):
 			setattr(Class, function.__name__, function)
 		return function
 	return injectInner
+
+def injectstatic(Class):
+	''' Decorator to Inject the function into the provided class as a static 
+		 method instead of an instance method
+	'''
+
+	def injectInner(function):
+		try:
+			Class.__dict__[function.__name__]
+		except KeyError:
+			print "Attaching " + function.__name__
+			setattr(Class, function.__name__, staticmethod(function))
+		return staticmethod(function)
+	return injectInner
