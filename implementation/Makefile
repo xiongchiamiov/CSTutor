@@ -38,14 +38,17 @@ clean: binclean docclean databaseclean
 	@echo "and the database file has been removed"
 	@echo "################################################"
 
+cleanbin: binclean
 binclean:
 	find . -iname '*.pyc' -exec rm {} \;
 
+cleandoc: docclean
 docclean:
 	find ../design/pydoc -iname '*.html' \
 		-not -name '*chat.html' \
 		-not -name '*index.html' \
 		-delete
 
+cleandatabase: databaseclean
 databaseclean:
 	rm -f *.sqlite3
