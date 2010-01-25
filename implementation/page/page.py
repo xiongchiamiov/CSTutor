@@ -6,10 +6,8 @@ Contains operations for all pages
 Author(s): Matthew Tytel
 
 '''
-from include.inject import inject, injectstatic
 from Page import *
 
-@inject(Page)
 def getNextPage(self):
 	'''
 	Gets the next page in the preorder traversal of the page hierarchy
@@ -18,7 +16,6 @@ def getNextPage(self):
 	'''
 	return Page.objects.get(prevPage=self)
 
-@inject(Page)
 def getPrevPage(self):
 	'''
 	Gets the previous page in the preorder traversal of the page heirarchy

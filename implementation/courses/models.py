@@ -28,7 +28,6 @@ class Course(models.Model):
 	def __unicode__(self):
 		''' Returns the Course's name.'''
 		return self.name
-from courses.course import *
 
 class Enrollment(models.Model):
 	''' Model for an Enrollment in a Course
@@ -52,5 +51,3 @@ class Enrollment(models.Model):
 	
 	def __unicode__(self):
 		return unicode(self.user) + u' in ' + unicode(self.course)
-
-from courses.enrollment import *

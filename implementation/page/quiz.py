@@ -8,9 +8,7 @@ Author(s): James Pearson
 '''
 
 from page.quiz.models import *
-from include.inject import inject, staticinject
 
-@injectstatic(Quiz)
 def CreateQuiz():
 	'''
 		Creates a new quiz object and returns it to the user
@@ -20,7 +18,6 @@ def CreateQuiz():
 	'''
 	return Quiz()
 
-@inject(Quiz)
 def checkAnswers(answers, user = None)
 	'''
 	Given a set of answers from the user, checks those answers against the 
@@ -38,7 +35,6 @@ def checkAnswers(answers, user = None)
 	'''
 	pass
 
-@inject(Quiz)
 def determinePath(quiz, score):
 	'''
 	Takes in the score of a quiz and then determines the right path for a 

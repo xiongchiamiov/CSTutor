@@ -7,9 +7,7 @@ Contains operations for Courses
 
 '''
 from courses.models import *
-from include.inject import inject, injectstatic
 
-@injectstatic(Course)
 def CreateCourse(name, user, slug=None):
 	''' Creates a new course
 
@@ -31,7 +29,6 @@ def CreateCourse(name, user, slug=None):
 
 	return newcourse
 
-@inject(Course)
 def addPage(self, newPage, parentPage = None, order = None):
 	'''
 	Adds a page to this course
@@ -52,7 +49,6 @@ def addPage(self, newPage, parentPage = None, order = None):
 	#  
 	pass
 		
-@inject(Course)
 def addUser(self, user, edit=False, stats=False, manage=False):
 	''' Adds a User to a course 
 	
@@ -66,7 +62,6 @@ def addUser(self, user, edit=False, stats=False, manage=False):
 	enrollment.save()
 	return enrollment
 
-@inject(Course)
 def remove(self):
 	'''
 		Removes this course and all of its pages, statistics, and enrollments
@@ -74,7 +69,6 @@ def remove(self):
 	'''
 	pass
 
-@inject(Course)
 def removePage(self, page, updateLinks = True):
 	'''
 	Removes the specified page from the specified course
@@ -87,7 +81,6 @@ def removePage(self, page, updateLinks = True):
 	pass
 
 
-@inject(Course)
 def setPrivate(self):
 	self.private = True
 	self.save()
