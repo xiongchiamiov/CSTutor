@@ -9,11 +9,7 @@ from django.template.defaultfilters import slugify
 def create_course(request):
 	print "Create Class\n" #TODO
 	
-	return render_to_response('course/create_course.html', {'courses': Course.objects.all()})
-
-def join_course(request):
-	print "Join Class\n" #TODO
-	return render_to_response('course/join_course.html', {'courses': Course.objects.all()})
+	return render_to_response('courses/create_course.html', {'courses': Course.objects.all()})
 
 def show_roster(request, course_slug, courses):
 	course = Course.objects.get(slug=course_slug)
@@ -49,3 +45,14 @@ def add_user(request, course_slug, courses):
 	else:
 		course = Course.objects.get(slug=course_slug)
 		return render_to_response('adduser/index.html', {'course_slug': course_slug, 'courses':courses})
+
+def join_course_form(request):
+	courses = Course.objects.all()
+	return render_to_response('courses/join_course_form.html', \
+			{'courses':courses})
+
+def join_course_request(request):
+	courseid = request.GET['courseid']
+	course = Course.objects.get(id=courseid)
+	return render_to_response('courses/join_course_successful.html', \
+			{'course':course})

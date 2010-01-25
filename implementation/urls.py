@@ -18,13 +18,14 @@ if settings.DEBUG:
 		)
 
 urlpatterns += patterns('',
+	(r'^submit_join_course_request', 'courses.views.join_course_request'),
 	(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 	(r'^admin/(.*)', admin.site.root),
 	
 	(r'^/?$', 'home.views.index'),
-        (r'^profile', 'users.views.show_profile'),
+	(r'^profile', 'users.views.show_profile'),
 	(r'^create-course', 'courses.views.create_course'),
-	(r'^join-course', 'courses.views.join_course'),
+	(r'^join-course', 'courses.views.join_course_form'),
 	(r'^create-lesson', 'page.lesson.views.create_lesson'),
 	(r'^create-quiz', 'page.quiz.views.create_quiz'),
 	(r'^(?P<course_slug>[\w-]+)/', include('courses.urls'), {'courses': Course.objects.all()}),

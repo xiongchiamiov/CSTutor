@@ -6,7 +6,7 @@ Contains operations for all pages
 Author(s): Matthew Tytel
 
 '''
-from Page import *
+from models import *
 
 def getNextPage(self):
 	'''
