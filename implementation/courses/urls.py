@@ -7,6 +7,7 @@ from django.views.generic.simple import direct_to_template
 
 urlpatterns = patterns('courses.views',
 	(r'roster/$', 'show_roster'),
+	(r'roster/adduser/$', 'add_user'),
 	(r'(?P<pid>[\w-]+)/', include('page.urls')),
 	(r'', 'show_course'),
 )
