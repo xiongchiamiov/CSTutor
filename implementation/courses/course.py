@@ -7,6 +7,7 @@ Contains operations for Courses
 
 '''
 from courses.models import *
+from courses.enrollment import *
 
 def CreateCourse(name, user, slug=None):
 	''' Creates a new course
@@ -25,7 +26,7 @@ def CreateCourse(name, user, slug=None):
 	newcourse = Course(name=name, slug=slug)
 	newcourse.save()
 
-	newcourse.addUser(user, True, True, True, True)
+	addUser(newcourse, user, True, True, True, True)
 
 	return newcourse
 
@@ -57,8 +58,8 @@ def addUser(self, user, view = True, edit=False, stats=False, manage=False):
 	    user and permission level and adds it to the Course.  Returns the 
 	    enrollment after saving it to the database
 	'''
-	enrollment = Enrollment.CreateEnrollment(user, self, \
-	                                         view, edit, stats, manage)
+	enrollment = CreateEnrollment(user, self, \
+	                              view, edit, stats, manage)
 	enrollment.save()
 	return enrollment
 
