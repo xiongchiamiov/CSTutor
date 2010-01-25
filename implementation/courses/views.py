@@ -3,6 +3,8 @@ from django.http import HttpResponseRedirect
 from courses.models import Course
 from courses.course import *
 from users.models import User
+from django.db import IntegrityError
+from django.template.defaultfilters import slugify 
 
 def show_roster(request, course_slug, courses):
 	course = Course.objects.get(slug=course_slug)
@@ -17,15 +19,20 @@ def add_user(request, course_slug, courses):
 	if request.method == 'POST':
 		firstname = request.POST['firstname']
 		lastname = request.POST['lastname']
-		
+		usr = slugify(firstname+lastname)
+
 		user = User()
 		user.first_name = firstname
 		user.last_name = lastname
-		
+		user.username = usr
+
 		try:
+			user = User.objects.get(username=usr)
+			#user.save()
+		except User.DoesNotExist:
+			#import pdb; pdb.set_trace()
+			#user = User.objects.get(username=usr)
 			user.save()
-		except:
-			pass
 
 		course = Course.objects.get(slug=course_slug)
 		addUser(course, user)
