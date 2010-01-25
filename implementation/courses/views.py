@@ -7,11 +7,12 @@ from django.db import IntegrityError
 from django.template.defaultfilters import slugify 
 
 def create_course(request):
-	print "Create Class\n"
+	print "Create Class\n" #TODO
+	
 	return render_to_response('course/create_course.html', {'courses': Course.objects.all()})
 
 def join_course(request):
-	print "Join Class\n"
+	print "Join Class\n" #TODO
 	return render_to_response('course/join_course.html', {'courses': Course.objects.all()})
 
 def show_roster(request, course_slug, courses):
