@@ -8,7 +8,14 @@ from django.template.defaultfilters import slugify
 
 def create_course(request):
 	print "Create Class\n" #TODO
-	
+	if request.method == "POST":
+		name = request.POST['coursename']
+		course = CreateCourse(name, User.objects.get(username = "fakeuser"))
+		try:
+			c = Course.objects.get(name = name)
+		except Course.DoesNotExist:
+			course.save()
+		
 	return render_to_response('courses/create_course.html', {'courses': Course.objects.all()})
 
 def show_roster(request, course_slug, courses):
