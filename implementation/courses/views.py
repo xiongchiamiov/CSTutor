@@ -54,5 +54,11 @@ def join_course_form(request):
 def join_course_request(request):
 	courseid = request.GET['courseid']
 	course = Course.objects.get(id=courseid)
-	return render_to_response('courses/join_course_successful.html', \
-			{'course':course})
+	user = User.objects.get(username='fakeuser')
+	enrollment = addUser(course, user, True)
+	if enrollment == None:
+		return render_to_response('courses/join_course_already_enrolled.html', \
+				{'course':course, 'user':user})
+	else:
+		return render_to_response('courses/join_course_successful.html', \
+				{'course':course, 'user':user})

@@ -55,13 +55,23 @@ def addUser(self, user, view = True, edit=False, stats=False, manage=False):
 	
 	    Takes in a user, and optional boolean values for edit, stats, and
 	    manage permission, in that order. Creates a new enrollment for that
-	    user and permission level and adds it to the Course.  Returns the 
-	    enrollment after saving it to the database
+	    user and permission level and adds it to the Course.  
+
+		 Returns the  enrollment after saving it to the database, 
+		 or None if the user was already enrolled
+
+		 @author Mark Gius
 	'''
-	enrollment = CreateEnrollment(user, self, \
-	                              view, edit, stats, manage)
-	enrollment.save()
-	return enrollment
+   # test for user/course enrollment already
+	try:
+		Enrollment.objects.get(user=user, course=self)
+	except Enrollment.DoesNotExist:
+		enrollment = CreateEnrollment(user, self, \
+		                              view, edit, stats, manage)
+		enrollment.save()
+		return enrollment
+	# Enrollment already exists
+	return None
 
 def remove(self):
 	'''

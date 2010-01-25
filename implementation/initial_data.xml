@@ -383,6 +383,20 @@
       <field to="auth.group" name="groups" rel="ManyToManyRel"></field>
       <field to="auth.permission" name="user_permissions" rel="ManyToManyRel"></field>
    </object>
+   <object pk="7" model="auth.user">
+      <field type="CharField" name="username">fakeuser</field>
+      <field type="CharField" name="first_name">I Am</field>
+      <field type="CharField" name="last_name">A Fake User</field>
+      <field type="CharField" name="email"></field>
+      <field type="CharField" name="password">sha1$afeda$648e804b09a7bf98dbac6b7da13d6dbe0c7716f6</field>
+      <field type="BooleanField" name="is_staff">False</field>
+      <field type="BooleanField" name="is_active">True</field>
+      <field type="BooleanField" name="is_superuser">False</field>
+      <field type="DateTimeField" name="last_login">2010-01-22 13:17:33</field>
+      <field type="DateTimeField" name="date_joined">2010-01-21 13:16:33</field>
+      <field to="auth.group" name="groups" rel="ManyToManyRel"></field>
+      <field to="auth.permission" name="user_permissions" rel="ManyToManyRel"></field>
+   </object>
    <object pk="18" model="contenttypes.contenttype">
       <field type="CharField" name="name">answer</field>
       <field type="CharField" name="app_label">question</field>
