@@ -10,8 +10,8 @@ def show_profile(request):
 	if request.method == 'POST':
 		usr = request.POST['username']
 
-	try:
-		user = User.objects.get(username=usr)
+		try:
+			user = User.objects.get(username=usr)
 			return render_to_response('user/profile.html', {'user':user})
 		except User.DoesNotExist:
 			return render_to_response('user/notfound.html')
