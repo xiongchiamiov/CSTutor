@@ -22,7 +22,7 @@ urlpatterns += patterns('',
 	(r'^admin/(.*)', admin.site.root),
 	
 	(r'^/?$', 'home.views.index'),
-	(r'^profile', 'users.views.show_profile'),
+        (r'^profile', 'users.views.show_profile'),
 	(r'^create-course', 'courses.views.create_course'),
 	(r'^join-course', 'courses.views.join_course'),
 	(r'^create-lesson', 'page.lesson.views.create_lesson'),
