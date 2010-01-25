@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+<center>
+<b><font size="5">{{course}} <br /> Add New User</size></b>
+</center>
+
+<form name="input" action="" method="post">
+First name:
+<input type="text" name="firstname" />
+<br />
+Last name:
+<input type="text" name="lastname" />
+<br />
+<input type="submit" value="Submit" />
+</form> 
+{% endblock %}
