@@ -5,17 +5,17 @@ from models import Page
 from lesson.views import show_lesson
 from quiz.views import show_quiz
 from courses.views import show_course
+from quiz.models import Quiz
+from lesson.models import Lesson
 
 def show_page(request, course_slug, courses, pid):
-	print "im show_page"
 	page = Page.objects.get(slug=pid)
 
 	try:
 		page = page.lesson
-	except:
+	except Lesson.DoesNotExist:
 		try:
-			print "not a lesson"
 			page = page.quiz
-		except:
+		except Quiz.DoesNotExist:
 			print "Page is neither quiz or lesson"
 	return page.show(request, course_slug, courses, pid)
