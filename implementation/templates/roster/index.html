@@ -6,20 +6,52 @@
 </center>
 <table>
 	<tr>
-		<td>Name</td><td>Edit</td><td>Manage</td><td>Stats</td>
+		<td></td>
+		<td><b><font size="3">Name</font></td>
+		<td><b><font size="3">Username</font></td>
+		<td><b><font size="3">Edit</font></b></td>
+		<td><b><font size="3">Manage</font></b></td>
+		<td><b><font size="3">Stats</font></b></td>
 	</tr>
-	{% for enrollment in enrollments%}
-	<tr>		
+	{% for enrollment in enrollments %}
+	<tr>
+	<td><input type="checkbox" name="option" class="removeList" value={{enrollment.user.username}}> </td>		
 	<td>{{enrollment.user.first_name}} {{enrollment.user.last_name}}</td>
-	<td>{{enrollment.edit}}</td>
-	<td>{{enrollment.manage}}</td>
-	<td>{{enrollment.stats}}</td>
+	<td>{{enrollment.user.username}}</td>
+	<td>	{% if enrollment.edit %}
+				<input type="checkbox" name="edit" value={{enrollment.user.username}} checked="yes">
+			{% else %}
+				<input type="checkbox" name ="edit2" value={{enrollment.user.username}}>
+			{% endif %}</td>
+	<td>{% if enrollment.manage %}
+				<input type="checkbox" name="edit" value={{enrollment.user.username}} checked="yes">
+			{% else %}
+				<input type="checkbox" name ="edit2" value={{enrollment.user.username}}>
+			{% endif %}</td>
+	<td>{% if enrollment.stats %}
+				<input type="checkbox" name="edit" value={{enrollment.user.username}} checked="yes">
+			{% else %}
+				<input type="checkbox" name ="edit2" value={{enrollment.user.username}}>
+			{% endif %}</td>
 	</tr>
 	{% endfor%}
 </table>	
 <form method="link" action="adduser/">
 <input type="submit" value="Add User">
 </form>
+
+<form method="post" action="">
+<input type="submit" value="Remove User">
+</form>
 <br />
-<button type=SUBMIT><strong>Remove User</strong></button>
+<center>
+<b><font size="5">Pending Requests for {{course}}</size></b>
+</center>
+<table>
+	<tr>
+		<td></td>
+		<td><b><font size="3">Name</font></b></td>
+		<td><b><font size="3">Date</font></b></td>
+	</tr>
+</table>
 {% endblock %}
