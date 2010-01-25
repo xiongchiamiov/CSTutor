@@ -1,5 +1,6 @@
 from django.db import models
 from page.models import Page
+from views import show_lesson
 
 # Create your models here.
 
@@ -13,3 +14,6 @@ class Lesson(Page):
 	'''
 	content = models.TextField()
 	# code?  Not sure how to handle
+
+	def show(self, request, course, courses, pid):
+		return show_lesson(request, course, courses, pid)

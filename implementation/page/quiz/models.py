@@ -1,6 +1,7 @@
 from django.db import models
 from page.models import Page
 from courses.models import Course
+from views import show_quiz
 
 # Create your models here.
 
@@ -25,6 +26,9 @@ class Quiz(Page):
 
 	def __unicode__(self):
 		return self.text
+	
+	def show(self, request, course, courses, pid):
+		return show_quiz(request, course, courses, pid)
 
 class Path(models.Model):
 	'''
