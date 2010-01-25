@@ -25,7 +25,7 @@ def CreateCourse(name, user, slug=None):
 	newcourse = Course(name=name, slug=slug)
 	newcourse.save()
 
-	newcourse.addUser(user, True, True, True)
+	newcourse.addUser(user, True, True, True, True)
 
 	return newcourse
 
@@ -49,7 +49,7 @@ def addPage(self, newPage, parentPage = None, order = None):
 	#  
 	pass
 		
-def addUser(self, user, edit=False, stats=False, manage=False):
+def addUser(self, user, view = True, edit=False, stats=False, manage=False):
 	''' Adds a User to a course 
 	
 	    Takes in a user, and optional boolean values for edit, stats, and
@@ -58,7 +58,7 @@ def addUser(self, user, edit=False, stats=False, manage=False):
 	    enrollment after saving it to the database
 	'''
 	enrollment = Enrollment.CreateEnrollment(user, self, \
-	                                         edit, stats, manage)
+	                                         view, edit, stats, manage)
 	enrollment.save()
 	return enrollment
 
@@ -129,5 +129,3 @@ def exportCourse(request):
 	This operation returns an http response with the export data
 	'''
 	pass
-
-

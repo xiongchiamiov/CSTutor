@@ -43,8 +43,8 @@ class Enrollment(models.Model):
 	'''
 	user = models.ForeignKey(User, related_name='enrollments')
 	course = models.ForeignKey(Course, related_name='roster')
-   # removed by mgius.  I believe we were going for implied view?
-   #view = models.BooleanField
+
+	view = models.BooleanField(default = False)
 	edit = models.BooleanField(default = False)
 	stats = models.BooleanField(default = False)
 	manage = models.BooleanField(default = False)
