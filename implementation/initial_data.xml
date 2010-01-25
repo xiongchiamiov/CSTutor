@@ -290,10 +290,10 @@
       <field type="CharField" name="first_name">Mark</field>
       <field type="CharField" name="last_name">Gius</field>
       <field type="CharField" name="email"></field>
-      <field type="CharField" name="password"></field>
-      <field type="BooleanField" name="is_staff">False</field>
+      <field type="CharField" name="password">sha1$afeda$648e804b09a7bf98dbac6b7da13d6dbe0c7716f6</field>
+      <field type="BooleanField" name="is_staff">True</field>
       <field type="BooleanField" name="is_active">True</field>
-      <field type="BooleanField" name="is_superuser">False</field>
+      <field type="BooleanField" name="is_superuser">True</field>
       <field type="DateTimeField" name="last_login">2010-01-22 13:14:05</field>
       <field type="DateTimeField" name="date_joined">2010-01-22 13:14:05</field>
       <field to="auth.group" name="groups" rel="ManyToManyRel"></field>
@@ -304,10 +304,10 @@
       <field type="CharField" name="first_name">Russell</field>
       <field type="CharField" name="last_name">Mezzetta</field>
       <field type="CharField" name="email"></field>
-      <field type="CharField" name="password"></field>
-      <field type="BooleanField" name="is_staff">False</field>
+      <field type="CharField" name="password">sha1$afeda$648e804b09a7bf98dbac6b7da13d6dbe0c7716f6</field>
+      <field type="BooleanField" name="is_staff">True</field>
       <field type="BooleanField" name="is_active">True</field>
-      <field type="BooleanField" name="is_superuser">False</field>
+      <field type="BooleanField" name="is_superuser">True</field>
       <field type="DateTimeField" name="last_login">2010-01-22 13:14:39</field>
       <field type="DateTimeField" name="date_joined">2010-01-22 13:14:39</field>
       <field to="auth.group" name="groups" rel="ManyToManyRel"></field>
@@ -318,10 +318,10 @@
       <field type="CharField" name="first_name">James</field>
       <field type="CharField" name="last_name">Pearson</field>
       <field type="CharField" name="email"></field>
-      <field type="CharField" name="password"></field>
-      <field type="BooleanField" name="is_staff">False</field>
+      <field type="CharField" name="password">sha1$b4740$4fc252a2ad47deaaa1c8306ca5b5591f5ed274b7</field>
+      <field type="BooleanField" name="is_staff">True</field>
       <field type="BooleanField" name="is_active">True</field>
-      <field type="BooleanField" name="is_superuser">False</field>
+      <field type="BooleanField" name="is_superuser">True</field>
       <field type="DateTimeField" name="last_login">2010-01-22 13:15:16</field>
       <field type="DateTimeField" name="date_joined">2010-01-22 13:15:16</field>
       <field to="auth.group" name="groups" rel="ManyToManyRel"></field>
@@ -332,10 +332,10 @@
       <field type="CharField" name="first_name">Jon</field>
       <field type="CharField" name="last_name">Inloes</field>
       <field type="CharField" name="email"></field>
-      <field type="CharField" name="password"></field>
-      <field type="BooleanField" name="is_staff">False</field>
+      <field type="CharField" name="password">sha1$afeda$648e804b09a7bf98dbac6b7da13d6dbe0c7716f6</field>
+      <field type="BooleanField" name="is_staff">True</field>
       <field type="BooleanField" name="is_active">True</field>
-      <field type="BooleanField" name="is_superuser">False</field>
+      <field type="BooleanField" name="is_superuser">True</field>
       <field type="DateTimeField" name="last_login">2010-01-22 13:15:38</field>
       <field type="DateTimeField" name="date_joined">2010-01-22 13:15:38</field>
       <field to="auth.group" name="groups" rel="ManyToManyRel"></field>
@@ -346,10 +346,10 @@
       <field type="CharField" name="first_name">John</field>
       <field type="CharField" name="last_name">Hartquist</field>
       <field type="CharField" name="email"></field>
-      <field type="CharField" name="password"></field>
-      <field type="BooleanField" name="is_staff">False</field>
+      <field type="CharField" name="password">sha1$afeda$648e804b09a7bf98dbac6b7da13d6dbe0c7716f6</field>
+      <field type="BooleanField" name="is_staff">True</field>
       <field type="BooleanField" name="is_active">True</field>
-      <field type="BooleanField" name="is_superuser">False</field>
+      <field type="BooleanField" name="is_superuser">True</field>
       <field type="DateTimeField" name="last_login">2010-01-22 13:16:01</field>
       <field type="DateTimeField" name="date_joined">2010-01-22 13:16:01</field>
       <field to="auth.group" name="groups" rel="ManyToManyRel"></field>
@@ -360,10 +360,10 @@
       <field type="CharField" name="first_name">Matt</field>
       <field type="CharField" name="last_name">Tytel</field>
       <field type="CharField" name="email"></field>
-      <field type="CharField" name="password"></field>
-      <field type="BooleanField" name="is_staff">False</field>
+      <field type="CharField" name="password">sha1$afeda$648e804b09a7bf98dbac6b7da13d6dbe0c7716f6</field>
+      <field type="BooleanField" name="is_staff">True</field>
       <field type="BooleanField" name="is_active">True</field>
-      <field type="BooleanField" name="is_superuser">False</field>
+      <field type="BooleanField" name="is_superuser">True</field>
       <field type="DateTimeField" name="last_login">2010-01-22 13:16:33</field>
       <field type="DateTimeField" name="date_joined">2010-01-22 13:16:33</field>
       <field to="auth.group" name="groups" rel="ManyToManyRel"></field>
@@ -374,10 +374,10 @@
       <field type="CharField" name="first_name">Evan</field>
       <field type="CharField" name="last_name">Kleist</field>
       <field type="CharField" name="email"></field>
-      <field type="CharField" name="password"></field>
-      <field type="BooleanField" name="is_staff">False</field>
+      <field type="CharField" name="password">sha1$afeda$648e804b09a7bf98dbac6b7da13d6dbe0c7716f6</field>
+      <field type="BooleanField" name="is_staff">True</field>
       <field type="BooleanField" name="is_active">True</field>
-      <field type="BooleanField" name="is_superuser">False</field>
+      <field type="BooleanField" name="is_superuser">True</field>
       <field type="DateTimeField" name="last_login">2010-01-22 13:16:33</field>
       <field type="DateTimeField" name="date_joined">2010-01-22 13:16:33</field>
       <field to="auth.group" name="groups" rel="ManyToManyRel"></field>
