@@ -21,17 +21,17 @@
 	<td>	{% if enrollment.edit %}
 				<input type="checkbox" name="edit" value={{enrollment.user.username}} checked="yes">
 			{% else %}
-				<input type="checkbox" name ="edit2" value={{enrollment.user.username}}>
+				<input type="checkbox" name ="edit" value={{enrollment.user.username}}>
 			{% endif %}</td>
 	<td>{% if enrollment.manage %}
-				<input type="checkbox" name="edit" value={{enrollment.user.username}} checked="yes">
+				<input type="checkbox" name="manage" value={{enrollment.user.username}} checked="yes">
 			{% else %}
-				<input type="checkbox" name ="edit2" value={{enrollment.user.username}}>
+				<input type="checkbox" name ="manage" value={{enrollment.user.username}}>
 			{% endif %}</td>
 	<td>{% if enrollment.stats %}
-				<input type="checkbox" name="edit" value={{enrollment.user.username}} checked="yes">
+				<input type="checkbox" name="stats" value={{enrollment.user.username}} checked="yes">
 			{% else %}
-				<input type="checkbox" name ="edit2" value={{enrollment.user.username}}>
+				<input type="checkbox" name ="stats" value={{enrollment.user.username}}>
 			{% endif %}</td>
 	</tr>
 	{% endfor%}
