@@ -18,6 +18,7 @@ if settings.DEBUG:
 		)
 
 urlpatterns += patterns('',
+	(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 	(r'^admin/(.*)', admin.site.root),
 	
 	(r'^/?$', 'home.views.index'),
@@ -27,9 +28,4 @@ urlpatterns += patterns('',
 	(r'^create-lesson', 'page.lesson.views.create_lesson'),
 	(r'^create-quiz', 'page.quiz.views.create_quiz'),
 	(r'^(?P<course_slug>[\w-]+)/', include('courses.urls'), {'courses': Course.objects.all()}),
-
-
-	# Uncomment the admin/doc line below and add 'django.contrib.admindocs' 
-	# to INSTALLED_APPS to enable admin documentation:
-	# (r'^admin/doc/', include('django.contrib.admindocs.urls')),
 )
