@@ -8,9 +8,12 @@
 	<tr>
 		<td>Name</td><td>Edit</td><td>Manage</td><td>Stats</td>
 	</tr>
-	{% for user in users %}
+	{% for enrollment in enrollments%}
 	<tr>		
-	<td>{{user}}</td>
+	<td>{{enrollment.user.first_name}} {{enrollment.user.last_name}}</td>
+	<td>{{enrollment.edit}}</td>
+	<td>{{enrollment.manage}}</td>
+	<td>{{enrollment.stats}}</td>
 	</tr>
 	{% endfor%}
 </table>	
