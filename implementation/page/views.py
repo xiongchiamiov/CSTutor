@@ -1,4 +1,5 @@
 from django.shortcuts import render_to_response
+from django.http import HttpResponse
 #from page.models import Page
 from models import Page
 #from page.lesson.views import show_lesson
@@ -7,10 +8,20 @@ from quiz.views import show_quiz
 from courses.views import show_course
 from quiz.models import Quiz
 from lesson.models import Lesson
+from models import Course
 
 def show_page(request, course_slug, courses, pid):
-	page = Page.objects.get(slug=pid)
-
+	#check if the course is a real course in the database	
+	try: 
+		Course.objects.get(slug=course_slug)
+	except Course.DoesNotExist:
+		return HttpResponse("ERROR: BAD URL: The course: %s does not exist" % (course_slug))
+	#check if the page is a real page in the database
+	try:
+		page = Page.objects.get(slug=pid)
+	except Page.DoesNotExist:
+		return HttpResponse("ERROR: BAD URL: The course: %s does not contain the page: %s." % (course_slug, pid))
+	#case the page to a lesson or quiz then call show on it
 	try:
 		page = page.lesson
 	except Lesson.DoesNotExist:

@@ -16,5 +16,8 @@ class Lesson(Page):
 	# code?  Not sure how to handle
 
 	def show(self, request, course_slug, courses, pid):
-		return show_lesson(request, course_slug, courses, pid)
+		#import pdb; pdb.set_trace()
+		#p = Page.objects.get(slug = pid)
+		#print self.content
+		return show_lesson(request, course_slug, courses, pid, self.content)
 
