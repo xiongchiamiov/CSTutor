@@ -1,6 +1,8 @@
 from django.shortcuts import render_to_response
 from django.http import HttpResponseRedirect
 from courses.models import Course
+from courses.course import *
+from users.models import User
 
 def show_roster(request, course_slug, courses):
 	course = Course.objects.get(slug=course_slug)
@@ -25,7 +27,7 @@ def add_user(request, course_slug, courses):
 		except:
 			pass
 
-		course = Courses.object.get(course_slug)
+		course = Course.objects.get(slug=course_slug)
 		addUser(course, user)
 		return HttpResponseRedirect("/%s/roster/" % course_slug)
 	else:
