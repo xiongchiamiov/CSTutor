@@ -19,7 +19,7 @@ if settings.DEBUG:
 
 urlpatterns += patterns('',
 	(r'^/?$', 'home.views.index'),
-	(r'^(?P<course>[\w-]+)/', include('courses.urls'), {'courses': Course.objects.all()}),
+	(r'^(?P<course_slug>[\w-]+)/', include('courses.urls'), {'courses': Course.objects.all()}),
 
 	# Uncomment the admin/doc line below and add 'django.contrib.admindocs' 
 	# to INSTALLED_APPS to enable admin documentation:

@@ -44,8 +44,8 @@
 			<div id="top-nav" class="span-18 last">
 				<div class="span-2"><a href="/">Home</a></div>
 				<div class="span-2"><a href="/stats/">Stats</a></div>
-				{% if course %}
-				<div class="span-2"><a href="/{{course}}/roster/">Roster</a></div>
+				{% if course_slug %}
+				<div class="span-2"><a href="/{{course_slug}}/roster/">Roster</a></div>
 				{% else %}
 				<div class="span-2"><a href="/roster/">Roster</a></div>
 				{% endif %}
