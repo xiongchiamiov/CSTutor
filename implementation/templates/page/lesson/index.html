@@ -1,10 +1,8 @@
-{% extends "base.html" %}
+{% extends "base.html" %} {% block content %} Title of course:
+{{course}}
 
-{% block content %}
-Lesson from course: {{course}}
-<br/><br/>
-Lesson-Page named: {{pid}}
-<br/>
-Lesson-Content: <br/>
-To do.
-{% endblock %}
+Title of lesson:
+{{pid}}
+
+Content of lesson:
+{{lessonContent}} {% endblock %} 
