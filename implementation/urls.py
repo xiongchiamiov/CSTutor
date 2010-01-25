@@ -19,6 +19,10 @@ if settings.DEBUG:
 
 urlpatterns += patterns('',
 	(r'^/?$', 'home.views.index'),
+	(r'^create-course', 'courses.views.create_course'),
+	(r'^join-course', 'courses.views.join_course'),
+	(r'^create-lesson', 'page.lesson.views.create_lesson'),
+	(r'^create-quiz', 'page.quiz.views.create_quiz'),
 	(r'^(?P<course_slug>[\w-]+)/', include('courses.urls'), {'courses': Course.objects.all()}),
 
 	# Uncomment the admin/doc line below and add 'django.contrib.admindocs' 
