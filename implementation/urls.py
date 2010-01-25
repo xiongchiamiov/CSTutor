@@ -4,8 +4,8 @@ from django.conf import settings
 from courses.models import Course
 
 # Uncomment the next two lines to enable the admin:
-# from django.contrib import admin
-# admin.autodiscover()
+from django.contrib import admin
+admin.autodiscover()
 
 urlpatterns = []
 
@@ -18,6 +18,8 @@ if settings.DEBUG:
 		)
 
 urlpatterns += patterns('',
+	(r'^admin/(.*)', admin.site.root),
+	
 	(r'^/?$', 'home.views.index'),
 	(r'^profile', 'users.views.show_profile'),
 	(r'^create-course', 'courses.views.create_course'),
@@ -30,7 +32,4 @@ urlpatterns += patterns('',
 	# Uncomment the admin/doc line below and add 'django.contrib.admindocs' 
 	# to INSTALLED_APPS to enable admin documentation:
 	# (r'^admin/doc/', include('django.contrib.admindocs.urls')),
-
-	# Uncomment the next line to enable the admin:
-	# (r'^admin/(.*)', admin.site.root),
 )
