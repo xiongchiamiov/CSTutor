@@ -13,4 +13,4 @@ def show_roster(request, course, courses):
 	return render_to_response('roster/index.html', {'course': course, 'enrollments': enrollments, 'courses': courses})
 
 def show_course(request, courses, course):
-	return render_to_response('index.html', {'courses': courses})
+	return render_to_response('index.html', {'courses': courses, 'course': course})
