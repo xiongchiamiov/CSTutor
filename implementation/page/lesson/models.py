@@ -15,5 +15,6 @@ class Lesson(Page):
 	content = models.TextField()
 	# code?  Not sure how to handle
 
-	def show(self, request, course, courses, pid):
-		return show_lesson(request, course, courses, pid)
+	def show(self, request, course_slug, courses, pid):
+		return show_lesson(request, course_slug, courses, pid)
+
