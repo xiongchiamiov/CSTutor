@@ -1,6 +1,13 @@
 {% extends "base.html" %}
 
 {% block content %}
-View all stats hereStats. 
+    {% for course in courses %}
+        <h2>{{course}} Statistics</h2>
+        <table>
+            <tr><th>Student</th><th>Quiz X (Ond of these will appear for eah quiz)</th></tr>
+            <tr><td>Sample</td><td> 100/100 (Pass)</td></tr>
+        </table>
+    {% endfor %}
+
 {% endblock %}
 

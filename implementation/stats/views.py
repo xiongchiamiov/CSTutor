@@ -1,6 +1,7 @@
 from django.shortcuts import render_to_response
 from django.http import HttpResponseRedirect
-#from stats.models import Stat
+from models import Stat
+from courses.models import Course
 #from stats.stats import *
 from users.models import User
 from django.db import IntegrityError
@@ -14,7 +15,11 @@ def display_couse_stats(request, course_slug):
 
 def display_all_stats(request):
 	'''Displays stats for ALL users in all courses'''
-	return render_to_response('stats/show_all_stats.html')
+	data = {}
+	courses = Course.objects.all()
+	data['courses'] = courses 
+
+	return render_to_response('stats/show_all_stats.html',data)
 	
 
 
