@@ -29,6 +29,7 @@ def show_course(request, courses, course_slug):
 
 def add_user(request, course_slug, courses):
 	if request.method == 'POST':
+		course = Course.objects.get(slug=course_slug)
 		firstname = request.POST['firstname']
 		lastname = request.POST['lastname']
 		usr = slugify(firstname+lastname)
@@ -44,14 +45,19 @@ def add_user(request, course_slug, courses):
 		except User.DoesNotExist:
 			#import pdb; pdb.set_trace()
 			#user = User.objects.get(username=usr)
-			user.save()
+			#user.save()
+			return render_to_response('adduser/failed.html', {'course_slug':course_slug, 'courses': courses, 'course': course})
 
-		course = Course.objects.get(slug=course_slug)
+		#course = Course.objects.get(slug=course_slug)
 		addUser(course, user)
 		return HttpResponseRedirect("/%s/roster/" % course_slug)
 	else:
 		course = Course.objects.get(slug=course_slug)
-		return render_to_response('adduser/index.html', {'course_slug': course_slug, 'courses':courses})
+		return render_to_response('adduser/index.html', {'course_slug': course_slug, 'courses':courses, 'course': course})
+
+def cancel_add(request, course_slug, courses):
+
+	return HttpResponseRedirect("/%s/roster/" % course_slug)
 
 def join_course_form(request):
 	courses = Course.objects.all()
