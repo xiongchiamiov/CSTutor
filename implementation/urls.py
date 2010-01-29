@@ -22,6 +22,7 @@ urlpatterns += patterns('',
 	(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 	(r'^admin/(.*)', admin.site.root),
 	
+	(r'^login/?', 'users.views.show_login'),
 	(r'^/?$', 'home.views.index'),
 	(r'^profile', 'users.views.show_profile'),
 	(r'^stats', 'stats.views.display_all_stats'),
