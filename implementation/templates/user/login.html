@@ -1,0 +1,39 @@
+{% comment %} 
+{% extends "base.html" %}
+
+{% block content %}
+{% endcomment %}
+
+<form action="" method="post">
+<p align="center"><font size="+2">CSTutor Login
+<br /><br /></font>
+<font>
+Username:
+<input type="text" name="username" />
+<br />
+Password:
+<input type="password" name="password" />
+<br /><br />
+Anonymous:
+<input type="checkbox" value="anonymous" />
+
+Remember Me:
+<input type="checkbox" value="rememberMe" />
+
+Auto Login:
+<input type="checkbox" value="autoLogin" />
+<br />
+</font>
+<input type="submit" value="Login"><br />
+<font size="+1">
+<br />
+<a href="register-new-account/">Register New Account</a>
+<br /><br />
+{{message}}
+</p>
+</form>
+
+{% comment %}
+<!--{% endblock %}-->
+{% endcomment %}
+
