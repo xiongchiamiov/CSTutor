@@ -55,6 +55,16 @@ def add_user(request, course_slug, courses):
 		course = Course.objects.get(slug=course_slug)
 		return render_to_response('adduser/index.html', {'course_slug': course_slug, 'courses':courses, 'course': course})
 
+def search_username(request, course_slug, courses):
+	course = Course.objects.get(slug=course_slug)
+	firstname = request.POST['firstname']
+	lastname = request.POST['lastname']
+	
+	users = User.objects.filter(first_name = firstname, last_name = lastname)
+
+	
+	return render_to_response('adduser/search.html', {'course_slug': course_slug, 'courses':courses, 'course':course, 'users':users, 'firstname': firstname, 'lastname': lastname})
+
 def cancel_add(request, course_slug, courses):
 
 	return HttpResponseRedirect("/%s/roster/" % course_slug)
