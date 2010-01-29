@@ -10,8 +10,10 @@ def create_course(request):
 	print "Create Class\n" #TODO
 	if request.method == "POST":
 		name = request.POST['coursename']
+
 		try:
 			c = Course.objects.get(slug=name)
+			return render_to_response('courses/create_course_dup.html', {'courses': Course.objects.all()})
 		except Course.DoesNotExist:
 			course = CreateCourse(name, User.objects.get(username = "fakeuser"))
 			course.save()
