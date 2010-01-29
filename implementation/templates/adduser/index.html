@@ -2,20 +2,31 @@
 
 {% block content %}
 <center>
-<b><font size="5">{{course}} <br /> Add New User</size></b>
+<b><font size="5">{{course}} <br /> Add New User</font></b>
 </center>
 
-<form name="input" action="" method="post">
+<p><b><font size ="3">Search for Username</font></b></p>
+
+<form name="search" action="search/" method="post">
 First name:
 <input type="text" name="firstname" />
 <br />
 Last name:
 <input type="text" name="lastname" />
 <br />
+<input type="submit" value="Search" />
+</form>
+	{% block table %}
+	{% endblock table %}
+<br/>
+
+<form name="input" action="" method="post">
+Username:
+<input type="text" name="username" />
 <input type="submit" value="Submit" />
-</form> 
 
 <form method="link" action="cancel/">
+<br/>
 <input type="submit" value="Cancel">
 </form>
 {% endblock %}

@@ -1,24 +1,7 @@
-{% extends "base.html" %}
+{% extends "./adduser/index.html" %}
 
-{% block content %}
-<center>
-<b><font size="5">{{course}} <br /> Add New User</size></b>
-</center>
-
-<form name="input" action="" method="post">
-First name:
-<input type="text" name="firstname" />
-<br />
-Last name:
-<input type="text" name="lastname" />
-<br />
-<input type="submit" value="Submit" />
-</form>
-
-<form method="link" action="cancel/">
-<input type="submit" value="Cancel">
-</form>
- 
+{% block content %} 
+{{block.super}}
 <p>
 <font size="3" color="red">User does not exist</font>
 </p>
