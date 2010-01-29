@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+# @author John Hartquist
 # Create your models here.
 
 # All the functionality we are looking for is completely covered by 

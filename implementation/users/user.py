@@ -1,4 +1,4 @@
-
+#@author John Hartquist	
 
 def editProfile(oldUser, newUser):
    '''
