@@ -559,7 +559,14 @@
       <field type="IntegerField" name="order">0</field>
       <field to="quiz.quiz" name="quiz" rel="ManyToOneRel">4</field>
    </object>
+   <object pk="2" model="question.question">
+      <field type="TextField" name="text">What is your gender?</field>
+      <field type="IntegerField" name="order">2</field>
+      <field to="quiz.quiz" name="quiz" rel="ManyToOneRel">4</field>
+   </object>
    <object pk="1" model="question.multiplechoicequestion">
+   </object>
+   <object pk="2" model="question.multiplechoicequestion">
    </object>
    <object pk="1" model="question.answer">
       <field to="question.multiplechoicequestion" name="question" rel="ManyToOneRel">1</field>
@@ -572,5 +579,17 @@
       <field type="BooleanField" name="correct">False</field>
       <field type="IntegerField" name="order">1</field>
       <field type="TextField" name="text">Barney Rubble. (incorrect)</field>
+   </object>
+   <object pk="3" model="question.answer">
+      <field to="question.multiplechoicequestion" name="question" rel="ManyToOneRel">2</field>
+      <field type="BooleanField" name="correct">True</field>
+      <field type="IntegerField" name="order">1</field>
+      <field type="TextField" name="text">Male</field>
+   </object>
+   <object pk="4" model="question.answer">
+      <field to="question.multiplechoicequestion" name="question" rel="ManyToOneRel">2</field>
+      <field type="BooleanField" name="correct">False</field>
+      <field type="IntegerField" name="order">2</field>
+      <field type="TextField" name="text">Female</field>
    </object>
 </django-objects>
