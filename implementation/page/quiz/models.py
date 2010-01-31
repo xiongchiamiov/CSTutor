@@ -3,7 +3,14 @@ from page.models import Page
 from courses.models import Course
 from views import show_quiz
 
-# Create your models here.
+'''
+Models file for Quiz related classes
+
+Contains the Overall "Quiz" class, plus the Classes that are primarily
+contained within a Quiz, such as Path.
+
+@author Evan Kleist
+'''
 
 class Quiz(Page):
 	'''
@@ -28,7 +35,7 @@ class Quiz(Page):
 		return self.text
 	
 	def show(self, request, course, courses, pid):
-		return show_quiz(request, course, courses, pid)
+		return show_quiz(request, course, courses, pid, self.text)
 
 class Path(models.Model):
 	'''

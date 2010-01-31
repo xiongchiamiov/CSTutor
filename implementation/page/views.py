@@ -10,6 +10,19 @@ from quiz.models import Quiz
 from lesson.models import Lesson
 from models import Course
 
+'''
+Views file for page related view
+
+Contains the show_page function
+
+@author Evan Kleist
+@author Russell Mezzetta
+'''
+
+
+# @author Evan Kleist
+# @author Russell Mezzetta
+
 def show_page(request, course_slug, courses, pid):
 	#check if the course is a real course in the database	
 	try: 

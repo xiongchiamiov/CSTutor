@@ -1,4 +1,8 @@
 ''' Question Package
 
-	Contains models and methods for Question related functionality
-	'''
+A question can be either a MultipleChoiceQuestion or a CodeQuestion.
+
+Contains all question related classes and functionality.
+
+@author Evan Kleist
+'''

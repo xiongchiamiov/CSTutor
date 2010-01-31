@@ -5,6 +5,12 @@ Quiz from course: {{course}}
 <br/><br/>
 Quiz-Page named: {{pid}}
 <br/><br/>
-Quiz-Content: To do.<br/>
-
+Quiz-Title: {{quizTitle}}
+<br/><br/>
+{% for mcq in mcQuestions %}
+	{{mcq.text}}<br/>
+	{% for a in mcq.answers.all %}
+		{{a.text}}<br/>
+	{% endfor %}
+{% endfor %}
 {% endblock %}

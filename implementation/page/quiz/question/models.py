@@ -1,7 +1,15 @@
 from django.db import models
 from page.quiz.models import Quiz
 
-# Create your models here.
+'''
+Models file for question related classes
+
+Contains the Overall "Question" class, plus the Classes that are primarily
+contained within a Question, such as MultipleChoiceQuestion, CodeQuestion and Answer.
+
+@author Evan Kleist
+
+'''
 
 class Question(models.Model):
 	'''
