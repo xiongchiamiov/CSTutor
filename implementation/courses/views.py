@@ -13,9 +13,12 @@ from django.template.defaultfilters import slugify
 def create_course(request):
 	if request.method == "POST":
 		name = request.POST['coursename']
+		
+		if len(name) < 3:
+			return render_to_response('courses/create_course_length.html', {'courses': Course.objects.all()})
 
 		try:
-			c = Course.objects.get(slug=name)
+			c = Course.objects.get(name=name)
 			return render_to_response('courses/create_course_dup.html', {'courses': Course.objects.all()})
 		except Course.DoesNotExist:
 			course = CreateCourse(name, User.objects.get(username = "fakeuser"))
