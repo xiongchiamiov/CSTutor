@@ -34,7 +34,7 @@ def show_course(request, courses, course_slug):
 	return render_to_response('index.html', {'courses': courses, 'course_slug': course_slug})
 
 def add_user(request, course_slug, courses):
-	
+	'''Handles the commands given by the add user screen'''
 	course = Course.objects.get(slug=course_slug)
 	
 	#if the request method was a post determine the command that was given
@@ -72,6 +72,7 @@ def add_user(request, course_slug, courses):
 		return render_to_response('adduser/index.html', {'course_slug': course_slug, 'courses':courses, 'course': course, 'url': request.path})
 
 def search_username(request, course_slug, courses):
+	'''This function is not called any more'''
 	course = Course.objects.get(slug=course_slug)
 	
 	firstname = request.POST['firstname']
@@ -86,6 +87,7 @@ def search_username(request, course_slug, courses):
 	return render_to_response('adduser/search.html', {'course_slug': course_slug, 'courses':courses, 'course':course, 'users':users, 'firstname': firstname, 'lastname': lastname, 'url': request.path})
 
 def remove_user(request, course_slug, courses):
+	'''Removes a user from a course's enrollment list'''
 	removeName = request.POST['username']
 	course = Course.objects.get(slug=course_slug)
 
@@ -99,7 +101,7 @@ def remove_user(request, course_slug, courses):
 	return HttpResponseRedirect("/%s/roster/" % course_slug)
 
 def cancel_add(request, course_slug, courses):
-
+	'''Redirects to the roster screen when viewing the add user page'''
 	return HttpResponseRedirect("/%s/roster/" % course_slug)
 
 def join_course_form(request):

@@ -1,3 +1,4 @@
+'''This file is not used any more will be deleted when in time'''
 def addUser(newUser, course):
 	''' 
 	Adds the given string name into the Roster and produces an updated Roster.
