@@ -73,6 +73,13 @@ def addUser(self, user, view = True, edit=False, stats=False, manage=False):
 	# Enrollment already exists
 	return None
 
+def removeUser(self, user):
+	print 'removing a user'
+	try:
+		Enrollment.objects.get(user=user, course=self).delete()
+	except:
+		print 'remove failed'	
+	return None
 def remove(self):
 	'''
 		Removes this course and all of its pages, statistics, and enrollments

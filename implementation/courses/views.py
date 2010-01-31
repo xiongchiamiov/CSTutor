@@ -32,17 +32,19 @@ def show_course(request, courses, course_slug):
 def add_user(request, course_slug, courses):
 	if request.method == 'POST':
 		course = Course.objects.get(slug=course_slug)
-		firstname = request.POST['firstname']
-		lastname = request.POST['lastname']
-		usr = slugify(firstname+lastname)
+		usr = request.POST['username']
+		#firstname = request.POST['firstname']
+		#lastname = request.POST['lastname']
+		#usr = slugify(firstname+lastname)
 
-		user = User()
-		user.first_name = firstname
-		user.last_name = lastname
-		user.username = usr
+		#user = User()
+		#user.first_name = firstname
+		#user.last_name = lastname
+		#user.username = usr
 
 		try:
 			user = User.objects.get(username=usr)
+			addUser(course, user)
 			#user.save()
 		except User.DoesNotExist:
 			#import pdb; pdb.set_trace()
@@ -51,21 +53,38 @@ def add_user(request, course_slug, courses):
 			return render_to_response('adduser/failed.html', {'course_slug':course_slug, 'courses': courses, 'course': course})
 
 		#course = Course.objects.get(slug=course_slug)
-		addUser(course, user)
+		
 		return HttpResponseRedirect("/%s/roster/" % course_slug)
 	else:
 		course = Course.objects.get(slug=course_slug)
-		return render_to_response('adduser/index.html', {'course_slug': course_slug, 'courses':courses, 'course': course})
+		return render_to_response('adduser/index.html', {'course_slug': course_slug, 'courses':courses, 'course': course, 'url': request.path})
 
 def search_username(request, course_slug, courses):
 	course = Course.objects.get(slug=course_slug)
+	
 	firstname = request.POST['firstname']
 	lastname = request.POST['lastname']
 	
+	url = request.path
+	print url
+
 	users = User.objects.filter(first_name = firstname, last_name = lastname)
 
 	
-	return render_to_response('adduser/search.html', {'course_slug': course_slug, 'courses':courses, 'course':course, 'users':users, 'firstname': firstname, 'lastname': lastname})
+	return render_to_response('adduser/search.html', {'course_slug': course_slug, 'courses':courses, 'course':course, 'users':users, 'firstname': firstname, 'lastname': lastname, 'url': request.path})
+
+def remove_user(request, course_slug, courses):
+	removeName = request.POST['username']
+	course = Course.objects.get(slug=course_slug)
+
+	try:
+		user = User.objects.get(username=removeName)
+		removeUser(course,user)
+	except	User.DoesNotExist:
+		pass
+	
+	
+	return HttpResponseRedirect("/%s/roster/" % course_slug)
 
 def cancel_add(request, course_slug, courses):
 
