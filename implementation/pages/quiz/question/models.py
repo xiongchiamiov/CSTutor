@@ -1,5 +1,5 @@
 from django.db import models
-from page.quiz.models import Quiz
+from pages.quiz.models import Quiz
 
 '''
 Models file for question related classes

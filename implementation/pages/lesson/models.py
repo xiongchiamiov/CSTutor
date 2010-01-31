@@ -1,5 +1,5 @@
 from django.db import models
-from page.models import Page
+from pages.models import Page
 from views import show_lesson
 
 # Create your models here.

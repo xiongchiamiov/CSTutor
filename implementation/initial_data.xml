@@ -121,123 +121,123 @@
       <field type="CharField" name="codename">delete_enrollment</field>
    </object>
    <object pk="34" model="auth.permission">
-      <field type="CharField" name="name">Can add page</field>
+      <field type="CharField" name="name">Can add lesson</field>
       <field to="contenttypes.contenttype" name="content_type" rel="ManyToOneRel">12</field>
-      <field type="CharField" name="codename">add_page</field>
+      <field type="CharField" name="codename">add_lesson</field>
    </object>
    <object pk="35" model="auth.permission">
-      <field type="CharField" name="name">Can change page</field>
+      <field type="CharField" name="name">Can change lesson</field>
       <field to="contenttypes.contenttype" name="content_type" rel="ManyToOneRel">12</field>
-      <field type="CharField" name="codename">change_page</field>
+      <field type="CharField" name="codename">change_lesson</field>
    </object>
    <object pk="36" model="auth.permission">
-      <field type="CharField" name="name">Can delete page</field>
+      <field type="CharField" name="name">Can delete lesson</field>
       <field to="contenttypes.contenttype" name="content_type" rel="ManyToOneRel">12</field>
-      <field type="CharField" name="codename">delete_page</field>
+      <field type="CharField" name="codename">delete_lesson</field>
    </object>
    <object pk="31" model="auth.permission">
-      <field type="CharField" name="name">Can add user</field>
+      <field type="CharField" name="name">Can add page</field>
       <field to="contenttypes.contenttype" name="content_type" rel="ManyToOneRel">11</field>
-      <field type="CharField" name="codename">add_user</field>
+      <field type="CharField" name="codename">add_page</field>
    </object>
    <object pk="32" model="auth.permission">
-      <field type="CharField" name="name">Can change user</field>
+      <field type="CharField" name="name">Can change page</field>
       <field to="contenttypes.contenttype" name="content_type" rel="ManyToOneRel">11</field>
-      <field type="CharField" name="codename">change_user</field>
+      <field type="CharField" name="codename">change_page</field>
    </object>
    <object pk="33" model="auth.permission">
-      <field type="CharField" name="name">Can delete user</field>
+      <field type="CharField" name="name">Can delete page</field>
       <field to="contenttypes.contenttype" name="content_type" rel="ManyToOneRel">11</field>
-      <field type="CharField" name="codename">delete_user</field>
+      <field type="CharField" name="codename">delete_page</field>
    </object>
    <object pk="52" model="auth.permission">
-      <field type="CharField" name="name">Can add code question</field>
+      <field type="CharField" name="name">Can add answer</field>
       <field to="contenttypes.contenttype" name="content_type" rel="ManyToOneRel">18</field>
-      <field type="CharField" name="codename">add_codequestion</field>
+      <field type="CharField" name="codename">add_answer</field>
    </object>
    <object pk="49" model="auth.permission">
-      <field type="CharField" name="name">Can add multiple choice question</field>
+      <field type="CharField" name="name">Can add code question</field>
       <field to="contenttypes.contenttype" name="content_type" rel="ManyToOneRel">17</field>
+      <field type="CharField" name="codename">add_codequestion</field>
+   </object>
+   <object pk="46" model="auth.permission">
+      <field type="CharField" name="name">Can add multiple choice question</field>
+      <field to="contenttypes.contenttype" name="content_type" rel="ManyToOneRel">16</field>
       <field type="CharField" name="codename">add_multiplechoicequestion</field>
    </object>
    <object pk="43" model="auth.permission">
-      <field type="CharField" name="name">Can add path</field>
-      <field to="contenttypes.contenttype" name="content_type" rel="ManyToOneRel">15</field>
-      <field type="CharField" name="codename">add_path</field>
-   </object>
-   <object pk="46" model="auth.permission">
       <field type="CharField" name="name">Can add question</field>
-      <field to="contenttypes.contenttype" name="content_type" rel="ManyToOneRel">16</field>
+      <field to="contenttypes.contenttype" name="content_type" rel="ManyToOneRel">15</field>
       <field type="CharField" name="codename">add_question</field>
    </object>
    <object pk="53" model="auth.permission">
-      <field type="CharField" name="name">Can change code question</field>
+      <field type="CharField" name="name">Can change answer</field>
       <field to="contenttypes.contenttype" name="content_type" rel="ManyToOneRel">18</field>
-      <field type="CharField" name="codename">change_codequestion</field>
+      <field type="CharField" name="codename">change_answer</field>
    </object>
    <object pk="50" model="auth.permission">
-      <field type="CharField" name="name">Can change multiple choice question</field>
+      <field type="CharField" name="name">Can change code question</field>
       <field to="contenttypes.contenttype" name="content_type" rel="ManyToOneRel">17</field>
+      <field type="CharField" name="codename">change_codequestion</field>
+   </object>
+   <object pk="47" model="auth.permission">
+      <field type="CharField" name="name">Can change multiple choice question</field>
+      <field to="contenttypes.contenttype" name="content_type" rel="ManyToOneRel">16</field>
       <field type="CharField" name="codename">change_multiplechoicequestion</field>
    </object>
    <object pk="44" model="auth.permission">
-      <field type="CharField" name="name">Can change path</field>
-      <field to="contenttypes.contenttype" name="content_type" rel="ManyToOneRel">15</field>
-      <field type="CharField" name="codename">change_path</field>
-   </object>
-   <object pk="47" model="auth.permission">
       <field type="CharField" name="name">Can change question</field>
-      <field to="contenttypes.contenttype" name="content_type" rel="ManyToOneRel">16</field>
+      <field to="contenttypes.contenttype" name="content_type" rel="ManyToOneRel">15</field>
       <field type="CharField" name="codename">change_question</field>
    </object>
    <object pk="54" model="auth.permission">
-      <field type="CharField" name="name">Can delete code question</field>
+      <field type="CharField" name="name">Can delete answer</field>
       <field to="contenttypes.contenttype" name="content_type" rel="ManyToOneRel">18</field>
-      <field type="CharField" name="codename">delete_codequestion</field>
+      <field type="CharField" name="codename">delete_answer</field>
    </object>
    <object pk="51" model="auth.permission">
-      <field type="CharField" name="name">Can delete multiple choice question</field>
+      <field type="CharField" name="name">Can delete code question</field>
       <field to="contenttypes.contenttype" name="content_type" rel="ManyToOneRel">17</field>
+      <field type="CharField" name="codename">delete_codequestion</field>
+   </object>
+   <object pk="48" model="auth.permission">
+      <field type="CharField" name="name">Can delete multiple choice question</field>
+      <field to="contenttypes.contenttype" name="content_type" rel="ManyToOneRel">16</field>
       <field type="CharField" name="codename">delete_multiplechoicequestion</field>
    </object>
    <object pk="45" model="auth.permission">
-      <field type="CharField" name="name">Can delete path</field>
-      <field to="contenttypes.contenttype" name="content_type" rel="ManyToOneRel">15</field>
-      <field type="CharField" name="codename">delete_path</field>
-   </object>
-   <object pk="48" model="auth.permission">
       <field type="CharField" name="name">Can delete question</field>
-      <field to="contenttypes.contenttype" name="content_type" rel="ManyToOneRel">16</field>
+      <field to="contenttypes.contenttype" name="content_type" rel="ManyToOneRel">15</field>
       <field type="CharField" name="codename">delete_question</field>
    </object>
-   <object pk="37" model="auth.permission">
-      <field type="CharField" name="name">Can add lesson</field>
-      <field to="contenttypes.contenttype" name="content_type" rel="ManyToOneRel">13</field>
-      <field type="CharField" name="codename">add_lesson</field>
-   </object>
    <object pk="40" model="auth.permission">
-      <field type="CharField" name="name">Can add quiz</field>
+      <field type="CharField" name="name">Can add path</field>
       <field to="contenttypes.contenttype" name="content_type" rel="ManyToOneRel">14</field>
+      <field type="CharField" name="codename">add_path</field>
+   </object>
+   <object pk="37" model="auth.permission">
+      <field type="CharField" name="name">Can add quiz</field>
+      <field to="contenttypes.contenttype" name="content_type" rel="ManyToOneRel">13</field>
       <field type="CharField" name="codename">add_quiz</field>
    </object>
-   <object pk="38" model="auth.permission">
-      <field type="CharField" name="name">Can change lesson</field>
-      <field to="contenttypes.contenttype" name="content_type" rel="ManyToOneRel">13</field>
-      <field type="CharField" name="codename">change_lesson</field>
-   </object>
    <object pk="41" model="auth.permission">
-      <field type="CharField" name="name">Can change quiz</field>
+      <field type="CharField" name="name">Can change path</field>
       <field to="contenttypes.contenttype" name="content_type" rel="ManyToOneRel">14</field>
+      <field type="CharField" name="codename">change_path</field>
+   </object>
+   <object pk="38" model="auth.permission">
+      <field type="CharField" name="name">Can change quiz</field>
+      <field to="contenttypes.contenttype" name="content_type" rel="ManyToOneRel">13</field>
       <field type="CharField" name="codename">change_quiz</field>
    </object>
-   <object pk="39" model="auth.permission">
-      <field type="CharField" name="name">Can delete lesson</field>
-      <field to="contenttypes.contenttype" name="content_type" rel="ManyToOneRel">13</field>
-      <field type="CharField" name="codename">delete_lesson</field>
-   </object>
    <object pk="42" model="auth.permission">
-      <field type="CharField" name="name">Can delete quiz</field>
+      <field type="CharField" name="name">Can delete path</field>
       <field to="contenttypes.contenttype" name="content_type" rel="ManyToOneRel">14</field>
+      <field type="CharField" name="codename">delete_path</field>
+   </object>
+   <object pk="39" model="auth.permission">
+      <field type="CharField" name="name">Can delete quiz</field>
+      <field to="contenttypes.contenttype" name="content_type" rel="ManyToOneRel">13</field>
       <field type="CharField" name="codename">delete_quiz</field>
    </object>
    <object pk="19" model="auth.permission">
@@ -271,19 +271,19 @@
       <field type="CharField" name="codename">delete_site</field>
    </object>
    <object pk="55" model="auth.permission">
-      <field type="CharField" name="name">Can add answer</field>
+      <field type="CharField" name="name">Can add stat</field>
       <field to="contenttypes.contenttype" name="content_type" rel="ManyToOneRel">19</field>
-      <field type="CharField" name="codename">add_answer</field>
+      <field type="CharField" name="codename">add_stat</field>
    </object>
    <object pk="56" model="auth.permission">
-      <field type="CharField" name="name">Can change answer</field>
+      <field type="CharField" name="name">Can change stat</field>
       <field to="contenttypes.contenttype" name="content_type" rel="ManyToOneRel">19</field>
-      <field type="CharField" name="codename">change_answer</field>
+      <field type="CharField" name="codename">change_stat</field>
    </object>
    <object pk="57" model="auth.permission">
-      <field type="CharField" name="name">Can delete answer</field>
+      <field type="CharField" name="name">Can delete stat</field>
       <field to="contenttypes.contenttype" name="content_type" rel="ManyToOneRel">19</field>
-      <field type="CharField" name="codename">delete_answer</field>
+      <field type="CharField" name="codename">delete_stat</field>
    </object>
    <object pk="1" model="auth.user">
       <field type="CharField" name="username">mgius</field>
@@ -370,20 +370,6 @@
       <field to="auth.permission" name="user_permissions" rel="ManyToManyRel"></field>
    </object>
    <object pk="7" model="auth.user">
-      <field type="CharField" name="username">ekleist</field>
-      <field type="CharField" name="first_name">Evan</field>
-      <field type="CharField" name="last_name">Kleist</field>
-      <field type="CharField" name="email"></field>
-      <field type="CharField" name="password">sha1$afeda$648e804b09a7bf98dbac6b7da13d6dbe0c7716f6</field>
-      <field type="BooleanField" name="is_staff">True</field>
-      <field type="BooleanField" name="is_active">True</field>
-      <field type="BooleanField" name="is_superuser">True</field>
-      <field type="DateTimeField" name="last_login">2010-01-22 13:16:33</field>
-      <field type="DateTimeField" name="date_joined">2010-01-22 13:16:33</field>
-      <field to="auth.group" name="groups" rel="ManyToManyRel"></field>
-      <field to="auth.permission" name="user_permissions" rel="ManyToManyRel"></field>
-   </object>
-   <object pk="7" model="auth.user">
       <field type="CharField" name="username">fakeuser</field>
       <field type="CharField" name="first_name">I Am</field>
       <field type="CharField" name="last_name">A Fake User</field>
@@ -448,9 +434,9 @@
       <field type="CharField" name="model">multiplechoicequestion</field>
    </object>
    <object pk="11" model="contenttypes.contenttype">
-      <field type="CharField" name="name">page</field>
-      <field type="CharField" name="app_label">page</field>
-      <field type="CharField" name="model">page</field>
+      <field type="CharField" name="name">pages</field>
+      <field type="CharField" name="app_label">pages</field>
+      <field type="CharField" name="model">pages</field>
    </object>
    <object pk="14" model="contenttypes.contenttype">
       <field type="CharField" name="name">path</field>
@@ -514,7 +500,7 @@
    <object pk="1" model="courses.enrollment">
       <field to="auth.user" name="user" rel="ManyToOneRel">1</field>
       <field to="courses.course" name="course" rel="ManyToOneRel">1</field>
-		<field type="BooleanField" name="view">True</field>
+      <field type="BooleanField" name="view">True</field>
       <field type="BooleanField" name="edit">True</field>
       <field type="BooleanField" name="stats">True</field>
       <field type="BooleanField" name="manage">True</field>
@@ -522,42 +508,38 @@
    <object pk="2" model="courses.enrollment">
       <field to="auth.user" name="user" rel="ManyToOneRel">3</field>
       <field to="courses.course" name="course" rel="ManyToOneRel">2</field>
-		<field type="BooleanField" name="view">True</field>
+      <field type="BooleanField" name="view">True</field>
       <field type="BooleanField" name="edit">True</field>
       <field type="BooleanField" name="stats">True</field>
       <field type="BooleanField" name="manage">True</field>
    </object>
-   <object pk="1" model="page.page">
+   <object pk="1" model="pages.page">
       <field to="courses.course" name="course" rel="ManyToOneRel">1</field>
-      <field to="page.page" name="nextPage" rel="OneToOneRel">2</field>
-      <field to="page.page" name="parent" rel="ManyToOneRel"><None></None></field>
       <field type="SlugField" name="slug">index</field>
       <field type="TextField" name="name">CPE102 Index</field>
-      <field type="IntegerField" name="order">0</field>
+      <field type="IntegerField" name="left">1</field>
+      <field type="IntegerField" name="right">8</field>
    </object>
-   <object pk="2" model="page.page">
+   <object pk="2" model="pages.page">
       <field to="courses.course" name="course" rel="ManyToOneRel">1</field>
-      <field to="page.page" name="nextPage" rel="OneToOneRel">3</field>
-      <field to="page.page" name="parent" rel="ManyToOneRel">1</field>
       <field type="SlugField" name="slug">forloops</field>
       <field type="TextField" name="name">CPE102 forloops</field>
-      <field type="IntegerField" name="order">0</field>
+      <field type="IntegerField" name="left">2</field>
+      <field type="IntegerField" name="right">3</field>
    </object>
-   <object pk="3" model="page.page">
+   <object pk="3" model="pages.page">
       <field to="courses.course" name="course" rel="ManyToOneRel">1</field>
-      <field to="page.page" name="nextPage" rel="OneToOneRel">4</field>
-      <field to="page.page" name="parent" rel="ManyToOneRel">1</field>
       <field type="SlugField" name="slug">whileloops</field>
       <field type="TextField" name="name">CPE102 while loops</field>
-      <field type="IntegerField" name="order">1</field>
+      <field type="IntegerField" name="left">4</field>
+      <field type="IntegerField" name="right">5</field>
    </object>
-   <object pk="4" model="page.page">
+   <object pk="4" model="pages.page">
       <field to="courses.course" name="course" rel="ManyToOneRel">1</field>
-      <field to="page.page" name="nextPage" rel="OneToOneRel"><None></None></field>
-      <field to="page.page" name="parent" rel="ManyToOneRel">1</field>
       <field type="SlugField" name="slug">samplequiz</field>
       <field type="TextField" name="name">samplequiz</field>
-      <field type="IntegerField" name="order">2</field>
+      <field type="IntegerField" name="left">6</field>
+      <field type="IntegerField" name="right">7</field>
    </object>
    <object pk="1" model="lesson.lesson">
       <field type="TextField" name="content">This is an index page for CPE102</field>

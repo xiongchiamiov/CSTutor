@@ -2,5 +2,5 @@ from django.conf.urls.defaults import *
 from django.views.generic.simple import direct_to_template
 
 urlpatterns = patterns('',
-	(r'', 'page.views.show_page'),
+	(r'', 'pages.views.show_page'),
 )

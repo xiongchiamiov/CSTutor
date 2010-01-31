@@ -1,5 +1,5 @@
 from django.db import models
-from page.models import Page
+from pages.models import Page
 from courses.models import Course
 from views import show_quiz
 

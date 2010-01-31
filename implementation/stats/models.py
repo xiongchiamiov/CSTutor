@@ -6,7 +6,7 @@ These store and load user statistics.
 from django.db import models
 from django.contrib.auth.models import User
 from courses.models import Course
-from page.models import Page
+from pages.models import Page
 
 # Create your models here.
 

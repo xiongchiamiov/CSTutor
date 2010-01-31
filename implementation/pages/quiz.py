@@ -7,7 +7,7 @@ Author(s): James Pearson
 
 '''
 
-from page.quiz.models import *
+from pages.quiz.models import *
 
 def CreateQuiz():
 	'''
