@@ -7,12 +7,13 @@
 
 <p><b><font size ="3">Search for Username</font></b></p>
 
-<form name="search" action="search/" method="post">
+<form name="search" action="{{url}}search/" method="post">
 First name:
 <input type="text" name="firstname" />
 <br />
 Last name:
 <input type="text" name="lastname" />
+<input type="text"
 <br />
 <input type="submit" value="Search" />
 </form>
@@ -20,10 +21,11 @@ Last name:
 	{% endblock table %}
 <br/>
 
-<form name="input" action="" method="post">
+<form name="inputUser" action="" method="post">
 Username:
 <input type="text" name="username" />
 <input type="submit" value="Submit" />
+</form>
 
 <form method="link" action="cancel/">
 <br/>
