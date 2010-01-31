@@ -20,7 +20,7 @@ def show_profile(request):
 	if request.user.is_authenticated():
 		return render_to_response('user/profile.html', {'user':request.user})
 	else:
-		return render_to_response('user/login.html')
+		return render_to_response('user/notloggedin.html')
 		
 	#	try:
 	#		user = User.objects.get(username=usr)
