@@ -34,33 +34,41 @@ def show_course(request, courses, course_slug):
 	return render_to_response('index.html', {'courses': courses, 'course_slug': course_slug})
 
 def add_user(request, course_slug, courses):
+	
+	course = Course.objects.get(slug=course_slug)
+	
+	#if the request method was a post determine the command that was given
 	if request.method == 'POST':
-		course = Course.objects.get(slug=course_slug)
-		usr = request.POST['username']
-		#firstname = request.POST['firstname']
-		#lastname = request.POST['lastname']
-		#usr = slugify(firstname+lastname)
-
-		#user = User()
-		#user.first_name = firstname
-		#user.last_name = lastname
-		#user.username = usr
-
-		try:
-			user = User.objects.get(username=usr)
-			addUser(course, user)
-			#user.save()
-		except User.DoesNotExist:
-			#import pdb; pdb.set_trace()
-			#user = User.objects.get(username=usr)
-			#user.save()
-			return render_to_response('adduser/failed.html', {'course_slug':course_slug, 'courses': courses, 'course': course})
-
-		#course = Course.objects.get(slug=course_slug)
 		
-		return HttpResponseRedirect("/%s/roster/" % course_slug)
+		#if the command was an add try to add the user
+		if request.POST['command'] == 'add':
+			
+			usr = request.POST['username']
+
+			try:
+				#if the user exists add it
+				user = User.objects.get(username=usr)
+				addUser(course, user)
+
+			except User.DoesNotExist:
+				#if the user does not exist print error message
+				return render_to_response('adduser/failed.html', {'course_slug':course_slug, 'courses': courses, 'course': course})
+			
+			#show the roster screen
+			return HttpResponseRedirect("/%s/roster/" % course_slug)
+		elif request.POST['command'] == 'search':
+			#if the command was a search, search for the user
+	
+			firstname = request.POST['firstname']
+			lastname = request.POST['lastname']
+
+			users = User.objects.filter(first_name = firstname, last_name = lastname)
+
+	
+			return render_to_response('adduser/search.html', {'course_slug': course_slug, 'courses':courses, 'course':course, 'users':users, 'firstname': firstname, 'lastname': lastname})
 	else:
-		course = Course.objects.get(slug=course_slug)
+		
+		#display the adduser page
 		return render_to_response('adduser/index.html', {'course_slug': course_slug, 'courses':courses, 'course': course, 'url': request.path})
 
 def search_username(request, course_slug, courses):
