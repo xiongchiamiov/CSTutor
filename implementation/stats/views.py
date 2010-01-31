@@ -1,3 +1,9 @@
+''' 
+	This file describes the various views of user statistics
+
+	@author Andrew J. Musselman
+'''
+
 from django.shortcuts import render_to_response
 from django.http import HttpResponseRedirect
 from models import Stat
