@@ -1,3 +1,5 @@
+'''users/models.py This is probably going to go away as we are using django's built in user class'''
+
 from django.db import models
 from django.contrib.auth.models import User
 

@@ -1,3 +1,5 @@
+'''The profile section of the CSTutor - name and functions subject to change as we are going to use the build-in Django user management'''
+
 #@author John Hartquist	
 
 def editProfile(oldUser, newUser):

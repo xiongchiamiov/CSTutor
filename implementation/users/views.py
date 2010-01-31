@@ -1,4 +1,4 @@
-# Create your views here.
+'''users/views.py - This is where all the profile pages are rendered'''
 # @author John Hartquist
 
 from django.http import HttpResponse
