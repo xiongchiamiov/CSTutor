@@ -23,6 +23,7 @@ urlpatterns += patterns('',
 	(r'^admin/(.*)', admin.site.root),
 	
 	(r'^login/?', 'users.views.show_login'),
+	(r'^logout/?', 'users.views.show_logout'),
 	(r'^/?$', 'home.views.index'),
 	(r'^profile', 'users.views.show_profile'),
 	(r'^stats', 'stats.views.display_all_stats'),
