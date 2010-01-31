@@ -20,6 +20,7 @@ def logout():
    '''
    Logs a user out.
    '''
+   
    pass
 
 def createUser(username, userDB):

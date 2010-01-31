@@ -4,23 +4,40 @@
 from django.http import HttpResponse
 from django.shortcuts import render_to_response
 from django.contrib.auth.models import User
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from home.views import index
 
 
 def show_profile(request):
+	'''
+	Displays the profile of the user that is currently logged in
+	'''
 	print 'in show_profile'
 
-	if request.method == 'POST':
-		usr = request.POST['username']
+	#if request.method == 'POST':
+	#	usr = request.POST['username']
 
-		try:
-			user = User.objects.get(username=usr)
-			return render_to_response('user/profile.html', {'user':user})
-		except User.DoesNotExist:
-			return render_to_response('user/notfound.html')
+	if request.user.is_authenticated():
+		return render_to_response('user/profile.html', {'user':request.user})
 	else:
-		return render_to_response('user/lookup.html')
+		return render_to_response('user/login.html')
+		
+	#	try:
+	#		user = User.objects.get(username=usr)
+	#		return render_to_response('user/profile.html', {'user':user})
+	#	except User.DoesNotExist:
+	#		return render_to_response('user/notfound.html')
+	#else:
+	#	return render_to_response('user/lookup.html')
+	
+	
+	
+def show_logout(request):
+	print 'in show_logout'
+	
+	logout(request)
+	return render_to_response('user/logout.html');
+	
 def show_login(request):
 	print 'in show_login'
 	
