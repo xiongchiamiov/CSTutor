@@ -12,18 +12,16 @@ from django.template.defaultfilters import slugify
 '''
 def create_course(request):
 	if request.method == "POST":
-		name = request.POST['coursename']
-		
+		name = request.POST['coursename'].strip()
+
 		if len(name) < 3:
 			return render_to_response('courses/create_course_length.html', {'courses': Course.objects.all()})
 
 		try:
-			c = Course.objects.get(name=name)
+			CreateCourse(name, User.objects.get(username = "fakeuser"))
+		except IntegrityError:
 			return render_to_response('courses/create_course_dup.html', {'courses': Course.objects.all()})
-		except Course.DoesNotExist:
-			course = CreateCourse(name, User.objects.get(username = "fakeuser"))
-			course.save()
-		
+
 	return render_to_response('courses/create_course.html', {'courses': Course.objects.all()})
 
 def show_roster(request, course_slug, courses):
