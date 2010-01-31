@@ -15,7 +15,9 @@
 	</tr>
 	{% for enrollment in enrollments %}
 	<tr>
-	<td><input type="checkbox" name="option" class="removeList" value={{enrollment.user.username}}> </td>		
+	<td><form name="remove" action="remove/" method="post">
+		<input type="submit" name="username" value={{enrollment.user.username}} />
+		</form></td>		
 	<td>{{enrollment.user.first_name}} {{enrollment.user.last_name}}</td>
 	<td>{{enrollment.user.username}}</td>
 	<td>	{% if enrollment.edit %}
