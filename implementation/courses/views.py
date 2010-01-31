@@ -6,6 +6,10 @@ from users.models import User
 from django.db import IntegrityError
 from django.template.defaultfilters import slugify 
 
+'''
+	Functions in this file allow an instructor to create a course, add users to the course, search for user names, and remove users. In addition, there are functions that allow a student to join a course. 
+	@author Jon Inloes
+'''
 def create_course(request):
 	print "Create Class\n" #TODO
 	if request.method == "POST":
