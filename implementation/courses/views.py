@@ -11,7 +11,6 @@ from django.template.defaultfilters import slugify
 	@author Jon Inloes
 '''
 def create_course(request):
-	print "Create Class\n" #TODO
 	if request.method == "POST":
 		name = request.POST['coursename']
 
