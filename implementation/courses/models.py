@@ -44,9 +44,16 @@ class Enrollment(models.Model):
 	user = models.ForeignKey(User, related_name='enrollments')
 	course = models.ForeignKey(Course, related_name='roster')
 
+	#User can view the course contents 
 	view = models.BooleanField(default = False)
+
+	#Can edit the contents of the course
 	edit = models.BooleanField(default = False)
+
+	#Can view stats for all users in the givne course
 	stats = models.BooleanField(default = False)
+	
+	#Can grant premissions on a given course
 	manage = models.BooleanField(default = False)
 	
 	def __unicode__(self):
