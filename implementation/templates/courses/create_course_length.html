@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block content %}
+<form name="input" action="" method="post">
+Course Name: 
+<input type="text" name="coursename" />
+<br />
+<input type="submit" value="Submit" />
+<br />
+<font size="1" color="red">
+A Course name must be at least 3 characters
+</font>
+</form>
+{% endblock %}
