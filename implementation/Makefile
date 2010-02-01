@@ -52,3 +52,5 @@ docclean:
 cleandatabase: databaseclean
 databaseclean:
 	rm -f *.sqlite3
+runtests:
+	./manage.py test
