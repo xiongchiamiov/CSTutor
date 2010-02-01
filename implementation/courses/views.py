@@ -1,3 +1,7 @@
+'''
+	Functions in this file allow an instructor to create a course, add users to the course, search for user names, and remove users. In addition, there are functions that allow a student to join a course. 
+	@author Jon Inloes
+'''
 from django.shortcuts import render_to_response
 from django.http import HttpResponseRedirect
 from courses.models import Course
@@ -6,10 +10,6 @@ from users.models import User
 from django.db import IntegrityError
 from django.template.defaultfilters import slugify 
 
-'''
-	Functions in this file allow an instructor to create a course, add users to the course, search for user names, and remove users. In addition, there are functions that allow a student to join a course. 
-	@author Jon Inloes
-'''
 def create_course(request):
 	if request.method == "POST":
 		name = request.POST['coursename'].strip()
@@ -25,6 +25,9 @@ def create_course(request):
 	return render_to_response('courses/create_course.html', {'courses': Course.objects.all()})
 
 def show_roster(request, course_slug, courses):
+	'''
+	Displays the roster
+	'''
 	course = Course.objects.get(slug=course_slug)
 	enrollments = course.roster.all();
 
@@ -34,7 +37,9 @@ def show_course(request, courses, course_slug):
 	return render_to_response('index.html', {'courses': courses, 'course_slug': course_slug})
 
 def add_user(request, course_slug, courses):
-	'''Handles the commands given by the add user screen'''
+	'''
+	Handles the commands given by the add user screen
+	'''
 	course = Course.objects.get(slug=course_slug)
 	
 	#if the request method was a post determine the command that was given
@@ -87,7 +92,9 @@ def search_username(request, course_slug, courses):
 	return render_to_response('adduser/search.html', {'course_slug': course_slug, 'courses':courses, 'course':course, 'users':users, 'firstname': firstname, 'lastname': lastname, 'url': request.path})
 
 def remove_user(request, course_slug, courses):
-	'''Removes a user from a course's enrollment list'''
+	'''
+	Removes a user from a course's enrollment list
+	'''
 	removeName = request.POST['username']
 	course = Course.objects.get(slug=course_slug)
 
@@ -101,7 +108,9 @@ def remove_user(request, course_slug, courses):
 	return HttpResponseRedirect("/%s/roster/" % course_slug)
 
 def cancel_add(request, course_slug, courses):
-	'''Redirects to the roster screen when viewing the add user page'''
+	'''
+	Redirects to the roster screen when viewing the add user page
+	'''
 	return HttpResponseRedirect("/%s/roster/" % course_slug)
 
 def join_course_form(request):
