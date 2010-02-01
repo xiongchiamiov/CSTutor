@@ -4,39 +4,35 @@ Unit Tests for Classes in the Page module
 '''
 
 import unittest
-from django.test import TestCase
+from django.test.client import Client
 from courses.models import Course
 from pages.models import Page
 
 class PageTests(unittest.TestCase):
 	''' Unit tests and other tests on the Page class and it's related functions
 	'''
-	def setUp(self):
-		''' Run before each testcase '''
-		print Course.objects.all()
-
-	def addPageAsSiblingTest(self):
-	 	'''
+	def addPageAsSibling(self):
+		'''
 		Tests adding a new page to the tree as a sibling of an existing
 		page
 		'''
 		print "Why am I nt being run huh?"
-		failUnlessTrue(False)
+		self.assertTrue(False)
 
-	def addPageAsChildTest(self):
-	 	'''
+	def addPageAsChild(self):
+		'''
 		Tests adding a new page to the tree as a child of an existing page
 		'''
-		pass
+		self.failUnlessEqual(False, True)
 
 	def removePageTest(self):
-	 	'''
+		'''
 		Tests removing a page from the tree
 		'''
-		pass
+		self.assertTrue(False)
 
 	def removeTwoPagesTest(self):
-	 	'''
+		'''
 		Tests removing several pages from the tree
 		'''
-		pass
+		self.assertTrue(False)

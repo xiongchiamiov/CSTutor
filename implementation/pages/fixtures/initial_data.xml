@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<django-objects version="1.0">
+   <object pk="4" model="courses.course">
+      <field type="SlugField" name="slug">PageTestsCourse</field>
+      <field type="CharField" name="name">PageTestsCourse</field>
+      <field type="BooleanField" name="private">False</field>
+   </object>
+   <object pk="5" model="pages.page">
+      <field to="courses.course" name="course" rel="ManyToOneRel">4</field>
+      <field type="SlugField" name="slug">PageTestsIndexPage</field>
+      <field type="TextField" name="name">testIndexPage</field>
+      <field type="IntegerField" name="left">1</field>
+      <field type="IntegerField" name="right">6</field>
+   </object>
+   <object pk="6" model="pages.page">
+      <field to="courses.course" name="course" rel="ManyToOneRel">4</field>
+      <field type="SlugField" name="slug">PageTestsPage1</field>
+      <field type="TextField" name="name">testPage1</field>
+      <field type="IntegerField" name="left">2</field>
+      <field type="IntegerField" name="right">3</field>
+   </object>
+   <object pk="7" model="pages.page">
+      <field to="courses.course" name="course" rel="ManyToOneRel">4</field>
+      <field type="SlugField" name="slug">PageTestsPage2</field>
+      <field type="TextField" name="name">testPage2</field>
+      <field type="IntegerField" name="left">4</field>
+      <field type="IntegerField" name="right">5</field>
+   </object>
+</django-objects>

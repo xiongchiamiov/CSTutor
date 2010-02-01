@@ -30,6 +30,10 @@ database:
 	@echo "Unless you run 'make cleandatabase' first"
 	@echo "################################################"
 
+test:
+	@echo "Running tests"
+	python ./manage.py test
+
 	
 clean: binclean docclean databaseclean
 	@echo ""
