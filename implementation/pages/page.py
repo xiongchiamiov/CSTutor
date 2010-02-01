@@ -19,8 +19,8 @@ def getNextPage(self):
 	'''
    # This returns the first object whose left is greater than mine, in my course
    # however it does this at the database level
-	return Page.objects.filter(course__eq=self.course)\
-	                   .filter(left__gt=self.left)[:1]
+	return Page.objects.filter(course__exact=self.course)\
+	                   .filter(left__gt=self.left).order_by('left')[0]
 
 def getPrevPage(self):
 	'''
@@ -32,7 +32,7 @@ def getPrevPage(self):
 	'''
    # returns the first object whose left is less than mine
 	return Page.objects.filter(course__exact=self.course)\
-	                   .filter(left__lt=self.left)[:1]
+	                   .filter(left__lt=self.left).order_by('-left')[0]
 
 def insertPageAfterNum(self, course, insertAfterNum):
 	''' 
@@ -49,6 +49,7 @@ def insertPageAfterNum(self, course, insertAfterNum):
 	Those who don't want to deal with the structure of the pages should use
 	insertPage instead of this
 
+	@post: ValidateTree(self.course) == True
 	@author Mark Gius
    '''
 	self.left = insertAfterNum + 1
@@ -79,6 +80,12 @@ def insertPage(self, insertAfter):
 		 This creates the page as the next sibling of the insertAfter page
 
 		 Returns the inserted page after committing it
+		 @author Mark Gius
+
+		 @post: ValidateTree(self.course) == True
+
+		 case no.    inputs         expected output       remark
+		 1           page,page      ValidateTree == True
 	'''
 	return insertPageAfterNum(self, insertAfter.course, insertAfter.right)
 
@@ -86,6 +93,11 @@ def insertChildPage(self, parentPage):
 	''' Inserts the page self as the first child of the parentPage
 
 		 Returns the inserted page after committing it
+		 @post: ValidateTree(self.course) == True
+		 @author Mark Gius
+
+		 case no.    inputs         expected output       remark
+		 1           page,page      ValidateTree == True
 	'''
 	return insertPageAfterNum(self, parentPage.course, parentPage.left)
 
@@ -93,6 +105,12 @@ def removePage(self):
 	''' Removes the given page from its course
 
 		 Returns the page deleted
+
+		 @post: ValidateTree(self.course) == True
+		 @author Mark Gius
+
+		 case no.    inputs         expected output       remark
+		 1           page,page      ValidateTree == True
 	'''
 	coursePages = Course.objects.filter(course__exact=self.course)
 	removeNumber = self.left
@@ -121,6 +139,11 @@ def movePage(self, insertAfter):
 	supplied page
 
 	returns the page moved
+	@post: ValidateTree(self.course) == True
+	@author Mark Gius
+
+	case no.    inputs         expected output       remark
+	1           page,page      ValidateTree == True
 	'''
 
 	deletedpage = removePage(self)
@@ -136,6 +159,11 @@ def movePageToParent(self, newParent):
 	supplied page
 
 	returns the page moved
+	@post: ValidateTree(self.course) == True
+	@author Mark Gius
+
+	case no.    inputs         expected output       remark
+	1           page,page      ValidateTree == True
 	'''
 
 	deletedpage = removePage(self)
