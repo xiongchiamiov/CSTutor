@@ -1,16 +1,19 @@
 {% extends "base.html" %}
 
 {% block content %}
-Quiz from course: {{course}}
-<br/><br/>
-Quiz-Page named: {{pid}}
-<br/><br/>
-Quiz-Title: {{quizTitle}}
-<br/><br/>
+<center><b><font size="4">{{quizTitle}}</font></b></center>
+<table>
 {% for mcq in mcQuestions %}
-	{{mcq.text}}<br/>
+	<tr>
+		<td><b>Q.</b></td>
+		<td colspan="2">{{mcq.text}}</td>
+	</tr>
 	{% for a in mcq.answers.all %}
-		{{a.text}}<br/>
+	<tr>
+		<td></td>
+		<td><input type="radio" name="group1"/></td>
+		<td>{{a.text}}</td>
+	</tr>
 	{% endfor %}
 {% endfor %}
 {% endblock %}

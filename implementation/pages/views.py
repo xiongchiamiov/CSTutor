@@ -42,4 +42,5 @@ def show_page(request, course_slug, courses, pid):
 			page = page.quiz
 		except Quiz.DoesNotExist:
 			print "Page is neither quiz or lesson"
-	return page.show(request, course_slug, courses, pid)
+		return show_quiz(request, course_slug, courses, pid)
+	return show_lesson(request, course_slug, courses, pid)

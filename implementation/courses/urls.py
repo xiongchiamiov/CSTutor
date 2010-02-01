@@ -15,7 +15,7 @@ urlpatterns = patterns('courses.views',
 	(r'roster/remove', 'remove_user'),
 	(r'roster/adduser/$', 'add_user'),
 	(r'roster/adduser/cancel', 'cancel_add'),
-	(r'(?P<pid>[\w-]+)/', include('page.urls')),
+	(r'(?P<pid>[\w-]+)/', include('pages.urls')),
 	(r'', 'show_course'),
 )
 
