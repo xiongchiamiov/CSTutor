@@ -14,6 +14,9 @@ from django.test.client import Client
 
 class CourseTests(unittest.TestCase):
 	def setUp(self):
+		'''
+		Sets up the tests
+		'''
 		self.client = Client()
 
 		userList = User.objects.all()
@@ -28,6 +31,9 @@ class CourseTests(unittest.TestCase):
 			print enrollment.user.username + ' ' + enrollment.course.slug
 
 	def testRoster(self):
+		'''
+		Tests that redirection to the roster page works
+		'''
 		slug = 'gene-fishers-cpe102-fall-08'
 		response = self.client.get('/' + slug + '/roster/')
 		self.failUnlessEqual(response.status_code, 200)
