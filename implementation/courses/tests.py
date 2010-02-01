@@ -23,12 +23,12 @@ class CourseTests(unittest.TestCase):
 		courses = Course.objects.all()
 		enrollments = Enrollment.objects.all()
 
-		for user in userList:
-			print user.username
-		for course in courses:
-			print course.slug
-		for enrollment in enrollments:
-			print enrollment.user.username + ' ' + enrollment.course.slug
+		#for user in userList:
+		#	print user.username
+		#for course in courses:
+		#	print course.slug
+		#for enrollment in enrollments:
+		#	print enrollment.user.username + ' ' + enrollment.course.slug
 
 	def testRoster(self):
 		'''
