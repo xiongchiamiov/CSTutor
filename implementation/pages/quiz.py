@@ -30,8 +30,6 @@ def checkAnswers(answers, user = None)
 	Returning the answers here because we're going to have to pull them from
 	the database anyway, and if the caller is going to use them, we can save
 	a potentially expensive database operation.
-
-	@author Mark Gius
 	'''
 	pass
 
