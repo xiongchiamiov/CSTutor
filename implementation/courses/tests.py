@@ -29,28 +29,18 @@ class CourseTests(unittest.TestCase):
 
 	def testRoster(self):
 		slug = 'gene-fishers-cpe102-fall-08'
-		# Commented out by mgius because it causes compile errors
-		#response = self.client.get(slug + '/roster/')
-		#self.failUnlessEqual(response.status_code, 200)
+		response = self.client.get('/' + slug + '/roster/')
+		self.failUnlessEqual(response.status_code, 200)
+
 
 	def testEnrollUser(self):
+		'''
+		Tests enrolling a user in a course
+		'''
 		slug = 'gene-fishers-cpe102-fall-08'
 		username = 'jinloes'
 
-		enrollments = Enrollment.objects.all()
-		for e in enrollments:
-			print e.user.username + ' ' + e.course.slug	
-		
-		print '------------------------'
-
 		self.client.post('/' + slug + '/roster/adduser/', {'username': username, 'command': 'add'})
-		enrollments = Enrollment.objects.all()
-		for e in enrollments:
-			print e.user.username + ' ' + e.course.slug
-		course = Course.objects.get(slug=slug)
-		enrollments = course.roster.all()
-		users = []
-		for enrollment in enrollments:
-			users.append(enrollment.user)
-      #users = enrollments.enrollments.filter(user__name__exact=username)		
-		#enrollment = Enrollment.objects.get(user=username, course=slug)
+		enrollment = Enrollment.objects.get(user__username__exact=username, course__slug__exact=slug)
+		self.assertEquals(enrollment.user.username, username)
+
