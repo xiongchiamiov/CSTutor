@@ -37,6 +37,8 @@ class PageTests(TestCase):
 		self.assertEquals(len(pages) * 2, len(usedNumbers))
 		self.assertEquals(min(usedNumbers), 1)
 		self.assertEquals(max(usedNumbers), len(pages) * 2)
+
+		return True
 			
 	def testAddPageAsSibling(self):
 		'''
