@@ -6,7 +6,8 @@ from courses.models import Course
 def master_rtr(request, template, data = {}):
 	data['courses'] = [e.course for e in request.user.enrollments.all()]
 	print data['courses']
-	import pdb; pdb.set_trace()
+   # commented by mgius.  Breaks test suite!!
+   #import pdb; pdb.set_trace()
 
 	return render_to_response(template, data)
 
