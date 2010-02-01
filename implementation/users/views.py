@@ -84,9 +84,7 @@ def show_login(request):
 			# Return an 'invalid login' error message.
 			#print "invalid login"
 			return render_to_response('user/login.html', {'message': "Please try again, Invalid Username/Password"})
-	else:
+	#else:
 		#form has not yet been submitted (first time visiting login page)
 		#print 'GET'
 	return render_to_response('user/login.html')
-
-
