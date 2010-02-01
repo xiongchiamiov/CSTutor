@@ -68,55 +68,72 @@ def insertPageAfterNum(self, course, insertAfterNum):
 
 	return self
 
-def insertPage(self, course, insertAfter):
+def insertPage(self, insertAfter):
 	''' Inserts the page self after the page insertAfter in the course course
 
 		 This creates the page as the next sibling of the insertAfter page
 
 		 Returns the inserted page after committing it
 	'''
-	return insertPageAfterNum(self, course, insertAfter.right)
+	return insertPageAfterNum(self, insertAfter.course, insertAfter.right)
 
-def insertChildPage(self, course, parentPage):
+def insertChildPage(self, parentPage):
 	''' Inserts the page self as the first child of the parentPage
 
 		 Returns the inserted page after committing it
 	'''
-	return insertPageAfterNum(self, course, parentPage.left)
+	return insertPageAfterNum(self, parentPage.course, parentPage.left)
 
-def movePage(self, neworder, newparent = None):
+def removePage(self):
+	''' Removes the given page from its course
+
+		 Returns the page deleted
+	'''
+	coursePages = Course.objects.filter(course__exact=self.course)
+	removeNumber = self.left
+	# These pages are later in the tree, both left and right need to be inc by 2
+	updateLeft = coursePages.filter(left__gt=insertAfterNum)
+	for page in updateLeft:
+		page.left += 2
+		page.right += 2
+		page.save()
+	
+	# these pages are previous in the tree, but need their "right" updated
+	updateRight = coursePages.filter(right__gt=insertAfterNum)\
+	                         .exclude(left__gt=insertAfterNum)
+	for page in updateRight:
+		page.right += 2
+		page.save()
+
+	self.delete()
+	return self
+
+def movePage(self, insertAfter):
 	'''
 	Moves the page to a new location. 
 
-	Removes the page from its current location, and add itself back in at the
-	new location with a potentially new parent.
+	Moves the page from its current location to be the next sibling of the
+	supplied page
 
-	If no parent is specified, keep the same parent
-
+	returns the page moved
 	'''
-	pass
 
+	deletedpage = removePage(self)
+	insertPage(self, insertAfter)
 
-# Everything below:q
-#
+	return self
 
-
-
-
-def displayPage(request):
+def movePageToParent(self, newParent):
 	'''
-	Gets a page in the request
+	Moves the page to a new location.
 
-	This operation returns an http response for viewing the requested page
+	Moves the page from its current location to be the first child of the 
+	supplied page
+
+	returns the page moved
 	'''
-	pass
 
+	deletedpage = removePage(self)
+	insertChildPage(self, newParent)
 
-def createPage(request):
-	'''
-	Creates a new page with the specified parameters
-
-	This operation returns an http response for viewing the new page
-	'''
-	pass
-
+	return self
