@@ -9,9 +9,6 @@ from django.test.client import Client
 from django.contrib.auth.models import User
 
 class UserTests(unittest.TestCase):
-	username = 'jhartquist'
-	password = 'password'
-	
 	def setUp(self):
 		'''
 		Sets up the tests
@@ -62,5 +59,4 @@ class UserTests(unittest.TestCase):
                                      'password': password})
 		
 		response = self.client.post("/profile/", {'form': "Change E-mail", 'email': badEmail })
-		print(response.content)
 		self.failIfEqual(response.content.find("Invalid E-mail Address"), -1)
