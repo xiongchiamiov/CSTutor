@@ -4,6 +4,9 @@ Models file for course related classes
 Contains the Overall "Course" class, plus the Classes that are primarily
 contained within a Course, such as Page, Quiz, Lesson, and Roster.
 
+@author Andrew Mussellman
+@author Jon Inloes
+@author Mark Gius
 SVN Commit Info:
 $Id$
 '''
