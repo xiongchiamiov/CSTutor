@@ -55,14 +55,21 @@ def show_profile(request):
 	
 	
 def show_logout(request):
-	#print 'in show_logout'
+	'''
+        Logs out the current user
+        @pre
+        @post request.user.is_authenticated() == false
+        '''
 	
 	logout(request)
 	return render_to_response('user/logout.html');
 	
 def show_login(request):
-	#print 'in show_login'
-	
+	'''
+	Logs a user in
+	@pre
+	@post request.user.is_authenticated() == true
+	'''	
 	if request.method == 'POST':
 		#form was submitted
 		username = request.POST['username']
