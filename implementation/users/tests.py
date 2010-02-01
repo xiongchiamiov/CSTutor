@@ -19,6 +19,10 @@ class UserTests(unittest.TestCase):
 	def testLogin(self):
 		'''
 		Tests that a user can login successfully
+                
+                case#            input        expected         output    remark
+                -----            -----        --------         ------    ------
+                1                status_code  200              200       posts a login request
 		'''
 		username = 'jhartquist'
 		password = 'password'
@@ -29,6 +33,10 @@ class UserTests(unittest.TestCase):
 	def testLogout(self):
 		'''
 		Tests that a user can logout successfully
+                
+                case#            input        expected         output    remark
+                -----            -----        --------         ------    ------
+                2                status_code  200              200       posts a logout request
 		'''
 		username = 'jhartquist'
 		password = 'password'
