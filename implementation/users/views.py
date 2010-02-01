@@ -6,7 +6,7 @@ from django.shortcuts import render_to_response
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from home.views import index
-
+from django.forms.fields import email_re
 
 def show_profile(request):
 	'''
@@ -14,21 +14,43 @@ def show_profile(request):
 	'''
 	print 'in show_profile'
 
-	#if request.method == 'POST':
-	#	usr = request.POST['username']
-
+	#make sure user is logged in
 	if request.user.is_authenticated():
+		#check if method was post
+		if (request.method=="POST"):
+			if (request.POST["form"] == "Change E-mail"):
+				email = request.POST["email"]
+				if (email_re.match(email)):
+					request.user.email = email
+					request.user.save()
+				else:
+					return render_to_response('user/profile.html', 
+		                                       {'user': request.user,
+											    'emailError': "Invalid E-mail Address"})
+				
+			if (request.POST["form"] == "Change Password"):
+				oldpass = request.POST["oldpass"]
+				newpass1 = request.POST["newpass1"]
+				newpass2 = request.POST["newpass2"]
+				if (request.user.check_password(oldpass) == False):
+					return render_to_response('user/profile.html', 
+		                                       {'user': request.user,
+											    'passError': "Incorrect current password"})
+													   
+				if (newpass1 != newpass2):
+					return render_to_response('user/profile.html', 
+		                                       {'user': request.user,
+											    'passError': "Password do not match"})
+					
+				request.user.set_password(newpass1)
+				request.user.save()				    
+		
+		
+		
 		return render_to_response('user/profile.html', {'user':request.user})
 	else:
 		return render_to_response('user/notloggedin.html')
 		
-	#	try:
-	#		user = User.objects.get(username=usr)
-	#		return render_to_response('user/profile.html', {'user':user})
-	#	except User.DoesNotExist:
-	#		return render_to_response('user/notfound.html')
-	#else:
-	#	return render_to_response('user/lookup.html')
 	
 	
 	
