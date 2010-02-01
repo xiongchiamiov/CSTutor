@@ -14,37 +14,42 @@ def getNextPage(self):
 	Gets the next page in the preorder traversal of the page hierarchy
 
 	Returns the page object that is the "next" page
+
+	@author Mark Gius
 	'''
    # This returns the first object whose left is greater than mine, in my course
    # however it does this at the database level
 	return Page.objects.filter(course__eq=self.course)\
 	                   .filter(left__gt=self.left)[:1]
-   # return Page.objects.get(nextPage=self)
 
 def getPrevPage(self):
 	'''
 	Gets the previous page in the preorder traversal of the page heirarchy
 
 	Returns the page object that is the "previous" page
+	
+	@author Mark Gius
 	'''
    # returns the first object whose left is less than mine
 	return Page.objects.filter(course__exact=self.course)\
 	                   .filter(left__lt=self.left)[:1]
-   #return Page.objects.get(nextPage=self)
 
 def insertPageAfterNum(self, course, insertAfterNum):
-	''' Inserts a page after "num"
+	''' 
+	Inserts a page after "num"
 
-		 Inserting a page at "0" makes this page the "first" page
+	Inserting a page at "0" makes this page the "first" page
 
-		 Inserting a page after a pages "left" makes this page the first child
-		 of the insertAfterNum page.
+	Inserting a page after a pages "left" makes this page the first child
+	of the insertAfterNum page.
 
-		 Inserting a page after a pages "right" makes this page the next sibling
-		 of the insertAfterNum page.
+	Inserting a page after a pages "right" makes this page the next sibling
+	of the insertAfterNum page.
 
-		 Those who don't want to deal with the structure of the pages should use
-		 insertPage instead of this
+	Those who don't want to deal with the structure of the pages should use
+	insertPage instead of this
+
+	@author Mark Gius
    '''
 	self.left = insertAfterNum + 1
 	self.right = insertAfterNum + 2
