@@ -31,7 +31,7 @@
 						<li>
 							<a href="/{{course.slug}}/">{{course}}</a>
 							<ul class="page-list">
-								{% for page in course.page_set.all %}
+								{% for page in course.pages.all %}
 								<li><a href="/{{course.slug}}/{{page.slug}}/">{{page}}</a>
 								</li>
 								{% endfor %}
