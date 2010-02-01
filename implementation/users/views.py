@@ -12,7 +12,7 @@ def show_profile(request):
 	'''
 	Displays the profile of the user that is currently logged in
 	'''
-	print 'in show_profile'
+	#print 'in show_profile'
 
 	#make sure user is logged in
 	if request.user.is_authenticated():
@@ -55,13 +55,13 @@ def show_profile(request):
 	
 	
 def show_logout(request):
-	print 'in show_logout'
+	#print 'in show_logout'
 	
 	logout(request)
 	return render_to_response('user/logout.html');
 	
 def show_login(request):
-	print 'in show_login'
+	#print 'in show_login'
 	
 	if request.method == 'POST':
 		#form was submitted
@@ -73,20 +73,20 @@ def show_login(request):
 			if user.is_active:
 				login(request, user)
 				# Redirect to a success page.
-				print "successful login"
+				#print "successful login"
 				#call the index view ... this should be the equivalent of the homepage
 				return index(request)
 			else:
 				# Return a 'disabled account' error message
-				print "account marked as inactive"
+				#print "account marked as inactive"
 				return render_to_response('user/login.html', {'message': "Account marked as inactive, contact System Admins"})
 		else:
 			# Return an 'invalid login' error message.
-			print "invalid login"
+			#print "invalid login"
 			return render_to_response('user/login.html', {'message': "Please try again, Invalid Username/Password"})
 	else:
 		#form has not yet been submitted (first time visiting login page)
-		print 'GET'
+		#print 'GET'
 	return render_to_response('user/login.html')
 
 
