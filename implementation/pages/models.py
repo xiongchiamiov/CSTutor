@@ -19,7 +19,7 @@ class Page(models.Model):
 
 	A page contains links to other pages based on the Course flow.
 	'''
-	course = models.ForeignKey(Course)
+	course = models.ForeignKey(Course, related_name='pages')
    #nextPage = models.OneToOneField("self", related_name='prevPage', null=True)	
 	# prevPage implied from Page
    #parent = models.ForeignKey("self", related_name='children', null=True)
