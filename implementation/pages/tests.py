@@ -40,32 +40,59 @@ class PageTests(TestCase):
 
 		return True
 			
-	def testAddPageAsSibling(self):
+	def test_insertPage(self):
 		'''
 		Tests adding a new page to the tree as a sibling of an existing
 		page
 		'''
 		olderSibling = Page.objects.get(slug='PageTestsPage1')
+		youngerSibling = getNextPage(olderSibling)
 		newPage = Page(slug="testAddPageAsSibling", name="testAddPageAsSibling")
 		insertPage(newPage, olderSibling)
 		self.validateTree()
+
+      # have to reload these
+		olderSibling = Page.objects.get(id=olderSibling.id)
+		youngerSibling = Page.objects.get(id=youngerSibling.id)
+
 		self.assertEquals(getPrevPage(newPage), olderSibling)
 		self.assertEquals(getNextPage(olderSibling), newPage)
+		self.assertEquals(getNextPage(newPage), youngerSibling)
+		self.assertEquals(getPrevPage(youngerSibling), newPage)
 
-
-	def testAddPageAsChild(self):
+	def test_insertChildPage(self):
 		'''
 		Tests adding a new page to the tree as a child of an existing page
 		'''
-		self.failUnlessEqual(True, True)
+		parent = Page.objects.get(slug='PageTestsPage1')
+		youngerUncle = getNextPage(parent)
 
-	def testRemovePageTest(self):
+		newPage = Page(slug="testAddPageAsChild", name="testAddPageAsChild")
+		insertChildPage(newPage, parent)
+		self.validateTree()
+
+		# reload these because their contents have changed
+		parent = Page.objects.get(id=parent.id)
+		youngerUncle = Page.objects.get(id=youngerUncle.id)
+
+		self.assertEquals(getPrevPage(newPage), parent)
+		self.assertEquals(getNextPage(parent), newPage)
+		self.assertEquals(getNextPage(newPage), youngerUncle)
+		self.assertEquals(getPrevPage(youngerUncle), newPage)
+
+	def test_removePage(self):
 		'''
 		Tests removing a page from the tree
 		'''
 		self.assertTrue(True)
 
-	def testRemoveTwoPagesTest(self):
+	def test_movePage(self):
+		'''
+		Tests moving a page from one part of the tree to another
+		'''
+		self.assertTrue(True)
+
+	def test_removePage_multiple(self):
 		'''
 		Tests removing several pages from the tree
 		'''
