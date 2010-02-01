@@ -19,9 +19,9 @@ class CourseTests(unittest.TestCase):
 		'''
 		self.client = Client()
 
-		userList = User.objects.all()
-		courses = Course.objects.all()
-		enrollments = Enrollment.objects.all()
+		#userList = User.objects.all()
+		#courses = Course.objects.all()
+		#enrollments = Enrollment.objects.all()
 
 		#for user in userList:
 		#	print user.username
