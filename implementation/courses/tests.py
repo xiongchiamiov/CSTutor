@@ -1,23 +1,52 @@
 """
-This file demonstrates two different styles of tests (one doctest and one
-unittest). These will both pass when you run "manage.py test".
+This file contains tests for the courses package. 
 
-Replace these with more appropriate tests for your application.
+@author Jon Inloes
 """
 
-from django.test import TestCase
+import unittest
+from django.test.client import Client
+from django.contrib.auth.models import User
+from courses.models import Course
+from courses.models import Enrollment
 from django.test.client import Client
 
-class SimpleTest(TestCase):
+
+class CourseTests(unittest.TestCase):
 	def setUp(self):
 		self.client = Client()
 
-	def test_roster(self):
-		response = self.client.get('/roster/')
+		userList = User.objects.all()
+		courses = Course.objects.all()
+		enrollments = Enrollment.objects.all()
+
+		for user in userList:
+			print user.username
+		for course in courses:
+			print course.slug
+		for enrollment in enrollments:
+			print enrollment.user.username + ' ' + enrollment.course.slug
+
+	def testRoster(self):
+		slug = 'gene-fishers-cpe102-fall-08'
+		response = self.client.get(slug + '/roster/')
 		self.failUnlessEqual(response.status_code, 200)
 
-	def test_add_user(self):
-		'''
-		Tests adding users to a course.
-		'''
-		pass
+	def testEnrollUser(self):
+		slug = 'gene-fishers-cpe102-fall-08'
+		username = 'jinloes'
+
+		enrollments = Enrollment.objects.all()
+		for e in enrollments:
+			print e.user.username + ' ' + e.course.slug	
+		
+		print '------------------------'
+
+		self.client.post('/' + slug + '/roster/adduser/', {'username': username, 'command': 'add'})
+		enrollments = Enrollment.objects.all()
+		for e in enrollments:
+			print e.user.username + ' ' + e.course.slug
+		course = Course.objects.get(slug=slug)
+		enrollments = course.roster.all()
+		users = enrollments.enrollments.filer(username=username)		
+		#enrollment = Enrollment.objects.get(user=username, course=slug)
