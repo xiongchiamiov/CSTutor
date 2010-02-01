@@ -6,20 +6,18 @@ Replace these with more appropriate tests for your application.
 """
 
 from django.test import TestCase
+from django.test.client import Client
 
 class SimpleTest(TestCase):
 	def setUp(self):
 		self.client = Client()
 
 	def test_roster(self):
-		response = self.get('/roster/')
+		response = self.client.get('/roster/')
 		self.failUnlessEqual(response.status_code, 200)
 
 	def test_add_user(self):
-        """
-        Tests adding users to a course.
-        """
-			'''
-			'''
-        self.failUnlessEqual(1 + 1, 2)
-
+		'''
+		Tests adding users to a course.
+		'''
+		pass
