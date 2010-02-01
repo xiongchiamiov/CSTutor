@@ -7,7 +7,21 @@
  
 First name : {{user.first_name}}<br>
 Last name : {{user.last_name}}<br>
-Username : {{user.username}}<br><br><br>
+Username : {{user.username}}<br>
+E-mail : {{user.email}}<br><br><br>
+
+<form action="" method="POST">
+<b>Change E-Mail Address</b>  <font color="red">{{emailError}}</font><br>
+New E-Mail: <input type="text" name="email"><input type="submit" name="form" value="Change E-mail">
+</form><br><br>
+
+<form action="" method="POST">
+<b>Change Password</b>  <font color="red">{{passError}}</font><br>
+Old Password: <input type="password" name="oldpass"><br>
+New Password: <input type="password" name="newpass1"><br>
+New Password (again): <input type="password" name="newpass2"><br>
+<input type="submit" name="form" value="Change Password"></input>
+</form>
 
 
 {% endblock %}
