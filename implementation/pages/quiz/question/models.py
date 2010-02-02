@@ -16,7 +16,7 @@ class Question(models.Model):
 	Model for a Question.
 
 	A Question is a particular question on a quiz. It contains a string for the question
-	text and a title.
+	text, an ordering, and a quiz that the question belongs to.
 	'''
 	text = models.TextField()
 	order = models.IntegerField()
@@ -39,7 +39,7 @@ class CodeQuestion(Question):
 	Model for CodeQuestion.
 
 	A CodeQuestion is a specific type of question which involves the user typing in code
-	which is then executed and compared against desired output. This class contains a 		
+	which is then executed and compared against desired output. This class contains a 
 	string for the code(if some is provided) and a string for the desired output
 	'''
 

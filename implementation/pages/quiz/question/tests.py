@@ -1,23 +1,24 @@
-"""
-This file demonstrates two different styles of tests (one doctest and one
-unittest). These will both pass when you run "manage.py test".
+'''
+This file contains tests for the Question package. 
 
-Replace these with more appropriate tests for your application.
-"""
+@author Evan Kleist
+'''
 
-from django.test import TestCase
+import unittest
+from django.test.client import Client
+from django.contrib.auth.models import User
 
-class SimpleTest(TestCase):
-    def test_basic_addition(self):
-        """
-        Tests that 1 + 1 always equals 2.
-        """
-        self.failUnlessEqual(1 + 1, 2)
-
-__test__ = {"doctest": """
-Another way to test that 1 + 1 is equal to 2.
-
->>> 1 + 1 == 2
-True
-"""}
+class QuestionTests(unittest.TestCase):
+	''' 
+		Unit Tests on Quiz Views.  Tests ensure that all Question
+		related functionality works properly
+		@author EVan Kleist
+	'''	
+	def setUp(self):
+		'''
+			Set up the tests
+		'''
+		#TODO - Instead of using a known quiz page, create a quiz 
+		#	page here and test on that page
+		self.client = Client()
 

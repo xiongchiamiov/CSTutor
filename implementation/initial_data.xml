@@ -370,6 +370,20 @@
       <field to="auth.permission" name="user_permissions" rel="ManyToManyRel"></field>
    </object>
    <object pk="7" model="auth.user">
+      <field type="CharField" name="username">ekleist</field>
+      <field type="CharField" name="first_name">Evan</field>
+      <field type="CharField" name="last_name">Kleist</field>
+      <field type="CharField" name="email"></field>
+      <field type="CharField" name="password">sha1$afeda$648e804b09a7bf98dbac6b7da13d6dbe0c7716f6</field>
+      <field type="BooleanField" name="is_staff">True</field>
+      <field type="BooleanField" name="is_active">True</field>
+      <field type="BooleanField" name="is_superuser">True</field>
+      <field type="DateTimeField" name="last_login">2010-01-22 13:16:33</field>
+      <field type="DateTimeField" name="date_joined">2010-01-22 13:16:33</field>
+      <field to="auth.group" name="groups" rel="ManyToManyRel"></field>
+      <field to="auth.permission" name="user_permissions" rel="ManyToManyRel"></field>
+   </object>
+   <object pk="8" model="auth.user">
       <field type="CharField" name="username">fakeuser</field>
       <field type="CharField" name="first_name">I Am</field>
       <field type="CharField" name="last_name">A Fake User</field>
@@ -490,11 +504,6 @@
    <object pk="2" model="courses.course">
       <field type="SlugField" name="slug">john-dalbeys-cpe103-fall-09</field>
       <field type="CharField" name="name">John Dalbey's CPE103 Fall 09</field>
-      <field type="BooleanField" name="private">False</field>
-   </object>
-   <object pk="3" model="courses.course">
-      <field type="SlugField" name="slug">evans-badass-class</field>
-      <field type="CharField" name="name">Evan's Badass Class</field>
       <field type="BooleanField" name="private">False</field>
    </object>
    <object pk="1" model="courses.enrollment">
