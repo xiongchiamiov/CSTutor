@@ -7,9 +7,8 @@ from courses.models import Course
 def master_rtr(request, template, data = {}):
 	if request.user.is_authenticated():
 		data['courses'] = [e.course for e in request.user.enrollments.all()]
-		print data['courses']
 	else:
-	 	data['courses'] = []
+		data['courses'] = []
 
 	return render_to_response(template, data, context_instance=RequestContext(request))
 
