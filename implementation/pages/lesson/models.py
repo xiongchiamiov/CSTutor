@@ -1,6 +1,5 @@
 from django.db import models
 from pages.models import Page
-from views import show_lesson
 
 # Create your models here.
 
@@ -13,11 +12,5 @@ class Lesson(Page):
 	segments and images.
 	'''
 	content = models.TextField()
-	# code?  Not sure how to handle
 
-	def show(self, request, course_slug, courses, pid):
-		#import pdb; pdb.set_trace()
-		#p = Page.objects.get(slug = pid)
-		#print self.content
-		return show_lesson(request, course_slug, courses, pid, self.content)
 
