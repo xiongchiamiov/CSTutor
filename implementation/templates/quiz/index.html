@@ -16,4 +16,18 @@
 	</tr>
 	{% endfor %}
 {% endfor %}
+</table>
+<table>
+{% for cq in codeQuestions %}
+	<tr>
+		<td><b>Q.</b></td>
+		<td>{{cq.text}}</td>
+	</tr>
+	<tr>
+		<td></td>
+		<td><textarea style="height: 10em; width: 20em;"></textarea></td>
+
+	</tr>
+{% endfor %}
+</table>
 {% endblock %}

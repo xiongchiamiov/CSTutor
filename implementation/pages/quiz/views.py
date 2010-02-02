@@ -2,6 +2,7 @@ from django.shortcuts import render_to_response
 from courses.models import Course
 from models import Page
 from question.models import MultipleChoiceQuestion
+from question.models import CodeQuestion
 from home.views import master_rtr
 
 '''
@@ -28,7 +29,6 @@ def show_quiz(request, course, pid):
 	quiz = quiz.quiz
 	quizTitle = quiz.text
 	questions = quiz.questions.all()
-
 	mcQuestions = []
 	codeQuestions = []
 
@@ -37,7 +37,9 @@ def show_quiz(request, course, pid):
 			q = q.multiplechoicequestion
 			mcQuestions.append(q)
 		except MultipleChoiceQuestion.DoesNotExist:
-			codeQuestions.append(q.CodeQuestions)
+			q = q.codequestion
+			codeQuestions.append(q)
 	
-	return master_rtr(request, 'quiz/index.html', {'course':course, 'pid':pid, 'quizTitle':quizTitle, 'mcQuestions':mcQuestions})
+	#import pdb; pdb.set_trace()
+	return master_rtr(request, 'quiz/index.html', {'course':course, 'pid':pid, 'quizTitle':quizTitle, 'mcQuestions':mcQuestions, 'codeQuestions':codeQuestions})
 

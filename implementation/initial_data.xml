@@ -522,6 +522,14 @@
       <field type="BooleanField" name="stats">True</field>
       <field type="BooleanField" name="manage">True</field>
    </object>
+   <object pk="3" model="courses.enrollment">
+      <field to="auth.user" name="user" rel="ManyToOneRel">7</field>
+      <field to="courses.course" name="course" rel="ManyToOneRel">1</field>
+      <field type="BooleanField" name="view">True</field>
+      <field type="BooleanField" name="edit">True</field>
+      <field type="BooleanField" name="stats">True</field>
+      <field type="BooleanField" name="manage">True</field>
+   </object>
    <object pk="1" model="pages.page">
       <field to="courses.course" name="course" rel="ManyToOneRel">1</field>
       <field type="SlugField" name="slug">index</field>
@@ -565,17 +573,30 @@
    </object>
    <object pk="1" model="question.question">
       <field type="TextField" name="text">What is your name</field>
-      <field type="IntegerField" name="order">0</field>
+      <field type="IntegerField" name="order">1</field>
       <field to="quiz.quiz" name="quiz" rel="ManyToOneRel">4</field>
    </object>
    <object pk="2" model="question.question">
       <field type="TextField" name="text">What is your gender?</field>
+      <field type="IntegerField" name="order">3</field>
+      <field to="quiz.quiz" name="quiz" rel="ManyToOneRel">4</field>
+   </object>
+   <object pk="3" model="question.question">
+      <field type="TextField" name="text">Write a statement in python that prints "Hello World"?</field>
       <field type="IntegerField" name="order">2</field>
       <field to="quiz.quiz" name="quiz" rel="ManyToOneRel">4</field>
    </object>
    <object pk="1" model="question.multiplechoicequestion">
    </object>
    <object pk="2" model="question.multiplechoicequestion">
+   </object>
+   <object pk="3" model="question.codequestion">
+      <field type="TextField" name="beforeCode">test1</field>
+      <field type="TextField" name="afterCode">test2</field>
+      <field type="TextField" name="expectedOutput">test3</field>
+      <field type="TextField" name="editableCode">test3</field>
+      <field type="BooleanField" name="showBeforeCode">True</field>
+      <field type="BooleanField" name="showAfterCode">True</field>
    </object>
    <object pk="1" model="question.answer">
       <field to="question.multiplechoicequestion" name="question" rel="ManyToOneRel">1</field>
