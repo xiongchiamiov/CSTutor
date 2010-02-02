@@ -73,20 +73,12 @@ class CourseViewTests(unittest.TestCase):
 		'''
 		self.client = Client()
 
-		#userList = User.objects.all()
-		#courses = Course.objects.all()
-		#enrollments = Enrollment.objects.all()
-
-		#for user in userList:
-		#	print user.username
-		#for course in courses:
-		#	print course.slug
-		#for enrollment in enrollments:
-		#	print enrollment.user.username + ' ' + enrollment.course.slug
-
 	def testRoster(self):
 		'''
 		Tests that redirection to the roster page works
+		Case no.		Inputs													Expected Output			Remark
+		1				url = /gene-fishers-cpe102-fall-08/roster/	200							200 is a successful code
+		2				url = /badclass/roster/								404							404 is a bad link error
 		'''
 		slug = 'gene-fishers-cpe102-fall-08'
 		response = self.client.get('/' + slug + '/roster/')
@@ -96,6 +88,10 @@ class CourseViewTests(unittest.TestCase):
 	def testEnrollUser(self):
 		'''
 		Tests enrolling a user in a course through the view
+
+		Case no.		Inputs												Expected Output	Remark
+		1				url=/gene-fishers-cpe102-fall-08/roster/
+						username = jinloes								true					true as in the user exists in enrollment list
 		'''
 		slug = 'gene-fishers-cpe102-fall-08'
 		username = 'jinloes'

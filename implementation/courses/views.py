@@ -39,6 +39,9 @@ def show_course(request, courses, course_slug):
 def add_user(request, course_slug, courses):
 	'''
 	Handles the commands given by the add user screen
+
+	@precondition none
+	@postcondition The user exists in the database if it is a valid user.
 	'''
 	course = Course.objects.get(slug=course_slug)
 	
@@ -94,6 +97,8 @@ def search_username(request, course_slug, courses):
 def remove_user(request, course_slug, courses):
 	'''
 	Removes a user from a course's enrollment list
+	@precondition The username entered in is valid.
+	@postcondition The username is no longer in the roster list. 
 	'''
 	removeName = request.POST['username']
 	course = Course.objects.get(slug=course_slug)
