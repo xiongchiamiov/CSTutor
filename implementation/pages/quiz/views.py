@@ -19,7 +19,7 @@ def create_quiz(request):
 	print "Create Quiz\n" #TODO
 	return master_rtr(request, 'quiz/create-quiz.html', {'courses': Course.objects.all()})
 
-def show_quiz(request, course, courses, pid):
+def show_quiz(request, course, pid):
 	''' show_Quiz View
 		This view displays a quiz on the screen. The user can then answer the
 		questions and submit the result
@@ -39,5 +39,5 @@ def show_quiz(request, course, courses, pid):
 		except MultipleChoiceQuestion.DoesNotExist:
 			codeQuestions.append(q.CodeQuestions)
 	
-	return render_to_response('quiz/index.html', {'course':course, 'courses':courses, 'pid':pid, 'quizTitle':quizTitle, 'mcQuestions':mcQuestions})
+	return master_rtr(request, 'quiz/index.html', {'course':course, 'pid':pid, 'quizTitle':quizTitle, 'mcQuestions':mcQuestions})
 

@@ -23,7 +23,7 @@ Contains the show_page function
 # @author Evan Kleist
 # @author Russell Mezzetta
 
-def show_page(request, course_slug, courses, pid):
+def show_page(request, course_slug, pid):
 	#check if the course is a real course in the database	
 	try: 
 		Course.objects.get(slug=course_slug)
@@ -42,5 +42,5 @@ def show_page(request, course_slug, courses, pid):
 			page = page.quiz
 		except Quiz.DoesNotExist:
 			print "Page is neither quiz or lesson"
-		return show_quiz(request, course_slug, courses, pid)
-	return show_lesson(request, course_slug, courses, pid)
+		return show_quiz(request, course_slug, pid)
+	return show_lesson(request, course_slug, pid)
