@@ -1,33 +1,35 @@
 {% extends "base.html" %}
+{% load smart_if %}
 
 {% block content %}
 <center><b><font size="4">{{quizTitle}}</font></b></center>
 <table>
-{% for mcq in mcQuestions %}
-	<tr>
-		<td><b>Q.</b></td>
-		<td colspan="2">{{mcq.text}}</td>
-	</tr>
-	{% for a in mcq.answers.all %}
-	<tr>
-		<td></td>
-		<td><input type="radio" name="group1"/></td>
-		<td>{{a.text}}</td>
-	</tr>
-	{% endfor %}
+{% for q in questions %}
+	{% if q.multiplechoicequestion %}
+		<tr>
+	                <td><b>{{q.multiplechoicequestion.order}}</b></td>
+	                <td colspan="2">{{q.multiplechoicequestion.text}}</td>
+	        </tr>
+	        {% for a in q.multiplechoicequestion.answers.all %}
+	        <tr>
+	                <td></td>
+	                <td><input type="radio" name="group1"/></td>
+	                <td>{{a.text}}</td>
+	        </tr>
+		{% endfor %}
+	{% endif %}
+	{% if q.codequestion %}
+	        <tr>
+	                <td><b>{{q.codequestion.order}}</b></td>
+	                <td colspan="2">{{q.codequestion.text}}</td>
+	        </tr>
+	        <tr>
+	                <td></td>
+	                <td colspan="2"><textarea style="height: 10em; width: 20em;"></textarea></td>
+	
+	        </tr>
+	{% endif %}
 {% endfor %}
 </table>
-<table>
-{% for cq in codeQuestions %}
-	<tr>
-		<td><b>Q.</b></td>
-		<td>{{cq.text}}</td>
-	</tr>
-	<tr>
-		<td></td>
-		<td><textarea style="height: 10em; width: 20em;"></textarea></td>
 
-	</tr>
-{% endfor %}
-</table>
 {% endblock %}

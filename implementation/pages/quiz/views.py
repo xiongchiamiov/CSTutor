@@ -28,7 +28,7 @@ def show_quiz(request, course, pid):
 	quiz = Page.objects.get(slug=pid)
 	quiz = quiz.quiz
 	quizTitle = quiz.text
-	questions = quiz.questions.all()
+	questions = quiz.questions.all().order_by("order")
 	mcQuestions = []
 	codeQuestions = []
 
@@ -40,6 +40,7 @@ def show_quiz(request, course, pid):
 			q = q.codequestion
 			codeQuestions.append(q)
 	
-	#import pdb; pdb.set_trace()
-	return master_rtr(request, 'quiz/index.html', {'course':course, 'pid':pid, 'quizTitle':quizTitle, 'mcQuestions':mcQuestions, 'codeQuestions':codeQuestions})
+	mcQuestions = iter(mcQuestions)
+	codeQuestions = iter(codeQuestions)
+	return master_rtr(request, 'quiz/index.html', {'course':course, 'pid':pid, 'quizTitle':quizTitle, 'questions':questions, 'mcQuestions':mcQuestions, 'codeQuestions':codeQuestions})
 
