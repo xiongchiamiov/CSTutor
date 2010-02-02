@@ -9,8 +9,6 @@ def master_rtr(request, template, data = {}):
 		print data['courses']
 	else:
 	 	data['courses'] = []
-   # commented by mgius.  Breaks test suite!!
-   #import pdb; pdb.set_trace()
 
 	return render_to_response(template, data)
 
