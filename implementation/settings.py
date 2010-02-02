@@ -93,6 +93,7 @@ INSTALLED_APPS = (
 	'pages.quiz.question',
 	'stats',
 	'users',
+	'home',
 )
 
 try:
