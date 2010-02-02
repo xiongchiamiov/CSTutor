@@ -42,7 +42,23 @@ def setInstructor(user, instructor):
 def registerNewUser(username, password, vpassword, email):
 	'''
 	@author Russell Mezzetta
-	Registers a new user. First checks for valid username.
+	Registers a new user. 
+
+	pre: username not empty return 3
+	     username not already taken return 1
+	     password not empty return 4
+	     password and vpassword match return 2
+	post: none
+
+	Tests:
+	inputs                              outputs
+	("", "", "", "")	                  3
+	("blah", "", "", "")                4
+	("blah", "pass", "some", "")        2
+	("blah", "pass", "pass", "myemail") 0
+	("blah", "xyx", "xyx", "mailxyx")   1
+	
+	First checks for valid username.
 	Returns 0 on success, 1 if username already exists, 2 if passwords don't match
 	3 if the username is empty, 4 if the password(s) is/are empty.
 	'''
@@ -79,6 +95,9 @@ def loginWrapper(request, username, password):
 	'''
 	@author Russell Mezzetta
 	This login wrapper logs the user in.
+	pre: none
+	post: username and password match a username/password in the system
+	      username denotes an active account
 	returns 0 on success, 1 invalid login, 2 inactive account
 	'''
 	user = authenticate(username=username, password=password)
