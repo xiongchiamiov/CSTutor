@@ -1,9 +1,8 @@
 '''
-course.py file for page related operations.
-
 Contains operations for Courses
 
 @author: Matthew Tytel
+@author: Mark Gius
 
 '''
 from courses.models import *
@@ -30,25 +29,26 @@ def CreateCourse(name, user, slug=None):
 
 	return newcourse
 
-def addPage(self, newPage, parentPage = None, order = None):
-	'''
-	Adds a page to this course
-
-	If no parent is provided, insert under the "course" page as the last page.
-
-	If no order is provided, insert it as the last page under the parent
-
-	This operation saves the page to the database, and then returns the new
-	page.
-	'''
-   # get the children of my parent whose order is >= to my new order
-   # if no children, becomes the only child of parent
-   #   self.next = parent.next, parent.next = self
-   # if children, find the child with order = me (in case of no order,
-   #   or no child with order that high, use parent as the new nextpage)
-   # set nextchild.prev.next to self, self.next = nextchild
-	#  
-	pass
+# deprecated in favor of addPage functions in pages.page -mgius
+#def addPage(self, newPage, parentPage = None, order = None):
+#	'''
+#	Adds a page to this course
+#
+#	If no parent is provided, insert under the "course" page as the last page.
+#
+#	If no order is provided, insert it as the last page under the parent
+#
+#	This operation saves the page to the database, and then returns the new
+#	page.
+#	'''
+#   # get the children of my parent whose order is >= to my new order
+#   # if no children, becomes the only child of parent
+#   #   self.next = parent.next, parent.next = self
+#   # if children, find the child with order = me (in case of no order,
+#   #   or no child with order that high, use parent as the new nextpage)
+#   # set nextchild.prev.next to self, self.next = nextchild
+#	#  
+#	pass
 		
 def addUser(self, user, view = True, edit=False, stats=False, manage=False):
 	''' Adds a User to a course 
@@ -74,12 +74,18 @@ def addUser(self, user, view = True, edit=False, stats=False, manage=False):
 	return None
 
 def removeUser(self, user):
+	'''
+		Removes the specified user from the course
+
+		@author ?
+	'''
 	print 'removing a user'
 	try:
 		Enrollment.objects.get(user=user, course=self).delete()
 	except:
 		print 'remove failed'	
 	return None
+
 def remove(self):
 	'''
 		Removes this course and all of its pages, statistics, and enrollments
@@ -87,16 +93,18 @@ def remove(self):
 	'''
 	pass
 
-def removePage(self, page, updateLinks = True):
-	'''
-	Removes the specified page from the specified course
-
-	To remove a page, the specified page is loaded, its next and prev pages
-	are linked and the page is dropped from the database (or not....)
-
-	this operation returns ???
-	'''
-	pass
+# this method has been deprecated in favor of the remove function in pages.page
+# -mgius
+#def removePage(self, page, updateLinks = True):
+#	'''
+#	Removes the specified page from the specified course
+#
+#	To remove a page, the specified page is loaded, its next and prev pages
+#	are linked and the page is dropped from the database (or not....)
+#
+#	this operation returns ???
+#	'''
+#	pass
 
 
 def setPrivate(self):
