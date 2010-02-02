@@ -1,0 +1,34 @@
+{% comment %} 
+{% extends "base.html" %}
+
+{% block content %}
+{% endcomment %}
+
+<form action="" method="post">
+<p align="center"><font size="+2">Register New User
+<br /><br /></font>
+<font>
+Username:
+<input type="text" name="username" />
+<br />
+Password:
+<input type="password" name="password" />
+<br /><br />
+Verify Password:
+<input type="password" name="verifypassword" />
+<br /><br />
+Email(optional):
+<input type="text" name="email" />
+<br />
+</font>
+<input type="submit" value="Submit"><br />
+<font size="+1">
+<br /><br />
+{{message}}
+</p>
+</form>
+
+{% comment %}
+<!--{% endblock %}-->
+{% endcomment %}
+

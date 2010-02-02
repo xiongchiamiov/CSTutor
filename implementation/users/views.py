@@ -1,11 +1,13 @@
-'''users/views.py - This is where all the profile pages are rendered'''
-# @author John Hartquist
-
-from django.http import HttpResponse
+'''users/views.py - This is where all the profile pages are rendered
+@author John Hartquist
+@author Russell Mezzetta
+'''
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from home.views import index
+from user import registerNewUser, loginWrapper
 from django.forms.fields import email_re
 
 def show_profile(request):
@@ -50,48 +52,90 @@ def show_profile(request):
 		return render_to_response('user/profile.html', {'user':request.user})
 	else:
 		return render_to_response('user/notloggedin.html')
-		
-	
-	
 	
 def show_logout(request):
 	'''
-        Logs out the current user
-        @pre
-        @post request.user.is_authenticated() == false
-        '''
+	Logs out the current user
+	@pre
+	@post request.user.is_authenticated() == false
+	'''
 	
 	logout(request)
 	return render_to_response('user/logout.html');
 	
 def show_login(request):
 	'''
-	Logs a user in
-	@pre
-	@post request.user.is_authenticated() == true
-	'''	
+	@author Russell Mezzetta
+	This shows the login page and displays any errors.
+	'''
+	print 'in show_login'
+	
 	if request.method == 'POST':
 		#form was submitted
 		username = request.POST['username']
 		password = request.POST['password']
+		#checkboxes don't put anything in post if they are unchecked so we have to do a little
+		#extra work. This involves making a list of the possible checkboxes.
+		checkboxList = request.POST.getlist('anonymous')
+		checkboxList += request.POST.getlist('autologin')
+		checkboxList += request.POST.getlist('rememberme')
 
-		user = authenticate(username=username, password=password)
-		if user is not None:
-			if user.is_active:
-				login(request, user)
-				# Redirect to a success page.
-				#print "successful login"
-				#call the index view ... this should be the equivalent of the homepage
-				return index(request)
-			else:
-				# Return a 'disabled account' error message
-				#print "account marked as inactive"
-				return render_to_response('user/login.html', {'message': "Account marked as inactive, contact System Admins"})
-		else:
+		if "anonymous" in checkboxList:
+			print "anonymous checked"
+			#bypass login
+		if "autologin" in checkboxList:
+			print "autologin checked"
+			#save this in their session/cookie
+		if "rememberme" in checkboxList:
+			print "rememberme checked"
+			#save this in their session(auto fill username)
+		
+		ret = loginWrapper(request, username, password)
+		if ret == 0:
+			print "successful login"
+			#call the index view ... this should be the equivalent of the homepage
+			return index(request)
+		elif ret == 1:
 			# Return an 'invalid login' error message.
-			#print "invalid login"
+			print "invalid login"
 			return render_to_response('user/login.html', {'message': "Please try again, Invalid Username/Password"})
-	#else:
+		else:#ret == 2:
+			# Return a 'disabled account' error message
+			print "account marked as inactive"
+			return render_to_response('user/login.html', {'message': "Account marked as inactive, contact System Admins"})
+	else:
 		#form has not yet been submitted (first time visiting login page)
-		#print 'GET'
+		print 'GET'
 	return render_to_response('user/login.html')
+
+def show_register_new_user(request):
+	'''
+	@author Russell Mezzetta
+	This def shows the register new user page and registers the user
+	'''
+	print "in show_register_new_user"
+	if request.method == 'POST':
+		#form was submitted
+		username = request.POST['username']
+		password = request.POST['password']
+		vpassword = request.POST['verifypassword']
+		email = request.POST['email']
+		#send form data to registerNewUser function
+		ret = registerNewUser(username, password, vpassword, email)
+		if ret == 0:
+			#successful registration
+			#return render_to_response('user/login.html', {'message': "User Registration Successful"})
+			#TODO create a response like "success!"
+			return HttpResponseRedirect('/login/')
+		elif ret == 1:
+			errorMsg = "That username is already taken"
+		elif ret == 2:
+			errorMsg = "Passwords do not match"
+		elif ret == 3:
+			errorMsg = "The username field is empty"
+		else:#ret == 4
+			errorMsg = "The password field is empty"
+		return render_to_response('user/register-new-user.html', {'message': errorMsg})
+	else:
+		return render_to_response('user/register-new-user.html')
+
