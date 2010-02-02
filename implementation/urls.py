@@ -33,5 +33,5 @@ urlpatterns += patterns('',
 	(r'^join-course', 'courses.views.join_course_form'),
 	(r'^create-lesson', 'pages.lesson.views.create_lesson'),
 	(r'^create-quiz', 'pages.quiz.views.create_quiz'),
-	(r'^(?P<course_slug>[\w-]+)/', include('courses.urls'), {'courses': Course.objects.all()}),
+	(r'^(?P<course_slug>[\w-]+)/', include('courses.urls')),
 )
