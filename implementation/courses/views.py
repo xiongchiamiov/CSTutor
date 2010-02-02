@@ -8,7 +8,8 @@ from courses.models import Course
 from courses.course import *
 from users.models import User
 from django.db import IntegrityError
-from django.template.defaultfilters import slugify 
+from django.template.defaultfilters import slugify
+from home.views import master_rtr
 
 def create_course(request):
 	if request.method == "POST":
@@ -33,8 +34,8 @@ def show_roster(request, course_slug, courses):
 
 	return render_to_response('roster/index.html', {'course': course, 'enrollments': enrollments, 'courses': courses, 'course_slug': course.slug})
 
-def show_course(request, courses, course_slug):
-	return render_to_response('index.html', {'courses': courses, 'course_slug': course_slug})
+def show_course(request, course_slug):
+	return master_rtr(request, 'index.html', {'course_slug': course_slug})
 
 def add_user(request, course_slug, courses):
 	'''
