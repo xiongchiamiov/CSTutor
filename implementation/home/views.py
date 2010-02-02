@@ -4,8 +4,11 @@ from django.shortcuts import render_to_response
 from courses.models import Course
 
 def master_rtr(request, template, data = {}):
-	data['courses'] = [e.course for e in request.user.enrollments.all()]
-	print data['courses']
+	if request.user.is_authenticated():
+		data['courses'] = [e.course for e in request.user.enrollments.all()]
+		print data['courses']
+	else:
+	 	data['courses'] = []
    # commented by mgius.  Breaks test suite!!
    #import pdb; pdb.set_trace()
 
