@@ -85,9 +85,9 @@ def show_login(request):
 			#bypass login
 			#if the session has data in it, set it to false, set cookie to expire when browser closes
 			request.session.set_expiry(0)
-			if 'autologin' in request.session
+			if 'autologin' in request.session:
 				request.session['autologin'] = False
-			if 'rememberme' in request.session
+			if 'rememberme' in request.session:
 				request.session['rememberme'] = False
 			return index(request)
 
