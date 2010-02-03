@@ -46,6 +46,7 @@
 <input type="submit" value="Remove User">
 </form>
 <br />
+{% if course.private %}
 <center>
 <b><font size="5">Pending Requests for {{course}}</size></b>
 </center>
@@ -56,4 +57,5 @@
 		<td><b><font size="3">Date</font></b></td>
 	</tr>
 </table>
+{% endif %}
 {% endblock %}
