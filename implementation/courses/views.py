@@ -134,7 +134,7 @@ def cancel_add(request, course_slug, courses):
 def join_course_form(request):
 	courses = Course.objects.all()
 	return master_rtr(request, 'courses/join_course_form.html', \
-			{'courses':courses})
+			{'join_courses' : courses})
 
 @login_required(redirect_field_name='/login/')
 def join_course_request(request):

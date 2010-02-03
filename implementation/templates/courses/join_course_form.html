@@ -3,7 +3,7 @@
 {% block content %}
 <form action="/submit_join_course_request">
 <select name="courseid" size="10">
-	{% for course in courses %}
+	{% for course in join_courses %}
 	<option value="{{course.id}}">{{course.name}}</option>
    {% endfor %}
 	<input type="submit" value="Submit Request" />
