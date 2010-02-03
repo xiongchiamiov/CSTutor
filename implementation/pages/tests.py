@@ -11,6 +11,18 @@ from pages.page import *
 
 class PageTests(TestCase):
 	''' Unit tests and other tests on the Page class and it's related functions
+
+		 Page structure for these tests:
+		 				    1 PageTestsIndexPage 10
+								/       |       \ 
+							  /        |        \ 
+			  2 PageTestsPage1 3   |         \ 
+			                       |          \ 
+			       	    4 PageTestsPage2 5    \ 
+							                        \ 
+								              6 PageTestPage3 9
+												        |
+												  7 PageTestPage4 8
 	'''
 	fixtures = ['PageTests']
 	courseName = 'PageTestsCourse'
@@ -80,11 +92,30 @@ class PageTests(TestCase):
 		self.assertEquals(getNextPage(newPage), youngerUncle)
 		self.assertEquals(getPrevPage(youngerUncle), newPage)
 
-	def test_removePage(self):
+	def test_removeParent(self):
 		'''
-		Tests removing a page from the tree
+		Tests removing a parent page from the tree (all child pages also deleted)
 		'''
+		removePage = Page.objects.get(slug='PageTestsPage1')
 		self.assertTrue(True)
+	
+	def test_removeFirstChild(self):
+		'''
+		Tests removing the first child of a tree
+		'''
+		pass
+	
+	def test_removeMiddleChild(self):
+		'''
+		Tests removing the middle child of a tree
+		'''
+		pass
+	
+	def test_removeLastChild(self):
+		'''
+		Tests removing the last child of a tree
+		'''
+		pass
 
 	def test_movePage(self):
 		'''
