@@ -5,7 +5,7 @@ from home.views import master_rtr
 
 def create_lesson(request):
 	print "Create Lesson\n" #TODO
-	return master_rtr(requeset, 'lesson/create-lesson.html')
+	return master_rtr(request, 'lesson/create-lesson.html')
 
 def show_lesson(request, course, pid):
   # To get lessonConent now, you need to retreieve the page from the database, cast it to a lesson, and get the "text" attribute
