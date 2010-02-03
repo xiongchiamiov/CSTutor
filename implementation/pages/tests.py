@@ -90,7 +90,7 @@ class PageTests(TestCase):
 		'''
 		Tests moving a page from one part of the tree to another
 		'''
-		self.assertTrue(True)
+		self.assertTrue(False)
 
 	def test_removePage_multiple(self):
 		'''
