@@ -1,4 +1,5 @@
 from django.shortcuts import render_to_response
+from django.http import HttpResponseRedirect
 from courses.models import Course
 from models import Page
 from question.models import MultipleChoiceQuestion
@@ -29,18 +30,8 @@ def show_quiz(request, course, pid):
 	quiz = quiz.quiz
 	quizTitle = quiz.text
 	questions = quiz.questions.all().order_by("order")
-	mcQuestions = []
-	codeQuestions = []
 
-	for q in questions:
-		try:
-			q = q.multiplechoicequestion
-			mcQuestions.append(q)
-		except MultipleChoiceQuestion.DoesNotExist:
-			q = q.codequestion
-			codeQuestions.append(q)
-	
-	mcQuestions = iter(mcQuestions)
-	codeQuestions = iter(codeQuestions)
-	return master_rtr(request, 'quiz/index.html', {'course':course, 'pid':pid, 'quizTitle':quizTitle, 'questions':questions, 'mcQuestions':mcQuestions, 'codeQuestions':codeQuestions})
+	return master_rtr(request, 'quiz/viewQuiz.html', {'course':course, 'pid':pid, 'quizTitle':quizTitle, 'questions':questions})
 
+def submitQuiz(request, course_slug, pid):
+	return master_rtr(request, 'quiz/submitQuiz.html', {'course':course_slug, 'pid':pid})

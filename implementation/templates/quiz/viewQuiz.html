@@ -3,6 +3,7 @@
 
 {% block content %}
 <center><b><font size="4">{{quizTitle}}</font></b></center>
+<form name="submitQuiz" action="submitQuiz/" method="post">
 <table>
 {% for q in questions %}
 	{% if q.multiplechoicequestion %}
@@ -13,7 +14,7 @@
 	        {% for a in q.multiplechoicequestion.answers.all %}
 	        <tr>
 	                <td></td>
-	                <td><input type="radio" name="group1"/></td>
+	                <td><input type="radio" name="mcq{{q.multiplechoicequestion.order}}"/></td>
 	                <td>{{a.text}}</td>
 	        </tr>
 		{% endfor %}
@@ -25,11 +26,12 @@
 	        </tr>
 	        <tr>
 	                <td></td>
-	                <td colspan="2"><textarea style="height: 10em; width: 20em;"></textarea></td>
+	                <td colspan="2"><textarea name="cq{{q.codequestion.order}}" style="height: 10em; width: 20em;"></textarea></td>
 	
 	        </tr>
 	{% endif %}
 {% endfor %}
 </table>
-
+<center><input type="submit" value="Submit Quiz" /></center>
+</form>
 {% endblock %}
