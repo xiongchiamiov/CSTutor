@@ -1,5 +1,6 @@
 '''
 Unit Tests for Classes in the Page module
+
 @author Mark Gius
 '''
 
@@ -12,7 +13,19 @@ from pages.page import *
 class PageTests(TestCase):
 	''' Unit tests and other tests on the Page class and it's related functions
 
-		 Page structure for these tests:
+		 Phase 1: Unit test adding pages to a course
+
+		 Phase 2: Unit test removing pages from a course
+
+		 Phase 3: Unit test moving pages within a course
+
+		 Phase 4: Stress test by creating a tree of 10000 pages, of approx depth
+		          4, and attempting add/remove operations from it
+
+		 --------------------------------------------------------
+
+		 Page structure for these Phases 1-3:
+
 		 				    1 PageTestsIndexPage 10
 								/       |       \ 
 							  /        |        \ 
@@ -20,9 +33,9 @@ class PageTests(TestCase):
 			                       |          \ 
 			       	    4 PageTestsPage2 5    \ 
 							                        \ 
-								              6 PageTestPage3 9
+								              6 PageTestPages3 9
 												        |
-												  7 PageTestPage4 8
+												  7 PageTestPages4 8
 	'''
 	fixtures = ['PageTests']
 	courseName = 'PageTestsCourse'
@@ -96,14 +109,23 @@ class PageTests(TestCase):
 		'''
 		Tests removing a parent page from the tree (all child pages also deleted)
 		'''
-		removePage = Page.objects.get(slug='PageTestsPage1')
-		self.assertTrue(True)
+		pass
 	
 	def test_removeFirstChild(self):
 		'''
 		Tests removing the first child of a tree
 		'''
-		pass
+
+		toRemovePage = Page.objects.get(slug='PageTestsPage1')
+		removePage(toRemovePage)
+
+		self.validateTree()
+
+		parentPage = Page.objects.get(slug='PageTestsIndexPage')
+		middleChild = Page.objects.get(slug='PageTestsPage2')
+
+		self.assertEquals(getPrevPage(middleChild), parentPage)
+		self.assertEquals(getNextPage(parentPage), middleChild)
 	
 	def test_removeMiddleChild(self):
 		'''
@@ -120,11 +142,5 @@ class PageTests(TestCase):
 	def test_movePage(self):
 		'''
 		Tests moving a page from one part of the tree to another
-		'''
-		self.assertTrue(True)
-
-	def test_removePage_multiple(self):
-		'''
-		Tests removing several pages from the tree
 		'''
 		self.assertTrue(True)

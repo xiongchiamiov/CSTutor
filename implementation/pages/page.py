@@ -112,20 +112,23 @@ def removePage(self):
 		 case no.    inputs         expected output       remark
 		 1           page,page      ValidateTree == True
 	'''
-	coursePages = Course.objects.filter(course__exact=self.course)
+	coursePages = Page.objects.filter(course__exact=self.course)
 	removeNumber = self.left
-	# These pages are later in the tree, both left and right need to be inc by 2
-	updateLeft = coursePages.filter(left__gt=insertAfterNum)
+
+
+	updateLeft = list(coursePages.filter(left__gt=removeNumber))
+	updateRight = list(coursePages.filter(right__gt=removeNumber)\
+	                         .exclude(left__gt=removeNumber))
+
+	# These pages are later in the tree, both left and right need to be dec by 2
 	for page in updateLeft:
-		page.left += 2
-		page.right += 2
+		page.left -= 2
+		page.right -= 2
 		page.save()
 	
 	# these pages are previous in the tree, but need their "right" updated
-	updateRight = coursePages.filter(right__gt=insertAfterNum)\
-	                         .exclude(left__gt=insertAfterNum)
 	for page in updateRight:
-		page.right += 2
+		page.right -= 2
 		page.save()
 
 	self.delete()
