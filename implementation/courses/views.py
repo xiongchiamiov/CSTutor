@@ -31,7 +31,7 @@ def create_course(request):
 
 	return render_to_response('courses/create_course.html', {'courses': Course.objects.all()})
 
-@login_required(redirect_field_name='login.html')
+@login_required(redirect_field_name='/login/')
 def show_roster(request, course_slug):
 	'''
 	Displays the roster
@@ -133,17 +133,19 @@ def cancel_add(request, course_slug, courses):
 
 def join_course_form(request):
 	courses = Course.objects.all()
-	return render_to_response('courses/join_course_form.html', \
+	return master_rtr(request, 'courses/join_course_form.html', \
 			{'courses':courses})
 
+@login_required(redirect_field_name='/login/')
 def join_course_request(request):
+	'''Displays the classes a user can join'''
 	courseid = request.GET['courseid']
 	course = Course.objects.get(id=courseid)
-	user = User.objects.get(username='fakeuser')
+	user = User.objects.get(username=request.user.username)
 	enrollment = addUser(course, user, True)
 	if enrollment == None:
-		return render_to_response('courses/join_course_already_enrolled.html', \
+		return master_rtr(request, 'courses/join_course_already_enrolled.html', \
 				{'course':course, 'user':user})
 	else:
-		return render_to_response('courses/join_course_successful.html', \
+		return master_rtr(request, 'courses/join_course_successful.html', \
 				{'course':course, 'user':user})
