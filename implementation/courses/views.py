@@ -25,19 +25,19 @@ def create_course(request):
 
 	return render_to_response('courses/create_course.html', {'courses': Course.objects.all()})
 
-def show_roster(request, course_slug, courses):
+def show_roster(request, course_slug):
 	'''
 	Displays the roster
 	'''
 	course = Course.objects.get(slug=course_slug)
 	enrollments = course.roster.all();
 
-	return render_to_response('roster/index.html', {'course': course, 'enrollments': enrollments, 'courses': courses, 'course_slug': course.slug})
+	return master_rtr(request, 'roster/index.html', {'course': course, 'enrollments': enrollments, 'course_slug': course.slug})
 
 def show_course(request, course_slug):
 	return master_rtr(request, 'index.html', {'course_slug': course_slug})
 
-def add_user(request, course_slug, courses):
+def add_user(request, course_slug):
 	'''
 	Handles the commands given by the add user screen
 
@@ -61,7 +61,7 @@ def add_user(request, course_slug, courses):
 
 			except User.DoesNotExist:
 				#if the user does not exist print error message
-				return render_to_response('adduser/failed.html', {'course_slug':course_slug, 'courses': courses, 'course': course})
+				return master_rtr(request, 'adduser/failed.html', {'course_slug':course_slug, 'course': course})
 			
 			#show the roster screen
 			return HttpResponseRedirect("/%s/roster/" % course_slug)
@@ -74,11 +74,11 @@ def add_user(request, course_slug, courses):
 			users = User.objects.filter(first_name = firstname, last_name = lastname)
 
 	
-			return render_to_response('adduser/search.html', {'course_slug': course_slug, 'courses':courses, 'course':course, 'users':users, 'firstname': firstname, 'lastname': lastname})
+			return master_rtr(request, 'adduser/search.html', {'course_slug': course_slug, 'course':course, 'users':users, 'firstname': firstname, 'lastname': lastname})
 	else:
 		
 		#display the adduser page
-		return render_to_response('adduser/index.html', {'course_slug': course_slug, 'courses':courses, 'course': course, 'url': request.path})
+		return master_rtr(request,'adduser/index.html', {'course_slug': course_slug, 'course': course, 'url': request.path})
 
 def search_username(request, course_slug, courses):
 	'''This function is not called any more'''
@@ -93,9 +93,9 @@ def search_username(request, course_slug, courses):
 	users = User.objects.filter(first_name = firstname, last_name = lastname)
 
 	
-	return render_to_response('adduser/search.html', {'course_slug': course_slug, 'courses':courses, 'course':course, 'users':users, 'firstname': firstname, 'lastname': lastname, 'url': request.path})
+	return master_rtr(request, 'adduser/search.html', {'course_slug': course_slug, 'course':course, 'users':users, 'firstname': firstname, 'lastname': lastname, 'url': request.path})
 
-def remove_user(request, course_slug, courses):
+def remove_user(request, course_slug):
 	'''
 	Removes a user from a course's enrollment list
 	@precondition The username entered in is valid.
