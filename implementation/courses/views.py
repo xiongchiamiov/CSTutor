@@ -22,14 +22,14 @@ def create_course(request):
 		name = request.POST['coursename'].strip()
 
 		if len(name) < 3:
-			return render_to_response('courses/create_course_length.html', {'courses': Course.objects.all()})
+			return master_rtr(request, 'courses/create_course_length.html')
 
 		try:
 			CreateCourse(name, User.objects.get(username = "fakeuser"))
 		except IntegrityError:
-			return render_to_response('courses/create_course_dup.html', {'courses': Course.objects.all()})
+			return master_rtr(request, 'courses/create_course_dup.html')
 
-	return render_to_response('courses/create_course.html', {'courses': Course.objects.all()})
+	return master_rtr(request, 'courses/create_course.html')
 
 @login_required(redirect_field_name='/login/')
 def show_roster(request, course_slug):
