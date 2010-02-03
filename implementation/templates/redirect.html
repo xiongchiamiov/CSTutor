@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block meta %}
+<meta http-equiv="refresh" content="2;url={{ redirectUrl }}"/>
+{% endblock meta %}
+
+{% block content %}
+<p> You are about to be redirected to {{ redirectText }}</p>
+<p> Click <a href="{{ redirectUrl }}">here</a> if you are not redirected automatically.</p>
+{% endblock %}
