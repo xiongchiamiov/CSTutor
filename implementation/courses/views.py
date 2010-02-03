@@ -12,6 +12,10 @@ from django.template.defaultfilters import slugify
 from home.views import master_rtr
 
 def create_course(request):
+	'''
+	Creates a new course if course name is long enough
+	and the coursename is unique.  If not gives an error.
+	'''
 	if request.method == "POST":
 		name = request.POST['coursename'].strip()
 
