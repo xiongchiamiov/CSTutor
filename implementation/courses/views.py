@@ -10,6 +10,8 @@ from users.models import User
 from django.db import IntegrityError
 from django.template.defaultfilters import slugify
 from home.views import master_rtr
+from django.contrib.auth.decorators import login_required
+
 
 def create_course(request):
 	'''
@@ -29,15 +31,21 @@ def create_course(request):
 
 	return render_to_response('courses/create_course.html', {'courses': Course.objects.all()})
 
+@login_required(redirect_field_name='login.html')
 def show_roster(request, course_slug):
 	'''
 	Displays the roster
 	'''
 	course = Course.objects.get(slug=course_slug)
-	enrollments = course.roster.all();
+	enrollment = Enrollment.objects.get(user__username__exact=request.user.username, course__slug__exact=course_slug)
+	
+	if enrollment.manage:
+		enrollments = course.roster.all();
 
-	return master_rtr(request, 'roster/index.html', {'course': course, 'enrollments': enrollments, 'course_slug': course.slug})
+		return master_rtr(request, 'roster/index.html', {'course': course, 'enrollments': enrollments, 'course_slug': course.slug})
 
+	else:
+		return master_rtr(request, 'roster/invalid_permissions.html', {'course': course})
 def show_course(request, course_slug):
 	return master_rtr(request, 'index.html', {'course_slug': course_slug})
 

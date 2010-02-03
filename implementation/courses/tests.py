@@ -77,13 +77,13 @@ class CourseViewTests(unittest.TestCase):
 		'''
 		Tests that redirection to the roster page works
 		Case no.		Inputs													Expected Output			Remark
-		1				url = /gene-fishers-cpe102-fall-08/roster/	200							200 is a successful code
+		1				url = /gene-fishers-cpe102-fall-08/roster/	200							302 is a found code
 		2				url = /badclass/roster/								404							404 is a bad link error
 		'''
 		slug = 'gene-fishers-cpe102-fall-08'
-		# test commented out because it fails
-      #response = self.client.get('/' + slug + '/roster/')
-		#self.failUnlessEqual(response.status_code, 200)
+		
+		response = self.client.get('/' + slug + '/roster/')
+		self.failUnlessEqual(response.status_code, 302)
 
 
 	def testEnrollUser(self):
@@ -97,10 +97,9 @@ class CourseViewTests(unittest.TestCase):
 		slug = 'gene-fishers-cpe102-fall-08'
 		username = 'jinloes'
 
-		# commented out by mgius because test is broken
-      #self.client.post('/' + slug + '/roster/adduser/', {'username': username, 'command': 'add'})
-		#enrollment = Enrollment.objects.get(user__username__exact=username, course__slug__exact=slug)
-		#self.assertEquals(enrollment.user.username, username)
+		self.client.post('/' + slug + '/roster/adduser/', {'username': username, 'command': 'add'})
+		enrollment = Enrollment.objects.get(user__username__exact=username, course__slug__exact=slug)
+		self.assertEquals(enrollment.user.username, username)
 
 	def testPrivacy(self):
 		'''
