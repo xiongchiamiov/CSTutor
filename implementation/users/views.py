@@ -81,14 +81,30 @@ def show_login(request):
 		checkboxList += request.POST.getlist('rememberme')
 
 		if "anonymous" in checkboxList:
-			print "anonymous checked"
+			print "anonymous login"
 			#bypass login
+			#if the session has data in it, set it to false, set cookie to expire when browser closes
+			request.session.set_expiry(0)
+			if 'autologin' in request.session
+				request.session['autologin'] = False
+			if 'rememberme' in request.session
+				request.session['rememberme'] = False
+			return index(request)
+
 		if "autologin" in checkboxList:
 			print "autologin checked"
-			#save this in their session/cookie
+			#set cookie/session to expire in 2 weeks (1209600 is # of seconds in 2 weeks)
+			request.session.set_expiry(1209600)
+			request.session['autologin'] = True
+			request.session['password'] = password
+
 		if "rememberme" in checkboxList:
 			print "rememberme checked"
 			#save this in their session(auto fill username)
+			#set cookie/session to expire in 2 weeks (1209600 is # of seconds in 2 weeks)
+			request.session.set_expiry(1209600)
+			request.session['rememberme'] = True
+			request.session['username'] = username
 		
 		ret = loginWrapper(request, username, password)
 		if ret == 0:
