@@ -118,26 +118,42 @@ def search_username(request, course_slug, courses):
 	return master_rtr(request, 'adduser/search.html', {'course_slug': course_slug, 'course':course, 'users':users, 'firstname': firstname, 'lastname': lastname, 'url': request.path})
 
 def update_roster(request, course_slug):
+	'''Updates the roster'''
 	editList =  request.POST.getlist('edit')
 	manageList = request.POST.getlist('manage')
 	statsList = request.POST.getlist('stats')
+	removeList = request.POST.getlist('remove')
 	enrollments = Enrollment.objects.filter(course__slug__exact=course_slug)
 	
-	print 'test'
 	for enrollment in enrollments:
-		edit = editList.pop()
-		manage = manageList.pop()
-		stats = statsList.pop()
-		print edit
-		print manage
-		print stats
-		print 'hi'
-		enrollment.edit = edit
-		enrollment.manage = manage
-		enrollment.stats = stats
+		print enrollment.user.username
+		try:
+			editList.index(enrollment.user.username)
+			enrollment.edit = True
+		except ValueError:
+			enrollment.edit = False
+		try:
+			manageList.index(enrollment.user.username)
+			enrollment.manage = True
+		except ValueError:
+			enrollment.manage = False
+		try:
+			statsList.index(enrollment.user.username)
+			enrollment.stats = True
+		except ValueError:
+			enrollment.stats = False
 		enrollment.save()
- 	
-	print course_slug 
+
+		try:
+			removeList.index(enrollment.user.username)
+			try:
+				user = User.objects.get(username=enrollment.user.username)
+				course = Course.objects.get(slug=course_slug)
+				removeUser(course,user)
+			except User.DoesNotExist:
+				pass
+		except ValueError:
+			pass
 
 	return HttpResponseRedirect("/%s/roster/" % course_slug)
 
@@ -159,7 +175,7 @@ def remove_user(request, course_slug):
 	
 	return HttpResponseRedirect("/%s/roster/" % course_slug)
 
-def cancel_add(request, course_slug, courses):
+def cancel_add(request, course_slug):
 	'''
 	Redirects to the roster screen when viewing the add user page
 	'''
