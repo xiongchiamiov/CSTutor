@@ -1,6 +1,6 @@
 '''
 	Functions in this file allow an instructor to create a course, add users to the course, search for user names, and remove users. In addition, there are functions that allow a student to join a course. 
-	@author Jon Inloes
+	@author Jon Inloes, James Pearson
 '''
 from django.shortcuts import render_to_response
 from django.http import HttpResponseRedirect
@@ -19,18 +19,21 @@ def create_course(request):
 	Creates a new course if course name is long enough
 	and the coursename is unique.  If not gives an error.
 	'''
+	data = {'courses': Course.objects.all()}
+	
 	if request.method == "POST":
 		name = request.POST['coursename'].strip()
 
+		# some basic validation
 		if len(name) < 3:
-			return master_rtr(request, 'courses/create_course_length.html')
+			data['message'] = 'A Course name must be at least 3 characters.'
+		else:
+			try:
+				CreateCourse(name, User.objects.get(username = "fakeuser"))
+			except IntegrityError:
+				data['message'] = 'A Course with that name already exists.'
 
-		try:
-			CreateCourse(name, request.user)
-		except IntegrityError:
-			return master_rtr(request, 'courses/create_course_dup.html')
-
-	return master_rtr(request, 'courses/create_course.html')
+	return render_to_response('courses/create_course.html', data)
 
 @login_required
 def show_roster(request, course_slug):

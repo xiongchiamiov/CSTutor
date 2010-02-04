@@ -6,5 +6,13 @@ Course Name:
 <input type="text" name="coursename" />
 <br />
 <input type="submit" value="Submit" />
+
+{% if message %}
+<br />
+<font size="1" color="red">
+{{message}}
+</font>
+{% endif %}
+
 </form>
 {% endblock %}
