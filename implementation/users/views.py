@@ -56,12 +56,28 @@ def show_profile(request):
 def show_logout(request):
 	'''
 	Logs out the current user
+	@author John Hartquist
+	@author Russell Mezzetta
 	@pre
 	@post request.user.is_authenticated() == false
 	'''
-	
+	#russ--making logout not really log people out in certain cases
+	if request.user.is_authenticated() == True:
+		if 'rememberme' in request.session:
+			if request.session['rememberme'] == True:
+				#the user set remember me to true so don't log them out
+				#logging a user out deletes session info
+				print "rememberme"
+				return render_to_response('user/logout.html')
+		#decided to comment this out...if the user logs out it will at most remember their username
+		#if they have set autologin then they shouldn't use logout!
+		#if 'autologin' in request.session:
+		#	if request.session['autologin'] == True:
+		#		#the user set autologin to true so don't log them out
+		#		return render_to_response('user/logout.html')
+	print "blah"	
 	logout(request)
-	return render_to_response('user/logout.html');
+	return render_to_response('user/logout.html')
 	
 def show_login(request):
 	'''
@@ -70,6 +86,14 @@ def show_login(request):
 	'''
 	print 'in show_login'
 	
+	#before processing check if user's session has autologin/rememberme set
+	#based on assumption that if we don't log the user out then they will stay authenticated
+	if request.user.is_authenticated():
+		print "user authenticated"
+		if 'autologin' in request.session:
+			if request.session['autologin'] == True:
+				return index(request)
+
 	if request.method == 'POST':
 		#form was submitted
 		username = request.POST['username']
@@ -81,7 +105,6 @@ def show_login(request):
 		checkboxList += request.POST.getlist('rememberme')
 
 		if "anonymous" in checkboxList:
-			print "anonymous login"
 			#bypass login
 			#if the session has data in it, set it to false, set cookie to expire when browser closes
 			request.session.set_expiry(0)
@@ -96,15 +119,20 @@ def show_login(request):
 			#set cookie/session to expire in 2 weeks (1209600 is # of seconds in 2 weeks)
 			request.session.set_expiry(1209600)
 			request.session['autologin'] = True
-			request.session['password'] = password
+			#request.session['password'] = password
+		else:
+			request.session['autologin'] = False
 
-		if "rememberme" in checkboxList:
+		if "rememberme" in checkboxList and "autologin" not in checkboxList:
 			print "rememberme checked"
 			#save this in their session(auto fill username)
 			#set cookie/session to expire in 2 weeks (1209600 is # of seconds in 2 weeks)
 			request.session.set_expiry(1209600)
 			request.session['rememberme'] = True
 			request.session['username'] = username
+		else:
+			request.session['rememberme'] = False
+			request.session['username'] = ""
 		
 		ret = loginWrapper(request, username, password)
 		if ret == 0:
@@ -122,7 +150,10 @@ def show_login(request):
 	else:
 		#form has not yet been submitted (first time visiting login page)
 		print 'GET'
-	return render_to_response('user/login.html')
+		if 'username' in request.session:
+			return render_to_response('user/login.html', {'loginusername':request.session['username']})
+		else:
+			return render_to_response('user/login.html')
 
 def show_register_new_user(request):
 	'''
