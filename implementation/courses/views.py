@@ -139,7 +139,15 @@ def cancel_add(request, course_slug, courses):
 	return HttpResponseRedirect("/%s/roster/" % course_slug)
 
 def join_course_form(request):
-	courses = Course.objects.all()
+	'''
+		Displays a list of unenrolled courses for a user to request to join.
+	'''
+	if request.user.is_authenticated():
+		enrollmentIds = [e.course.id for e in request.user.enrollments.all()]
+		courses = Course.objects.exclude(id__in=enrollmentIds)
+	else:
+		courses = Course.objects.all()
+
 	return master_rtr(request, 'courses/join_course_form.html', \
 			{'join_courses' : courses})
 
