@@ -13,6 +13,7 @@ from home.views import master_rtr
 from django.contrib.auth.decorators import login_required
 
 
+@login_required
 def create_course(request):
 	'''
 	Creates a new course if course name is long enough
@@ -25,19 +26,24 @@ def create_course(request):
 			return master_rtr(request, 'courses/create_course_length.html')
 
 		try:
-			CreateCourse(name, User.objects.get(username = "fakeuser"))
+			CreateCourse(name, request.user)
 		except IntegrityError:
 			return master_rtr(request, 'courses/create_course_dup.html')
 
 	return master_rtr(request, 'courses/create_course.html')
 
-@login_required(redirect_field_name='/login/')
+@login_required
 def show_roster(request, course_slug):
 	'''
 	Displays the roster
 	'''
 	course = Course.objects.get(slug=course_slug)
-	enrollment = Enrollment.objects.get(user__username__exact=request.user.username, course__slug__exact=course_slug)
+
+	# It is better to get the enrollment by this method, because in this case
+   # the database searches using Primary Keys, which are indexed, instead of 
+   # username, which is not indexed. -mgius
+	#enrollment = Enrollment.objects.get(user__username__exact=request.user.username, course__slug__exact=course_slug)
+	enrollment = request.user.enrollments.get(course=course)
 	
 	if enrollment.manage:
 		enrollments = course.roster.all();
@@ -46,6 +52,7 @@ def show_roster(request, course_slug):
 
 	else:
 		return master_rtr(request, 'roster/invalid_permissions.html', {'course': course})
+
 def show_course(request, course_slug):
 	return master_rtr(request, 'index.html', {'course_slug': course_slug})
 
@@ -136,7 +143,7 @@ def join_course_form(request):
 	return master_rtr(request, 'courses/join_course_form.html', \
 			{'join_courses' : courses})
 
-@login_required(redirect_field_name='/login/')
+@login_required
 def join_course_request(request):
 	'''Displays the classes a user can join'''
 	courseid = request.GET['courseid']

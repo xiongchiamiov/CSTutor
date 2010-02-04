@@ -115,7 +115,7 @@ def removePage(self):
 	coursePages = Page.objects.filter(course__exact=self.course)
 	removeNumber = self.left
 
-
+   # have to use list to force evaluation, otherwise the numbers won't work out
 	updateLeft = list(coursePages.filter(left__gt=removeNumber))
 	updateRight = list(coursePages.filter(right__gt=removeNumber)\
 	                         .exclude(left__gt=removeNumber))
