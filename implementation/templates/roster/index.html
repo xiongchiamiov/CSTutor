@@ -13,30 +13,33 @@
 		<td><b><font size="3">Manage</font></b></td>
 		<td><b><font size="3">Stats</font></b></td>
 	</tr>
+	<form name="remove" action="updateRoster/" method="post">
 	{% for enrollment in enrollments %}
 	<tr>
-	<td><form name="remove" action="remove/" method="post">
-		<input type="submit" name="username" value={{enrollment.user.username}} />
-		</form></td>		
+	<td>
+		<input type="submit" name="{{enrollment.user.username}}Remove" value={{enrollment.user.username}} />
+		</td>		
 	<td>{{enrollment.user.first_name}} {{enrollment.user.last_name}}</td>
 	<td>{{enrollment.user.username}}</td>
 	<td>	{% if enrollment.edit %}
-				<input type="checkbox" name="edit" value={{enrollment.user.username}} checked="yes">
+				<input type="checkbox" name="edit" value="{{enrollment.user.username}}EditTrue" checked="yes">
 			{% else %}
-				<input type="checkbox" name ="edit" value={{enrollment.user.username}}>
+				<input type="checkbox" name ="edit" value=False>
 			{% endif %}</td>
 	<td>{% if enrollment.manage %}
-				<input type="checkbox" name="manage" value={{enrollment.user.username}} checked="yes">
+				<input type="checkbox" name="manage" value="{{enrollment.user.username}}ManageTrue" checked="yes">
 			{% else %}
-				<input type="checkbox" name ="manage" value={{enrollment.user.username}}>
+				<input type="checkbox" name ="manage" value=False>
 			{% endif %}</td>
 	<td>{% if enrollment.stats %}
-				<input type="checkbox" name="stats" value={{enrollment.user.username}} checked="yes">
+				<input type="checkbox" name="stats" value="{{enrollment.user.username}}StatsTrue" checked="yes">
 			{% else %}
-				<input type="checkbox" name ="stats" value={{enrollment.user.username}}>
+				<input type="checkbox" name ="stats" value=False>
 			{% endif %}</td>
 	</tr>
 	{% endfor%}
+	<input type="submit" name="Update Roster" value="update Roster" />
+	</form>
 </table>	
 <form method="link" action="adduser/">
 <input type="submit" value="Add User">
