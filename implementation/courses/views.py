@@ -118,34 +118,41 @@ def search_username(request, course_slug, courses):
 	return master_rtr(request, 'adduser/search.html', {'course_slug': course_slug, 'course':course, 'users':users, 'firstname': firstname, 'lastname': lastname, 'url': request.path})
 
 def update_roster(request, course_slug):
-	'''Updates the roster'''
+	'''Updates the roster according to the checkboxes on the page'''
 	editList =  request.POST.getlist('edit')
 	manageList = request.POST.getlist('manage')
 	statsList = request.POST.getlist('stats')
 	removeList = request.POST.getlist('remove')
 	enrollments = Enrollment.objects.filter(course__slug__exact=course_slug)
 	
+	#check each checkbox set
 	for enrollment in enrollments:
-		print enrollment.user.username
 		try:
+			#if the edit checkbox is checked set value to true
 			editList.index(enrollment.user.username)
 			enrollment.edit = True
 		except ValueError:
+			#if edit checkbox is not checked set the value to alse
 			enrollment.edit = False
 		try:
+			#if the manage checkbox is checked set the value to true
 			manageList.index(enrollment.user.username)
 			enrollment.manage = True
 		except ValueError:
+			#if the manage checkbox is not checked set the value to false
 			enrollment.manage = False
 		try:
+			#if the stats checkbox is checked set the value to true
 			statsList.index(enrollment.user.username)
 			enrollment.stats = True
 		except ValueError:
+			#if it is not checked set the value to false
 			enrollment.stats = False
 		enrollment.save()
 
 		try:
 			removeList.index(enrollment.user.username)
+			#if the remove checkbox was checked attempt to remove the user
 			try:
 				user = User.objects.get(username=enrollment.user.username)
 				course = Course.objects.get(slug=course_slug)
