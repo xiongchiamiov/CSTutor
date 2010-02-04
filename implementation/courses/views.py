@@ -117,6 +117,30 @@ def search_username(request, course_slug, courses):
 	
 	return master_rtr(request, 'adduser/search.html', {'course_slug': course_slug, 'course':course, 'users':users, 'firstname': firstname, 'lastname': lastname, 'url': request.path})
 
+def update_roster(request, course_slug):
+	editList =  request.POST.getlist('edit')
+	manageList = request.POST.getlist('manage')
+	statsList = request.POST.getlist('stats')
+	enrollments = Enrollment.objects.filter(course__slug__exact=course_slug)
+	
+	print 'test'
+	for enrollment in enrollments:
+		edit = editList.pop()
+		manage = manageList.pop()
+		stats = statsList.pop()
+		print edit
+		print manage
+		print stats
+		print 'hi'
+		enrollment.edit = edit
+		enrollment.manage = manage
+		enrollment.stats = stats
+		enrollment.save()
+ 	
+	print course_slug 
+
+	return HttpResponseRedirect("/%s/roster/" % course_slug)
+
 def remove_user(request, course_slug):
 	'''
 	Removes a user from a course's enrollment list

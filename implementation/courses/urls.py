@@ -10,10 +10,10 @@ from django.views.generic.simple import direct_to_template
 #if it were just "/coursename/" then it would be "" (an empty string)
 
 urlpatterns = patterns('courses.views',
-	(r'roster/$', 'show_roster'),
-	(r'roster/remove', 'remove_user'),
+	(r'roster/updateRoster/$', 'update_roster'),
 	(r'roster/adduser/$', 'add_user'),
 	(r'roster/adduser/cancel', 'cancel_add'),
+	(r'roster/$', 'show_roster'),
 	(r'(?P<pid>[\w-]+)/', include('pages.urls')),
 	(r'', 'show_course'),
 )
