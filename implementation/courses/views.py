@@ -160,10 +160,10 @@ def join_course_request(request):
 	courseid = request.GET['courseid']
 	course = Course.objects.get(id=courseid)
 	user = User.objects.get(username=request.user.username)
-	enrollment = addUser(course, user, True)
-	if enrollment == None:
-		return master_rtr(request, 'courses/join_course_already_enrolled.html', \
-				{'course':course, 'user':user})
+
+	if addUser(course, user, True):
+		message = "Congratulations, you have been added to %s" % course
 	else:
-		return master_rtr(request, 'courses/join_course_successful.html', \
-				{'course':course, 'user':user})
+		message = "You are already enrolled in %s" % course
+	return master_rtr(request, 'courses/join_course_status.html', \
+	                  {'course':course, 'user':user, 'message':message})
