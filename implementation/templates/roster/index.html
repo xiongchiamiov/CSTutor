@@ -4,50 +4,62 @@
 <center>
 <b><font size="5">{{course}} User list</size></b>
 </center>
+</table>	
+<form method="link" action="adduser/">
+		<input type="submit" value="Add User">
+</form>
 <table>
 	<tr>
-		<td></td>
-		<td><b><font size="3">Name</font></td>
-		<td><b><font size="3">Username</font></td>
-		<td><b><font size="3">Edit</font></b></td>
-		<td><b><font size="3">Manage</font></b></td>
-		<td><b><font size="3">Stats</font></b></td>
+		
+		<td><center><b><font size="3">Name</font></center></td>
+		<td><center><b><font size="3">Username</font></center></td>
+		<td><center><b><font size="3">Edit</font></b></center></td>
+		<td><center><b><font size="3">Manage</font></b></center></td>
+		<td><center><b><font size="3">Stats</font></b></center></td>
+		<td><center><b><font size="3">Remove User</font></center></td>
 	</tr>
 	<form name="remove" action="updateRoster/" method="post">
 	{% for enrollment in enrollments %}
-	<tr>
-	<td>
-		<input type="submit" name="{{enrollment.user.username}}Remove" value={{enrollment.user.username}} />
-		</td>		
-	<td>{{enrollment.user.first_name}} {{enrollment.user.last_name}}</td>
-	<td>{{enrollment.user.username}}</td>
+	<tr>	
+	<td><center>{{enrollment.user.first_name}} {{enrollment.user.last_name}}</center></td>
+	<td><center>{{enrollment.user.username}}</center></td>
 	<td>	{% if enrollment.edit %}
-				<input type="checkbox" name="edit" value="{{enrollment.user.username}}EditTrue" checked="yes">
+				<center>
+				<input type="checkbox" name="edit" value="{{enrollment.user.username}}" checked="yes">
+				</center>
 			{% else %}
-				<input type="checkbox" name ="edit" value=False>
+				<center>
+				<input type="checkbox" name ="edit" value="{{enrollment.user.username}}">
+				</center>
 			{% endif %}</td>
 	<td>{% if enrollment.manage %}
-				<input type="checkbox" name="manage" value="{{enrollment.user.username}}ManageTrue" checked="yes">
+				<center>
+				<input type="checkbox" name="manage" value="{{enrollment.user.username}}" checked="yes">
+				</center>
 			{% else %}
-				<input type="checkbox" name ="manage" value=False>
+				<center>
+				<input type="checkbox" name ="manage" value="{{enrollment.user.username}}">
+				</center>
 			{% endif %}</td>
 	<td>{% if enrollment.stats %}
-				<input type="checkbox" name="stats" value="{{enrollment.user.username}}StatsTrue" checked="yes">
+				<center>
+				<input type="checkbox" name="stats" value="{{enrollment.user.username}}" checked="yes">
+				</center>
 			{% else %}
-				<input type="checkbox" name ="stats" value=False>
+				<center>
+				<input type="checkbox" name ="stats" value="{{enrollment.user.username}}">
+				</center>
 			{% endif %}</td>
+		<td>
+		<center>
+		<input type="checkbox" name="remove" value="{{enrollment.user.username}}"/>
+		</center>
+		</td>	
 	</tr>
 	{% endfor%}
-	<input type="submit" name="Update Roster" value="update Roster" />
+		<input type="submit" name="Update Roster" value="update Roster" />
 	</form>
-</table>	
-<form method="link" action="adduser/">
-<input type="submit" value="Add User">
-</form>
 
-<form method="post" action="">
-<input type="submit" value="Remove User">
-</form>
 <br />
 {% if course.private %}
 <center>
