@@ -2,11 +2,16 @@
 
 from django.shortcuts import render_to_response
 from django.template import RequestContext
-from courses.models import Course
+from courses.models import Course, Enrollment
 
 def master_rtr(request, template, data = {}):
 	if request.user.is_authenticated():
-		data['courses'] = [e.course for e in request.user.enrollments.all()]
+      # Since we're only grabbing the enrollments to get at the courses, 
+      # doing select_related() will save us from having to hit database for
+      # every course the user is enrolled in
+		data['courses'] = \
+			[e.course for e in Enrollment.objects.select_related().filter(user=request.user)]
+			#[e.course for e in request.user.enrollments.select_related().all()]
 	else:
 		data['courses'] = []
 
