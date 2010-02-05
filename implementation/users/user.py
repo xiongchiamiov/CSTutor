@@ -38,6 +38,21 @@ def updateEmail(request):
 		#failure
 		return 1
 
+def changePassword(request):
+    oldpass = request.POST["oldpass"]
+    newpass1 = request.POST["newpass1"]
+    newpass2 = request.POST["newpass2"]
+    if (request.user.check_password(oldpass) == False):
+        #invalid password
+        return 1
+                                                       
+    if (newpass1 != newpass2):
+        #passwords don't match
+        return 2
+
+    request.user.set_password(newpass1)
+    request.user.save()
+    return 0
 
 def removeUser(username, userDB):
    '''
