@@ -5,6 +5,7 @@
 '''
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
+from django.forms.fields import email_re
 
 def editProfile(oldUser, newUser):
    '''
@@ -13,18 +14,30 @@ def editProfile(oldUser, newUser):
    '''
    pass
 
-def logout():
+def logout(request):
    '''
    Logs a user out.
    '''
    
    pass
 
-def createUser(username, userDB):
-   '''
-   Creates a new user and adds it to the user database
-   '''
-   pass
+def updateEmail(request):
+	'''
+	Updates a users e-mail address
+	@author John Hartquist
+	@pre request.POST["form"] == "Change E-mail"
+	@post request.user.email = email
+	'''
+        email = request.POST["email"]
+	if (email_re.match(email)):
+		request.user.email = email
+		request.user.save()
+                //success 
+		return 0
+	else:
+		//failure
+		return 1
+
 
 def removeUser(username, userDB):
    '''

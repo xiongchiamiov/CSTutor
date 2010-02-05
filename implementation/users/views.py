@@ -7,12 +7,14 @@ from django.shortcuts import render_to_response
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from home.views import index
-from user import registerNewUser, loginWrapper
-from django.forms.fields import email_re
+from user import registerNewUser, loginWrapper, updateEmail
 
 def show_profile(request):
 	'''
 	Displays the profile of the user that is currently logged in
+        @author John Hartquist
+        @pre user.is_authenticated() == True
+        @post 
 	'''
 	#print 'in show_profile'
 
@@ -21,15 +23,14 @@ def show_profile(request):
 		#check if method was post
 		if (request.method=="POST"):
 			if (request.POST["form"] == "Change E-mail"):
-				email = request.POST["email"]
-				if (email_re.match(email)):
-					request.user.email = email
-					request.user.save()
+				status = updateEmail(request)
+				if status == 0:
+					return master_rtr(request, 'user/profile.html', {'user': request.user})
 				else:
 					return render_to_response('user/profile.html', 
 		                                       {'user': request.user,
-											    'emailError': "Invalid E-mail Address"})
-				
+							'emailError': "Invalid E-mail Address"})
+
 			if (request.POST["form"] == "Change Password"):
 				oldpass = request.POST["oldpass"]
 				newpass1 = request.POST["newpass1"]
