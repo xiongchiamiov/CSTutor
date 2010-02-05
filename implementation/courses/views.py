@@ -16,20 +16,28 @@ from django.contrib.auth.decorators import login_required
 @login_required
 def create_course(request):
 	'''
+	@author John Hartquist
+	@author [original author]
+	
 	Creates a new course if course name is long enough
 	and the coursename is unique.  If not gives an error.
+	Also sets a course to private if the checkbox was checked.
 	'''
 	data = {'courses': Course.objects.all()}
-	
+		
 	if request.method == "POST":
 		name = request.POST['coursename'].strip()
+		
+		private = False;
+		if "private" in request.POST:
+			private = True;
 
 		# some basic validation
 		if len(name) < 3:
 			data['message'] = 'A Course name must be at least 3 characters.'
 		else:
 			try:
-				CreateCourse(name, User.objects.get(username = "fakeuser"))
+				CreateCourse(name, User.objects.get(username = "fakeuser"), private)
 			except IntegrityError:
 				data['message'] = 'A Course with that name already exists.'
 
