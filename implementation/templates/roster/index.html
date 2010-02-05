@@ -2,8 +2,9 @@
 
 {% block content %}
 <center>
-<b><font size="5">{{course}} User list</size></b>
+<p><b><font size="5">{{course}} User list</size></b></p>
 </center>
+<p>
 </table>	
 <form method="link" action="adduser/">
 		<input type="submit" value="Add User">
@@ -20,6 +21,7 @@
 	</tr>
 	<form name="remove" action="updateRoster/" method="post">
 	{% for enrollment in enrollments %}
+	{% if enrollment.view %}
 	<tr>	
 	<td><center>{{enrollment.user.first_name}} {{enrollment.user.last_name}}</center></td>
 	<td><center>{{enrollment.user.username}}</center></td>
@@ -56,6 +58,7 @@
 		</center>
 		</td>	
 	</tr>
+	{% endif %}
 	{% endfor%}
 		<input type="submit" name="Update Roster" value="update Roster" />
 	</form>
@@ -63,14 +66,30 @@
 <br />
 {% if course.private %}
 <center>
+</p>
+<p>
 <b><font size="5">Pending Requests for {{course}}</size></b>
 </center>
 <table>
+	<form name="pending" action="addPendingRequests/" method="post">
 	<tr>
-		<td></td>
+		<td>Accept</td>
+		<td>Deny</td>
 		<td><b><font size="3">Name</font></b></td>
 		<td><b><font size="3">Date</font></b></td>
 	</tr>
+	{% for enrollment in enrollments %}
+		{% if not enrollment.view %}		
+		<tr>	
+			<td><input type="checkbox" name="accept" value="{{enrollment.user.username}}" /></td>
+			<td><input type="checkbox" name="deny" value="{{enrollment.user.username}}" /></td>		
+			<td>{{enrollment.user.username}}</td>
+		</tr>
+		{% endif %}
+	{% endfor %}
+		<input type="submit" name="Pending Request" value="Update Pending" />
+	</form>
 </table>
+</p>
 {% endif %}
 {% endblock %}
