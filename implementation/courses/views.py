@@ -37,7 +37,7 @@ def create_course(request):
 			data['message'] = 'A Course name must be at least 3 characters.'
 		else:
 			try:
-				CreateCourse(name, User.objects.get(username = "fakeuser"), private)
+				CreateCourse(name, User.objects.get(username=request.user.username), private)
 			except IntegrityError:
 				data['message'] = 'A Course with that name already exists.'
 
@@ -187,13 +187,37 @@ def remove_user(request, course_slug):
 	except	User.DoesNotExist:
 		pass
 	
-	
 	return HttpResponseRedirect("/%s/roster/" % course_slug)
 
 def cancel_add(request, course_slug):
 	'''
 	Redirects to the roster screen when viewing the add user page
 	'''
+	return HttpResponseRedirect("/%s/roster/" % course_slug)
+
+def manage_pending_requests(request, course_slug):
+	'''Manages the pending request list for a roster'''
+	
+	acceptList =  request.POST.getlist('accept')
+	denyList = request.POST.getlist('deny')	
+	course = Course.objects.select_related(depth=2).get(slug=course_slug)
+	enrollments = course.roster.all()
+
+	for enrollment in enrollments:
+		user = enrollment.user
+		try:
+			print 'hi'
+			acceptList.index(enrollment.user.username)
+			enrollment.view = True
+			enrollment.save()
+		except ValueError:
+			pass
+		try:
+			denyList.index(enrollment.user.username)
+			removeUser(course,user)
+		except ValueError:
+			pass
+	
 	return HttpResponseRedirect("/%s/roster/" % course_slug)
 
 def join_course_form(request):
@@ -216,8 +240,13 @@ def join_course_request(request):
 	course = Course.objects.get(id=courseid)
 	user = User.objects.get(username=request.user.username)
 
-	if addUser(course, user, True):
-		message = "Congratulations, you have been added to %s" % course
+	if course.private:
+		view = False
+	else:
+		view = True
+
+	if addUser(course, user, view):
+			message = "Congratulations, you have been added to %s" % course
 	else:
 		message = "You are already enrolled in %s" % course
 	return master_rtr(request, 'courses/join_course_status.html', \
