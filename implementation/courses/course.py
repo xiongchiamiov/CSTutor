@@ -8,7 +8,7 @@ Contains operations for Courses
 from courses.models import *
 from courses.enrollment import *
 
-def CreateCourse(name, user, slug=None):
+def CreateCourse(name, user, private, slug=None):
 	''' Creates a new course
 
 		 Takes in the name of the course and a user object, and an optional
@@ -22,7 +22,7 @@ def CreateCourse(name, user, slug=None):
 	if not slug:
 		slug = slugify(name)
 
-	newcourse = Course(name=name, slug=slug)
+	newcourse = Course(name=name, slug=slug, private=private)
 	newcourse.save()
 
 	addUser(newcourse, user, True, True, True, True)
