@@ -32,10 +32,10 @@ def updateEmail(request):
 	if (email_re.match(email)):
 		request.user.email = email
 		request.user.save()
-                //success 
+                #success 
 		return 0
 	else:
-		//failure
+		#failure
 		return 1
 
 
