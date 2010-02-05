@@ -6,15 +6,15 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
-from home.views import index
-from user import registerNewUser, loginWrapper, updateEmail
+from home.views import index, master_rtr
+from user import registerNewUser, loginWrapper, updateEmail, changePassword
 
 def show_profile(request):
 	'''
 	Displays the profile of the user that is currently logged in
-        @author John Hartquist
-        @pre user.is_authenticated() == True
-        @post 
+	@author John Hartquist
+	@pre user.is_authenticated() == True
+	@post 
 	'''
 	#print 'in show_profile'
 
@@ -27,32 +27,24 @@ def show_profile(request):
 				if status == 0:
 					return master_rtr(request, 'user/profile.html', {'user': request.user})
 				else:
-					return render_to_response('user/profile.html', 
+					return master_rtr(request, 'user/profile.html', 
 		                                       {'user': request.user,
 							'emailError': "Invalid E-mail Address"})
 
 			if (request.POST["form"] == "Change Password"):
-				oldpass = request.POST["oldpass"]
-				newpass1 = request.POST["newpass1"]
-				newpass2 = request.POST["newpass2"]
-				if (request.user.check_password(oldpass) == False):
-					return render_to_response('user/profile.html', 
+				status = changePassword(request)
+				if status == 1:
+					return master_rtr(request, 'user/profile.html', 
 		                                       {'user': request.user,
-											    'passError': "Incorrect current password"})
-													   
-				if (newpass1 != newpass2):
-					return render_to_response('user/profile.html', 
+											    'passError': "Incorrect current password"})					   
+				elif status == 2:
+					return master_rtr(request, 'user/profile.html', 
 		                                       {'user': request.user,
-											    'passError': "Password do not match"})
-					
-				request.user.set_password(newpass1)
-				request.user.save()				    
+											    'passError': "Password do not match"})	
 		
-		
-		
-		return render_to_response('user/profile.html', {'user':request.user})
+		return master_rtr(request, 'user/profile.html', {'user':request.user})
 	else:
-		return render_to_response('user/notloggedin.html')
+		return master_rtr(request, 'user/notloggedin.html')
 	
 def show_logout(request):
 	'''
