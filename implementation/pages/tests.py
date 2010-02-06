@@ -131,6 +131,16 @@ class PageTests(TestCase):
 		'''
 		Tests removing the middle child of a tree
 		'''
+		toRemovePage = Page.objects.get(slug='PageTestsPage2')
+		removePage(toRemovePage)
+
+		self.validateTree()
+
+		olderChild = Page.objects.get(slug='PageTestsPage1')
+		youngerChild = Page.objects.get(slug='PageTestsPage3')
+
+		self.assertEquals(getPrevPage(youngerChild), olderChild);
+		self.assertEquals(getNextPage(olderChild), youngerChild)
 		pass
 	
 	def test_removeLastChild(self):

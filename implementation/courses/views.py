@@ -1,6 +1,6 @@
 '''
 	Functions in this file allow an instructor to create a course, add users to the course, search for user names, and remove users. In addition, there are functions that allow a student to join a course. 
-	@author Jon Inloes, James Pearson
+	@author Jon Inloes, James Pearson, Mark Gius
 '''
 from django.shortcuts import render_to_response
 from django.http import HttpResponseRedirect
@@ -131,7 +131,8 @@ def update_roster(request, course_slug):
 	manageList = request.POST.getlist('manage')
 	statsList = request.POST.getlist('stats')
 	removeList = request.POST.getlist('remove')
-	enrollments = Enrollment.objects.filter(course__slug__exact=course_slug)
+	enrollments = Enrollment.objects.select_related(depth=1).\
+					                     filter(course__slug__exact=course_slug)
 	
 	#check each checkbox set
 	for enrollment in enrollments:
@@ -162,9 +163,11 @@ def update_roster(request, course_slug):
 			removeList.index(enrollment.user.username)
 			#if the remove checkbox was checked attempt to remove the user
 			try:
-				user = User.objects.get(username=enrollment.user.username)
-				course = Course.objects.get(slug=course_slug)
-				removeUser(course,user)
+			   # You've already got the course and user objects through the 
+            # enrollment object. -mgius
+            #user = User.objects.get(username=enrollment.user.username)
+				#course = Course.objects.get(slug=course_slug)
+				removeUser(enrollment.course,enrollment.user)
 			except User.DoesNotExist:
 				pass
 		except ValueError:
