@@ -72,11 +72,18 @@ def registerNewUser(username, password, vpassword, email):
 	@author Russell Mezzetta
 	Registers a new user. 
 
-	pre: username not empty return 3
+	pre: username is a string
+		  password is a string
+		  vpassword is a string
+		  email is a string
+
+	post: added username unique
+
+   returns:
+		  username not empty return 3
 	     username not already taken return 1
 	     password not empty return 4
 	     password and vpassword match return 2
-	post: none
 
 	Tests:
 	inputs                              outputs
@@ -93,37 +100,40 @@ def registerNewUser(username, password, vpassword, email):
 
 	#TODO do we need to do anything special with username/password characters or length?
 
-	print "in users.user.registerNewUser"
+	#print "in users.user.registerNewUser"
 	#check that username isn't empty
 	if len(username) <= 0:
-		print "username is empty"
+		#print "username is empty"
 		return 3
 	#check that password isn't empty
 	if len(password) <= 0:
-		print "password is empty"
+		#print "password is empty"
 		return 4
 	#check that passwords match
 	if password != vpassword:
-		print "passwords don't match"
+		#print "passwords don't match"
 		return 2
 	#check that the username does not already exist
 	try:
 		User.objects.get(username = username)
-		print "username already exists"
+		#print "username already exists"
 		return 1
 	except User.DoesNotExist:
-		print "username is not taken, hurrah!"
+		#print "username is not taken, hurrah!"
 		
-	#no errors, create and save user, return 0
-	user = User.objects.create_user(username, email, password)
-	user.save()
-	return 0
+		#no errors, create and save user, return 0
+		user = User.objects.create_user(username, email, password)
+		user.save()
+		return 0
 
 def loginWrapper(request, username, password):
 	'''
 	@author Russell Mezzetta
 	This login wrapper logs the user in.
-	pre: none
+	pre: 	request is a request object
+			username is a string
+			password is a string
+
 	post: username and password match a username/password in the system
 	      username denotes an active account
 	returns 0 on success, 1 invalid login, 2 inactive account
@@ -133,14 +143,14 @@ def loginWrapper(request, username, password):
 		if user.is_active:
 			login(request, user)
 			# Redirect to a success page.
-			print "successful login"
+			#print "successful login"
 			return 0
 		else:
 			# Return a 'disabled account' error message
-			print "account marked as inactive"
+			#print "account marked as inactive"
 			return 2
 	else:
 		# Return an 'invalid login' error message.
-		print "invalid login"
+		#print "invalid login"
 		return 1
 

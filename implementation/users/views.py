@@ -60,7 +60,6 @@ def show_logout(request):
 			if request.session['rememberme'] == True:
 				#the user set remember me to true so don't log them out
 				#logging a user out deletes session info
-				print "rememberme"
 				return render_to_response('user/logout.html')
 		#decided to comment this out...if the user logs out it will at most remember their username
 		#if they have set autologin then they shouldn't use logout!
@@ -68,7 +67,6 @@ def show_logout(request):
 		#	if request.session['autologin'] == True:
 		#		#the user set autologin to true so don't log them out
 		#		return render_to_response('user/logout.html')
-	print "blah"	
 	logout(request)
 	return render_to_response('user/logout.html')
 	
@@ -77,12 +75,12 @@ def show_login(request):
 	@author Russell Mezzetta
 	This shows the login page and displays any errors.
 	'''
-	print 'in show_login'
+	#print 'in show_login'
 	
 	#before processing check if user's session has autologin/rememberme set
 	#based on assumption that if we don't log the user out then they will stay authenticated
 	if request.user.is_authenticated():
-		print "user authenticated"
+		#print "user authenticated"
 		if 'autologin' in request.session:
 			if request.session['autologin'] == True:
 				return index(request)
@@ -108,7 +106,6 @@ def show_login(request):
 			return index(request)
 
 		if "autologin" in checkboxList:
-			print "autologin checked"
 			#set cookie/session to expire in 2 weeks (1209600 is # of seconds in 2 weeks)
 			request.session.set_expiry(1209600)
 			request.session['autologin'] = True
@@ -117,7 +114,6 @@ def show_login(request):
 			request.session['autologin'] = False
 
 		if "rememberme" in checkboxList and "autologin" not in checkboxList:
-			print "rememberme checked"
 			#save this in their session(auto fill username)
 			#set cookie/session to expire in 2 weeks (1209600 is # of seconds in 2 weeks)
 			request.session.set_expiry(1209600)
@@ -129,20 +125,20 @@ def show_login(request):
 		
 		ret = loginWrapper(request, username, password)
 		if ret == 0:
-			print "successful login"
+			#print "successful login"
 			#call the index view ... this should be the equivalent of the homepage
 			return index(request)
 		elif ret == 1:
 			# Return an 'invalid login' error message.
-			print "invalid login"
+			#print "invalid login"
 			return render_to_response('user/login.html', {'message': "Please try again, Invalid Username/Password"})
 		else:#ret == 2:
 			# Return a 'disabled account' error message
-			print "account marked as inactive"
+			#print "account marked as inactive"
 			return render_to_response('user/login.html', {'message': "Account marked as inactive, contact System Admins"})
 	else:
 		#form has not yet been submitted (first time visiting login page)
-		print 'GET'
+		#print 'GET'
 		if 'username' in request.session:
 			return render_to_response('user/login.html', {'loginusername':request.session['username']})
 		else:
