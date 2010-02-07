@@ -2,36 +2,40 @@
 {% load smart_if %}
 
 {% block content %}
-<center><b><font size="4">{{quizTitle}}</font></b></center>
 <form name="submitQuiz" action="submitQuiz/" method="post">
+<center><b><input type="text" name="quizTitle" value="{{quizTitle}}" /></b></center>
 <table>
 {% for q in questions %}
 	{% if q.multiplechoicequestion %}
 		<tr>
-	                <td><b>{{q.multiplechoicequestion.order}}</b></td>
-	                <td colspan="2">{{q.multiplechoicequestion.text}}</td>
+	                <td><input type="text" name="mq{{q.multiplechoicequestion.order}}order" value="{{q.multiplechoicequestion.order}}" size="3" /></td>
+	                <td colspan="2"><textarea name="mq{{q.multiplechoicequestion.order}}text" style="height: 5em; width: 40em;">{{q.multiplechoicequestion.text}}</textarea></td>
+			<td>Correct</td>
 	        </tr>
 	        {% for a in q.multiplechoicequestion.answers.all %}
 	        <tr>
 	                <td></td>
-	                <td><input type="radio" name="mcq{{q.multiplechoicequestion.order}}"/></td>
-	                <td>{{a.text}}</td>
+	                <td><input type="radio" name="mcq{{q.multiplechoicequestion.order}}a" disabled="disabled" /></td>
+	                <td><input type="text" name="mcq{{q.multiplechoicequestion.order}}at" value="{{a.text}}" /></td>
+			<td>
+				{% if a.correct %}
+				<input type="radio" name="mcq{{q.multiplechoicequestion.order}}ac" checked="checked"/>
+				{% else %}
+				<input type="radio" name="mcq{{q.multiplechoicequestion.order}}ac" />
+				{% endif %}
+			</td>
 	        </tr>
 		{% endfor %}
 	{% endif %}
 	{% if q.codequestion %}
 	        <tr>
-	                <td><b>{{q.codequestion.order}}</b></td>
-	                <td colspan="2">{{q.codequestion.text}}</td>
-	        </tr>
-	        <tr>
-	                <td></td>
-	                <td colspan="2"><textarea name="cq{{q.codequestion.order}}" style="height: 10em; width: 20em;"></textarea></td>
-	
+	                <td><input type="text" name="cq{{q.codequestion.order}}order" value="{{q.codequestion.order}}" size="3" /></td>
+	                <td colspan="2"><textarea name="cq{{q.codequestion.order}}text" style="height: 5em; width: 40em;">{{q.codequestion.text}}</textarea></td>
+			<td><input type="button" value="Edit" />
 	        </tr>
 	{% endif %}
 {% endfor %}
 </table>
-<center><input type="submit" value="Submit Quiz" /></center>
+<center><input type="submit" value="Submit Changes" /><input type="button" value="Reset" /></center>
 </form>
 {% endblock %}
