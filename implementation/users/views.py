@@ -127,7 +127,8 @@ def show_login(request):
 		if ret == 0:
 			#print "successful login"
 			#call the index view ... this should be the equivalent of the homepage
-			return index(request)
+			return master_rtr(request, 'index.html')
+			#return index(request)
 		elif ret == 1:
 			# Return an 'invalid login' error message.
 			#print "invalid login"
