@@ -6,7 +6,6 @@ from django.shortcuts import render_to_response
 from django.http import HttpResponseRedirect
 from courses.models import Course
 from courses.course import *
-from users.models import User
 from django.db import IntegrityError
 from django.template.defaultfilters import slugify
 from home.views import master_rtr
