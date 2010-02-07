@@ -1,6 +1,6 @@
 '''
 	Functions in this file allow an instructor to create a course, add users to the course, search for user names, and remove users. In addition, there are functions that allow a student to join a course. 
-	@author Jon Inloes, James Pearson, Mark Gius
+	@author Jon Inloes, James Pearson, Mark Gius, Matthew Tytel
 '''
 from django.shortcuts import render_to_response
 from django.http import HttpResponseRedirect
