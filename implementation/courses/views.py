@@ -23,8 +23,8 @@ def create_course(request):
 	and the coursename is unique.  If not gives an error.
 	Also sets a course to private if the checkbox was checked.
 	'''
-	data = {'courses': Course.objects.all()}
-		
+	data = {}
+	
 	if request.method == "POST":
 		name = request.POST['coursename'].strip()
 		
@@ -41,7 +41,7 @@ def create_course(request):
 			except IntegrityError:
 				data['message'] = 'A Course with that name already exists.'
 
-	return render_to_response('courses/create_course.html', data)
+	return master_rtr(request, 'courses/create_course.html', data)
 
 @login_required
 def show_roster(request, course_slug):
