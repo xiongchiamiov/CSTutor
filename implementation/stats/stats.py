@@ -1,7 +1,10 @@
-'''stats.py
+'''
+stats.py
 
 Contains a number of functions that manage and calculate user statistics. 
+@author Andrew J. Musselman
 '''
+from stats.model import Stat
 
 def clearStats(stats):
 	'''
@@ -13,13 +16,29 @@ def getStats(roster):
 	'''
 	Get the statistics for a class from the roster
 	'''
+	pass 
+
+def insertStat(course, page, score, user, date):
+	'''
+	Creates a new stat from the given information and inserts it into
+	the database.
+	'''
+	stat = Stat(course=course, page=page, score=score, user=user, date=date)
+	stat.save()
+
+def getUserAggregate(user, course):
+	'''
+	Calculates aggregate stats for a single user in a particular
+	course
+	'''
 	pass
 
-def insertStat(stat, user):
+def getCourseAggregates(course):
 	'''
-	Inserts into a stat list for a user
+	Calculate aggragte stats for all users in a particular course
 	'''
 	pass
+
 
 def removeStat(stat, user):
 	'''
