@@ -10,7 +10,7 @@
       <field type="SlugField" name="slug">PageTestsIndexPage</field>
       <field type="TextField" name="name">testIndexPage</field>
       <field type="IntegerField" name="left">1</field>
-      <field type="IntegerField" name="right">10</field>
+      <field type="IntegerField" name="right">12</field>
    </object>
    <object pk="6" model="pages.page">
       <field to="courses.course" name="course" rel="ManyToOneRel">4</field>
@@ -39,5 +39,12 @@
       <field type="TextField" name="name">testPage4</field>
       <field type="IntegerField" name="left">7</field>
       <field type="IntegerField" name="right">8</field>
+   </object>
+   <object pk="10" model="pages.page">
+      <field to="courses.course" name="course" rel="ManyToOneRel">4</field>
+      <field type="SlugField" name="slug">PageTestsPage5</field>
+      <field type="TextField" name="name">testPage5</field>
+      <field type="IntegerField" name="left">10</field>
+      <field type="IntegerField" name="right">11</field>
    </object>
 </django-objects>

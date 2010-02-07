@@ -19,8 +19,12 @@ def getNextPage(self):
 	'''
    # This returns the first object whose left is greater than mine, in my course
    # however it does this at the database level
-	return Page.objects.filter(course__exact=self.course)\
-	                   .filter(left__gt=self.left).order_by('left')[0]
+	try:
+		p = Page.objects.filter(course__exact=self.course)\
+		                .filter(left__gt=self.left).order_by('left')[0]
+	except IndexError:
+		p = None
+	return p
 
 def getPrevPage(self):
 	'''
@@ -31,8 +35,12 @@ def getPrevPage(self):
 	@author Mark Gius
 	'''
    # returns the first object whose left is less than mine
-	return Page.objects.filter(course__exact=self.course)\
+	try:
+  		p = Page.objects.filter(course__exact=self.course)\
 	                   .filter(left__lt=self.left).order_by('-left')[0]
+	except KeyError:
+		p = None
+	return p
 
 def insertPageAfterNum(self, course, insertAfterNum):
 	''' 

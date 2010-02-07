@@ -26,16 +26,16 @@ class PageTests(TestCase):
 
          Page structure for these Phases 1-3:
 
-                             1 PageTestsIndexPage 10
-                               /       |       \ 
-                              /        |        \ 
-              2 PageTestsPage1 3       |         \ 
+                             1 PageTestsIndexPage 12 
+                               /       |       \   \ 
+                              /        |        \   \ 
+              2 PageTestsPage1 3       |         \  10 PageTestPage5 11
                                        |          \ 
                            4 PageTestsPage2 5      \ 
                                                     \ 
-                                              6 PageTestPages3 9
+                                              6 PageTestPage3 9
                                                         |
-                                                  7 PageTestPages4 8
+                                                  7 PageTestPage4 8
 	'''
 	fixtures = ['PageTests']
 	courseName = 'PageTestsCourse'
@@ -139,15 +139,23 @@ class PageTests(TestCase):
 		olderChild = Page.objects.get(slug='PageTestsPage1')
 		youngerChild = Page.objects.get(slug='PageTestsPage3')
 
-		self.assertEquals(getPrevPage(youngerChild), olderChild);
+		self.assertEquals(getPrevPage(youngerChild), olderChild)
 		self.assertEquals(getNextPage(olderChild), youngerChild)
-		pass
 	
 	def test_removeLastChild(self):
 		'''
 		Tests removing the last child of a tree
 		'''
-		pass
+		toRemovePage = Page.objects.get(slug='PageTestsPage5')
+		removePage(toRemovePage)
+
+		self.validateTree()
+
+		parent = Page.objects.get(slug='PageTestsIndexPage')
+		nephew = Page.objects.get(slug='PageTestsPage4')
+
+		self.assertEquals(getNextPage(nephew), None)
+
 
 	def test_movePage(self):
 		'''
