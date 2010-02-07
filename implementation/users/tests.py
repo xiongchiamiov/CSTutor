@@ -137,20 +137,26 @@ class UserTests(unittest.TestCase):
 		#valid login
 		response = self.client.post('/login/', {'username': testUser, 'password': testPass})
 		self.failUnlessEqual(response.content.find("CSTutor Login"), -1)
-
+		self.failUnlessEqual(response.status_code, 200)
+		
 		#invalid username
 		response = self.client.post('/login/', {'username': "defnotauser", "password": "pass"})
 		self.failIfEqual(response.content.find("CSTutor Login"), -1)
-
+		self.failUnlessEqual(response.status_code, 200)
+		
 		#invalid password
 		response = self.client.post('/login/', {'username': testUser, "password": testPass+"x"})
 		self.failIfEqual(response.content.find("CSTutor Login"), -1)
-
+		self.failUnlessEqual(response.status_code, 200)
+		
 		#empty username
 		response = self.client.post('/login/', {'username': "", "password": "pass"})
 		self.failIfEqual(response.content.find("CSTutor Login"), -1)
-
+		self.failUnlessEqual(response.status_code, 200)
+		
 		#empty password
 		response = self.client.post('/login/', {'username': testUser, "password": ""})
 		self.failIfEqual(response.content.find("CSTutor Login"), -1)
+		self.failUnlessEqual(response.status_code, 200)
+
 
