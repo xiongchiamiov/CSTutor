@@ -1,10 +1,13 @@
+''' @author Matthew Tytel '''
+
 from django.shortcuts import render_to_response
 from courses.models import Course
 from pages.lesson.models import Lesson
 from home.views import master_rtr
 
 def create_lesson(request):
-	print "Create Lesson\n" #TODO
+	referer = request.META.get('HTTP_REFERER', '')
+	print "Test: " + referer
 	return master_rtr(request, 'lesson/create-lesson.html')
 
 def show_lesson(request, course, pid):
