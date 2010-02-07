@@ -1,11 +1,3 @@
-from django.shortcuts import render_to_response
-from django.http import HttpResponseRedirect
-from courses.models import Course
-from models import Page
-from question.models import MultipleChoiceQuestion
-from question.models import CodeQuestion
-from home.views import master_rtr
-
 '''
 Views file for quiz related views
 
@@ -13,6 +5,14 @@ This file contains methods for creating a quiz and showing a quiz. More methods 
 
 @author Evan Kleist
 '''
+
+from django.shortcuts import render_to_response
+from django.http import HttpResponseRedirect
+from courses.models import Course
+from models import Page
+from question.models import MultipleChoiceQuestion
+from question.models import CodeQuestion
+from home.views import master_rtr
 
 def create_quiz(request):
 	''' create_Quiz View
@@ -34,4 +34,19 @@ def show_quiz(request, course, pid):
 	return master_rtr(request, 'quiz/viewQuiz.html', {'course':course, 'pid':pid, 'quizTitle':quizTitle, 'questions':questions})
 
 def submitQuiz(request, course_slug, pid):
+	''' submitQuiz View
+		This view will submit a quiz and create a statistic in the database. It will give the user
+		their score and then direct the user to the appropriate path
+	'''
 	return master_rtr(request, 'quiz/submitQuiz.html', {'course':course_slug, 'pid':pid})
+
+def edit_quiz(request, course_slug, pid):
+	''' edit_quiz View
+		This view allows an instructor or other priviledged user to edit a quiz. The instructor can add, modify,
+		or remove questions and other quiz attributes. The modified quiz is then submitted to the database.
+	'''
+	quiz = Page.objects.get(slug=pid)
+	quiz = quiz.quiz
+	quizTitle = quiz.text
+	questions = quiz.questions.all().order_by("order")
+	return master_rtr(request, 'quiz/edit_quiz.html', {'course':course_slug, 'pid':pid, 'quizTitle':quizTitle, 'questions':questions})

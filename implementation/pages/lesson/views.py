@@ -5,6 +5,12 @@ from courses.models import Course
 from pages.lesson.models import Lesson
 from home.views import master_rtr
 
+'''
+
+@author Russell Mezzetta
+@author Evan Kleist
+'''
+
 def create_lesson(request):
 	referer = request.META.get('HTTP_REFERER', '')
 	print "Test: " + referer
@@ -15,4 +21,7 @@ def show_lesson(request, course, pid):
 	#shouldn't have to try/except because previous calls should guarentee the page exists	
 	content = Lesson.objects.get(slug=pid).content
 	return master_rtr(request, 'page/lesson/index.html', {'course':course, 'pid':pid, 'content':content})
+
+def edit_lesson(request, course, pid):
+	return master_rtr(request, 'page/lesson/edit_lesson.html', {'course':course, 'pid':pid})
 
