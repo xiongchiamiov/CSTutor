@@ -11,6 +11,9 @@ from django.contrib.auth.models import User
 from users.user import registerNewUser, loginWrapper
 
 class UserTests(unittest.TestCase):
+	'''
+	This class deals with all of the test cases regarding 'users'
+	'''
 	def setUp(self):
 		'''
 		Sets up the tests
@@ -48,6 +51,11 @@ class UserTests(unittest.TestCase):
 	def testShowProfile(self):
 		'''
 		Tests that a user can view their profile
+		
+		case#            input        expected         output    remark
+        -----            -----        --------         ------    ------
+        1                status_code  200              200       shows a users profile
+        
 		'''
 		username = 'jhartquist'
 		password = 'password'
@@ -59,6 +67,12 @@ class UserTests(unittest.TestCase):
 	def testUpdateEmail(self):
 		'''
 		Tests that a user can change their e-mail address
+		
+		case#            input                         expected      output   remark
+        -----            -----                         --------      ------   ------
+        1                email='anemail@nothing'       1             1        valid e-mail check
+        2                email='jhartqui@calpoly.edu'  0             0        success
+        
 		'''
 		badEmail = "anemail@nothing"
 		goodEmail = "jhartqui@calpoly.edu"
@@ -79,29 +93,30 @@ class UserTests(unittest.TestCase):
       case#		input        			expected output    	remark
       -----    -----        			---------------    	------
       1        username=""  			3                  	"all empty string params"
-					pass=""
-					pass2=""
-					email=""
+			   pass=""
+			   pass2=""
+			   email=""
 			
       2       	username="NewUser"  	4                		"just a username"
-					pass=""
-					pass2=""
-					email=""
+				pass=""
+				pass2=""
+				email=""
       
-		3       	username="NewUser"  	2                		"mismatched passwords"
-					pass="pass1"
-					pass2="pass2"
-					email=""
+      3       	username="NewUser"  	2                		"mismatched passwords"
+				pass="pass1"
+				pass2="pass2"
+				email=""
       
-		4       	username="NewUser"  	0                		"valid user registration"
-					pass="password"
-					pass2="password"
-					email="newuser@email.com"
+	  4       	username="NewUser"  	0                		"valid user registration"
+				pass="password"
+				pass2="password"
+				email="newuser@email.com"
       
-		5       	username="NewUser"  	1                		"try to add an already-existing username"
-					pass="something"
-					pass2="something"
-					email="other@email.com"
+	  5       	username="NewUser"  	1                		"try to add an already-existing username"
+				pass="something"
+				pass2="something"
+				email="other@email.com"
+				
 		'''
 		#pass in all empty strings
 		r = registerNewUser("","","","")
