@@ -1,12 +1,11 @@
+'''stats.py
+
+Contains a number of functions that manage and calculate user statistics. 
+'''
+
 def clearStats(stats):
 	'''
 	Clear a set of statistics.
-	'''
-	pass
-
-def displayStats(stats):
-	'''
-	Takes in a Stats and returns the content to display 
 	'''
 	pass
 

@@ -1,7 +1,10 @@
 '''
-Models file for the stats and related classes. 
+Models file for the stats. 
 
-These store and load user statistics. 
+These store and load user statistics.
+
+@author Mark Guis 
+@author Andrew J. Musselman
 '''
 from django.db import models
 from django.contrib.auth.models import User
@@ -11,6 +14,13 @@ from pages.models import Page
 # Create your models here.
 
 class Stat(models.Model):
+	'''
+	This is an individual tuple for a stat. 
+    
+    This stores an individual users result from a single quiz taken a sigle 
+    single time. If a single user takes a quiz mutple times, it will generate
+    mutple stats. 
+	'''
 	course = models.ForeignKey(Course, related_name='stats')
 	page = models.ForeignKey(Page, related_name='stats')
 	user = models.ForeignKey(User, related_name='stats')
@@ -31,5 +41,6 @@ class Stat(models.Model):
 		return s
 
 	def __unicode__(self):
+		''' Returns the string representation of a stat for debugging. '''  
 		return u'Stat for User ' + unicode(user) + u' and Lesson ' \
 			+ unicode(lesson)
