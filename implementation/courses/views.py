@@ -70,8 +70,8 @@ def add_user(request, course_slug):
 	'''
 	Handles the commands given by the add user screen
 
-	@precondition none
-	@postcondition The user exists in the database if it is a valid user.
+	pre: none
+	post: db'.contains(user) == true and db'.length == db.length + 1 if !db.contains(user)
 	'''
 	course = Course.objects.get(slug=course_slug)
 	
@@ -125,7 +125,12 @@ def search_username(request, course_slug, courses):
 	return master_rtr(request, 'adduser/search.html', {'course_slug': course_slug, 'course':course, 'users':users, 'firstname': firstname, 'lastname': lastname, 'url': request.path})
 
 def update_roster(request, course_slug):
-	'''Updates the roster according to the checkboxes on the page'''
+	'''
+		Updates the roster according to the checkboxes on the page
+		pre:none
+		post: for all enrollments in db changed(enrollment) in db' 
+				if not removing then db.length = db'.length
+	'''
 	editList =  request.POST.getlist('edit')
 	manageList = request.POST.getlist('manage')
 	statsList = request.POST.getlist('stats')
@@ -133,30 +138,46 @@ def update_roster(request, course_slug):
 	enrollments = Enrollment.objects.select_related(depth=1).\
 					                     filter(course__slug__exact=course_slug)
 	
-	#check each checkbox set
+	#for each enrollment
 	for enrollment in enrollments:
+		changed = False
 		try:
-			#if the edit checkbox is checked set value to true
 			editList.index(enrollment.user.username)
-			enrollment.edit = True
+			#if the user does not have edit permission, then set the permission to true
+			if not enrollment.edit:
+				enrollment.edit = True
+				changed = True
 		except ValueError:
-			#if edit checkbox is not checked set the value to alse
-			enrollment.edit = False
+			#if if the user does have edit permission, then set the permission to false
+			if enrollment.edit:
+				enrollment.edit = False
+				changed = True
 		try:
-			#if the manage checkbox is checked set the value to true
 			manageList.index(enrollment.user.username)
-			enrollment.manage = True
+			#if the user does not have manage permission, then set the permission to true
+			if not enrollment.manage:
+				enrollment.manage = True
+				changed = True
 		except ValueError:
-			#if the manage checkbox is not checked set the value to false
-			enrollment.manage = False
+			#if the user does have manage permission, then set the permission to false
+			if enrollment.manage:
+				enrollment.manage = False
+				changed = True
 		try:
-			#if the stats checkbox is checked set the value to true
 			statsList.index(enrollment.user.username)
-			enrollment.stats = True
+			#if the user does not have stats permission, then set the permission to true
+			if not enrollment.stats:
+				enrollment.stats = True
+				changed = True
 		except ValueError:
-			#if it is not checked set the value to false
-			enrollment.stats = False
-		enrollment.save()
+			#if the user does have stats permission, then set the permission to false
+			if enrollment.stats:
+				enrollment.stats = False
+				changed = True
+
+		#if the user has changed then update it
+		if changed:
+			enrollment.save()
 
 		try:
 			removeList.index(enrollment.user.username)
@@ -172,23 +193,6 @@ def update_roster(request, course_slug):
 		except ValueError:
 			pass
 
-	return HttpResponseRedirect("/%s/roster/" % course_slug)
-
-def remove_user(request, course_slug):
-	'''
-	Removes a user from a course's enrollment list
-	@precondition The username entered in is valid.
-	@postcondition The username is no longer in the roster list. 
-	'''
-	removeName = request.POST['username']
-	course = Course.objects.get(slug=course_slug)
-
-	try:
-		user = User.objects.get(username=removeName)
-		removeUser(course,user)
-	except	User.DoesNotExist:
-		pass
-	
 	return HttpResponseRedirect("/%s/roster/" % course_slug)
 
 def cancel_add(request, course_slug):
@@ -208,7 +212,6 @@ def manage_pending_requests(request, course_slug):
 	for enrollment in enrollments:
 		user = enrollment.user
 		try:
-			print 'hi'
 			acceptList.index(enrollment.user.username)
 			enrollment.view = True
 			enrollment.save()
