@@ -76,9 +76,10 @@ class CourseViewTests(unittest.TestCase):
 	def testRoster(self):
 		'''
 		Tests that redirection to the roster page works
-		Case no.    Input                                        Expected Output         Remark
-		1           url = /gene-fishers-cpe102-fall-08/roster/   200                     302 is a found code
-		2           url = /badclass/roster/                      404                     404 is a bad link error
+
+		Case no.		Inputs													Expected Output			Remark
+		1				url = /gene-fishers-cpe102-fall-08/roster/	302							302 is a found code
+		2				url = /badclass/roster/								404							404 is a bad link error
 		'''
 		slug = 'gene-fishers-cpe102-fall-08'
 		
@@ -101,6 +102,19 @@ class CourseViewTests(unittest.TestCase):
 		self.client.post('/' + slug + '/roster/adduser/', {'username': username, 'command': 'add'})
 		enrollment = Enrollment.objects.get(user__username__exact=username, course__slug__exact=slug)
 		self.assertEquals(enrollment.user.username, username)
+
+	def testUpdateRoster(self):
+		'''
+		Tests the updating the roster
+		Case no.		Inputs					Expected Output				Remark
+		1.				edit = {jinloes}		enrollment.edit = True
+						manage = {jinloes}	enrollment.manage = True
+						stats = {}				enrollment.stats = False
+		2.				edit = {}				enrollment.edit = False
+						manage = {}				enrollment.manage = False
+						stats = {}				enrollment.stats = False
+		'''
+		pass
 
 	def testPrivacy(self):
 		'''
