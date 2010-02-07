@@ -76,9 +76,9 @@ class CourseViewTests(unittest.TestCase):
 	def testRoster(self):
 		'''
 		Tests that redirection to the roster page works
-		Case no.		Inputs													Expected Output			Remark
-		1				url = /gene-fishers-cpe102-fall-08/roster/	200							302 is a found code
-		2				url = /badclass/roster/								404							404 is a bad link error
+		Case no.    Input                                        Expected Output         Remark
+		1           url = /gene-fishers-cpe102-fall-08/roster/   200                     302 is a found code
+		2           url = /badclass/roster/                      404                     404 is a bad link error
 		'''
 		slug = 'gene-fishers-cpe102-fall-08'
 		
@@ -90,9 +90,10 @@ class CourseViewTests(unittest.TestCase):
 		'''
 		Tests enrolling a user in a course through the view
 
-		Case no.		Inputs												Expected Output	Remark
-		1				url=/gene-fishers-cpe102-fall-08/roster/
-						username = jinloes								true					true as in the user exists in enrollment list
+        Case no.        Inputs                                     Expected Output    Remark
+        1               url=/gene-fishers-cpe102-fall-08/roster/
+                        username = jinloes                         true               true as in the user 
+                                                                                      exists in enrollment list
 		'''
 		slug = 'gene-fishers-cpe102-fall-08'
 		username = 'jinloes'

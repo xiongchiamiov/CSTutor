@@ -13,29 +13,29 @@ from pages.page import *
 class PageTests(TestCase):
 	''' Unit tests and other tests on the Page class and it's related functions
 
-		 Phase 1: Unit test adding pages to a course
+         Phase 1: Unit test adding pages to a course
 
-		 Phase 2: Unit test removing pages from a course
+         Phase 2: Unit test removing pages from a course
 
-		 Phase 3: Unit test moving pages within a course
+         Phase 3: Unit test moving pages within a course
 
-		 Phase 4: Stress test by creating a tree of 10000 pages, of approx depth
-		          4, and attempting add/remove operations from it
+         Phase 4: Stress test by creating a tree of 10000 pages, of approx depth
+                  4, and attempting add/remove operations from it
 
-		 --------------------------------------------------------
+         --------------------------------------------------------
 
-		 Page structure for these Phases 1-3:
+         Page structure for these Phases 1-3:
 
-		 				    1 PageTestsIndexPage 10
-								/       |       \ 
-							  /        |        \ 
-			  2 PageTestsPage1 3   |         \ 
-			                       |          \ 
-			       	    4 PageTestsPage2 5    \ 
-							                        \ 
-								              6 PageTestPages3 9
-												        |
-												  7 PageTestPages4 8
+                             1 PageTestsIndexPage 10
+                               /       |       \ 
+                              /        |        \ 
+              2 PageTestsPage1 3       |         \ 
+                                       |          \ 
+                           4 PageTestsPage2 5      \ 
+                                                    \ 
+                                              6 PageTestPages3 9
+                                                        |
+                                                  7 PageTestPages4 8
 	'''
 	fixtures = ['PageTests']
 	courseName = 'PageTestsCourse'
