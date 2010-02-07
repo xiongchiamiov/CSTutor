@@ -4,7 +4,7 @@ stats.py
 Contains a number of functions that manage and calculate user statistics. 
 @author Andrew J. Musselman
 '''
-from stats.models import Stat
+from models import Stat
 
 def clearStats(stats):
 	'''
