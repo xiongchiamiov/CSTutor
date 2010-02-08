@@ -3,6 +3,7 @@ This file contains tests for the courses package.
 
 @author Jon Inloes
 @author Mark Gius
+@author James Pearson
 """
 
 import unittest
@@ -77,9 +78,9 @@ class CourseViewTests(unittest.TestCase):
 		'''
 		Tests that redirection to the roster page works
 
-		Case no.		Inputs													Expected Output			Remark
-		1				url = /gene-fishers-cpe102-fall-08/roster/	302							302 is a found code
-		2				url = /badclass/roster/								404							404 is a bad link error
+		Case no.        Inputs                                       Expected Output    Remark
+		1               url = /gene-fishers-cpe102-fall-08/roster/   302                302 is a found code
+		2               url = /badclass/roster/	                     404                404 is a bad link error
 		'''
 		slug = 'gene-fishers-cpe102-fall-08'
 		
@@ -91,10 +92,10 @@ class CourseViewTests(unittest.TestCase):
 		'''
 		Tests enrolling a user in a course through the view
 
-        Case no.        Inputs                                     Expected Output    Remark
-        1               url=/gene-fishers-cpe102-fall-08/roster/
-                        username = jinloes                         true               true as in the user 
-                                                                                      exists in enrollment list
+		Case no.        Inputs                                     Expected Output    Remark
+		1               url=/gene-fishers-cpe102-fall-08/roster/
+		                username = jinloes                         true               true as in the user 
+		                                                                              exists in enrollment list
 		'''
 		slug = 'gene-fishers-cpe102-fall-08'
 		username = 'jinloes'
@@ -106,13 +107,13 @@ class CourseViewTests(unittest.TestCase):
 	def testUpdateRoster(self):
 		'''
 		Tests the updating the roster
-		Case no.		Inputs					Expected Output				Remark
-		1.				edit = {jinloes}		enrollment.edit = True
-						manage = {jinloes}	enrollment.manage = True
-						stats = {}				enrollment.stats = False
-		2.				edit = {}				enrollment.edit = False
-						manage = {}				enrollment.manage = False
-						stats = {}				enrollment.stats = False
+		Case no.        Inputs                  Expected Output              Remark
+		1.              edit = {jinloes}        enrollment.edit = True
+		                manage = {jinloes}      enrollment.manage = True
+		                stats = {}              enrollment.stats = False
+		2.              edit = {}               enrollment.edit = False
+		                manage = {}             enrollment.manage = False
+		                stats = {}              enrollment.stats = False
 		'''
 		pass
 
