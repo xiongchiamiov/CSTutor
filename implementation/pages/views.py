@@ -11,6 +11,8 @@ from courses.views import show_course
 from quiz.models import Quiz
 from lesson.models import Lesson
 from models import Course
+from django.core.exceptions import ObjectDoesNotExist
+from home.views import master_rtr
 
 '''
 Views file for page related view
@@ -24,7 +26,7 @@ Contains the show_page function
 def show_page(request, course_slug, pid):
 	#check if the course is a real course in the database	
 	try: 
-		Course.objects.get(slug=course_slug)
+		course = Course.objects.get(slug=course_slug)
 	except Course.DoesNotExist:
 		return HttpResponse("ERROR: BAD URL: The course: %s does not exist" % (course_slug))
 	#check if the page is a real page in the database
@@ -32,6 +34,19 @@ def show_page(request, course_slug, pid):
 		page = Page.objects.get(slug=pid)
 	except Page.DoesNotExist:
 		return HttpResponse("ERROR: BAD URL: The course: %s does not contain the page: %s." % (course_slug, pid))
+	# if the course is private, I shouldn't be able to see it
+	if course.private:
+		try:
+			e = page.course.roster.get(user=request.user)
+			if not e.view:
+				return master_rtr(request, 'page/lesson/denied.html', \
+						            {'course':course,
+										 'enrolled':True})
+		except ObjectDoesNotExist:
+			# user is not enrolled in this course
+			return master_rtr(request, 'page/lesson/denied.html', \
+					            {'course':course,
+									 'enrolled':False})
 	#case the page to a lesson or quiz then call show on it
 	try:
 		page = page.lesson
