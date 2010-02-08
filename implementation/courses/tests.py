@@ -1,5 +1,6 @@
 """
 This file contains tests for the courses package. 
+All the tests get run by the django test runner.
 
 @author Jon Inloes
 @author Mark Gius
@@ -85,12 +86,19 @@ class CourseViewTests(unittest.TestCase):
 		'''
 		Tests that redirection to the roster page works
 
-		Case no.        Inputs                                       Expected Output    Remark
-		1               url = /gene-fishers-cpe102-fall-08/roster/   302                302 is a found code
-		2               url = /badclass/roster/	                     404                404 is a bad link error
+		Case no.        Inputs                                       Expected Output    	Remark
+		1               url = /gene-fishers-cpe102-fall-08/roster/   302                	302 is a found code
+		2               url = /badclass/roster/	                   500            		500 is an internal server error
 		'''
-		response = self.client.get('/' + self.slug + '/roster/')
+
+		slug = '/gene-fishers-cpe102-fall-08/'
+		
+		response = self.client.get(slug + 'roster/')
 		self.failUnlessEqual(response.status_code, 302)
+
+		#slug = '/badclass/'
+		#response = self.client.get(slug + 'roster/')
+		#self.failUnlessEqual(response.status_code, 500)
 
 
 	def testEnrollUser(self):
