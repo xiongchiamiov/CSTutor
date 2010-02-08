@@ -64,7 +64,12 @@ def show_roster(request, course_slug):
 		return master_rtr(request, 'roster/invalid_permissions.html', {'course': course})
 
 def show_course(request, course_slug):
-	return master_rtr(request, 'index.html', {'course_slug': course_slug})
+	try:
+		Course.objects.get(slug=course_slug)
+	except:
+		return master_rtr(request, '404.html')
+	else:
+		return master_rtr(request, 'index.html', {'course_slug': course_slug})
 
 def add_user(request, course_slug):
 	'''

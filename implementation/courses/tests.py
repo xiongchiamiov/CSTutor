@@ -72,6 +72,14 @@ class CourseViewTests(unittest.TestCase):
 		Sets up the tests
 		'''
 		self.client = Client()
+		self.slug = 'gene-fishers-cpe102-fall-08'
+	
+	def testCourse(self):
+		statusCode = self.client.get('/%s/' % self.slug).status_code
+		self.failUnlessEqual(statusCode, 200, "Oopsie!  We got a status code of %s. :/" % statusCode)
+		
+		statusCode = self.client.get('/not-a-class/').status_code
+		self.failUnlessEqual(statusCode, 200, "Oh my!  Our status code was %s." % statusCode)
 
 	def testRoster(self):
 		'''
@@ -81,9 +89,7 @@ class CourseViewTests(unittest.TestCase):
 		1               url = /gene-fishers-cpe102-fall-08/roster/   302                302 is a found code
 		2               url = /badclass/roster/	                     404                404 is a bad link error
 		'''
-		slug = 'gene-fishers-cpe102-fall-08'
-		
-		response = self.client.get('/' + slug + '/roster/')
+		response = self.client.get('/' + self.slug + '/roster/')
 		self.failUnlessEqual(response.status_code, 302)
 
 
@@ -96,11 +102,10 @@ class CourseViewTests(unittest.TestCase):
 		                username = jinloes                         true               true as in the user 
 		                                                                              exists in enrollment list
 		'''
-		slug = 'gene-fishers-cpe102-fall-08'
 		username = 'jinloes'
 
-		self.client.post('/' + slug + '/roster/adduser/', {'username': username, 'command': 'add'})
-		enrollment = Enrollment.objects.get(user__username__exact=username, course__slug__exact=slug)
+		self.client.post('/' + self.slug + '/roster/adduser/', {'username': username, 'command': 'add'})
+		enrollment = Enrollment.objects.get(user__username__exact=username, course__slug__exact=self.slug)
 		self.assertEquals(enrollment.user.username, username)
 
 	def testUpdateRoster(self):
