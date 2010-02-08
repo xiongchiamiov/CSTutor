@@ -10,7 +10,8 @@ def master_rtr(request, template, data = {}):
       # doing select_related() will save us from having to hit database for
       # every course the user is enrolled in
 		data['courses'] = \
-			[e.course for e in Enrollment.objects.select_related().filter(user=request.user) \
+			[e.course for e in \
+			 Enrollment.objects.select_related().filter(user=request.user) \
 			 if e.view]
 			#[e.course for e in request.user.enrollments.select_related().all()]
 	else:
