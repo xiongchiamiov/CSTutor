@@ -16,7 +16,7 @@ from django.contrib.auth.decorators import login_required
 def create_course(request):
 	'''
 	@author John Hartquist
-	@author [original author]
+	@author Matthew Tytel
 	
 	Creates a new course if course name is long enough
 	and the coursename is unique.  If not gives an error.
