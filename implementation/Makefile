@@ -3,6 +3,7 @@ help:
 	@echo ""
 	@echo "database      : Builds the database and imports the initial set of data"
 	@echo "doc           : Generates the documentation"
+	@echo "test          : Run unit testing suite"
 	@echo "runserver     : Runs a local instance of the project"
 	@echo "clean         : cleans the project directory"
 	@echo "binclean      : cleans compiled python files"
