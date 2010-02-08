@@ -40,6 +40,9 @@ def edit_lesson(request, course, pid):
 		if "Save" in request.POST:
 			saveLesson(request, course, pid)
 			return master_rtr(request, 'page/lesson/save_lesson.html', {'course':course, 'pid':pid})
+		if "Remove" in request.POST:
+			removeLesson(request, course, pid)
+			return master_rtr(request, 'page/lesson/remove_lesson.html', {'course': course, 'pid':pid})
 	
 	
 	content = Lesson.objects.get(slug=pid).content

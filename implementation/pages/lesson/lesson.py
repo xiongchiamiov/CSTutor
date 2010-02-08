@@ -21,3 +21,10 @@ def saveLesson(request, course, pid):
 		lesson.save()
 		return 0
 	return -1
+
+def removeLesson(request, course, pid):
+	if (request.method != "POST"):
+		return -1
+	if "Remove" in request.POST:
+	    Lesson.objects.get(slug=pid).delete()
+	    return 0
