@@ -4,19 +4,16 @@ Tests for the home view.
 @author James Pearson
 """
 
-from django.test import TestCase
+import unittest
+from django.test.client import Client
 
-class SimpleTest(TestCase):
-    def test_basic_addition(self):
-        """
-        Tests that 1 + 1 always equals 2.
-        """
-        self.failUnlessEqual(1 + 1, 2)
-
-__test__ = {"doctest": """
-Another way to test that 1 + 1 is equal to 2.
-
->>> 1 + 1 == 2
-True
-"""}
-
+class SimpleTest(unittest.TestCase):
+	def test_home(self):
+		'''
+		Does the home page not fail horribly?
+		
+		Case no.    Inputs     Expected
+		1           url = /    status code of 200
+		'''
+		response = Client().get('/').status_code
+		self.failUnlessEqual(response, 200, "Hmm, that's not good; we got a status code of %s instead." % response)
