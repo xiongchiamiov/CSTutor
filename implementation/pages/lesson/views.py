@@ -19,26 +19,11 @@ def create_lesson(request):
 	'''
 	@author Matthew Tytel
 
-	Creates a new lesson if name is long enough
+	Creates a new lesson and shows the user the edit page but
+	does not save the lesson to the database
 	'''
-
-	#ref_url = urlparse.urlparse(request.META.get('HTTP_REFERER', ''))
-	#page_slug = re.search(r"/((\w|-)+)/?$", ref_url.path)
-	
-	#if page_slug is None:
-	#	return master_rtr(request, 'lesson/create-lesson.html')
-	
-	#parent = Lesson.objects.filter(slug=page_slug.group(1))
-	#if not parent:
-	#	return master_rtr(request, 'lesson/create-lesson.html')
-	
-	#new = CreateLesson('temp')
-	#insertChildPage(new, parent[0])
-	return edit_new_lesson(request)
-
-def edit_new_lesson(request):
-	content = CreateLesson('New Test').content
-	return master_rtr(request, 'page/lesson/edit_lesson.html', {'content':content})
+	lesson = CreateLesson('Enter Lesson Name')
+	return master_rtr(request, 'page/lesson/edit_lesson.html', {'pid':lesson.name, 'content':lesson.content, 'new':True})
 
 def show_lesson(request, course, pid):
   # To get lessonConent now, you need to retreieve the page from the database, cast it to a lesson, and get the "text" attribute
