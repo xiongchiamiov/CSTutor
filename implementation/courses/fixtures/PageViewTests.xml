@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<django-objects version="1.0">
+	<!-- User to be enrolled in a private course -->
+   <object pk="100" model="auth.user">
+      <field type="CharField" name="username">PageViewsPrivateUser</field>
+      <field type="CharField" name="first_name">Private</field>
+      <field type="CharField" name="last_name">User</field>
+      <field type="CharField" name="email"></field>
+      <field type="CharField" name="password">sha1$afeda$648e804b09a7bf98dbac6b7da13d6dbe0c7716f6</field>
+      <field type="BooleanField" name="is_staff">False</field>
+      <field type="BooleanField" name="is_active">False</field>
+      <field type="BooleanField" name="is_superuser">False</field>
+      <field type="DateTimeField" name="last_login">2010-01-22 13:14:05</field>
+      <field type="DateTimeField" name="date_joined">2010-01-22 13:14:05</field>
+      <field to="auth.group" name="groups" rel="ManyToManyRel"></field>
+      <field to="auth.permission" name="user_permissions" rel="ManyToManyRel"></field>
+   </object>
+	<!-- User to be enrolled in a public course, and the private course
+		  without View permission -->
+   <object pk="101" model="auth.user">
+      <field type="CharField" name="username">PageViewsPublicUser</field>
+      <field type="CharField" name="first_name">Public</field>
+      <field type="CharField" name="last_name">User</field>
+      <field type="CharField" name="email"></field>
+      <field type="CharField" name="password">sha1$afeda$648e804b09a7bf98dbac6b7da13d6dbe0c7716f6</field>
+      <field type="BooleanField" name="is_staff">False</field>
+      <field type="BooleanField" name="is_active">False</field>
+      <field type="BooleanField" name="is_superuser">False</field>
+      <field type="DateTimeField" name="last_login">2010-01-22 13:14:05</field>
+      <field type="DateTimeField" name="date_joined">2010-01-22 13:14:05</field>
+      <field to="auth.group" name="groups" rel="ManyToManyRel"></field>
+      <field to="auth.permission" name="user_permissions" rel="ManyToManyRel"></field>
+   </object>
+	<!-- User to be used to enroll in the private course -->
+   <object pk="102" model="auth.user">
+      <field type="CharField" name="username">PageViewsEnrollmentUser</field>
+      <field type="CharField" name="first_name">Enrollment</field>
+      <field type="CharField" name="last_name">User</field>
+      <field type="CharField" name="email"></field>
+      <field type="CharField" name="password">sha1$afeda$648e804b09a7bf98dbac6b7da13d6dbe0c7716f6</field>
+      <field type="BooleanField" name="is_staff">False</field>
+      <field type="BooleanField" name="is_active">False</field>
+      <field type="BooleanField" name="is_superuser">False</field>
+      <field type="DateTimeField" name="last_login">2010-01-22 13:14:05</field>
+      <field type="DateTimeField" name="date_joined">2010-01-22 13:14:05</field>
+      <field to="auth.group" name="groups" rel="ManyToManyRel"></field>
+      <field to="auth.permission" name="user_permissions" rel="ManyToManyRel"></field>
+   </object>
+   <object pk="100" model="courses.course">
+      <field type="SlugField" name="slug">PageViewsPrivateCourse</field>
+      <field type="CharField" name="name">PageViewsPrivateCourse</field>
+      <field type="BooleanField" name="private">True</field>
+   </object>
+   <object pk="101" model="courses.course">
+      <field type="SlugField" name="slug">PageViewsPublicCourse</field>
+      <field type="CharField" name="name">PageViewsPublicCourse</field>
+      <field type="BooleanField" name="private">False</field>
+   </object>
+	<!-- Enrolls the private user in the private course -->
+   <object pk="100" model="courses.enrollment">
+      <field to="auth.user" name="user" rel="ManyToOneRel">100</field>
+      <field to="courses.course" name="course" rel="ManyToOneRel">100</field>
+      <field type="BooleanField" name="view">True</field>
+      <field type="BooleanField" name="edit">False</field>
+      <field type="BooleanField" name="stats">False</field>
+      <field type="BooleanField" name="manage">False</field>
+   </object>
+	<!-- Enrolls the public user in the Private course without View -->
+   <object pk="101" model="courses.enrollment">
+      <field to="auth.user" name="user" rel="ManyToOneRel">101</field>
+      <field to="courses.course" name="course" rel="ManyToOneRel">100</field>
+      <field type="BooleanField" name="view">False</field>
+      <field type="BooleanField" name="edit">False</field>
+      <field type="BooleanField" name="stats">False</field>
+      <field type="BooleanField" name="manage">False</field>
+   </object>
+	<!-- Enrolls the public user in the Public course -->
+   <object pk="102" model="courses.enrollment">
+      <field to="auth.user" name="user" rel="ManyToOneRel">101</field>
+      <field to="courses.course" name="course" rel="ManyToOneRel">101</field>
+      <field type="BooleanField" name="view">True</field>
+      <field type="BooleanField" name="edit">False</field>
+      <field type="BooleanField" name="stats">False</field>
+      <field type="BooleanField" name="manage">False</field>
+   </object>
+</django-objects>
