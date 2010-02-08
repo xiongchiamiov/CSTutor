@@ -13,6 +13,8 @@ from pages.page import *
 class PageTests(TestCase):
 	''' Unit tests and other tests on the Page class and it's related functions
 
+		   Phase 0: Load test fixtures
+
          Phase 1: Unit test adding pages to a course
 
          Phase 2: Unit test removing pages from a course
@@ -24,7 +26,7 @@ class PageTests(TestCase):
 
          --------------------------------------------------------
 
-         Page structure for these Phases 1-3:
+         Page structure for these Phases 1-3 (from PageTests Fixture):
 
                              1 PageTestsIndexPage 12 
                                /       |       \   \ 

@@ -55,21 +55,18 @@ def show_logout(request):
 	@post request.user.is_authenticated() == false
 	'''
 	#russ--making logout not really log people out in certain cases
+	username = None
 	if request.user.is_authenticated() == True:
 		if 'rememberme' in request.session:
-			if request.session['rememberme'] == True:
-				#the user set remember me to true so don't log them out
-				#logging a user out deletes session info
-				return render_to_response('user/logout.html')
-		#decided to comment this out...if the user logs out it will at most remember their username
-		#if they have set autologin then they shouldn't use logout!
-		#if 'autologin' in request.session:
-		#	if request.session['autologin'] == True:
-		#		#the user set autologin to true so don't log them out
-		#		return render_to_response('user/logout.html')
+		   username = request.user.username
+
 	logout(request)
+	if username != None:
+		request.session['username'] = username
+		request.session['rememberme'] = True
+
 	return render_to_response('user/logout.html')
-	
+
 def show_login(request):
 	'''
 	@author Russell Mezzetta
@@ -95,10 +92,11 @@ def show_login(request):
 		checkboxList += request.POST.getlist('autologin')
 		checkboxList += request.POST.getlist('rememberme')
 
+		request.session.set_expiry(0)
+
 		if "anonymous" in checkboxList:
 			#bypass login
 			#if the session has data in it, set it to false, set cookie to expire when browser closes
-			request.session.set_expiry(0)
 			if 'autologin' in request.session:
 				request.session['autologin'] = False
 			if 'rememberme' in request.session:
@@ -113,12 +111,13 @@ def show_login(request):
 		else:
 			request.session['autologin'] = False
 
-		if "rememberme" in checkboxList and "autologin" not in checkboxList:
+		if "rememberme" in checkboxList:
 			#save this in their session(auto fill username)
-			#set cookie/session to expire in 2 weeks (1209600 is # of seconds in 2 weeks)
 			request.session.set_expiry(1209600)
 			request.session['rememberme'] = True
 			request.session['username'] = username
+			if "autologin" in checkboxList:
+				request.session.set_
 		else:
 			request.session['rememberme'] = False
 			request.session['username'] = ""
