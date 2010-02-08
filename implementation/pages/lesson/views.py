@@ -12,6 +12,7 @@ import re
 @author Matthew Tytel
 @author Russell Mezzetta
 @author Evan Kleist
+@author John Hartquist
 '''
 
 def create_lesson(request):
@@ -35,5 +36,11 @@ def show_lesson(request, course, pid):
 	return master_rtr(request, 'page/lesson/index.html', {'course':course, 'pid':pid, 'content':content})
 
 def edit_lesson(request, course, pid):
-	return master_rtr(request, 'page/lesson/edit_lesson.html', {'course':course, 'pid':pid})
-
+	if (request.method == "POST"):
+		if "Save" in request.POST:
+			saveLesson(request, course, pid)
+			return master_rtr(request, 'page/lesson/save_lesson.html', {'course':course, 'pid':pid})
+	
+	
+	content = Lesson.objects.get(slug=pid).content
+	return master_rtr(request, 'page/lesson/edit_lesson.html', {'course':course, 'pid':pid, 'content':content})
