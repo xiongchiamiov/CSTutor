@@ -7,13 +7,13 @@ All the tests get run by the django test runner.
 @author James Pearson
 """
 
-import unittest
+from django.test import TestCase
 from django.test.client import Client
 from django.contrib.auth.models import User
 from courses.models import Course
 from courses.models import Enrollment
 
-class CourseTests(unittest.TestCase):
+class CourseTests(TestCase):
 	''' 
 		Unit Tests on backend Course functions
 		@author Mark Gius
@@ -61,13 +61,22 @@ class CourseTests(unittest.TestCase):
 		'''
 		pass
 
-class CourseViewTests(unittest.TestCase):
+class CourseViewTests(TestCase):
 	''' 
 		Unit Tests on Course Views.  Tests use an emulated Web Client
 		to simulate a user making requests via the web interface
 
+		Test fixtures include two courses, one private and one public, and
+		a set of users.  One user who is enrolled in the private course,
+		one user who is enrolled in the public course, and one user who
+		is enrolled in neither.
+
 		@author Jon Inloes
+		@author Mark Gius
 	'''
+
+	fixtures = ['CourseViewTests']
+
 	def setUp(self):
 		'''
 		Sets up the tests
@@ -134,3 +143,33 @@ class CourseViewTests(unittest.TestCase):
 		Tests that a user who is enrolled can access a private course, and a 
 		student who is not enrolled cannot access a private course
 		'''
+		pass
+	
+# I don't know why, but for some reason join_course_request is returning a 
+# 302.  Why?
+#	def testPrivateEnrollment(self):
+#		'''
+#		Tests that a user who is not enrolled can request access to a 
+#		private course
+#
+#		After the user has enrolled in the course, verify that they cannot view
+#		the course.  
+#
+#		After verifying that they cannot view the course, grant them view 
+#		permission and verify that they can view the course
+#		'''
+#		user = User.objects.get(username='PageViewsEnrollmentUser')
+#		privateCourse = Course.objects.get(slug='PageViewsPrivateCourse')
+#
+#      # attempt to enroll in the course
+#		response = self.client.post('/submit_join_course_request', \
+#				                      {'courseid':privateCourse.id})
+#
+#      # check for 200 OK and text pending
+#		self.assertContains(response, "pending")
+#
+#      # verify that the enrollmment exists and that the user has no view 
+#      # permission
+#		enrollment = Enrollment.objects.get(user=user, course=privateCourse)
+#
+#		assertEquals(enrollment.view, False)
