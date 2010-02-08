@@ -13,6 +13,8 @@ from users.user import registerNewUser, loginWrapper
 class UserTests(unittest.TestCase):
 	'''
 	This class deals with all of the test cases regarding 'users'
+        We will be using 'Client()' objects to simulate client requests
+        for logging in and out, editing and viewing user profiles.
 	'''
 	def setUp(self):
 		'''
