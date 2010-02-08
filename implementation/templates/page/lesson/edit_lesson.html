@@ -5,8 +5,7 @@
 
 
 {% block content %}
-
-	TODO: Edit lesson
+Editing lesson "<b>{{pid}}</b>" of "<b>{{course}}</b>"
 	
 
 
@@ -56,8 +55,9 @@
 </script>
 <form method="post" action="">
 <textarea name="content" style="width:100%">
+{{content}}
 </textarea>
-<input type="submit" value="Save">
+<input type="submit" name="Save" value="Save">
 </form>
 	
 	
