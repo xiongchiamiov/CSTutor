@@ -11,7 +11,6 @@ from django.test.client import Client
 from django.contrib.auth.models import User
 from courses.models import Course
 from courses.models import Enrollment
-from django.test.client import Client
 
 class CourseTests(unittest.TestCase):
 	''' 

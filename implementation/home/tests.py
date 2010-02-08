@@ -1,8 +1,7 @@
 """
-This file demonstrates two different styles of tests (one doctest and one
-unittest). These will both pass when you run "manage.py test".
+Tests for the home view.
 
-Replace these with more appropriate tests for your application.
+@author James Pearson
 """
 
 from django.test import TestCase
