@@ -246,7 +246,7 @@ def join_course_form(request):
 @login_required
 def join_course_request(request):
 	'''Displays the classes a user can join'''
-	courseid = request.GET['courseid']
+	courseid = request.POST['courseid']
 	course = Course.objects.get(id=courseid)
 	user = User.objects.get(username=request.user.username)
 
