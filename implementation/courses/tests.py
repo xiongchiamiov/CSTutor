@@ -5,6 +5,7 @@ All the tests get run by the django test runner.
 @author Jon Inloes
 @author Mark Gius
 @author James Pearson
+@author Matthew Tytel
 """
 
 from django.test import TestCase
@@ -33,6 +34,16 @@ class CourseTests(TestCase):
 		'''
 		pass
 	
+	def test_RemoveCourse(self):
+		'''
+			Test RemoveCourse function (might not be defined yet)
+
+			Verifies that the course is removed from the database
+			and all sub pages, enrollments and roster are removed
+			as well
+		'''
+		pass
+
 	def test_addPage(self):
 		'''
 			Tests addPage function
@@ -124,6 +135,12 @@ class CourseViewTests(TestCase):
 		self.client.post('/' + self.slug + '/roster/adduser/', {'username': username, 'command': 'add'})
 		enrollment = Enrollment.objects.get(user__username__exact=username, course__slug__exact=self.slug)
 		self.assertEquals(enrollment.user.username, username)
+
+	def testUpdateCourse(self):
+		'''
+		Tests changes to course data
+		'''
+		pass
 
 	def testUpdateRoster(self):
 		'''
