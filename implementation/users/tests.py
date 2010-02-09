@@ -12,9 +12,16 @@ from users.user import registerNewUser, loginWrapper
 
 class UserTests(unittest.TestCase):
 	'''
+	@author John Hartquist
+	@author Russell Mezzetta
 	This class deals with all of the test cases regarding 'users'
         We will be using 'Client()' objects to simulate client requests
         for logging in and out, editing and viewing user profiles.
+	
+	CLASS TEST PLAN
+	The tests will be called by the django testing framework
+	Each test is a "def testname" which are run in the order they appear in
+	this file. The "canned" database is loaded at the beginning of testing.
 	'''
 	def setUp(self):
 		'''
