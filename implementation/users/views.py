@@ -59,7 +59,7 @@ def show_logout(request):
 	if request.user.is_authenticated() == True:
 		if 'rememberme' in request.session:
 		   username = request.user.username
-
+	#logout flushes the contents of the session/cookie
 	logout(request)
 	if username != None:
 		request.session['username'] = username
@@ -91,7 +91,7 @@ def show_login(request):
 		checkboxList = request.POST.getlist('anonymous')
 		checkboxList += request.POST.getlist('autologin')
 		checkboxList += request.POST.getlist('rememberme')
-
+		#set the cookie to expire when browser closes(may be changed below)
 		request.session.set_expiry(0)
 
 		if "anonymous" in checkboxList:
@@ -103,21 +103,20 @@ def show_login(request):
 				request.session['rememberme'] = False
 			return index(request)
 
+		#all autologin will do is make sure the cookie doesn't expire on browser close
 		if "autologin" in checkboxList:
 			#set cookie/session to expire in 2 weeks (1209600 is # of seconds in 2 weeks)
 			request.session.set_expiry(1209600)
-			request.session['autologin'] = True
+			#request.session['autologin'] = True
 			#request.session['password'] = password
-		else:
-			request.session['autologin'] = False
+		#else:
+		#	request.session['autologin'] = False
 
 		if "rememberme" in checkboxList:
 			#save this in their session(auto fill username)
 			request.session.set_expiry(1209600)
 			request.session['rememberme'] = True
 			request.session['username'] = username
-			if "autologin" in checkboxList:
-				request.session.set_
 		else:
 			request.session['rememberme'] = False
 			request.session['username'] = ""
@@ -138,7 +137,7 @@ def show_login(request):
 			return render_to_response('user/login.html', {'message': "Account marked as inactive, contact System Admins"})
 	else:
 		#form has not yet been submitted (first time visiting login page)
-		#print 'GET'
+		#check if username is in the session so we can prefill the username field
 		if 'username' in request.session:
 			return render_to_response('user/login.html', {'loginusername':request.session['username']})
 		else:
