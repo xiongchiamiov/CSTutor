@@ -12,6 +12,7 @@ from stats.models import Stat
 from django.contrib.auth.models import User
 from django.db import IntegrityError
 from django.template.defaultfilters import slugify 
+from home.views import master_rtr
 
 # Create your views here.
 def display_course_stats(request, course_slug):
@@ -20,9 +21,7 @@ def display_course_stats(request, course_slug):
 	#STUB... FIXME
 
 def display_all_stats(request):
-	'''Displays stats for ALL users in all courses'''
+	'''Displays stats for ALL users in all courses''' 
+	#FIXME Made changes because master_rtr must be used
 	data = {}
-	courses = Course.objects.all()
-	data['courses'] = courses 
-
-	return render_to_response('stats/show_all_stats.html',data)
+	return master_rtr(request, 'stats/show_all_stats.html', data)
