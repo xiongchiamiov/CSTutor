@@ -53,6 +53,7 @@ def edit_quiz(request, course_slug, pid):
 		if "Cancel" in request.POST:
 			return HttpResponseRedirect("/%s/%s/" % (course_slug, pid))
 	quiz = Quiz.objects.get(slug=pid)
+	pages = Course.objects.get(slug=course_slug).pages.all()
 	quizTitle = quiz.text
 	questions = quiz.questions.all().order_by("order")
-	return master_rtr(request, 'quiz/edit_quiz.html', {'course':course_slug, 'pid':pid, 'quizTitle':quizTitle, 'questions':questions})
+	return master_rtr(request, 'quiz/edit_quiz.html', {'course':course_slug, 'pid':pid, 'pages':pages, 'quizTitle':quizTitle, 'questions':questions})

@@ -23,13 +23,13 @@ def saveQuiz(request, course, pid):
 		quiz.slug = slugify(quiz.name)
 		questions = quiz.questions.all()
 		for q in questions:
-			try: 
+			try:
 				q = q.multiplechoicequestion
-				q.text = request.POST['mcq%dtext' % q.order]
-				q.order = request.POST['mcq%dorder' % q.order]
 				for a in q.answers.all():
 					a.text = request.POST['mcq%sa%s' % (q.order, a.order)]
 					a.save()
+				q.text = request.POST['mcq%dtext' % q.order]
+				q.order = request.POST['mcq%dorder' % q.order]
 			except MultipleChoiceQuestion.DoesNotExist:
 				q = q.codequestion
 				q.text = request.POST['cq%dtext' % q.order]
