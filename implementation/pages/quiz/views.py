@@ -10,6 +10,8 @@ from django.shortcuts import render_to_response
 from django.http import HttpResponseRedirect
 from courses.models import Course
 from models import Page
+from models import Quiz
+from quiz import *
 from question.models import MultipleChoiceQuestion
 from question.models import CodeQuestion
 from home.views import master_rtr
@@ -26,8 +28,7 @@ def show_quiz(request, course, pid):
 		This view displays a quiz on the screen. The user can then answer the
 		questions and submit the result
 	'''
-	quiz = Page.objects.get(slug=pid)
-	quiz = quiz.quiz
+	quiz = Quiz.objects.get(slug=pid)
 	quizTitle = quiz.text
 	questions = quiz.questions.all().order_by("order")
 
@@ -45,8 +46,13 @@ def edit_quiz(request, course_slug, pid):
 		This view allows an instructor or other priviledged user to edit a quiz. The instructor can add, modify,
 		or remove questions and other quiz attributes. The modified quiz is then submitted to the database.
 	'''
-	quiz = Page.objects.get(slug=pid)
-	quiz = quiz.quiz
+	if (request.method == "POST"):
+		if "Save" in request.POST:
+			pid = saveQuiz(request, course_slug, pid)
+			return HttpResponseRedirect("/%s/%s/" % (course_slug, pid))
+		if "Cancel" in request.POST:
+			return HttpResponseRedirect("/%s/%s/" % (course_slug, pid))
+	quiz = Quiz.objects.get(slug=pid)
 	quizTitle = quiz.text
 	questions = quiz.questions.all().order_by("order")
 	return master_rtr(request, 'quiz/edit_quiz.html', {'course':course_slug, 'pid':pid, 'quizTitle':quizTitle, 'questions':questions})

@@ -2,21 +2,21 @@
 {% load smart_if %}
 
 {% block content %}
-<form name="submitQuiz" action="submitQuiz/" method="post">
+<form name="Quiz" method="post">
 <center><b><input type="text" name="quizTitle" value="{{quizTitle}}" /></b></center>
 <table>
 {% for q in questions %}
 	{% if q.multiplechoicequestion %}
 		<tr>
-	                <td><input type="text" name="mq{{q.multiplechoicequestion.order}}order" value="{{q.multiplechoicequestion.order}}" size="3" /></td>
-	                <td colspan="2"><textarea name="mq{{q.multiplechoicequestion.order}}text" style="height: 5em; width: 40em;">{{q.multiplechoicequestion.text}}</textarea></td>
+	                <td><input type="text" name="mcq{{q.multiplechoicequestion.order}}order" value="{{q.multiplechoicequestion.order}}" size="3" /></td>
+	                <td colspan="2"><textarea name="mcq{{q.multiplechoicequestion.order}}text" style="height: 5em; width: 40em;">{{q.multiplechoicequestion.text}}</textarea></td>
 			<td>Correct</td>
 	        </tr>
 	        {% for a in q.multiplechoicequestion.answers.all %}
 	        <tr>
 	                <td></td>
 	                <td><input type="radio" name="mcq{{q.multiplechoicequestion.order}}a" disabled="disabled" /></td>
-	                <td><input type="text" name="mcq{{q.multiplechoicequestion.order}}at" value="{{a.text}}" /></td>
+	                <td><input type="text" name="mcq{{q.multiplechoicequestion.order}}a{{a.order}}" value="{{a.text}}" /></td>
 			<td>
 				{% if a.correct %}
 				<input type="radio" name="mcq{{q.multiplechoicequestion.order}}ac" checked="checked"/>
@@ -36,6 +36,6 @@
 	{% endif %}
 {% endfor %}
 </table>
-<center><input type="submit" value="Submit Changes" /><input type="button" value="Reset" /></center>
+<center><input type="submit" value="Save" name="Save" /><input type="submit" name="Cancel" value="Cancel" /></center>
 </form>
 {% endblock %}
