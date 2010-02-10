@@ -29,19 +29,14 @@
 					</form>
 				</li>
 				<li>
-					<ul id="course-list">
+					<ul id="page-list">
 						{% for course in courses %}
-						<li>
-							<a href="/{{course.slug}}/">{{course}}</a>
-							<ul class="page-list">
-								{% for page in course.pages.all %}
+							{% for page in course.pages.all %}
 								<li><a href="/{{course.slug}}/{{page.slug}}/">{{page}}</a>
 								</li>
-								{% endfor %}
-							</ul>
-						</li>
+							{% endfor %}
 						{% endfor %}
-					</ul><!-- #course-list -->
+					</ul><!-- #page-list -->
 				</li>
 				<li>
 					<form action="/create-quiz/">
@@ -49,7 +44,7 @@
 					</form>
 				</li>
 				<li>
-					<form action="/create-lesson/">
+					<form action="newLesson/">
 						<input type="submit" value="Create Lesson" />
 					</form>
 				</li>
