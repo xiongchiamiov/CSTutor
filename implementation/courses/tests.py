@@ -80,7 +80,9 @@ class CourseViewTests(TestCase):
 		Test fixtures include two courses, one private and one public, and
 		a set of users.  One user who is enrolled in the private course,
 		one user who is enrolled in the public course, and one user who
-		is enrolled in neither.
+		is enrolled in neither. Another user is an admin for a course, which
+		allows a roster to be managed. There is also a user that is not enrolled
+		in any courses, so he can be enrolled in a course.
 
 		@author Jon Inloes
 		@author Mark Gius
@@ -125,16 +127,45 @@ class CourseViewTests(TestCase):
 		'''
 		Tests enrolling a user in a course through the view
 
-		Case no.        Inputs                                     Expected Output    Remark
-		1               url=/gene-fishers-cpe102-fall-08/roster/
-		                username = jinloes                         true               true as in the user 
-		                                                                              exists in enrollment list
+		Case no.        	Inputs                                     	Expected Output	Remark
+		1               	adminUserName = enrollmentTestAdmin				true					true as in the user
+								password = password															exists in enrollment list
+								usrname = 'enrollmentTest'
+								slug = 'PageViewsPublicCourse'                           
+		                                                                              
 		'''
-		username = 'jinloes'
+	
+		adminUsername = 'enrollmentTestAdmin'
+		passwd = 'password'
+		usrname = 'enrollmentTest'
+		slug = 'PageViewsPublicCourse'
 
-		self.client.post('/' + self.slug + '/roster/adduser/', {'username': username, 'command': 'add'})
-		enrollment = Enrollment.objects.get(user__username__exact=username, course__slug__exact=self.slug)
-		self.assertEquals(enrollment.user.username, username)
+		#logs in and checks to make sure the login was successful
+		self.failUnlessEqual(self.client.login(username=adminUsername, password=passwd), True)
+
+		#Test to make sure the user is not enrolled
+		userNotExists = True
+		try:
+			enrollment = Enrollment.objects.get(user__username__exact=usrname, course__slug__exact=slug)
+			userNotExists = False
+
+		except Enrollment.DoesNotExist:
+			pass
+
+		self.failUnlessEqual(userNotExists, True)
+		
+		#Enroll the user in the class
+		self.client.post('/' + slug + '/roster/adduser/', {'username': usrname, 'command': 'add'})
+
+		#Test to make sure the user is enrolled
+		userExists = True				
+		try:
+			enrollment = Enrollment.objects.get(user__username__exact=usrname, course__slug__exact=slug)
+
+		except Enrollment.DoesNotExist:
+			userExists = False
+	
+		self.failUnlessEqual(userExists, True)
 
 	def testUpdateCourse(self):
 		'''
