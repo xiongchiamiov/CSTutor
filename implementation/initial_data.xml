@@ -532,8 +532,8 @@
    </object>
    <object pk="1" model="pages.page">
       <field to="courses.course" name="course" rel="ManyToOneRel">1</field>
-      <field type="SlugField" name="slug">index</field>
-      <field type="TextField" name="name">CPE102 Index</field>
+      <field type="SlugField" name="slug">gene-fishers-cpe102-fall-08</field>
+      <field type="TextField" name="name">Gene Fisher's CPE102 Fall 08</field>
       <field type="IntegerField" name="left">1</field>
       <field type="IntegerField" name="right">8</field>
    </object>
@@ -558,6 +558,13 @@
       <field type="IntegerField" name="left">6</field>
       <field type="IntegerField" name="right">7</field>
    </object>
+   <object pk="5" model="pages.page">
+		<field to="courses.course" name="course" rel="ManyToOneRel">2</field>
+      <field type="SlugField" name="slug">john-dalbeys-cpe103-fall-09</field>
+      <field type="CharField" name="name">John Dalbey's CPE103 Fall 09</field>
+      <field type="IntegerField" name="left">9</field>
+		<field type="IntegerField" name="right">10</field>
+   </object>
    <object pk="1" model="lesson.lesson">
       <field type="TextField" name="content">This is an index page for CPE102</field>
    </object>
@@ -571,7 +578,10 @@
       <field type="TextField" name="text">Sample Quiz</field>
       <field type="BooleanField" name="hidden">False</field>
    </object>
-   <object pk="1" model="question.question">
+   <object pk="5" model="lesson.lesson">
+      <field type="TextField" name="content">J-Dalbizzle's classy course content</field>
+   </object>
+	<object pk="1" model="question.question">
       <field type="TextField" name="text">What is your name</field>
       <field type="IntegerField" name="order">1</field>
       <field to="quiz.quiz" name="quiz" rel="ManyToOneRel">4</field>
