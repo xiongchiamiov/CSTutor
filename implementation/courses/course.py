@@ -7,6 +7,7 @@ Contains operations for Courses
 '''
 from courses.models import *
 from courses.enrollment import *
+from pages.lesson.models import Lesson
 
 def CreateCourse(name, user, private, slug=None):
 	''' Creates a new course
@@ -30,8 +31,8 @@ def CreateCourse(name, user, private, slug=None):
 	# Create the new landing page
 
 	newpage = Lesson(course=newcourse, slug=slug, name=name, left=1, right=2,\
-			           content="Landing page for " + slug + "\n" +\
-						          "Your content here")
+			           content="Landing page for " + slug +\
+						          "<br />Your content here")
 	newpage.save()
 
 	return newcourse
