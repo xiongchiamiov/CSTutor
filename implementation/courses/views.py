@@ -129,6 +129,7 @@ def search_username(request, course_slug, courses):
 	
 	return master_rtr(request, 'adduser/search.html', {'course_slug': course_slug, 'course':course, 'users':users, 'firstname': firstname, 'lastname': lastname, 'url': request.path})
 
+@login_required
 def update_roster(request, course_slug):
 	'''
 		Updates the roster according to the checkboxes on the page
@@ -136,69 +137,77 @@ def update_roster(request, course_slug):
 		post: for all enrollments in db changed(enrollment) in db' 
 				if not removing then db.length = db'.length
 	'''
-	editList =  request.POST.getlist('edit')
-	manageList = request.POST.getlist('manage')
-	statsList = request.POST.getlist('stats')
-	removeList = request.POST.getlist('remove')
-	enrollments = Enrollment.objects.select_related(depth=1).\
-					                     filter(course__slug__exact=course_slug)
+
+	course = Course.objects.get(slug=course_slug)
+	enrollment = request.user.enrollments.get(course=course)
+
+	if enrollment.manage:
+		editList =  request.POST.getlist('edit')
+		manageList = request.POST.getlist('manage')
+		statsList = request.POST.getlist('stats')
+		removeList = request.POST.getlist('remove')
+		enrollments = Enrollment.objects.select_related(depth=1).\
+							                  filter(course__slug__exact=course_slug)
 	
-	#for each enrollment
-	for enrollment in enrollments:
-		changed = False
-		try:
-			editList.index(enrollment.user.username)
-			#if the user does not have edit permission, then set the permission to true
-			if not enrollment.edit:
-				enrollment.edit = True
-				changed = True
-		except ValueError:
-			#if if the user does have edit permission, then set the permission to false
-			if enrollment.edit:
-				enrollment.edit = False
-				changed = True
-		try:
-			manageList.index(enrollment.user.username)
-			#if the user does not have manage permission, then set the permission to true
-			if not enrollment.manage:
-				enrollment.manage = True
-				changed = True
-		except ValueError:
-			#if the user does have manage permission, then set the permission to false
-			if enrollment.manage:
-				enrollment.manage = False
-				changed = True
-		try:
-			statsList.index(enrollment.user.username)
-			#if the user does not have stats permission, then set the permission to true
-			if not enrollment.stats:
-				enrollment.stats = True
-				changed = True
-		except ValueError:
-			#if the user does have stats permission, then set the permission to false
-			if enrollment.stats:
-				enrollment.stats = False
-				changed = True
-
-		#if the user has changed then update it
-		if changed:
-			enrollment.save()
-
-		try:
-			removeList.index(enrollment.user.username)
-			#if the remove checkbox was checked attempt to remove the user
+		#for each enrollment
+		for enrollment in enrollments:
+			changed = False
 			try:
-			   # You've already got the course and user objects through the 
-            # enrollment object. -mgius
-            #user = User.objects.get(username=enrollment.user.username)
-				#course = Course.objects.get(slug=course_slug)
-				removeUser(enrollment.course,enrollment.user)
-			except User.DoesNotExist:
-				pass
-		except ValueError:
-			pass
+				editList.index(enrollment.user.username)
+				#if the user does not have edit permission, then set the permission to true
+				if not enrollment.edit:
+					enrollment.edit = True
+					changed = True
+			except ValueError:
+				#if if the user does have edit permission, then set the permission to false
+				if enrollment.edit:
+					enrollment.edit = False
+					changed = True
+			try:
+				manageList.index(enrollment.user.username)
+				#if the user does not have manage permission, then set the permission to true
+				if not enrollment.manage:
+					enrollment.manage = True
+					changed = True
+			except ValueError:
+				#if the user does have manage permission, then set the permission to false
+				if enrollment.manage:
+					enrollment.manage = False
+					changed = True
+			try:
+				statsList.index(enrollment.user.username)
+				#if the user does not have stats permission, then set the permission to true
+				if not enrollment.stats:
+					enrollment.stats = True
+					changed = True
+			except ValueError:
+				#if the user does have stats permission, then set the permission to false
+				if enrollment.stats:
+					enrollment.stats = False
+					changed = True
 
-	return HttpResponseRedirect("/%s/roster/" % course_slug)
+			#if the user has changed then update it
+			if changed:
+				enrollment.save()
+
+			try:
+				removeList.index(enrollment.user.username)
+				#if the remove checkbox was checked attempt to remove the user
+				try:
+					# You've already got the course and user objects through the 
+		         # enrollment object. -mgius
+		         #user = User.objects.get(username=enrollment.user.username)
+					#course = Course.objects.get(slug=course_slug)
+					removeUser(enrollment.course,enrollment.user)
+				except User.DoesNotExist:
+					pass
+			except ValueError:
+				pass
+
+		return HttpResponseRedirect("/%s/roster/" % course_slug)
+	
+	else:
+		return master_rtr(request, 'roster/invalid_permissions.html', {'course': course})
 
 def cancel_add(request, course_slug):
 	'''
