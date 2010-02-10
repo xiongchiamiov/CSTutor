@@ -12,6 +12,20 @@ from question.models import *
 def CreateQuiz(name):
 	return Lesson(slug=slugify(name), name=name)
 
+def validateQuestionOrder(self):
+	'''
+		Takes in a quiz object, and verifies that all of its questions have
+		a unique ordering, and are ordered from 1 -> # of questions
+
+		Returns True if the above constraints are met, False otherwise
+	'''
+	questions = self.questions.all()
+	usedNumbers = set([question.order for question in questions])
+	if len(questions) != len(usedNumbers) or \
+		min(usedNumbers) != 1 or max(usedNumbers) != len(questions):
+			return False
+	return True
+
 def saveQuiz(request, course, pid):
 	if (request.method != "POST"):
 		return -1
