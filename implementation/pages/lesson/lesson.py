@@ -45,7 +45,7 @@ def saveNewLesson(request, course, pid):
 		try:
 			Lesson.objects.get(slug=slugify(request.POST["lessonname"]))
 		except Lesson.DoesNotExist:
-			lesson = CreateLesson(slugify(request.POST["lessonname"]))
+			lesson = CreateLesson(request.POST["lessonname"])
 			lesson.content = request.POST["content"]
 			insertChildPage(lesson, Lesson.objects.get(slug='forloops'))
 			return 0
