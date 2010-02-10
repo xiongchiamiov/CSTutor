@@ -3,7 +3,7 @@
 
 {% block content %}
 <form name="Quiz" method="post">
-<center><b><input type="text" name="quizTitle" value="{{quizTitle}}" /></b></center>
+<center><b><input type="text" name="quizTitle" value="{{quiz.text}}" /></b></center>
 <table>
 {% for q in questions %}
 	{% if q.multiplechoicequestion %}
@@ -54,8 +54,12 @@
 				{% endfor %}
 				</select>
 				<br>
-				Hidden: 
-				<input type="checkbox"/>
+				Hidden:
+				{% if quiz.hidden %}
+					<input type="checkbox" name="hidden" checked="checked" />
+				{% else %}
+					<input type="checkbox" name="hidden" />
+				{% endif %}
 			</td>
 			<td>
 				<input type="submit" value="New Code Question" onclick="newCodeQuestion()"/>
@@ -92,14 +96,14 @@
 		</tr>
 		<tr>
 			<td>
-				<input type="submit" value="New Multiple Choice Question" onclick="newMultChoiceQuestion()"/>
+				<input type="submit" value="New Multiple Choice Question" name="NewMultQuestion"/>
 			</td>
 		</tr>
 		<tr>
 			<td colspan="2">
 				<input type="submit" value="Save" name="Save" />
 				<input type="submit" value="Cancel" name="Cancel" />
-				<input type="submit" value="Delete" onclick="deleteQuiz()"/>
+				<input type="submit" value="Delete" name = "Delete" />
 				<input type="submit" value="Publish" onclick="publishQuiz()"/>
 				<input type="submit" value="Import" onclick="importQuiz()";/>
 			</td>

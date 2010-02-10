@@ -21,6 +21,7 @@ def saveQuiz(request, course, pid):
 		quiz.text = request.POST["quizTitle"]
 		quiz.name = request.POST["quizTitle"]
 		quiz.slug = slugify(quiz.name)
+		quiz.hidden = request.POST["hidden"]
 		questions = quiz.questions.all()
 		for q in questions:
 			try:
@@ -42,6 +43,12 @@ def saveQuiz(request, course, pid):
 def removeQuiz(request, course, pid):
 	if (request.method != "POST"):
 		return -1
-	if "Remove" in request.POST:
-	    Quiz.objects.get(slug=pid).delete()
-	    return 0
+	if "Delete" in request.POST:
+		Quiz.objects.get(slug=pid).delete()
+		return 0
+
+def addMultipleChoiceQuestion(request, course, pid):
+	quiz = Quiz.objects.get(slug=pid)
+	newQuestion = MultipleChoiceQuestion(text='Blank Question', order=99, quiz=quiz)
+	newQuestion.save()
+	return 0
