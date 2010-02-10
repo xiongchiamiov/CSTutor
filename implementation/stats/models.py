@@ -42,5 +42,5 @@ class Stat(models.Model):
 
 	def __unicode__(self):
 		''' Returns the string representation of a stat for debugging. '''  
-		return u'Stat for User ' + unicode(user) + u' and Lesson ' \
-			+ unicode(lesson)
+		return u'Stat for User ' + unicode(self.user) + u' and Lesson ' \
+			+ unicode(self.page)
