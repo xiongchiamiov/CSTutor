@@ -30,7 +30,7 @@ class CourseTests(TestCase):
 			Tests CreateCourse function.
 
 			Verifies that course is created, and the specified user is
-			enrolled in the course
+			enrolled in the course, and the course landing page is created
 		'''
 		pass
 	
