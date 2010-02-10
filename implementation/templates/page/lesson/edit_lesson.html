@@ -5,15 +5,6 @@
 
 
 {% block content %}
-Lesson Name: <input type="text" name="coursename" value="{{pid}}" 
-{% if new %}
-onfocus="this.value=''"
-{% endif %}
-/> <br />
-Course: <b>{{course}}</b>
-<br />
-<br />
-
 
 <script type="text/javascript" src="/media/js/tiny_mce/tiny_mce.js"></script> 
 <script type="text/javascript"> 
@@ -60,6 +51,11 @@ Course: <b>{{course}}</b>
 	});
 </script>
 <form method="post" action="">
+Lesson Name: <input type="text" name="lessonname" value="{{pid}}"/> <br />
+Course: <b>{{course}}</b>
+<br />
+<br />
+
 <textarea name="content" style="width:100%">
 {{content}}
 </textarea>
