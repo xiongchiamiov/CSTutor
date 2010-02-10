@@ -215,29 +215,37 @@ def cancel_add(request, course_slug):
 	'''
 	return HttpResponseRedirect("/%s/roster/" % course_slug)
 
+@login_required
 def manage_pending_requests(request, course_slug):
 	'''Manages the pending request list for a roster'''
 	
-	acceptList =  request.POST.getlist('accept')
-	denyList = request.POST.getlist('deny')	
-	course = Course.objects.select_related(depth=2).get(slug=course_slug)
-	enrollments = course.roster.all()
+	course = Course.objects.get(slug=course_slug)
+	enrollment = request.user.enrollments.get(course=course)
 
-	for enrollment in enrollments:
-		user = enrollment.user
-		try:
-			acceptList.index(enrollment.user.username)
-			enrollment.view = True
-			enrollment.save()
-		except ValueError:
-			pass
-		try:
-			denyList.index(enrollment.user.username)
-			removeUser(course,user)
-		except ValueError:
-			pass
+	if enrollment.manage:
+		acceptList =  request.POST.getlist('accept')
+		denyList = request.POST.getlist('deny')	
+		course = Course.objects.select_related(depth=2).get(slug=course_slug)
+		enrollments = course.roster.all()
+
+		for enrollment in enrollments:
+			user = enrollment.user
+			try:
+				acceptList.index(enrollment.user.username)
+				enrollment.view = True
+				enrollment.save()
+			except ValueError:
+				pass
+			try:
+				denyList.index(enrollment.user.username)
+				removeUser(course,user)
+			except ValueError:
+				pass
 	
-	return HttpResponseRedirect("/%s/roster/" % course_slug)
+		return HttpResponseRedirect("/%s/roster/" % course_slug)
+
+	else:
+		return master_rtr(request, 'roster/invalid_permissions.html', {'course': course})
 
 def join_course_form(request):
 	'''
