@@ -13,4 +13,9 @@ class Lesson(Page):
 	'''
 	content = models.TextField()
 
-
+	def __unicode__(self):
+		return self.content
+	
+	def get_absolute_url(self):
+		return ('pages.lesson.views.show_page', \
+				  [str(self.course.slug), self.slug])

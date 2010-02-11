@@ -29,36 +29,36 @@ class QuizViewTests(unittest.TestCase):
 	def testQuizUrl(self):
 		'''
 			Test that the urls to a known quiz page works properly
-			Case no.    Input                                            Expected Output         Remark
-			1           url = /gene-fishers-cpe102-fall-08/samplequiz/   200                     302 is a found code
-			2           url = /badclass/badquiz/                         404                     404 is a bad link error
-			3           url = /gene-fishers-cpe102-fall-08/badquiz/      404                     404 is a bad link error
-			4           url = /badclass/samplequiz/                      404                     404 is a bad link error
+			Case no.    Input                                                        Expected Output         Remark
+			1           url = /course/gene-fishers-cpe102-fall-08/page/samplequiz/   200                     302 is a found code
+			2           url = /course/badclass/page/badquiz/                         404                     404 is a bad link error
+			3           url = /course/gene-fishers-cpe102-fall-08/page/badquiz/      404                     404 is a bad link error
+			4           url = /course/badclass/page/samplequiz/                      404                     404 is a bad link error
 		'''
-		response = self.client.get('/' + self.courseSlug + '/' + self.quizSlug + '/')
+		response = self.client.get('/course/' + self.courseSlug + '/page/' + self.quizSlug + '/')
 		self.failUnlessEqual(response.status_code, 200)
 
 	def testSubmitQuizUrl(self):
 		'''
 			Test that the urls to submit a known quiz page works properly
-			Case no.    Input                                                       Expected Output         Remark
-			1           url = /gene-fishers-cpe102-fall-08/samplequiz/submitQuiz/   200                     302 is a found code
-			2           url = /badclass/badquiz/submitQuiz/                         404                     404 is a bad link error
-			3           url = /gene-fishers-cpe102-fall-08/badquiz/submitQuiz/      404                     404 is a bad link error
-			4           url = /badclass/samplequiz/submitQuiz/                      404                     404 is a bad link error
+			Case no.    Input                                                        Expected Output         Remark
+			1           url = /course/gene-fishers-cpe102-fall-08/page/samplequiz/   200                     302 is a found code
+			2           url = /course/badclass/page/badquiz/                         404                     404 is a bad link error
+			3           url = /course/gene-fishers-cpe102-fall-08/page/badquiz/      404                     404 is a bad link error
+			4           url = /course/badclass/page/samplequiz/                      404                     404 is a bad link error
 		'''
-		response = self.client.get('/' + self.courseSlug + '/' + self.quizSlug + '/submitQuiz/')
+		response = self.client.get('/course/' + self.courseSlug + '/page/' + self.quizSlug + '/submitQuiz/')
 		self.failUnlessEqual(response.status_code, 200)
 
 	def testEditQuizUrl(self):
 		'''
 			Test that the urls to edit a known quiz page works properly
-			Case no.    Input                                                Expected Output         Remark
-			1           url = /gene-fishers-cpe102-fall-08/samplequiz/edit   200                     302 is a found code
-			2           url = /badclass/badquiz/edit/                        404                     404 is a bad link error
-			3           url = /gene-fishers-cpe102-fall-08/badquiz/edit/     404                     404 is a bad link error
-			4           url = /badclass/samplequiz/edit/                     404                     404 is a bad link error
+			Case no.    Input                                                        Expected Output         Remark
+			1           url = /course/gene-fishers-cpe102-fall-08/page/samplequiz/   200                     302 is a found code
+			2           url = /course/badclass/page/badquiz/                         404                     404 is a bad link error
+			3           url = /course/gene-fishers-cpe102-fall-08/page/badquiz/      404                     404 is a bad link error
+			4           url = /course/badclass/page/samplequiz/                      404                     404 is a bad link error
 		'''
 
-		response = self.client.get('/' + self.courseSlug + '/' + self.quizSlug + '/edit/')
+		response = self.client.get('/course/' + self.courseSlug + '/page/' + self.quizSlug + '/edit/')
 		self.failUnlessEqual(response.status_code, 200)

@@ -33,6 +33,11 @@ class Quiz(Page):
 	def __unicode__(self):
 		return self.text
 
+	@models.permalink
+	def get_absolute_url(self):
+		return ('pages.quiz.views.show_page', \
+		        [str(self.course.slug), self.slug])
+
 class Path(models.Model):
 	'''
 	Model for a Path.

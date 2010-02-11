@@ -57,10 +57,15 @@ def show_roster(request, course_slug):
 	if enrollment.manage:
 		enrollments = course.roster.all();
 
-		return master_rtr(request, 'roster/index.html', {'course': course, 'enrollments': enrollments, 'course_slug': course.slug})
+		return master_rtr(request, 'roster/index.html', \
+				            {'course': course, \
+								 'enrollments': enrollments, \
+								 'course_slug': course.slug})
 
 	else:
-		return master_rtr(request, 'roster/invalid_permissions.html', {'course': course})
+		return master_rtr(request, 'roster/invalid_permissions.html', \
+				            {'course': course, \
+								 'course_slug': course.slug})
 
 def show_course(request, course_slug):
 	try:
@@ -98,10 +103,12 @@ def add_user(request, course_slug):
 
 				except User.DoesNotExist:
 					#if the user does not exist print error message
-					return master_rtr(request, 'adduser/failed.html', {'course_slug':course_slug, 'course': course})
+					return master_rtr(request, 'adduser/failed.html', \
+							            {'course_slug':course_slug, \
+											 'course': course})
 			
 				#show the roster screen
-				return HttpResponseRedirect("/%s/roster/" % course_slug)
+				return HttpResponseRedirect("/course/%s/roster/" % course_slug)
 			elif request.POST['command'] == 'search':
 				#if the command was a search, search for the user
 	
@@ -110,14 +117,20 @@ def add_user(request, course_slug):
 
 				users = User.objects.filter(first_name = firstname, last_name = lastname)
 
-	
-				return master_rtr(request, 'adduser/search.html', {'course_slug': course_slug, 'course':course, 'users':users, 'firstname': firstname, 'lastname': lastname})
-		else:
-		
-			#display the adduser page
-			return master_rtr(request,'adduser/index.html', {'course_slug': course_slug, 'course': course, 'url': request.path})
+				return master_rtr(request, 'adduser/search.html', \
+						            {'course_slug': course_slug, \
+										 'course':course, \
+										 'users':users, \
+										 'firstname': firstname, \
+										 'lastname': lastname})
+			else:
+			
+				#display the adduser page
+				return master_rtr(request,'adduser/index.html', {'course_slug': course_slug, 'course': course, 'url': request.path})
 	else:
-		return master_rtr(request, 'roster/invalid_permissions.html', {'course': course})
+		return master_rtr(request, 'roster/invalid_permissions.html', \
+				{'course': course, \
+				 'course_slug': course_slug})
 
 def search_username(request, course_slug, courses):
 	'''This function is not called any more'''
@@ -132,7 +145,13 @@ def search_username(request, course_slug, courses):
 	users = User.objects.filter(first_name = firstname, last_name = lastname)
 
 	
-	return master_rtr(request, 'adduser/search.html', {'course_slug': course_slug, 'course':course, 'users':users, 'firstname': firstname, 'lastname': lastname, 'url': request.path})
+	return master_rtr(request, 'adduser/search.html', \
+			            {'course_slug': course_slug, \
+							 'course':course, \
+							 'users':users, \
+							 'firstname': firstname, \
+							 'lastname': lastname, \
+							 'url': request.path})
 
 @login_required
 def update_roster(request, course_slug):
@@ -208,17 +227,18 @@ def update_roster(request, course_slug):
 					pass
 			except ValueError:
 				pass
-
-		return HttpResponseRedirect("/%s/roster/" % course_slug)
+		## TODO: Make this not be hard-coded
+		return HttpResponseRedirect("/course/%s/roster/" % course_slug)
 	
 	else:
-		return master_rtr(request, 'roster/invalid_permissions.html', {'course': course})
+		return master_rtr(request, 'roster/invalid_permissions.html', \
+				            {'course': course, 'course_slug': course.slug})
 
 def cancel_add(request, course_slug):
 	'''
 	Redirects to the roster screen when viewing the add user page
 	'''
-	return HttpResponseRedirect("/%s/roster/" % course_slug)
+	return HttpResponseRedirect("/course/%s/roster/" % course_slug)
 
 @login_required
 def manage_pending_requests(request, course_slug):
@@ -247,10 +267,11 @@ def manage_pending_requests(request, course_slug):
 			except ValueError:
 				pass
 	
-		return HttpResponseRedirect("/%s/roster/" % course_slug)
+		return HttpResponseRedirect("/course/%s/roster/" % course_slug)
 
 	else:
-		return master_rtr(request, 'roster/invalid_permissions.html', {'course': course})
+		return master_rtr(request, 'roster/invalid_permissions.html', \
+				{'course': course, 'course_slug': course.slug})
 
 def join_course_form(request):
 	'''

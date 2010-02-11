@@ -2,6 +2,6 @@
 
 {% block content %}
 <b>Profile</b><br>
-You are not currently logged in. <a href="/login/">Log in</a>
+You are not currently logged in. <a href="{% url users.views.show_login %}">Log in</a>
 
 {% endblock %}

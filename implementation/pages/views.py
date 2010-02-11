@@ -23,7 +23,7 @@ Contains the show_page function
 @author Russell Mezzetta
 '''
 
-def show_page(request, course_slug, pid):
+def show_page(request, course_slug, page_slug):
 	#check if the course is a real course in the database	
 	try: 
 		course = Course.objects.get(slug=course_slug)
@@ -31,9 +31,9 @@ def show_page(request, course_slug, pid):
 		return HttpResponse("ERROR: BAD URL: The course: %s does not exist" % (course_slug))
 	#check if the page is a real page in the database
 	try:
-		page = Page.objects.get(slug=pid)
+		page = Page.objects.get(slug=page_slug)
 	except Page.DoesNotExist:
-		return HttpResponse("ERROR: BAD URL: The course: %s does not contain the page: %s." % (course_slug, pid))
+		return HttpResponse("ERROR: BAD URL: The course: %s does not contain the page: %s." % (course_slug, page_slug))
 	# if the course is private, I shouldn't be able to see it
 	if course.private:
 		try:
@@ -55,10 +55,10 @@ def show_page(request, course_slug, pid):
 			page = page.quiz
 		except Quiz.DoesNotExist:
 			print "Page is neither quiz or lesson"
-		return show_quiz(request, course_slug, pid)
-	return show_lesson(request, course_slug, pid)
+		return show_quiz(request, course_slug, page_slug)
+	return show_lesson(request, course_slug, page_slug)
 
-def edit_page(request, course_slug, pid):
+def edit_page(request, course_slug, page_slug):
 	#check if the course is a real course in the database	
 	try: 
 		Course.objects.get(slug=course_slug)
@@ -66,9 +66,9 @@ def edit_page(request, course_slug, pid):
 		return HttpResponse("ERROR: BAD URL: The course: %s does not exist" % (course_slug))
 	#check if the page is a real page in the database
 	try:
-		page = Page.objects.get(slug=pid)
+		page = Page.objects.get(slug=page_slug)
 	except Page.DoesNotExist:
-		return HttpResponse("ERROR: BAD URL: The course: %s does not contain the page: %s." % (course_slug, pid))
+		return HttpResponse("ERROR: BAD URL: The course: %s does not contain the page: %s." % (course_slug, page_slug))
 	#cast the page to a lesson or quiz then call show on it
 	try:
 		page = page.lesson
@@ -77,5 +77,5 @@ def edit_page(request, course_slug, pid):
 			page = page.quiz
 		except Quiz.DoesNotExist:
 			return HttpResponse("ERROR: Page is neither quiz or lesson")
-		return edit_quiz(request, course_slug, pid)
-	return edit_lesson(request, course_slug, pid)
+		return edit_quiz(request, course_slug, page_slug)
+	return edit_lesson(request, course_slug, page_slug)

@@ -31,6 +31,10 @@ class Course(models.Model):
 	def __unicode__(self):
 		''' Returns the Course's name.'''
 		return self.name
+	
+	@models.permalink
+	def get_absolute_url(self):
+		return ('courses.views.view_course', [str(self.slug)])
 
 class Enrollment(models.Model):
 	''' Model for an Enrollment in a Course

@@ -7,7 +7,7 @@ It appears as though your enrollment has not been approved by the course owner.
 You will have to wait until your enrollment has been approved.
 {% else %}
 It appears as though you have not enrolled in this course, and the course is
-private.  Please visit <a href="/join-course/"> the course join page</a> to 
+private.  Please visit <a href="{% url courses.views.join_course_form %}"> the course join page</a> to 
 request access to this course.
 
 {% endif %}

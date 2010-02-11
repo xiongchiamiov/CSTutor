@@ -19,12 +19,12 @@
 		<div id="left-nav" class="span-6">
 			<ul>
 				<li>
-					<form action="/create-course/">
+					<form action="{% url courses.views.create_course %}">
 						<input type="submit" value="Create Course" />
 					</form>
 				</li>
 				<li>
-					<form action="/join-course/">
+					<form action="{% url courses.views.join_course_form %}">
 						<input type="submit" value="Join Course" />
 					</form>
 				</li>
@@ -32,33 +32,35 @@
 					<ul id="page-list">
 						{% for course in courses %}
 							{% for page in course.pages.all %}
-								<li><a href="/{{course.slug}}/{{page.slug}}/">{{page}}</a>
+								<li><a href="{% url pages.views.show_page course.slug page.slug %}">{{page}}</a>
 								</li>
 							{% endfor %}
 						{% endfor %}
 					</ul><!-- #page-list -->
 				</li>
+				{% if course %}
 				<li>
-					<form action="/create-quiz/">
+					<form action="{% url pages.quiz.views.create_quiz course_slug %}">
 						<input type="submit" value="Create Quiz"/>
 					</form>
 				</li>
 				<li>
-					<form action="newLesson/">
+					<form action="{% url pages.lesson.views.create_lesson course_slug %}">
 						<input type="submit" value="Create Lesson" />
 					</form>
 				</li>
+            {% endif %}
 			</ul>
 		</div><!-- #left-nav .span-4 -->
 		<div id="right-col" class="span-18 last">
 			<div id="top-nav" class="span-18 last">
-				<div class="span-2"><a href="/">Home</a></div>
-				<div class="span-2"><a href="/stats/">Stats</a></div>
-				{% if course_slug %}
-				<div class="span-2"><a href="/{{course_slug}}/roster/">Roster</a></div>
-				<div class="span-2"><a href="/chat/{{course_slug}}" target="_blank">Chat</a></div>
-				{% endif %}
+				<div class="span-2"><a href="{% url home.views.index %}">Home</a></div>
+				{% if course %}
+				<div class="span-2"><a href="{% url stats.views.display_all_stats course_slug %}">Stats</a></div>
+				<div class="span-2"><a href="{% url courses.views.show_roster course_slug %}">Roster</a></div>
+				<div class="span-2"><a href="" target="_blank">Chat</a></div>
 				<div class="span-2"><a href="edit/">Edit</a></div>
+				{% endif %}
 				<div class="span-2"><a href="/help/">Help</a></div>
 				<div class="span-6 last" style="line-height: normal;">
 					{% if user.is_authenticated %}
@@ -66,14 +68,14 @@
 						Welcome, {{user.get_full_name}}
 					</div>
 					<div class="span-3">
-						<a href = "/logout/">Logout</a>
+						<a href = "{% url users.views.show_logout %}">Logout</a>
 					</div>
 					<div class="span-3 last">
-						<a href="/profile/">Profile</a>
+						<a href="{% url users.views.show_profile %}">Profile</a>
 					</div>
 					{% else %}
 					<div style="line-height: 5em;">
-						<a href="/login/">Login</a>
+						<a href="{% url users.views.show_login %}">Login</a>
 					</div>
 					{% endif %}
 				</div>

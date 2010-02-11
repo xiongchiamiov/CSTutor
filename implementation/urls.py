@@ -19,10 +19,13 @@ if settings.DEBUG:
 		)
 
 urlpatterns += patterns('',
-	(r'^submit_join_course_request', 'courses.views.join_course_request'),
+	# this is for admin, don't touch
 	(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 	(r'^admin/(.*)', admin.site.root),
 	
+   # these are things that are not page specific, and therefore should be
+   # handled here directly
+	(r'^submit_join_course_request', 'courses.views.join_course_request'),
 	(r'^login/?$', 'users.views.show_login'),
 	(r'^login/register-new-account/?$', 'users.views.show_register_new_user'),
 	(r'^logout/?', 'users.views.show_logout'),
@@ -31,7 +34,7 @@ urlpatterns += patterns('',
 	(r'^stats', 'stats.views.display_all_stats'),
 	(r'^create-course', 'courses.views.create_course'),
 	(r'^join-course', 'courses.views.join_course_form'),
-	(r'^create-lesson', 'pages.lesson.views.create_lesson'),
-	(r'^create-quiz', 'pages.quiz.views.create_quiz'),
-	(r'^(?P<course_slug>[\w-]+)/', include('courses.urls')),
+
+   # courses should be handled by course urls
+	(r'^course/(?P<course_slug>[\w-]+)/', include('courses.urls')),
 )

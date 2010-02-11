@@ -11,6 +11,8 @@ Author(s): Russell Mezzetta, Mark Gius, James Pearson
 from django.db import models
 from courses.models import Course
 
+from django.core.exceptions import ObjectDoesNotExist
+
 # Create your models here.
 
 class Page(models.Model):
@@ -33,3 +35,7 @@ class Page(models.Model):
 
 	def __unicode__(self):
 		return self.name
+
+	@models.permalink
+	def get_absolute_url(self):
+		return ('page.views.show_page', [self.course.slug, self.slug])

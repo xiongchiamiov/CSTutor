@@ -16,7 +16,7 @@ from question.models import MultipleChoiceQuestion
 from question.models import CodeQuestion
 from home.views import master_rtr
 
-def create_quiz(request):
+def create_quiz(request, course_slug):
 	''' create_Quiz View
 		This view will create a quiz and take the user to the quiz editor screen.
 	'''
@@ -32,16 +32,20 @@ def show_quiz(request, course, pid):
 	quizTitle = quiz.text
 	questions = quiz.questions.all().order_by("order")
 
-	return master_rtr(request, 'quiz/viewQuiz.html', {'course':course, 'pid':pid, 'quizTitle':quizTitle, 'questions':questions})
+	return master_rtr(request, 'quiz/viewQuiz.html', \
+			            {'course':course, 'course_slug':course, \
+							 'pid':pid, 'quizTitle':quizTitle, \
+							 'page_slug':pid, 'questions':questions})
 
-def submitQuiz(request, course_slug, pid):
+def submitQuiz(request, course_slug, page_slug):
 	''' submitQuiz View
 		This view will submit a quiz and create a statistic in the database. It will give the user
 		their score and then direct the user to the appropriate path
 	'''
-	return master_rtr(request, 'quiz/submitQuiz.html', {'course':course_slug, 'pid':pid})
+	return master_rtr(request, 'quiz/submitQuiz.html', \
+			{'course':course_slug, 'course_slug':course_slug, 'pid':page_slug})
 
-def edit_quiz(request, course_slug, pid):
+def edit_quiz(request, course_slug, page_slug):
 	''' edit_quiz View
 		This view allows an instructor or other priviledged user to edit a quiz. The instructor can add, modify,
 		or remove questions and other quiz attributes. The modified quiz is then submitted to the database.
@@ -49,22 +53,25 @@ def edit_quiz(request, course_slug, pid):
 		Note 1) Pressing "New Multiple Choice Question" will discard any changes made to the quiz, returning it 
 				to its previous state but with a new multiple choice question appended at the end
 	'''
-	quiz = Quiz.objects.get(slug=pid)
+	quiz = Quiz.objects.get(slug=page_slug)
 	if (request.method == "POST"):
 		if "Save" in request.POST:
-			pid = saveQuiz(request, course_slug, pid)
-			if (pid == -1):
+			page_slug = saveQuiz(request, course_slug, page_slug)
+			if (page_slug == -1):
 				print "Bad question ordering!"
 			else:
-				return HttpResponseRedirect("/%s/%s/" % (course_slug, pid))
+				return HttpResponseRedirect("/course/%s/%s/" % (course_slug, page_slug))
+
 		if "Cancel" in request.POST:
-			return HttpResponseRedirect("/%s/%s/" % (course_slug, pid))
+			return HttpResponseRedirect("/course/%s/%s/" % (course_slug, page_slug))
 		if "Delete" in request.POST:
 			removeQuiz(request, course_slug, pid)
-			return HttpResponseRedirect("/%s/" % course_slug)
+			return HttpResponseRedirect("/course/%s/" % course_slug)
 		if "NewMultQuestion" in request.POST:
-			addMultipleChoiceQuestion(request, course_slug, pid)
-			return HttpResponseRedirect("/%s/%s/edit/" % (course_slug, pid))
+			addMultipleChoiceQuestion(request, course_slug, page_slug)
+			return HttpResponseRedirect("/course%s/%s/edit/" % (course_slug, page_slug))
 	pages = Course.objects.get(slug=course_slug).pages.all()
 	questions = quiz.questions.all().order_by("order")
-	return master_rtr(request, 'quiz/edit_quiz.html', {'course':course_slug, 'pid':pid, 'pages':pages, 'quiz':quiz, 'questions':questions})
+	return master_rtr(request, 'quiz/edit_quiz.html', \
+			{'course':course_slug, 'course_slug':course_slug, \
+			 'pid':page_slug, 'pages':pages, 'quiz':quiz, 'questions':questions})

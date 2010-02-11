@@ -98,24 +98,24 @@ class CourseViewTests(TestCase):
 		self.slug = 'gene-fishers-cpe102-fall-08'
 	
 	def testCourse(self):
-		statusCode = self.client.get('/%s/' % self.slug).status_code
+		statusCode = self.client.get('/course/%s/page/%s/' % (self.slug,self.slug)).status_code
 		self.failUnlessEqual(statusCode, 200, "Oopsie!  We got a status code of %s. :/" % statusCode)
 		
-		statusCode = self.client.get('/not-a-class/').status_code
-		self.failUnlessEqual(statusCode, 200, "Oh my!  Our status code was %s." % statusCode)
+		statusCode = self.client.get('/course/not-a-class/').status_code
+		self.failUnlessEqual(statusCode, 404, "Oh my!  Our status code was %s." % statusCode)
 
 	def testRoster(self):
 		'''
 		Tests that redirection to the roster page works
 
 		Case no.        Inputs                                       Expected Output    	Remark
-		1               url = /gene-fishers-cpe102-fall-08/roster/   302                	302 is a found code
-		2               url = /badclass/roster/	                   500            		500 is an internal server error
+		1               url = /course/gene-fishers-cpe102-fall-08/roster/   302                	302 is a found code
+		2               url = /course/badclass/roster/	                   500            		500 is an internal server error
 		'''
 
-		slug = '/gene-fishers-cpe102-fall-08/'
+		slug = 'gene-fishers-cpe102-fall-08'
 		
-		response = self.client.get(slug + 'roster/')
+		response = self.client.get("/course/" + slug + '/roster/')
 		self.failUnlessEqual(response.status_code, 302)
 
 		#slug = '/badclass/'
@@ -132,7 +132,6 @@ class CourseViewTests(TestCase):
 								password = password															exists in enrollment list
 								usrname = 'enrollmentTest'
 								slug = 'PageViewsPublicCourse'                           
-		                                                                              
 		'''
 	
 		adminUsername = 'enrollmentTestAdmin'
@@ -155,7 +154,7 @@ class CourseViewTests(TestCase):
 		self.failUnlessEqual(userNotExists, True)
 		
 		#Enroll the user in the class
-		self.client.post('/' + slug + '/roster/adduser/', {'username': usrname, 'command': 'add'})
+		self.client.post('/course/' + slug + '/roster/adduser/', {'username': usrname, 'command': 'add'})
 
 		#Test to make sure the user is enrolled
 		userExists = True				
@@ -198,7 +197,7 @@ class CourseViewTests(TestCase):
 		self.failUnlessEqual(self.client.login(username=adminUsername, password=passwd), True)
 
 		#posts values to be used
-		self.client.post('/' + slug + '/roster/updateRoster/', {'edit':[usrname], 'manage':[usrname], 'stats':[usrname], 'view':[usrname]})
+		self.client.post('/course/' + slug + '/roster/updateRoster/', {'edit':[usrname], 'manage':[usrname], 'stats':[usrname], 'view':[usrname]})
 		
 		enrollments = Enrollment.objects.filter(course__slug__exact=slug)
 

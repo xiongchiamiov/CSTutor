@@ -4,7 +4,7 @@
 <center>
 <b><font size="5">{{course}} User list</size></b>
 </center>
-<form method="link" action="adduser/">
+<form method="link" action="{% url courses.views.add_user course_slug %}">
 		<input type="submit" value="Add User">
 </form>
 <table>
@@ -17,7 +17,7 @@
 		<td><center><b><font size="3">Stats</font></b></center></td>
 		<td><center><b><font size="3">Remove User</font></center></td>
 	</tr>
-	<form name="remove" action="updateRoster/" method="post">
+	<form name="remove" action="{% url courses.views.update_roster course_slug %}" method="post">
 		<input type="submit" name="Update Roster" value="Update Roster" />
 	{% for enrollment in enrollments %}
 	{% if enrollment.view %}
@@ -39,7 +39,7 @@
 				</center>
 			{% else %}
 				<center>
-				<input type="checkbox" name ="manage" value="{{enrollment.user.username}}"'>
+				<input type="checkbox" name ="manage" value="{{enrollment.user.username}}"/>
 				</center>
 			{% endif %}</td>
 	<td>{% if enrollment.stats %}
@@ -68,7 +68,7 @@
 <b><font size="5">Pending Requests for {{course}}</size></b>
 </center>
 <table>
-	<form name="pending" action="addPendingRequests/" method="post">
+	<form name="pending" action="{% url courses.views.manage_pending_request %}" method="post">
 	<tr>
 		<td><center><b><font size="3">Accept</font></b></center></td>
 		<td><center><b><font size="3">Deny</font></b></center></td>

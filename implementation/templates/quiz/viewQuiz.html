@@ -3,7 +3,7 @@
 
 {% block content %}
 <center><b><font size="4">{{quizTitle}}</font></b></center>
-<form name="submitQuiz" action="submitQuiz/" method="post">
+<form name="submitQuiz" action="{% url pages.quiz.views.submitQuiz course_slug page_slug %}" method="post">
 <table>
 {% for q in questions %}
 	{% if q.multiplechoicequestion %}
