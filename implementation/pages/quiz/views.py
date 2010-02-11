@@ -45,11 +45,18 @@ def edit_quiz(request, course_slug, pid):
 	''' edit_quiz View
 		This view allows an instructor or other priviledged user to edit a quiz. The instructor can add, modify,
 		or remove questions and other quiz attributes. The modified quiz is then submitted to the database.
+
+		Note 1) Pressing "New Multiple Choice Question" will discard any changes made to the quiz, returning it 
+				to its previous state but with a new multiple choice question appended at the end
 	'''
+	quiz = Quiz.objects.get(slug=pid)
 	if (request.method == "POST"):
 		if "Save" in request.POST:
 			pid = saveQuiz(request, course_slug, pid)
-			return HttpResponseRedirect("/%s/%s/" % (course_slug, pid))
+			if (pid == -1):
+				print "Bad question ordering!"
+			else:
+				return HttpResponseRedirect("/%s/%s/" % (course_slug, pid))
 		if "Cancel" in request.POST:
 			return HttpResponseRedirect("/%s/%s/" % (course_slug, pid))
 		if "Delete" in request.POST:
@@ -57,8 +64,7 @@ def edit_quiz(request, course_slug, pid):
 			return HttpResponseRedirect("/%s/" % course_slug)
 		if "NewMultQuestion" in request.POST:
 			addMultipleChoiceQuestion(request, course_slug, pid)
-			return HttpResponseRedirect("/%s/%s/" % (course_slug, pid))
-	quiz = Quiz.objects.get(slug=pid)
+			return HttpResponseRedirect("/%s/%s/edit/" % (course_slug, pid))
 	pages = Course.objects.get(slug=course_slug).pages.all()
 	questions = quiz.questions.all().order_by("order")
 	return master_rtr(request, 'quiz/edit_quiz.html', {'course':course_slug, 'pid':pid, 'pages':pages, 'quiz':quiz, 'questions':questions})
