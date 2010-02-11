@@ -98,7 +98,7 @@
       <field type="BooleanField" name="stats">False</field>
       <field type="BooleanField" name="manage">False</field>
    </object>-->
-	<!-- A non enrolled user -->
+	<!-- Admin User -->
 	<object pk="104" model="auth.user">
       <field type="CharField" name="username">enrollmentTestAdmin</field>
       <field type="CharField" name="first_name">Test</field>
@@ -117,6 +117,41 @@
    <object pk="101" model="courses.enrollment">
       <field to="auth.user" name="user" rel="ManyToOneRel">104</field>
       <field to="courses.course" name="course" rel="ManyToOneRel">101</field>
+      <field type="BooleanField" name="view">True</field>
+      <field type="BooleanField" name="edit">True</field>
+      <field type="BooleanField" name="stats">True</field>
+      <field type="BooleanField" name="manage">True</field>
+   </object>
+   <object pk="105" model="courses.course">
+      <field type="SlugField" name="slug">updateTestCourse</field>
+      <field type="CharField" name="name">updateTestCourse</field>
+      <field type="BooleanField" name="private">False</field>
+   </object>
+	<object pk="106" model="auth.user">
+      <field type="CharField" name="username">updateTestUser</field>
+      <field type="CharField" name="first_name">Test</field>
+      <field type="CharField" name="last_name">User</field>
+      <field type="CharField" name="email"></field>
+      <field type="CharField" name="password">sha1$afeda$648e804b09a7bf98dbac6b7da13d6dbe0c7716f6</field>
+      <field type="BooleanField" name="is_staff">False</field>
+      <field type="BooleanField" name="is_active">True</field>
+      <field type="BooleanField" name="is_superuser">False</field>
+      <field type="DateTimeField" name="last_login">2010-01-22 13:14:05</field>
+      <field type="DateTimeField" name="date_joined">2010-01-22 13:14:05</field>
+      <field to="auth.group" name="groups" rel="ManyToManyRel"></field>
+      <field to="auth.permission" name="user_permissions" rel="ManyToManyRel"></field>
+   </object>
+   <object pk="107" model="courses.enrollment">
+      <field to="auth.user" name="user" rel="ManyToOneRel">106</field>
+      <field to="courses.course" name="course" rel="ManyToOneRel">105</field>
+      <field type="BooleanField" name="view">True</field>
+      <field type="BooleanField" name="edit">False</field>
+      <field type="BooleanField" name="stats">False</field>
+      <field type="BooleanField" name="manage">False</field>
+   </object>
+   <object pk="108" model="courses.enrollment">
+      <field to="auth.user" name="user" rel="ManyToOneRel">104</field>
+      <field to="courses.course" name="course" rel="ManyToOneRel">105</field>
       <field type="BooleanField" name="view">True</field>
       <field type="BooleanField" name="edit">True</field>
       <field type="BooleanField" name="stats">True</field>
