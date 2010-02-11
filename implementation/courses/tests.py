@@ -108,15 +108,23 @@ class CourseViewTests(TestCase):
 		'''
 		Tests that redirection to the roster page works
 
-		Case no.        Inputs                                       Expected Output    	Remark
-		1               url = /course/gene-fishers-cpe102-fall-08/roster/   302                	302 is a found code
+		Case no.        	Inputs                                       Expected Output    	Remark
+		1						slug = PageViewsPublicCourse						200                	200 is successful redirection
+								adminUsername = enrollmentTestAdmin	
+								password = password				
 		2               url = /course/badclass/roster/	                   500            		500 is an internal server error
 		'''
 
-		slug = 'gene-fishers-cpe102-fall-08'
-		
+		slug = 'PageViewsPublicCourse'
+		adminUsername = 'enrollmentTestAdmin'
+		password = 'password'
+
+		#logs in and checks to make sure the login was successful
+		self.failUnlessEqual(self.client.login(username=adminUsername, password=password), True)
+
+		#Displays the roster and checks to make sure it was successful		
 		response = self.client.get("/course/" + slug + '/roster/')
-		self.failUnlessEqual(response.status_code, 302)
+		self.failUnlessEqual(response.status_code, 200)
 
 		#slug = '/badclass/'
 		#response = self.client.get(slug + 'roster/')
