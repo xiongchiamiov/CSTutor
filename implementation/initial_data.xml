@@ -146,14 +146,6 @@
       <field type="BooleanField" name="stats">True</field>
       <field type="BooleanField" name="manage">True</field>
    </object>
-   <object pk="4" model="courses.enrollment">
-      <field to="auth.user" name="user" rel="ManyToOneRel">1</field>
-      <field to="courses.course" name="course" rel="ManyToOneRel">3</field>
-      <field type="BooleanField" name="view">True</field>
-      <field type="BooleanField" name="edit">True</field>
-      <field type="BooleanField" name="stats">True</field>
-      <field type="BooleanField" name="manage">True</field>
-   </object>
    <object pk="1" model="pages.page">
       <field to="courses.course" name="course" rel="ManyToOneRel">1</field>
       <field type="SlugField" name="slug">gene-fishers-cpe102-fall-08</field>
