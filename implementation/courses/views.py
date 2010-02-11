@@ -47,12 +47,11 @@ def show_roster(request, course_slug):
 	'''
 	Displays the roster
 	'''
-	course = Course.objects.get(slug=course_slug)
-
 	# It is better to get the enrollment by this method, because in this case
    # the database searches using Primary Keys, which are indexed, instead of 
    # username, which is not indexed. -mgius
 	#enrollment = Enrollment.objects.get(user__username__exact=request.user.username, course__slug__exact=course_slug)
+	course = Course.objects.get(slug=course_slug)	
 	enrollment = request.user.enrollments.get(course=course)
 	
 	if enrollment.manage:
@@ -71,6 +70,7 @@ def show_course(request, course_slug):
 	else:
 		return master_rtr(request, 'index.html', {'course_slug': course_slug})
 
+@login_required
 def add_user(request, course_slug):
 	'''
 	Handles the commands given by the add user screen
@@ -78,41 +78,46 @@ def add_user(request, course_slug):
 	pre: none
 	post: db'.contains(user) == true and db'.length == db.length + 1 if !db.contains(user)
 	'''
-	course = Course.objects.get(slug=course_slug)
-	
-	#if the request method was a post determine the command that was given
-	if request.method == 'POST':
+	course = Course.objects.get(slug=course_slug)	
+	enrollment = request.user.enrollments.get(course=course)
+
+
+	if enrollment.manage:	
+		#if the request method was a post determine the command that was given
+		if request.method == 'POST':
 		
-		#if the command was an add try to add the user
-		if request.POST['command'] == 'add':
+			#if the command was an add try to add the user
+			if request.POST['command'] == 'add':
 			
-			usr = request.POST['username']
+				usr = request.POST['username']
 
-			try:
-				#if the user exists add it
-				user = User.objects.get(username=usr)
-				addUser(course, user)
+				try:
+					#if the user exists add it
+					user = User.objects.get(username=usr)
+					addUser(course, user)
 
-			except User.DoesNotExist:
-				#if the user does not exist print error message
-				return master_rtr(request, 'adduser/failed.html', {'course_slug':course_slug, 'course': course})
+				except User.DoesNotExist:
+					#if the user does not exist print error message
+					return master_rtr(request, 'adduser/failed.html', {'course_slug':course_slug, 'course': course})
 			
-			#show the roster screen
-			return HttpResponseRedirect("/%s/roster/" % course_slug)
-		elif request.POST['command'] == 'search':
-			#if the command was a search, search for the user
+				#show the roster screen
+				return HttpResponseRedirect("/%s/roster/" % course_slug)
+			elif request.POST['command'] == 'search':
+				#if the command was a search, search for the user
 	
-			firstname = request.POST['firstname']
-			lastname = request.POST['lastname']
+				firstname = request.POST['firstname']
+				lastname = request.POST['lastname']
 
-			users = User.objects.filter(first_name = firstname, last_name = lastname)
+				users = User.objects.filter(first_name = firstname, last_name = lastname)
 
 	
-			return master_rtr(request, 'adduser/search.html', {'course_slug': course_slug, 'course':course, 'users':users, 'firstname': firstname, 'lastname': lastname})
+				return master_rtr(request, 'adduser/search.html', {'course_slug': course_slug, 'course':course, 'users':users, 'firstname': firstname, 'lastname': lastname})
+		else:
+		
+			#display the adduser page
+			return master_rtr(request,'adduser/index.html', {'course_slug': course_slug, 'course': course, 'url': request.path})
 	else:
-		
-		#display the adduser page
-		return master_rtr(request,'adduser/index.html', {'course_slug': course_slug, 'course': course, 'url': request.path})
+		return master_rtr(request, 'roster/invalid_permissions.html', {'course': course})
 
 def search_username(request, course_slug, courses):
 	'''This function is not called any more'''
@@ -148,7 +153,7 @@ def update_roster(request, course_slug):
 		removeList = request.POST.getlist('remove')
 		enrollments = Enrollment.objects.select_related(depth=1).\
 							                  filter(course__slug__exact=course_slug)
-	
+
 		#for each enrollment
 		for enrollment in enrollments:
 			changed = False

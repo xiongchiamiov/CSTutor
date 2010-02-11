@@ -176,15 +176,38 @@ class CourseViewTests(TestCase):
 	def testUpdateRoster(self):
 		'''
 		Tests the updating the roster
-		Case no.        Inputs                  Expected Output              Remark
-		1.              edit = {jinloes}        enrollment.edit = True
-		                manage = {jinloes}      enrollment.manage = True
-		                stats = {}              enrollment.stats = False
-		2.              edit = {}               enrollment.edit = False
-		                manage = {}             enrollment.manage = False
-		                stats = {}              enrollment.stats = False
+		Case no.       Inputs                  				Expected Output              Remark
+		1.             edit = {jinloes}        				enrollment.edit = True
+		               manage = {jinloes}      				enrollment.manage = True
+		               stats = {}              				enrollment.stats = False
+							adminUsername = enrollmentTestAdmin
+							passwd = password
+							slug = PageViewsPublicCourse
+							usrname = updateTestUser
+
+		2.             edit = {}              		 		enrollment.edit = False
+		               manage = {}             				enrollment.manage = False
+		               stats = {}              				enrollment.stats = False
 		'''
-		pass
+		adminUsername = 'enrollmentTestAdmin'
+		passwd = 'password'
+		usrname = 'updateTestUser'
+		slug = 'updateTestCourse'
+
+		#logs in and checks to make sure the login was successful
+		self.failUnlessEqual(self.client.login(username=adminUsername, password=passwd), True)
+
+		#posts values to be used
+		self.client.post('/' + slug + '/roster/updateRoster/', {'edit':[usrname], 'manage':[usrname], 'stats':[usrname], 'view':[usrname]})
+		
+		enrollments = Enrollment.objects.filter(course__slug__exact=slug)
+
+		enrollment = Enrollment.objects.get(user__username__exact=usrname, course__slug__exact=slug)
+
+		self.failUnlessEqual(enrollment.view, True)
+		self.failUnlessEqual(enrollment.stats, True)
+		self.failUnlessEqual(enrollment.manage, True)
+		self.failUnlessEqual(enrollment.edit, True)
 
 	def testPrivacy(self):
 		'''
