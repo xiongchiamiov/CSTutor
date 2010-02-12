@@ -5,7 +5,49 @@ How to Run Website
 </title>
 </head>
 <body>
-<p><b><font size="3">How To Run Website</font></b></p>
+<h2>Hosted website environment</h2>
+<p>
+Our project is hosted at 
+<a href="https://autotutor.csc.calpoly.edu/demo/">https://autotutor.csc.calpoly.edu/demo/</a>
+<br /><br />
+
+Test data has been loaded.  Several users exist that can be logged in.  Of note
+are the "mgius" user, who is the course owner of the CPE102 course, and "jinloes"
+who is the course owner of the CPE103 course. 
+<br />
+Creating new users/courses works, and creating new lessons is working as well.
+<br />
+Debugging output has been left enabled, so "error" pages will include ugly
+python stack traces.
+
+<h3>Known Bugs</h3>
+<p>
+Our ticket tracker is available at <a href="https://autotutor.csc.calpoly.edu/trac/report/1">https://autotutor.csc.calpoly.edu/trac/report/1</a>
+if you would like to view all open issues.  Notable issues for this release include:
+<ul>
+<li>
+The "edit" button does not appear for all locations.
+</li>
+<li>
+Most statistic related functions do not work.
+</li>
+<li>
+The course/page list on the left hand side is ugly and out of order.
+</li>
+<li>
+Editing Quizzes isn't really implemented yet (although the interface is laid out)
+</li>
+<li>
+Permissions are only half implemented.  Many operations that should be priviledged are currently not.
+</li>
+<li>
+Anonymous usage is not yet working.
+</li>
+<li>
+The site is generally ugly.
+</li>
+</ul>
+<h2>How To Run Development Website</h2>
 <ol>
 <li> Install Django</li> 
 <ul>
@@ -24,6 +66,7 @@ NOTE: These instructions are also in the link above
 <ul>
 <li> Within the implementation folder, run these commands: </li>
 <ul>
+<li> make clean</li>
 <li> make database</li>
 <li> make runserver</li>
 </ul>
