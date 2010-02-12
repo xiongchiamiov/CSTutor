@@ -38,7 +38,7 @@
 						{% endfor %}
 					</ul><!-- #page-list -->
 				</li>
-				{% if course %}
+				{% if course_slug %}
 				<li>
 					<form action="{% url pages.quiz.views.create_quiz course_slug %}">
 						<input type="submit" value="Create Quiz"/>
@@ -55,11 +55,13 @@
 		<div id="right-col" class="span-18 last">
 			<div id="top-nav" class="span-18 last">
 				<div class="span-2"><a href="{% url home.views.index %}">Home</a></div>
-				{% if course %}
+				{% if course_slug %}
 				<div class="span-2"><a href="{% url stats.views.display_all_stats course_slug %}">Stats</a></div>
 				<div class="span-2"><a href="{% url courses.views.show_roster course_slug %}">Roster</a></div>
 				<div class="span-2"><a href="" target="_blank">Chat</a></div>
-				<div class="span-2"><a href="edit/">Edit</a></div>
+            {% if page_slug %}
+				<div class="span-2"><a href="{% url pages.views.edit_page course_slug page_slug %}">Edit</a></div>
+            {% endif %}
 				{% endif %}
 				<div class="span-2"><a href="/help/">Help</a></div>
 				<div class="span-6 last" style="line-height: normal;">
