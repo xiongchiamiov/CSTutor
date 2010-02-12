@@ -53,6 +53,7 @@ def show_roster(request, course_slug):
    # the database searches using Primary Keys, which are indexed, instead of 
    # username, which is not indexed. -mgius
 	#enrollment = Enrollment.objects.get(user__username__exact=request.user.username, course__slug__exact=course_slug)
+	print course_slug	
 	course = Course.objects.get(slug=course_slug)	
 	enrollment = request.user.enrollments.get(course=course)
 	
@@ -115,6 +116,7 @@ def add_user(request, course_slug):
 			
 				#show the roster screen
 				return HttpResponseRedirect(reverse('courses.views.show_roster', args=[course_slug]))
+
 			elif request.POST['command'] == 'search':
 				#if the command was a search, search for the user
 	
@@ -233,10 +235,8 @@ def update_roster(request, course_slug):
 					pass
 			except ValueError:
 				pass
-		## TODO: Make this not be hard-coded
 		return HttpResponseRedirect(reverse('courses.views.show_roster', \
 					                           args=[course_slug]))
-	
 	else:
 		return master_rtr(request, 'roster/invalid_permissions.html', \
 				            {'course': course, 'course_slug': course.slug})

@@ -124,12 +124,14 @@ class CourseViewTests(TestCase):
 		self.failUnlessEqual(self.client.login(username=adminUsername, password=password), True)
 
 		#Displays the roster and checks to make sure it was successful		
-		response = self.client.get("/course/" + slug + '/roster/')
-		self.failUnlessEqual(response.status_code, 200)
+		response = self.client.get('/course/' + slug + '/roster/')
+		self.failUnlessEqual(response.status_code, 200, 'redirection to the roster page failed')
 
-		#slug = '/badclass/'
-		#response = self.client.get(slug + 'roster/')
-		#self.failUnlessEqual(response.status_code, 500)
+		#Tries to display a roster that does not exist
+		slug = 'badclass'
+		print '/course/' + slug + 'roster/'
+		response = self.client.get('/course/' + slug + '/roster/')#roster needs to 404 on invalid course
+		self.failUnlessEqual(response.status_code, 404, 'URL redirection is broken. This is a bad link and should 404')
 
 
 	def testEnrollUser(self):
@@ -149,7 +151,7 @@ class CourseViewTests(TestCase):
 		slug = 'PageViewsPublicCourse'
 
 		#logs in and checks to make sure the login was successful
-		self.failUnlessEqual(self.client.login(username=adminUsername, password=passwd), True)
+		self.failUnlessEqual(self.client.login(username=adminUsername, password=passwd), True, 'logging in failed in enrollment test')
 
 		#Test to make sure the user is not enrolled
 		userNotExists = True
@@ -160,7 +162,7 @@ class CourseViewTests(TestCase):
 		except Enrollment.DoesNotExist:
 			pass
 
-		self.failUnlessEqual(userNotExists, True)
+		self.failUnlessEqual(userNotExists, True, 'user existed when it should not have')
 		
 		#Enroll the user in the class
 		self.client.post('/course/' + slug + '/roster/adduser/', {'username': usrname, 'command': 'add'})
@@ -173,7 +175,7 @@ class CourseViewTests(TestCase):
 		except Enrollment.DoesNotExist:
 			userExists = False
 	
-		self.failUnlessEqual(userExists, True)
+		self.failUnlessEqual(userExists, True,'the user should exist in the database')
 
 	def testUpdateCourse(self):
 		'''
@@ -203,7 +205,7 @@ class CourseViewTests(TestCase):
 		slug = 'updateTestCourse'
 
 		#logs in and checks to make sure the login was successful
-		self.failUnlessEqual(self.client.login(username=adminUsername, password=passwd), True)
+		self.failUnlessEqual(self.client.login(username=adminUsername, password=passwd), True, 'logging in failed')
 
 		#posts values to be used
 		self.client.post('/course/' + slug + '/roster/updateRoster/', {'edit':[usrname], 'manage':[usrname], 'stats':[usrname], 'view':[usrname]})
@@ -212,10 +214,10 @@ class CourseViewTests(TestCase):
 
 		enrollment = Enrollment.objects.get(user__username__exact=usrname, course__slug__exact=slug)
 
-		self.failUnlessEqual(enrollment.view, True)
-		self.failUnlessEqual(enrollment.stats, True)
-		self.failUnlessEqual(enrollment.manage, True)
-		self.failUnlessEqual(enrollment.edit, True)
+		self.failUnlessEqual(enrollment.view, True, 'view should be true but was ' + str(enrollment.view))
+		self.failUnlessEqual(enrollment.stats, True, 'stats should be true but was ' + str(enrollment.stats))
+		self.failUnlessEqual(enrollment.manage, True, 'manage should be true but was ' + str(enrollment.manage))
+		self.failUnlessEqual(enrollment.edit, True, 'edit should be true but was ' + str(enrollment.edit))
 
 	def testPrivacy(self):
 		'''
