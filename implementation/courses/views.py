@@ -123,10 +123,10 @@ def add_user(request, course_slug):
 										 'users':users, \
 										 'firstname': firstname, \
 										 'lastname': lastname})
-			else:
+		else:
 			
-				#display the adduser page
-				return master_rtr(request,'adduser/index.html', {'course_slug': course_slug, 'course': course, 'url': request.path})
+			#display the adduser page
+			return master_rtr(request,'adduser/index.html', {'course_slug': course_slug, 'course': course, 'url': request.path})
 	else:
 		return master_rtr(request, 'roster/invalid_permissions.html', \
 				{'course': course, \
