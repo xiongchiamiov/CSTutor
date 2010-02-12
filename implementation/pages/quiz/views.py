@@ -6,6 +6,7 @@ This file contains methods for creating a quiz and showing a quiz. More methods 
 @author Evan Kleist
 '''
 
+from django.core.urlresolvers import reverse
 from django.shortcuts import render_to_response
 from django.http import HttpResponseRedirect
 from courses.models import Course
@@ -23,19 +24,19 @@ def create_quiz(request, course_slug):
 	print "Create Quiz\n" #TODO
 	return master_rtr(request, 'quiz/create-quiz.html', {'courses': Course.objects.all()})
 
-def show_quiz(request, course, pid):
+def show_quiz(request, course, page_slug):
 	''' show_Quiz View
 		This view displays a quiz on the screen. The user can then answer the
 		questions and submit the result
 	'''
-	quiz = Quiz.objects.get(slug=pid)
+	quiz = Quiz.objects.get(slug=page_slug)
 	quizTitle = quiz.text
 	questions = quiz.questions.all().order_by("order")
 
 	return master_rtr(request, 'quiz/viewQuiz.html', \
 			            {'course':course, 'course_slug':course, \
-							 'pid':pid, 'quizTitle':quizTitle, \
-							 'page_slug':pid, 'questions':questions})
+							 'pid':page_slug, 'quizTitle':quizTitle, \
+							 'page_slug':page_slug, 'questions':questions})
 
 def submitQuiz(request, course_slug, page_slug):
 	''' submitQuiz View
@@ -43,7 +44,8 @@ def submitQuiz(request, course_slug, page_slug):
 		their score and then direct the user to the appropriate path
 	'''
 	return master_rtr(request, 'quiz/submitQuiz.html', \
-			{'course':course_slug, 'course_slug':course_slug, 'pid':page_slug})
+			{'course':course_slug, 'course_slug':course_slug, \
+			 'page_slug':page_slug, 'pid':page_slug})
 
 def edit_quiz(request, course_slug, page_slug):
 	''' edit_quiz View
@@ -60,16 +62,23 @@ def edit_quiz(request, course_slug, page_slug):
 			if (page_slug == -1):
 				print "Bad question ordering!"
 			else:
-				return HttpResponseRedirect("/course/%s/%s/" % (course_slug, page_slug))
+				return HttpResponseRedirect(reverse('pages.views.show_page',\
+																args=[course_slug, page_slug]))
 
 		if "Cancel" in request.POST:
-			return HttpResponseRedirect("/course/%s/%s/" % (course_slug, page_slug))
+			return HttpResponseRedirect(reverse('pages.views.show_page',\
+															args=[course_slug, page_slug]))
+
 		if "Delete" in request.POST:
 			removeQuiz(request, course_slug, pid)
-			return HttpResponseRedirect("/course/%s/" % course_slug)
+			return HttpResponseRedirect(reverse('pages.views.show_page',\
+															args=[course_slug, page_slug]))
+
 		if "NewMultQuestion" in request.POST:
 			addMultipleChoiceQuestion(request, course_slug, page_slug)
-			return HttpResponseRedirect("/course%s/%s/edit/" % (course_slug, page_slug))
+			return HttpResponseRedirect(reverse('pages.views.show_page',\
+															args=[course_slug, page_slug]))
+
 	pages = Course.objects.get(slug=course_slug).pages.all()
 	questions = quiz.questions.all().order_by("order")
 	return master_rtr(request, 'quiz/edit_quiz.html', \
