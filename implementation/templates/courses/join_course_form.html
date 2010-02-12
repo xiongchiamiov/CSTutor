@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-<form action="{% url courses.views.join_course_form %}" method="post">
+<form action="{% url courses.views.join_course_request %}" method="post">
 <select name="courseid" size="10">
 	{% for course in join_courses %}
 	<option value="{{course.id}}">{{course.name}}</option>
