@@ -2,6 +2,7 @@
 @author John Hartquist
 @author Russell Mezzetta
 '''
+from django.core.urlresolvers import reverse
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.contrib.auth.models import User
@@ -128,7 +129,8 @@ def show_login(request):
 			if 'next' in request.GET:
 				return HttpResponseRedirect(request.GET['next'])
 			else:
-				return HttpResponseRedirect("/")
+			   # send em to the index
+				return HttpResponseRedirect(reverse('home.views.index'))
 		elif ret == 1:
 			# Return an 'invalid login' error message.
 			#print "invalid login"
