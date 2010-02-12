@@ -68,7 +68,7 @@
 <b><font size="5">Pending Requests for {{course}}</size></b>
 </center>
 <table>
-	<form name="pending" action="{% url courses.views.manage_pending_request %}" method="post">
+	<form name="pending" action="{% url courses.views.manage_pending_request couurse_slug %}" method="post">
 	<tr>
 		<td><center><b><font size="3">Accept</font></b></center></td>
 		<td><center><b><font size="3">Deny</font></b></center></td>
