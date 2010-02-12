@@ -165,7 +165,7 @@ def show_register_new_user(request):
 			#successful registration
 			#return render_to_response('user/login.html', {'message': "User Registration Successful"})
 			#TODO create a response like "success!"
-			return HttpResponseRedirect('/login/')
+			return HttpResponseRedirect(reverse('users.views.show_login'))
 		elif ret == 1:
 			errorMsg = "That username is already taken"
 		elif ret == 2:

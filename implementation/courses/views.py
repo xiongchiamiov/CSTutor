@@ -2,6 +2,7 @@
 	Functions in this file allow an instructor to create a course, add users to the course, search for user names, and remove users. In addition, there are functions that allow a student to join a course. 
 	@author Jon Inloes, James Pearson, Mark Gius, Matthew Tytel
 '''
+from django.core.urlresolvers import reverse
 from django.shortcuts import render_to_response
 from django.http import HttpResponseRedirect
 from courses.models import Course
@@ -113,7 +114,7 @@ def add_user(request, course_slug):
 											 'course': course})
 			
 				#show the roster screen
-				return HttpResponseRedirect("/course/%s/roster/" % course_slug)
+				return HttpResponseRedirect(reverse('courses.views.show_roster', args=[course_slug]))
 			elif request.POST['command'] == 'search':
 				#if the command was a search, search for the user
 	
@@ -233,7 +234,8 @@ def update_roster(request, course_slug):
 			except ValueError:
 				pass
 		## TODO: Make this not be hard-coded
-		return HttpResponseRedirect("/course/%s/roster/" % course_slug)
+		return HttpResponseRedirect(reverse('courses.views.show_roster', \
+					                           args=[course_slug]))
 	
 	else:
 		return master_rtr(request, 'roster/invalid_permissions.html', \
@@ -243,7 +245,8 @@ def cancel_add(request, course_slug):
 	'''
 	Redirects to the roster screen when viewing the add user page
 	'''
-	return HttpResponseRedirect("/course/%s/roster/" % course_slug)
+	return HttpResponseRedirect(reverse('courses.views.show_roster', \
+				                           args=[course_slug]))
 
 @login_required
 def manage_pending_requests(request, course_slug):
@@ -272,7 +275,8 @@ def manage_pending_requests(request, course_slug):
 			except ValueError:
 				pass
 	
-		return HttpResponseRedirect("/course/%s/roster/" % course_slug)
+		return HttpResponseRedirect(reverse('courses.views.show_roster', \
+					                           args=[course_slug]))
 
 	else:
 		return master_rtr(request, 'roster/invalid_permissions.html', \
