@@ -101,7 +101,7 @@ INSTALLED_APPS = (
 if DEBUG:
 	INTERNAL_IPS = ('127.0.0.1',)
 
-LOGIN_URL='/implementation/login/'
+LOGIN_URL='/login/'
 
 try:
 	from local_settings import *
