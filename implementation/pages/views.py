@@ -7,7 +7,6 @@ from lesson.views import show_lesson
 from quiz.views import show_quiz
 from lesson.views import edit_lesson
 from quiz.views import edit_quiz
-from courses.views import show_course
 from quiz.models import Quiz
 from lesson.models import Lesson
 from models import Course

@@ -28,4 +28,7 @@ urlpatterns += patterns('courses.views',
 	(r'roster/adduser/$', 'add_user'),
 	(r'roster/adduser/cancel', 'cancel_add'),
 	(r'roster/$', 'show_roster'),
+
+	# Catch just the course and render the course index anyway
+	(r'^$', 'show_course'),
 )

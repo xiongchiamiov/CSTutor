@@ -10,6 +10,7 @@ from django.db import IntegrityError
 from django.template.defaultfilters import slugify
 from home.views import master_rtr
 from django.contrib.auth.decorators import login_required
+from pages.views import show_page
 
 
 @login_required
@@ -68,6 +69,10 @@ def show_roster(request, course_slug):
 								 'course_slug': course.slug})
 
 def show_course(request, course_slug):
+	''' Handles a naughty user who tries to go to the course without a page 
+		 by sending them to the index page
+	'''
+	return show_page(request, course_slug, course_slug)
 	try:
 		Course.objects.get(slug=course_slug)
 	except:
