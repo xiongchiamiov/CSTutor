@@ -28,6 +28,48 @@ class Course(models.Model):
 	name = models.CharField(max_length = 255)
 	private = models.BooleanField(default = False)
 	
+	def tableOfContents(self):
+		'''
+		Returns a list of tuples, representing the table of contents for this course,
+		and the indentation level for each item.
+	
+		Violates code standard because template tags can only call arg-less
+		functions
+		'''
+		pages = [p for p in self.pages.order_by('left')]
+	
+		return self.tableOfContentsBuilder(pages)
+	
+	def tableOfContentsBuilder(self, pages):
+		'''
+		Recursive helper function for tableOfContents.
+	
+		Takes in a list of pages, an indentation level, 
+		and the left and right bounds for this indentation level.
+	
+		This function is ganky. Improvement ideas are welcome
+
+		Violates code standard because template tags can only call arg-less
+		functions
+		'''
+		toc =	[]
+	
+		while len(pages) > 0:
+			page = pages.pop(0)
+			toc.append(page)
+			if page.left != (page.right - 1):
+				print str(page) + " has children "
+				# This page has children.  Get them
+				childPages = []
+				while len(pages) > 0 and pages[0].left < page.right:
+					childPages.append(pages.pop(0))
+				# now that I have the list of papes, recursive call on it
+				toc.append("in")
+				toc.extend(self.tableOfContentsBuilder(childPages))
+				toc.append("out")
+	
+		return toc
+
 	def __unicode__(self):
 		''' Returns the Course's name.'''
 		return self.name

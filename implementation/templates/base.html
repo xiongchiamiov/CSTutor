@@ -31,9 +31,17 @@
 				<li>
 					<ul id="page-list">
 						{% for course in courses %}
-							{% for page in course.pages.all %}
+							{% for page in course.tableOfContents %}
+							{% ifequal page "in" %}
+							<li>
+							<ul>
+							{% else %} {% ifequal page "out" %}
+							</ul>
+							</li>
+							{% else %}
 								<li><a href="{% url pages.views.show_page course.slug page.slug %}">{{page}}</a>
 								</li>
+							{% endifequal %} {% endifequal %}
 							{% endfor %}
 						{% endfor %}
 					</ul><!-- #page-list -->
