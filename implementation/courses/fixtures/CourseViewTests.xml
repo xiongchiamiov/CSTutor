@@ -89,15 +89,6 @@
       <field to="auth.group" name="groups" rel="ManyToManyRel"></field>
       <field to="auth.permission" name="user_permissions" rel="ManyToManyRel"></field>
    </object>
-	<!-- denrolls the public user in the Public course -->
-   <!--<object pk="101" model="courses.enrollment">
-      <field to="auth.user" name="user" rel="ManyToOneRel">103</field>
-      <field to="courses.course" name="course" rel="ManyToOneRel">101</field>
-      <field type="BooleanField" name="view">False</field>
-      <field type="BooleanField" name="edit">False</field>
-      <field type="BooleanField" name="stats">False</field>
-      <field type="BooleanField" name="manage">False</field>
-   </object>-->
 	<!-- Admin User -->
 	<object pk="104" model="auth.user">
       <field type="CharField" name="username">enrollmentTestAdmin</field>
@@ -152,6 +143,38 @@
    <object pk="108" model="courses.enrollment">
       <field to="auth.user" name="user" rel="ManyToOneRel">104</field>
       <field to="courses.course" name="course" rel="ManyToOneRel">105</field>
+      <field type="BooleanField" name="view">True</field>
+      <field type="BooleanField" name="edit">True</field>
+      <field type="BooleanField" name="stats">True</field>
+      <field type="BooleanField" name="manage">True</field>
+   </object>
+	<!-- Private User not enrolled-->
+	<object pk="109" model="auth.user">
+      <field type="CharField" name="username">PrivateUserNotEnrolled</field>
+      <field type="CharField" name="first_name">Private</field>
+      <field type="CharField" name="last_name">UserNotEnrolled</field>
+      <field type="CharField" name="email"></field>
+      <field type="CharField" name="password">sha1$afeda$648e804b09a7bf98dbac6b7da13d6dbe0c7716f6</field>
+      <field type="BooleanField" name="is_staff">False</field>
+      <field type="BooleanField" name="is_active">True</field>
+      <field type="BooleanField" name="is_superuser">False</field>
+      <field type="DateTimeField" name="last_login">2010-01-22 13:14:05</field>
+      <field type="DateTimeField" name="date_joined">2010-01-22 13:14:05</field>
+      <field to="auth.group" name="groups" rel="ManyToManyRel"></field>
+      <field to="auth.permission" name="user_permissions" rel="ManyToManyRel"></field>
+   </object>
+   <object pk="110" model="courses.enrollment">
+      <field to="auth.user" name="user" rel="ManyToOneRel">109</field>
+      <field to="courses.course" name="course" rel="ManyToOneRel">100</field>
+      <field type="BooleanField" name="view">False</field>
+      <field type="BooleanField" name="edit">False</field>
+      <field type="BooleanField" name="stats">False</field>
+      <field type="BooleanField" name="manage">False</field>
+   </object>
+	<!-- enrolls the admin in the private course -->
+   <object pk="111" model="courses.enrollment">
+      <field to="auth.user" name="user" rel="ManyToOneRel">104</field>
+      <field to="courses.course" name="course" rel="ManyToOneRel">100</field>
       <field type="BooleanField" name="view">True</field>
       <field type="BooleanField" name="edit">True</field>
       <field type="BooleanField" name="stats">True</field>
