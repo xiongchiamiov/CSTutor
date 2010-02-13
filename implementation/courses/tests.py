@@ -128,10 +128,10 @@ class CourseViewTests(TestCase):
 		self.failUnlessEqual(response.status_code, 200, 'redirection to the roster page failed')
 
 		#Tries to display a roster that does not exist
-		#slug = 'badclass'
-		#print '/course/' + slug + 'roster/'
-		#response = self.client.get('/course/' + slug + '/roster/')#roster needs to 404 on invalid course
-		#self.failUnlessEqual(response.status_code, 404, 'URL redirection is broken. This is a bad link and should 404')
+		slug = 'badclass'
+
+		response = self.client.get('/course/' + slug + '/roster/')
+		self.failUnlessEqual(response.status_code, 404, 'URL redirection is broken. This is a bad link and should 404')
 
 
 	def testEnrollUser(self):
@@ -224,8 +224,22 @@ class CourseViewTests(TestCase):
 		Tests that a user who is enrolled can access a private course, and a 
 		student who is not enrolled cannot access a private course
 		'''
-		pass
-	
+		adminUsername = 'enrollmentTestAdmin'
+		username = 'PrivateUserNotEnrolled'
+		slug = 'PageViewsPrivateCourse'
+		password = 'password'
+
+		enrollments = Enrollment.objects.filter(course__slug__exact=slug)
+
+		#logs in and checks to make sure the login was successful
+		self.failUnlessEqual(self.client.login(username=adminUsername, password=password), True, 'logging in failed')
+
+		self.client.post('/course/' + slug + '/roster/addPendingRequests/', {'accept':[username]})
+
+		enrollment = Enrollment.objects.get(user__username__exact=username, course__slug__exact=slug)
+
+		self.failUnlessEqual(enrollment.view, True, 'View for user should be true but was' + str(enrollment.view))
+
 # I don't know why, but for some reason join_course_request is returning a 
 # 302.  Why?
 #	def testPrivateEnrollment(self):

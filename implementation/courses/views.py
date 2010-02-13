@@ -2,6 +2,7 @@
 	Functions in this file allow an instructor to create a course, add users to the course, search for user names, and remove users. In addition, there are functions that allow a student to join a course. 
 	@author Jon Inloes, James Pearson, Mark Gius, Matthew Tytel
 '''
+from django.http import Http404 
 from django.core.urlresolvers import reverse
 from django.shortcuts import render_to_response
 from django.http import HttpResponseRedirect
@@ -53,8 +54,12 @@ def show_roster(request, course_slug):
    # the database searches using Primary Keys, which are indexed, instead of 
    # username, which is not indexed. -mgius
 	#enrollment = Enrollment.objects.get(user__username__exact=request.user.username, course__slug__exact=course_slug)
-	print course_slug	
-	course = Course.objects.get(slug=course_slug)	
+	
+	try:
+		course = Course.objects.get(slug=course_slug)	
+	except Course.DoesNotExist:
+		raise Http404
+	
 	enrollment = request.user.enrollments.get(course=course)
 	
 	if enrollment.manage:
