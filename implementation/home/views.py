@@ -6,9 +6,9 @@ from courses.models import Course, Enrollment
 
 def master_rtr(request, template, data = {}):
 	if request.user.is_authenticated():
-      # Since we're only grabbing the enrollments to get at the courses, 
-      # doing select_related() will save us from having to hit database for
-      # every course the user is enrolled in
+		# Since we're only grabbing the enrollments to get at the courses, 
+		# doing select_related() will save us from having to hit database for
+		# every course the user is enrolled in
 		data['courses'] = \
 			[e.course for e in \
 			 Enrollment.objects.select_related().filter(user=request.user) \
