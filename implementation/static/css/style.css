@@ -6,36 +6,26 @@ code {
 	font-family: monospace;
 }
 
-#left-nav {
-	/*background-color: red;*/
-}
-
-#left-nav li {
-	list-style: none;
-}
-
-#left-nav ul {
-	padding-left: 1.5em;
-}
-
-#right-col {
-	/*background-color: blue;*/
-}
-
 #top-nav {
-	padding-left: 0;
-	margin-bottom: 1em;
-	height: 5em;
-	/*background-color: green;*/
+	padding-left: 2em;
+	margin-bottom: 2em;
+	height: 7em;
 }
 
-#top-nav > div {
-	/*border: 1px black solid;*/
+#top-nav #nav > div, #top-nav #user {
 	height: 100%;
 	text-align: center;
 	vertical-align: middle;
-	line-height: 5em;
-	background-color: green;
+	line-height: 3.5em;
+}
+
+#top-nav #nav > div {
+	font-size: 2em;
+}
+
+#top-nav #user {
+	height: 7em;
+	padding-top: 1.2em;
 }
 
 #top-nav li{
@@ -44,11 +34,24 @@ code {
 	vertical-align: middle;
 	border: 1px black solid;
 	line-height: 100%;
-	/*padding: 3em;*/
+}
+
+#left-nav li {
+	list-style: none;
+	margin-top: .2em;
+	margin-bottom: .2em;
+}
+
+#left-nav ul {
+	padding-left: 1.5em;
+}
+
+#right-col #main-content {
+	line-height: 170%;
+	padding-left: 2em;
 }
 
 #bottom-bar {
-	background-color: yellow;
 	padding: 1em;
 }
 

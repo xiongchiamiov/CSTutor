@@ -8,6 +8,7 @@
 	<link rel="stylesheet" href="/media/css/blueprint/print.css" type="text/css" media="print" />
 	<!--[if lt IE 8]><link rel="stylesheet" href="/media/css/blueprint/ie.css" type="text/css" media="screen, projection" /><![endif]-->
 	<link rel="stylesheet" href="/media/css/style.css" type="text/css" />
+	<link rel="stylesheet" href="/media/css/themes/{{THEME}}.css" type="text/css" />
 
    {% block meta %}
    {% endblock meta %}
@@ -16,24 +17,56 @@
 </head>
 <body>
 	<div class="container showgrid">
+		<!-- we have 24 columns across to split among these divs -->
+		<div id="top-nav" class="span-24 last">
+			<div id="nav">
+				<div class="span-3"><a href="{% url home.views.index %}">Home</a></div>
+				{% if course_slug %}
+				<div class="span-3"><a href="{% url stats.views.display_all_stats course_slug %}">Stats</a></div>
+				<div class="span-3"><a href="{% url courses.views.show_roster course_slug %}">Roster</a></div>
+				<div class="span-3"><a href="" target="_blank">Chat</a></div>
+				{% if page_slug %}
+				<div class="span-3"><a href="{% url pages.views.edit_page course_slug page_slug %}">Edit</a></div>
+				{% endif %}
+				{% endif %}
+				<div class="span-3"><a href="/help/">Help</a></div>
+			</div>
+			<div id="user" class="span-6 last" style="line-height: normal; float: right;">
+				{% if user.is_authenticated %}
+				<div class="span-6 last" style="line-height: 2.5em;">
+					Welcome, {{user.get_full_name}}
+				</div>
+				<div class="span-3">
+					<a href = "{% url users.views.show_logout %}">Logout</a>
+				</div>
+				<div class="span-3 last">
+					<a href="{% url users.views.show_profile %}">Profile</a>
+				</div>
+				{% else %}
+				<div style="line-height: 5em;">
+					<a href="{% url users.views.show_login %}">Login</a>
+				</div>
+				{% endif %}
+			</div>
+		</div><!-- #top-nav -->
 		<div id="left-nav" class="span-6">
 			<ul>
 				<li>
-					<form action="{% url courses.views.create_course %}">
-						<input type="submit" value="Create Course" />
-					</form>
+					<a class="button" href="{% url courses.views.create_course %}">
+						Create Course
+					</a>
 				</li>
 				<li>
-					<form action="{% url courses.views.join_course_form %}">
-						<input type="submit" value="Join Course" />
-					</form>
+					<a class="button" href="{% url courses.views.join_course_form %}">
+						Join Course
+					</a>
 				</li>
 				<li>
 					<ul id="page-list">
 						{% for course in courses %}
 							{% for page in course.tableOfContents %}
 							{% ifequal page "in" %}
-							<li>
+							<li style="list-style: none;">
 							<ul>
 							{% else %} {% ifequal page "out" %}
 							</ul>
@@ -48,53 +81,24 @@
 				</li>
 				{% if course_slug %}
 				<li>
-					<form action="{% url pages.quiz.views.create_quiz course_slug %}">
-						<input type="submit" value="Create Quiz"/>
-					</form>
+					<a class="button" href="{% url pages.quiz.views.create_quiz course_slug %}">
+						Create Quiz
+					</a>
 				</li>
 				<li>
-					<form action="{% url pages.lesson.views.create_lesson course_slug %}">
-						<input type="submit" value="Create Lesson" />
-					</form>
+					<a class="button" href="{% url pages.lesson.views.create_lesson course_slug %}">
+						Create Lesson
+					</a>
 				</li>
             {% endif %}
 			</ul>
-		</div><!-- #left-nav .span-4 -->
+		</div><!-- #left-nav .span-6 -->
 		<div id="right-col" class="span-18 last">
-			<div id="top-nav" class="span-18 last">
-				<div class="span-2"><a href="{% url home.views.index %}">Home</a></div>
-				{% if course_slug %}
-				<div class="span-2"><a href="{% url stats.views.display_all_stats course_slug %}">Stats</a></div>
-				<div class="span-2"><a href="{% url courses.views.show_roster course_slug %}">Roster</a></div>
-				<div class="span-2"><a href="" target="_blank">Chat</a></div>
-            {% if page_slug %}
-				<div class="span-2"><a href="{% url pages.views.edit_page course_slug page_slug %}">Edit</a></div>
-            {% endif %}
-				{% endif %}
-				<div class="span-2"><a href="/help/">Help</a></div>
-				<div class="span-6 last" style="line-height: normal;">
-					{% if user.is_authenticated %}
-					<div class="span-6 last" style="line-height: 2.5em;">
-						Welcome, {{user.get_full_name}}
-					</div>
-					<div class="span-3">
-						<a href = "{% url users.views.show_logout %}">Logout</a>
-					</div>
-					<div class="span-3 last">
-						<a href="{% url users.views.show_profile %}">Profile</a>
-					</div>
-					{% else %}
-					<div style="line-height: 5em;">
-						<a href="{% url users.views.show_login %}">Login</a>
-					</div>
-					{% endif %}
-				</div>
-			</div><!-- #top-nav -->
 			<div id="main-content">
 				{% block content %}
 				{% endblock %}
 			</div><!-- #main-content -->
-		</div><!-- #right-col .span-20 -->
+		</div><!-- #right-col .span-18 -->
 	</div><!-- .container -->
 </body>
 </html>

@@ -1,5 +1,6 @@
 ''' @author James Pearson, Matt Tytel, John Hartquist '''
 
+from django.conf import settings
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from courses.models import Course, Enrollment
@@ -19,6 +20,8 @@ def master_rtr(request, template, data = {}):
 			data['courses'] = request.session['anonCourses']
 		else:
 			data['courses'] = []
+	
+	data['THEME'] = settings.THEME
 
 	return render_to_response(template, data, context_instance=RequestContext(request))
 

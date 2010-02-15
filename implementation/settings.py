@@ -9,6 +9,8 @@ def abs_path(path):
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
+THEME = 'light'
+
 ADMINS = (
 	# ('Your Name', 'your_email@domain.com'),
 )
