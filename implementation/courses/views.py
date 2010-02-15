@@ -1,6 +1,6 @@
 '''
 	Functions in this file allow an instructor to create a course, add users to the course, search for user names, and remove users. In addition, there are functions that allow a student to join a course. 
-	@author Jon Inloes, James Pearson, Mark Gius, Matthew Tytel
+	@author Jon Inloes, James Pearson, Mark Gius, Matthew Tytel, John Hartquist
 '''
 from django.http import Http404 
 from django.core.urlresolvers import reverse
@@ -295,26 +295,53 @@ def join_course_form(request):
 		enrollmentIds = [e.course.id for e in request.user.enrollments.all()]
 		courses = Course.objects.exclude(id__in=enrollmentIds)
 	else:
-		courses = Course.objects.all()
+		#anonymous users cannot see private courses
+		if "anonCourses" in request.session:
+			enrollmentIds = [c.id for c in request.session['anonCourses']]
+			courses = Course.objects.exclude(id__in=enrollmentIds).exclude(private=True)
+		else:
+			courses = Course.objects.exclude(private=True)
 
 	return master_rtr(request, 'courses/join_course_form.html', \
 			{'join_courses' : courses})
 
-@login_required
+#@login_required //login is not required to join a course
 def join_course_request(request):
 	'''Displays the classes a user can join'''
 	courseid = request.POST['courseid']
 	course = Course.objects.get(id=courseid)
-	user = User.objects.get(username=request.user.username)
 
 	if course.private:
 		view = False
 	else:
 		view = True
 
-	if addUser(course, user, view):
+	if request.user.is_authenticated():
+		user = User.objects.get(username=request.user.username)
+
+		if addUser(course, user, view):
 			message = "Congratulations, you have been added to %s" % course
+		else:
+			message = "You are already enrolled in %s" % course
+	
 	else:
-		message = "You are already enrolled in %s" % course
+		#anonymous user is joining course
+		if "anonCourses" in request.session:
+			print(request.session['anonCourses'])
+			if course in request.session['anonCourses']:
+				message = "You are already enrolled in %s" % course
+			else:
+				courses = request.session['anonCourses']
+				courses.append(course)
+				request.session['anonCourses'] = courses
+				message = "You have been temporarily added to %s" % course
+				print(request.session['anonCourses'])
+		else:
+			request.session['anonCourses'] = [course]
+			message = "First anon course"
+		
+		user = "Anonymous user"
+		
+		
 	return master_rtr(request, 'courses/join_course_status.html', \
 	                  {'course':course, 'user':user, 'message':message})
