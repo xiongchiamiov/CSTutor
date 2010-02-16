@@ -104,7 +104,7 @@
       <field to="auth.group" name="groups" rel="ManyToManyRel"></field>
       <field to="auth.permission" name="user_permissions" rel="ManyToManyRel"></field>
    </object>
-	<!-- enrolls the public user in the Public course -->
+	<!-- enrolls the admin user in the Public course -->
    <object pk="101" model="courses.enrollment">
       <field to="auth.user" name="user" rel="ManyToOneRel">104</field>
       <field to="courses.course" name="course" rel="ManyToOneRel">101</field>
@@ -179,5 +179,14 @@
       <field type="BooleanField" name="edit">True</field>
       <field type="BooleanField" name="stats">True</field>
       <field type="BooleanField" name="manage">True</field>
+   </object>
+	<!-- enrolls the privateUserNotEnrolled in the public course -->
+	<object pk="112" model="courses.enrollment">
+      <field to="auth.user" name="user" rel="ManyToOneRel">109</field>
+      <field to="courses.course" name="course" rel="ManyToOneRel">101</field>
+      <field type="BooleanField" name="view">True</field>
+      <field type="BooleanField" name="edit">False</field>
+      <field type="BooleanField" name="stats">False</field>
+      <field type="BooleanField" name="manage">False</field>
    </object>
 </django-objects>
