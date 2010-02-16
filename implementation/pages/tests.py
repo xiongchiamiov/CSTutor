@@ -65,8 +65,6 @@ class PageTests(TestCase):
 		self.assertEquals(min(usedNumbers), 1)
 		self.assertEquals(max(usedNumbers), len(pages) * 2)
 
-		return True
-			
 	def test_insertPage(self):
 		'''
 		Tests adding a new page to the tree as a sibling of an existing

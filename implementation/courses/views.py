@@ -68,12 +68,12 @@ def show_roster(request, course_slug):
 		return master_rtr(request, 'roster/index.html', \
 				            {'course': course, \
 								 'enrollments': enrollments, \
-								 'course_slug': course.slug})
+								 'course_slug': course.slug })
 
 	else:
 		return master_rtr(request, 'roster/invalid_permissions.html', \
 				            {'course': course, \
-								 'course_slug': course.slug})
+								 'course_slug': course.slug })
 
 def show_course(request, course_slug):
 	''' Handles a naughty user who tries to go to the course without a page 
