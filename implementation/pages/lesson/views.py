@@ -31,7 +31,6 @@ def create_lesson(request, course_slug, pid = ""):
 	lesson = CreateLesson('')
 	return master_rtr(request, 'page/lesson/edit_lesson.html', \
 			{'course_slug':course_slug,
-			 'page_slug': page_slug, \
 			 'pid':lesson.name, 'content':lesson.content, 'new':True})
 
 def show_lesson(request, course, page_slug):
