@@ -1,0 +1,77 @@
+/*
+ * primary light:   #C9DCFF
+ * primary dark:    #180A36
+ * primary medium:  #BF1F42
+ */
+
+body {
+	color: #C9DCFF;
+	background-color: #180A36;
+}
+
+#top-nav {
+	color: #BF1F42;
+	/*-moz-border-radius: 10px;*/
+	/*-webkit-border-radius: 10px;*/
+}
+
+#top-nav,
+#main-content,
+#left-nav {
+	border: 10px double #BF1F42;
+	background-color: #C9DCFF;
+}
+
+#top-nav a {
+	color: #BF1F42;
+	font-weight: bold;
+	font-variant: small-caps;
+}
+
+#left-nav {
+	padding-top: 12px;
+	padding-bottom: 0;
+	padding-right: 12px;
+}
+
+#left-nav #page-list {
+	margin-top: 12px;
+	margin-bottom: 12px;
+}
+
+.button {
+	margin: 3px;
+	margin-left: -5px;
+	padding-left: 1em;
+	padding-right: 1em;
+	width: 100%;
+	padding-top: 0;
+	padding-bottom: 0;
+	display: inline-block;
+	color: #BF1F42;
+	background-color: #C9DCFF;
+	text-decoration: none;
+	border-style: solid;
+	border-width: 2px 0 2px 0;
+	text-align: center;
+	font-weight: bold;
+}
+
+#main-content {
+	color: #180A36;
+	padding: 12px;
+	width: 100%;
+}
+
+#right-col {
+	width: 665px;
+}
+
+#page-list li {
+	list-style: katakana-iroha;
+	color: #180A36;
+}
+
+#page-list a {
+	color: #180A36;
+}
