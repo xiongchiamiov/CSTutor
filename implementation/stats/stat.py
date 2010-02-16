@@ -28,15 +28,6 @@ def getAllUserStats(course):
 	statsList = Stats.object.get(course=course)
 	return statsList
 	
-
-def insertStat(course, page, score, user, date):
-	'''
-	Creates a new stat from the given information and inserts it into
-	the database.
-	'''
-	stat = Stat(course=course, page=page, score=score, user=user, date=date)
-	stat.save()
-
 def getUserAggregate(user, course):
 	'''
 	Calculates aggregate stats for a single user in a particular
