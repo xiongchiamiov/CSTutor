@@ -8,6 +8,7 @@ Contains operations for all lessons
 from django.template.defaultfilters import slugify
 from models import *
 from question.models import *
+from question.question import isMultipleChoiceQuestion
 from pages.page import removePage
 
 #def createQuiz(name):
@@ -44,16 +45,17 @@ def saveQuiz(request, course, pid):
 		origQuestions = []
 		origAnswers = []
 		for q in questions:
-			try:
+			if (isMultipleChoiceQuestion(q)):
 				q = q.multiplechoicequestion
 				origQuestions.append(MultipleChoiceQuestion(text = q.text, order = q.order))
 				for a in q.answers.all():
 					origAnswers.append(Answer(question = a.question, correct = a.correct, order = a.order, text = a.text))
 					a.text = request.POST['mcq%sa%s' % (q.order, a.order)]
+					a.correct = (request.POST['mcq%sac' % q.order] == str(a.order))
 					a.save()
 				q.text = request.POST['mcq%dtext' % q.order]
 				q.order = request.POST['mcq%dorder' % q.order]
-			except MultipleChoiceQuestion.DoesNotExist:
+			else:
 				q = q.codequestion
 				origQuestions.append(CodeQuestion(text = q.text, order = q.order))
 				q.text = request.POST['cq%dtext' % q.order]
@@ -67,7 +69,7 @@ def saveQuiz(request, course, pid):
 			origAnswers = iter(origAnswers)
 			for q in questions:
 				orig = origQuestions.next()
-				try:
+				if (isMultipleChoiceQuestion(q)):
 					q = q.multiplechoicequestion
 					q.text = orig.text
 					q.order = orig.order
@@ -77,7 +79,7 @@ def saveQuiz(request, course, pid):
 						a.order = origA.order
 						a.text = origA.text
 						a.save()
-				except MultipleChoiceQuestion.DoesNotExist:
+				else:
 					q.text = orig.text
 					q.order = orig.order
 					print "Revert code question"
@@ -85,6 +87,9 @@ def saveQuiz(request, course, pid):
 	return -1
 
 def removeQuiz(self):
+	questions = self.questions.all()
+	for q in questions:
+		removeQuestion(q)
 	removePage(self)
 	# should also remove all associated quiz objects such as stats, questions, answers, paths
 	return 0

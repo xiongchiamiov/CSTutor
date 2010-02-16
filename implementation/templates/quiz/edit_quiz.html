@@ -16,12 +16,12 @@
 	        <tr>
 	            <td></td>
 	            <td><input type="radio" name="mcq{{q.multiplechoicequestion.order}}a" disabled="disabled" /></td>
-	        	<td><input type="text" name="mcq{{q.multiplechoicequestion.order}}a{{a.order}}" value="{{a.text}}" /></td>
+	        	<td><input type="text" name="mcq{{q.multiplechoicequestion.order}}a{{a.order}}" value="{{a.text}}" /><input type="submit" name="removeAnswerQ{{q.multiplechoicequestion.order}}A{{a.order}}" value="X" /></td>
 				<td>
 					{% if a.correct %}
-					<input type="radio" name="mcq{{q.multiplechoicequestion.order}}ac" checked="checked"/>
+					<input type="radio" name="mcq{{q.multiplechoicequestion.order}}ac" value="{{a.order}}" checked="checked"/>
 					{% else %}
-					<input type="radio" name="mcq{{q.multiplechoicequestion.order}}ac" />
+					<input type="radio" name="mcq{{q.multiplechoicequestion.order}}ac" value="{{a.order}}"/>
 					{% endif %}
 				</td>
 	        </tr>
@@ -29,7 +29,7 @@
 			<tr>
 				<td></td>
 				<td></td>
-				<td><input type="submit" value="Add Answer" name="addAnswer" /></td>
+				<td><input type="submit" value="Add Answer" name="addAnswer{{q.multiplechoicequestion.order}}" /></td>
 			</tr>
 	{% endif %}
 	{% if q.codequestion %}

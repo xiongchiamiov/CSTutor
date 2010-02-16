@@ -227,13 +227,13 @@
    <object pk="1" model="question.answer">
       <field to="question.multiplechoicequestion" name="question" rel="ManyToOneRel">1</field>
       <field type="BooleanField" name="correct">True</field>
-      <field type="IntegerField" name="order">0</field>
+      <field type="IntegerField" name="order">1</field>
       <field type="TextField" name="text">Russell. (correct)</field>
    </object>
    <object pk="2" model="question.answer">
       <field to="question.multiplechoicequestion" name="question" rel="ManyToOneRel">1</field>
       <field type="BooleanField" name="correct">False</field>
-      <field type="IntegerField" name="order">1</field>
+      <field type="IntegerField" name="order">2</field>
       <field type="TextField" name="text">Barney Rubble. (incorrect)</field>
    </object>
    <object pk="3" model="question.answer">

@@ -15,7 +15,7 @@ from models import Quiz
 from quiz import *
 from question.models import MultipleChoiceQuestion
 from question.models import CodeQuestion
-from question.question import removeQuestion
+from question.question import *
 from home.views import master_rtr
 from pages.page import insertChildPage
 
@@ -92,6 +92,15 @@ def edit_quiz(request, course_slug, page_slug):
 				removeQuestion(q)
 				reorderQuestions(quiz)
 				return HttpResponseRedirect(request.path)
+			if (isMultipleChoiceQuestion(q)):
+				q = q.multiplechoicequestion
+				if ("addAnswer%s" % q.order) in request.POST:
+					addAnswer(q)
+					return HttpResponseRedirect(request.path)
+				for a in q.answers.all():
+					if ("removeAnswerQ%sA%s" % (q.order, a.order)) in request.POST:
+						removeAnswer(q, a)
+						return HttpResponseRedirect(request.path)
 
 	return master_rtr(request, 'quiz/edit_quiz.html', \
 			{'course':course_slug, 'course_slug':course_slug, 'page_slug':page_slug, \
