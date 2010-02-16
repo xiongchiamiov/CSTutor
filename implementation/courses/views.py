@@ -49,6 +49,8 @@ def create_course(request):
 def show_roster(request, course_slug):
 	'''
 	Displays the roster
+	pre: user.isLoggedIn == true
+	post: if user.manage then show(roster/index.html) else show(roster/invalid_permissions.html)
 	'''
 	# It is better to get the enrollment by this method, because in this case
    # the database searches using Primary Keys, which are indexed, instead of 
@@ -125,8 +127,8 @@ def add_user(request, course_slug):
 			elif request.POST['command'] == 'search':
 				#if the command was a search, search for the user
 	
-				firstname = request.POST['firstname']
-				lastname = request.POST['lastname']
+				firstname = request.POST['firstname'].strip()
+				lastname = request.POST['lastname'].strip()
 
 				users = User.objects.filter(first_name = firstname, last_name = lastname)
 
@@ -144,27 +146,6 @@ def add_user(request, course_slug):
 		return master_rtr(request, 'roster/invalid_permissions.html', \
 				{'course': course, \
 				 'course_slug': course_slug})
-
-def search_username(request, course_slug, courses):
-	'''This function is not called any more'''
-	course = Course.objects.get(slug=course_slug)
-	
-	firstname = request.POST['firstname']
-	lastname = request.POST['lastname']
-	
-	url = request.path
-	print url
-
-	users = User.objects.filter(first_name = firstname, last_name = lastname)
-
-	
-	return master_rtr(request, 'adduser/search.html', \
-			            {'course_slug': course_slug, \
-							 'course':course, \
-							 'users':users, \
-							 'firstname': firstname, \
-							 'lastname': lastname, \
-							 'url': request.path})
 
 @login_required
 def update_roster(request, course_slug):
@@ -255,7 +236,18 @@ def cancel_add(request, course_slug):
 
 @login_required
 def manage_pending_requests(request, course_slug):
-	'''Manages the pending request list for a roster'''
+	'''
+	Accepts and denies users in the pending request list for a roster
+	pre: user.isLoggedIn = True
+	post: (for username in acceptList
+				course.enrollments.username.view = True
+			and
+			course.enrollments.length' = course.enrollments.length)
+			(for username in denyList
+				course.enrollments.remove(username)
+			and
+			course.enrollments.length' = course.enrollments.length - denyList.length)
+	'''
 	
 	course = Course.objects.get(slug=course_slug)
 	enrollment = request.user.enrollments.get(course=course)

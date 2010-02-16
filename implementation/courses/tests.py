@@ -219,7 +219,7 @@ class CourseViewTests(TestCase):
 		self.failUnlessEqual(enrollment.manage, True, 'manage should be true but was ' + str(enrollment.manage))
 		self.failUnlessEqual(enrollment.edit, True, 'edit should be true but was ' + str(enrollment.edit))
 
-	def testPrivacy(self):
+	def testAccpetUser(self):
 		'''
 		Tests that a user who is enrolled can access a private course, and a 
 		student who is not enrolled cannot access a private course
@@ -229,16 +229,107 @@ class CourseViewTests(TestCase):
 		slug = 'PageViewsPrivateCourse'
 		password = 'password'
 
-		enrollments = Enrollment.objects.filter(course__slug__exact=slug)
+		#enrollments = Enrollment.objects.filter(course__slug__exact=slug)
 
 		#logs in and checks to make sure the login was successful
 		self.failUnlessEqual(self.client.login(username=adminUsername, password=password), True, 'logging in failed')
+
+		enrollment = Enrollment.objects.get(user__username__exact=username, course__slug__exact=slug)
+		self.failUnlessEqual(enrollment.view, False, 'User has not been enrollmed yet. View permission should be false')
 
 		self.client.post('/course/' + slug + '/roster/addPendingRequests/', {'accept':[username]})
 
 		enrollment = Enrollment.objects.get(user__username__exact=username, course__slug__exact=slug)
 
 		self.failUnlessEqual(enrollment.view, True, 'View for user should be true but was' + str(enrollment.view))
+
+	def testDenyUser(self):
+		'''
+		Tests whether or not denying a user from a pending request works.
+		'''
+		
+		adminUsername = 'enrollmentTestAdmin'
+		username = 'PrivateUserNotEnrolled'
+		slug = 'PageViewsPrivateCourse'
+		password = 'password'
+		denied = False
+
+		#logs in and checks to make sure the login was successful
+		self.failUnlessEqual(self.client.login(username=adminUsername, password=password), True, 'logging in failed')
+
+		try:		
+			enrollment = Enrollment.objects.get(user__username__exact=username, course__slug__exact=slug)
+		except Enrollment.DoesNotExist:
+			denied = True
+
+		self.failUnlessEqual(denied, False, 'User does not exist in the enrollment list.')
+		self.failUnlessEqual(enrollment.view, False, 'User has not been enrollmed yet. View permission should be false')
+
+		self.client.post('/course/' + slug + '/roster/addPendingRequests/', {'deny':[username]})
+	
+		try:
+			enrollment = Enrollment.objects.get(user__username__exact=username, course__slug__exact=slug)
+		except Enrollment.DoesNotExist:
+			denied = True
+
+		self.failUnlessEqual(denied, True, 'User should not exist in the enrollment list any more but did')
+
+	def testSearchUser(self):
+		'''
+		Tests the search user function
+		'''
+
+		adminUsername = 'enrollmentTestAdmin'
+		username = 'enrollmentTestAdmin'
+		firstname = 'Test'
+		lastname = 'Admin'
+		slug = 'PageViewsPrivateCourse'
+		password = 'password'
+
+		badFirstname = 'badFirstname'
+		badLastname = 'badLastname'
+		badUsername = 'badUsername'
+
+		#logs in and checks to make sure the login was successful
+		self.failUnlessEqual(self.client.login(username=adminUsername, password=password), True, 'logging in failed')
+ 
+		response = self.client.post('/course/' + slug + '/roster/adduser/', {'firstname': badFirstname, 'lastname': badLastname, 'command': 'search'})
+
+		self.assertNotContains(response, badUsername)
+
+		response = self.client.post('/course/' + slug + '/roster/adduser/', {'firstname': firstname, 'lastname': lastname, 'command': 'search'})
+		
+		self.assertContains(response, username)
+
+	def testRemoveUser(self):
+		adminUsername = 'enrollmentTestAdmin'
+		password = 'password'
+		username = 'PrivateUserNotEnrolled'
+		slug = 'PageViewsPublicCourse'
+
+		#logs in and checks to make sure the login was successful
+		self.failUnlessEqual(self.client.login(username=adminUsername, password=password), True, 'logging in failed in enrollment test')
+
+		enrollments = Enrollment.objects.filter(course__slug__exact=slug)
+
+		userExists = True
+		try:
+			enrollment = Enrollment.objects.get(user__username__exact=username, course__slug__exact=slug)
+		except Enrollment.DoesNotExist:
+			userExists = False
+
+		self.failUnlessEqual(userExists, True, 'User should exist in the enrollment list')
+
+		self.client.post('/course/' + slug + '/roster/updateRoster/', {'remove': [username], 'command': 'search'})
+		
+
+		userExists = True
+		try:
+			enrollment = Enrollment.objects.get(user__username__exact=username, course__slug__exact=slug)
+		except Enrollment.DoesNotExist:
+			userExists = False
+
+		self.failUnlessEqual(userExists, False, 'User should not exist in the enrollment list')
 
 # I don't know why, but for some reason join_course_request is returning a 
 # 302.  Why?

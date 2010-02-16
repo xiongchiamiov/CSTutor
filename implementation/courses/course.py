@@ -66,7 +66,7 @@ def removeUser(self, user):
 
 		@author ?
 	'''
-	print 'removing a user'
+	#print 'removing a user'
 	try:
 		Enrollment.objects.get(user=user, course=self).delete()
 	except:
