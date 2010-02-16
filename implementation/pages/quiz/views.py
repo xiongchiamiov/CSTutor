@@ -15,6 +15,7 @@ from models import Quiz
 from quiz import *
 from question.models import MultipleChoiceQuestion
 from question.models import CodeQuestion
+from question.question import removeQuestion
 from home.views import master_rtr
 from pages.page import insertChildPage
 
@@ -43,7 +44,7 @@ def show_quiz(request, course, page_slug):
 
 	return master_rtr(request, 'quiz/viewQuiz.html', \
 			            {'course':course, 'course_slug':course, \
-							 'pid':page_slug, 'quizTitle':quizTitle, \
+							 'quizTitle':quizTitle, \
 							 'page_slug':page_slug, 'questions':questions})
 
 def submitQuiz(request, course_slug, page_slug):
@@ -64,31 +65,34 @@ def edit_quiz(request, course_slug, page_slug):
 				to its previous state but with a new multiple choice question appended at the end
 	'''
 	quiz = Quiz.objects.get(slug=page_slug)
+	pages = Course.objects.get(slug=course_slug).pages.all()
+	questions = quiz.questions.all().order_by("order")
+
 	if (request.method == "POST"):
 		if "Save" in request.POST:
 			page_slug = saveQuiz(request, course_slug, page_slug)
 			if (page_slug == -1):
 				print "Bad question ordering!"
 			else:
-				return HttpResponseRedirect(reverse('pages.views.show_page',\
-																args=[course_slug, page_slug]))
+				return HttpResponseRedirect(reverse('pages.views.show_page', args=[course_slug, page_slug]))
 
 		if "Cancel" in request.POST:
-			return HttpResponseRedirect(reverse('pages.views.show_page',\
-															args=[course_slug, page_slug]))
+			return HttpResponseRedirect(reverse('pages.views.show_page', args=[course_slug, page_slug]))
 
 		if "Delete" in request.POST:
-			removeQuiz(request, course_slug, pid)
-			return HttpResponseRedirect(reverse('pages.views.show_page',\
-															args=[course_slug, page_slug]))
+			removeQuiz(quiz)
+			return HttpResponseRedirect(reverse('courses.views.show_course', args=[course_slug]))
 
 		if "NewMultQuestion" in request.POST:
-			addMultipleChoiceQuestion(request, course_slug, page_slug)
-			return HttpResponseRedirect(reverse('pages.views.show_page',\
-															args=[course_slug, page_slug]))
+			addMultipleChoiceQuestion(quiz)
+			return HttpResponseRedirect(request.path)
 
-	pages = Course.objects.get(slug=course_slug).pages.all()
-	questions = quiz.questions.all().order_by("order")
+		for q in questions:
+			if ("removeQuestion%s" % q.order) in request.POST:
+				removeQuestion(q)
+				reorderQuestions(quiz)
+				return HttpResponseRedirect(request.path)
+
 	return master_rtr(request, 'quiz/edit_quiz.html', \
-			{'course':course_slug, 'course_slug':course_slug, \
-			 'pid':page_slug, 'pages':pages, 'quiz':quiz, 'questions':questions})
+			{'course':course_slug, 'course_slug':course_slug, 'page_slug':page_slug, \
+			 'pages':pages, 'quiz':quiz, 'questions':questions})

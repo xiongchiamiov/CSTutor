@@ -9,7 +9,7 @@
 	{% if q.multiplechoicequestion %}
 		<tr>
 	                <td><input type="text" name="mcq{{q.multiplechoicequestion.order}}order" value="{{q.multiplechoicequestion.order}}" size="3" /></td>
-	                <td colspan="2"><textarea name="mcq{{q.multiplechoicequestion.order}}text" style="height: 5em; width: 40em;">{{q.multiplechoicequestion.text}}</textarea><input type="submit" name="removeQuestion" value="X" /></td>
+	                <td colspan="2"><textarea name="mcq{{q.multiplechoicequestion.order}}text" style="height: 5em; width: 40em;">{{q.multiplechoicequestion.text}}</textarea><input type="submit" name="removeQuestion{{q.multiplechoicequestion.order}}" value="X" /></td>
 			<td>Correct</td>
 	        </tr>
 	        {% for a in q.multiplechoicequestion.answers.all %}
@@ -31,19 +31,20 @@
 				<td></td>
 				<td><input type="submit" value="Add Answer" name="addAnswer" /></td>
 			</tr>
-			
 	{% endif %}
 	{% if q.codequestion %}
 	        <tr>
 	                <td><input type="text" name="cq{{q.codequestion.order}}order" value="{{q.codequestion.order}}" size="3" /></td>
-	                <td colspan="2"><textarea name="cq{{q.codequestion.order}}text" style="height: 5em; width: 40em;">{{q.codequestion.text}}</textarea></td>
+	                <td colspan="2"><textarea name="cq{{q.codequestion.order}}text" style="height: 5em; width: 40em;">{{q.codequestion.text}}</textarea><input type="submit" name="removeQuestion{{q.codequestion.order}}" value="X" /></td>
 			<td><input type="button" value="Edit" />
 	        </tr>
 	{% endif %}
 {% endfor %}
 </table>
-<br/><br/>
-<table>
+{% endblock %}
+
+{% block bottombar %}
+<table style="border-width: 1px; padding: 1px; border-style: dashed; border-color: black;">
 		<tr>
 			<td rowspan="3" style="border-width: 1px; padding: 1px; border-style: dashed; border-color: black;">
 				Prerequisites

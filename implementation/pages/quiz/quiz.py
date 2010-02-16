@@ -8,6 +8,7 @@ Contains operations for all lessons
 from django.template.defaultfilters import slugify
 from models import *
 from question.models import *
+from pages.page import removePage
 
 #def createQuiz(name):
 	#return Quiz(text=name)
@@ -83,16 +84,25 @@ def saveQuiz(request, course, pid):
 				q.save()
 	return -1
 
-def removeQuiz(request, course, pid):
-	if (request.method != "POST"):
-		return -1
-	if "Delete" in request.POST:
-		Quiz.objects.get(slug=pid).delete()
-		return 0
+def removeQuiz(self):
+	removePage(self)
+	# should also remove all associated quiz objects such as stats, questions, answers, paths
+	return 0
 
-def addMultipleChoiceQuestion(request, course, pid):
-	quiz = Quiz.objects.get(slug=pid)
-	questions = quiz.questions.all()
-	newQuestion = MultipleChoiceQuestion(text='Blank Question', order=(len(questions)+1), quiz=quiz)
+def addMultipleChoiceQuestion(self):
+	questions = self.questions.all()
+	newQuestion = MultipleChoiceQuestion(text='Blank Question', order=(len(questions)+1), quiz=self)
 	newQuestion.save()
 	return 0
+
+def reorderQuestions(self):
+	questions = self.questions.all().order_by("order")
+	qNum = 1
+	for q in questions:
+		q.order = qNum
+		q.save()
+		qNum = qNum + 1
+	# Sanity check to make sure the question ordering is still valid
+	if (validateQuestionOrder(self)):
+		return 0
+	return -1
