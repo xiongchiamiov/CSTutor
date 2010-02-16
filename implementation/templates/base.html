@@ -81,7 +81,7 @@
 				</li>
 				{% if page_slug %}
 				<li>
-					<a class="button" href="{% url pages.quiz.views.create_quiz course_slug %}">
+					<a class="button" href="{% url pages.quiz.views.create_quiz course_slug page_slug %}">
 						Create Quiz
 					</a>
 				</li>
