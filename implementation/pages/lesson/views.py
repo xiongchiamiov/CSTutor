@@ -14,7 +14,7 @@ import re
 @author John Hartquist
 '''
 
-def create_lesson(request, course_slug, pid = ""):
+def create_lesson(request, course_slug, page_slug = "forloops"):
 	'''
 	@author Matthew Tytel
 
@@ -22,11 +22,11 @@ def create_lesson(request, course_slug, pid = ""):
 	does not save the lesson to the database
 	'''
 	if request.method == "POST" and "Save" in request.POST:
-		saveNewLesson(request, course_slug, pid)
+		saveNewLesson(request, course_slug, page_slug)
 		return master_rtr(request, 'page/lesson/save_lesson.html', \
 				            {'course_slug':course_slug, 
-								 'page_slug': pid, 
-								 'course':course_slug, 'pid':pid})
+								 'page_slug': page_slug, 
+								 'course':course_slug, 'pid':page_slug})
 	
 	lesson = CreateLesson('')
 	return master_rtr(request, 'page/lesson/edit_lesson.html', \

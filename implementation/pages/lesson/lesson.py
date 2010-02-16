@@ -35,7 +35,7 @@ def saveLesson(request, course, pid):
 		return 0
 	return -1
 
-def saveNewLesson(request, course, pid):
+def saveNewLesson(request, course, parent_slug):
 	'''
 	Saves a new lesson's content and name
 	
@@ -47,7 +47,7 @@ def saveNewLesson(request, course, pid):
 		except Lesson.DoesNotExist:
 			lesson = CreateLesson(request.POST["lessonname"])
 			lesson.content = request.POST["content"]
-			insertChildPage(lesson, Lesson.objects.get(slug='forloops'))
+			insertChildPage(lesson, Lesson.objects.get(slug=parent_slug))
 			return 0
 	
 	return -1
