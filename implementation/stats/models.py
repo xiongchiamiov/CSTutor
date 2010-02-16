@@ -10,6 +10,8 @@ from django.db import models
 from django.contrib.auth.models import User
 from courses.models import Course
 from pages.models import Page
+from pages.quiz.models import Quiz
+from pages.quiz.question.models import Question
 
 # Create your models here.
 
@@ -22,21 +24,25 @@ class Stat(models.Model):
     mutple stats. 
 	'''
 	course = models.ForeignKey(Course, related_name='stats')
-	page = models.ForeignKey(Page, related_name='stats')
 	user = models.ForeignKey(User, related_name='stats')
+	page = models.ForeignKey(Page, related_name='stats')
 	score = models.IntegerField()
+	maxScore = models.IntegerField()
 	date = models.DateTimeField(auto_now_add=True)
 
 	@staticmethod
 	def CreateStat(course, page, user, score):
 		''' Create a new Stat Entry
+		Creates a new entry in the stats table for the passed course, page,
+		and user.  The entry is timestamped automatically. The maxScore
+		is generated at the time that stat is created. This field is 
+		simply the number of questions in the quiz.
 
-			 Creates a new entry in the stats table for the passed course, page,
-			 and user.  The entry is timestamped automatically.
-
-			 Returns the statistic after saving it to the database
+		Returns the statistic after saving it to the database
 		'''
-		s = Stat(course=course, page=page, user=user, score=score)
+		maxScore = page.quiz.questions.count() 
+		s = Stat(course=course, page=page, user=user, score=score, 
+			maxScore = maxScore)
 		s.save()
 		return s
 
