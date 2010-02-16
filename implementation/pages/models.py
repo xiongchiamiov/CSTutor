@@ -22,14 +22,8 @@ class Page(models.Model):
 	A page contains links to other pages based on the Course flow.
 	'''
 	course = models.ForeignKey(Course, related_name='pages')
-   #nextPage = models.OneToOneField("self", related_name='prevPage', null=True)	
-	# prevPage implied from Page
-   #parent = models.ForeignKey("self", related_name='children', null=True)
-	# children implied from Page
 	slug = models.SlugField(unique=True)
-	# prereqs: stupid.  Not doing it
 	name = models.TextField()
-   #order = models.IntegerField(null=True)
 	left = models.IntegerField(db_index=True)
 	right = models.IntegerField(db_index=True)
 

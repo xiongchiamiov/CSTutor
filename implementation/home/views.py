@@ -14,7 +14,6 @@ def master_rtr(request, template, data = {}):
 			[e.course for e in \
 			 Enrollment.objects.select_related().filter(user=request.user) \
 			 if e.view]
-			#[e.course for e in request.user.enrollments.select_related().all()]
 	else:
 		if "anonCourses" in request.session:
 			data['courses'] = request.session['anonCourses']

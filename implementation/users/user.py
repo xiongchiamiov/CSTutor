@@ -7,19 +7,20 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.forms.fields import email_re
 
-def editProfile(oldUser, newUser):
-   '''
-   This operation takes a users profile and any modifications and 
-   merges them together, returning an updated profile
-   '''
-   pass
-
-def logout(request):
-   '''
-   Logs a user out.
-   '''
-   
-   pass
+# commented out by mgius on 2/16/10
+#def editProfile(oldUser, newUser):
+#   '''
+#   This operation takes a users profile and any modifications and 
+#   merges them together, returning an updated profile
+#   '''
+#   pass
+#
+#def logout(request):
+#   '''
+#   Logs a user out.
+#   '''
+#   
+#   pass
 
 def updateEmail(request):
 	'''
@@ -57,6 +58,7 @@ def changePassword(request):
 def removeUser(username, userDB):
    '''
    Removes the given user from the user database
+	TODO
    '''
    pass
 
@@ -64,6 +66,7 @@ def removeUser(username, userDB):
 def setInstructor(user, instructor):
    '''
    Grants a user permission to create a course
+	TODO:
    '''
    pass
 
