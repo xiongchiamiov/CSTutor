@@ -9,6 +9,7 @@ from django.template.defaultfilters import slugify
 from models import *
 from question.models import *
 from question.question import isMultipleChoiceQuestion
+from question.question import removeQuestion
 from pages.page import removePage
 
 #def createQuiz(name):

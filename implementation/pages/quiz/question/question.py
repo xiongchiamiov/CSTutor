@@ -13,7 +13,6 @@ def removeQuestion(self):
 		for a in answers:
 			removeAnswer(self, a)
 	self.delete()
-	# also need to delete all answers
 
 def removeAnswer(self):
 	self.delete()
