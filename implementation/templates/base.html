@@ -79,7 +79,7 @@
 						{% endfor %}
 					</ul><!-- #page-list -->
 				</li>
-				{% if course_slug %}
+				{% if page_slug %}
 				<li>
 					<a class="button" href="{% url pages.quiz.views.create_quiz course_slug %}">
 						Create Quiz
@@ -90,7 +90,7 @@
 						Create Lesson
 					</a>
 				</li>
-            {% endif %}
+				{% endif %}
 			</ul>
 		</div><!-- #left-nav .span-6 -->
 		<div id="right-col" class="span-18 last">
