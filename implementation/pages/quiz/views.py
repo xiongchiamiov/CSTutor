@@ -16,12 +16,20 @@ from quiz import *
 from question.models import MultipleChoiceQuestion
 from question.models import CodeQuestion
 from home.views import master_rtr
+from pages.page import insertChildPage
 
-def create_quiz(request, course_slug):
+def create_quiz(request, course_slug, page_slug):
 	''' create_Quiz View
 		This view will create a quiz and take the user to the quiz editor screen.
 	'''
 	print "Create Quiz\n" #TODO
+	#quiz = Quiz.createQuiz("New Quiz", False)
+	#print("quiz" + quiz.text)
+	course = Course.objects.get(slug=course_slug)
+	name = "New Quiz"
+	newQuiz = Quiz(course=course, name=name, slug=slugify(name))
+	insertChildPage(newQuiz, Page.objects.get(slug=page_slug))
+	
 	return master_rtr(request, 'quiz/create-quiz.html', {'courses': Course.objects.all()})
 
 def show_quiz(request, course, page_slug):

@@ -9,8 +9,9 @@ from django.template.defaultfilters import slugify
 from models import *
 from question.models import *
 
-def CreateQuiz(name):
-	return Lesson(slug=slugify(name), name=name)
+#def createQuiz(name):
+	#return Quiz(text=name)
+	#return Quiz(slug=slugify(name), name=name)
 
 def validateQuestionOrder(self):
 	'''
