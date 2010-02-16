@@ -71,10 +71,13 @@
 							{% else %} {% ifequal page "out" %}
 							</ul>
 							</li>
+							{% else %} {% if forloop.first %}
+								<li><a href="{% url courses.views.show_course course.slug %}">{{page}}</a>
+								</li>
 							{% else %}
 								<li><a href="{% url pages.views.show_page course.slug page.slug %}">{{page}}</a>
 								</li>
-							{% endifequal %} {% endifequal %}
+							{% endif %} {% endifequal %} {% endifequal %} 
 							{% endfor %}
 						{% endfor %}
 					</ul><!-- #page-list -->
