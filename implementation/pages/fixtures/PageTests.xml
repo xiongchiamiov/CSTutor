@@ -1,50 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
 <django-objects version="1.0">
-   <object pk="4" model="courses.course">
+   <object pk="100" model="courses.course">
       <field type="SlugField" name="slug">PageTestsCourse</field>
       <field type="CharField" name="name">PageTestsCourse</field>
       <field type="BooleanField" name="private">False</field>
    </object>
-   <object pk="5" model="pages.page">
-      <field to="courses.course" name="course" rel="ManyToOneRel">4</field>
+   <object pk="101" model="pages.page">
+      <field to="courses.course" name="course" rel="ManyToOneRel">100</field>
       <field type="SlugField" name="slug">PageTestsIndexPage</field>
       <field type="TextField" name="name">testIndexPage</field>
       <field type="IntegerField" name="left">1</field>
       <field type="IntegerField" name="right">12</field>
    </object>
-   <object pk="6" model="pages.page">
-      <field to="courses.course" name="course" rel="ManyToOneRel">4</field>
+	<object pk="101" model="lesson.lesson">
+		<field type="TextField" name="content">PageTestsIndexPage</field>
+	</object>
+   <object pk="102" model="pages.page">
+      <field to="courses.course" name="course" rel="ManyToOneRel">100</field>
       <field type="SlugField" name="slug">PageTestsPage1</field>
       <field type="TextField" name="name">testPage1</field>
       <field type="IntegerField" name="left">2</field>
       <field type="IntegerField" name="right">3</field>
    </object>
-   <object pk="7" model="pages.page">
-      <field to="courses.course" name="course" rel="ManyToOneRel">4</field>
+	<object pk="102" model="lesson.lesson">
+		<field type="TextField" name="content">PageTestsPage1</field>
+	</object>
+   <object pk="103" model="pages.page">
+      <field to="courses.course" name="course" rel="ManyToOneRel">100</field>
       <field type="SlugField" name="slug">PageTestsPage2</field>
       <field type="TextField" name="name">testPage2</field>
       <field type="IntegerField" name="left">4</field>
       <field type="IntegerField" name="right">5</field>
    </object>
-   <object pk="8" model="pages.page">
-      <field to="courses.course" name="course" rel="ManyToOneRel">4</field>
+	<object pk="103" model="lesson.lesson">
+		<field type="TextField" name="content">PageTestsPage2</field>
+	</object>
+   <object pk="104" model="pages.page">
+      <field to="courses.course" name="course" rel="ManyToOneRel">100</field>
       <field type="SlugField" name="slug">PageTestsPage3</field>
       <field type="TextField" name="name">testPage3</field>
       <field type="IntegerField" name="left">6</field>
       <field type="IntegerField" name="right">9</field>
    </object>
-   <object pk="9" model="pages.page">
-      <field to="courses.course" name="course" rel="ManyToOneRel">4</field>
+	<object pk="104" model="lesson.lesson">
+		<field type="TextField" name="content">PageTestsPage3</field>
+	</object>
+   <object pk="105" model="pages.page">
+      <field to="courses.course" name="course" rel="ManyToOneRel">100</field>
       <field type="SlugField" name="slug">PageTestsPage4</field>
       <field type="TextField" name="name">testPage4</field>
       <field type="IntegerField" name="left">7</field>
       <field type="IntegerField" name="right">8</field>
    </object>
-   <object pk="10" model="pages.page">
-      <field to="courses.course" name="course" rel="ManyToOneRel">4</field>
+	<object pk="105" model="lesson.lesson">
+		<field type="TextField" name="content">PageTestsPage4</field>
+	</object>
+   <object pk="106" model="pages.page">
+      <field to="courses.course" name="course" rel="ManyToOneRel">100</field>
       <field type="SlugField" name="slug">PageTestsPage5</field>
       <field type="TextField" name="name">testPage5</field>
       <field type="IntegerField" name="left">10</field>
       <field type="IntegerField" name="right">11</field>
    </object>
+	<object pk="106" model="lesson.lesson">
+		<field type="TextField" name="content">PageTestsPage5</field>
+	</object>
 </django-objects>
