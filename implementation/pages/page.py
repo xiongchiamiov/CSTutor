@@ -80,6 +80,8 @@ def insertPageAfterNum(self, course, insertAfterNum):
 
 	self.save()
 
+	#print "debug 2.0" + Page.objects.filter(course__exact=self.course).get(slug=self.slug).lesson.content	
+
 	return self
 
 def insertPage(self, insertAfter):
@@ -138,7 +140,7 @@ def removePage(self):
 	for page in updateRight:
 		page.right -= 2
 		page.save()
-
+	
 	self.delete()
 	return self
 
@@ -157,9 +159,11 @@ def movePage(self, insertAfter):
 	1           page,page      ValidateTree == True
 	'''
 
+	#print "debug1.0 "+Page.objects.get(slug=self.slug).lesson.content
 	deletedpage = removePage(self)
+	#print "debug1.1 "+Page.objects.get(slug=self.slug).lesson.content
 	insertPage(self, insertAfter)
-
+	#print "debug1.2 "+Page.objects.get(slug=self.slug).lesson.content
 	return self
 
 def movePageToParent(self, newParent):

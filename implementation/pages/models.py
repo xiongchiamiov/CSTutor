@@ -22,7 +22,7 @@ class Page(models.Model):
 	A page contains links to other pages based on the Course flow.
 	'''
 	course = models.ForeignKey(Course, related_name='pages')
-	slug = models.SlugField(unique=True)
+	slug = models.SlugField(unique=False)
 	name = models.TextField()
 	left = models.IntegerField(db_index=True)
 	right = models.IntegerField(db_index=True)

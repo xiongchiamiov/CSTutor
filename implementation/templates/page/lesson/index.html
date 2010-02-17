@@ -1,12 +1,12 @@
 {% extends "base.html" %} 
 
 {% block content %} 
-Title of course:<br/>
-{{course}}
-<br/><br/>
-Title of lesson:<br/>
-{{pid}}
-<br/><br/>
-Content of lesson:<br/>
-{{content|safe}}
+
+<div id="lesson_title" style="text-align: center; font-size: x-large">
+{{lesson_title}}<br/>
+</div>
+
+<div id="lesson_content" style="text-align: left; font-size: medium">
+<br/><br/>{{content|safe}}
+</div>
 {% endblock %} 

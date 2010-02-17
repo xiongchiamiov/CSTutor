@@ -34,13 +34,20 @@ def create_lesson(request, course_slug, page_slug = "forloops"):
 			 'page_slug':page_slug, \
 			 'pid':lesson.name, 'content':lesson.content, 'new':True})
 
-def show_lesson(request, course, page_slug):
+def show_lesson(request, course_slug, page_slug, lessonPage):
   # To get lessonConent now, you need to retreieve the page from the database, cast it to a lesson, and get the "text" attribute
 	#shouldn't have to try/except because previous calls should guarentee the page exists	
-	content = Lesson.objects.get(slug=page_slug).content
+	
+	#content = Lesson.objects.get(slug=page_slug).content
+	
+	#Course.objects.get(slug=course_slug).pages.get(
+	
+	content = lessonPage.content
+	title = lessonPage.name
+	
 	return master_rtr(request, 'page/lesson/index.html', \
-			{'course':course, 'course_slug':course, \
-			 'page_slug':page_slug, 'pid':page_slug, 'content':content})
+			{'course_slug':course_slug, 'page_slug':page_slug, 
+			 'content':content, 'lesson_title':title})
 
 def edit_lesson(request, course, page_slug):
 	print "EDIT"
