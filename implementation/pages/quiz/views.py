@@ -26,12 +26,16 @@ def create_quiz(request, course_slug, page_slug):
 	print "Create Quiz\n" #TODO
 	#quiz = Quiz.createQuiz("New Quiz", False)
 	#print("quiz" + quiz.text)
-	course = Course.objects.get(slug=course_slug)
-	name = "New Quiz"
-	newQuiz = Quiz(course=course, name=name, slug=slugify(name))
-	insertChildPage(newQuiz, Page.objects.get(slug=page_slug))
 	
-	return master_rtr(request, 'quiz/create-quiz.html', {'courses': Course.objects.all()})
+	if request.method == "POST" and "Create Quiz" in request.POST:
+		print "Creating quiz name: " 
+		course = Course.objects.get(slug=course_slug)
+		name = request.POST['name']
+		newQuiz = Quiz(course=course, name=name, slug=slugify(name), text=name)
+		insertChildPage(newQuiz, Page.objects.get(slug=page_slug))
+		return edit_quiz(request, course_slug, slugify(name))
+	else:
+		return master_rtr(request, 'quiz/create-quiz.html')
 
 def show_quiz(request, course, page_slug):
 	''' show_Quiz View
