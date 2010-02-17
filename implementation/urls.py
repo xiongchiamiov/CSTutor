@@ -32,7 +32,6 @@ urlpatterns += patterns('',
 	(r'^/?$', 'home.views.index'),
    #(r'^profile/stats', 'stats.views.show_user_stats'),
 	(r'^profile', 'users.views.show_profile'),
-	(r'^stats', 'stats.views.display_all_stats'),
 	(r'^create-course', 'courses.views.create_course'),
 	(r'^join-course', 'courses.views.join_course_form'),
 
