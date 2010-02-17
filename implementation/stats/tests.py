@@ -29,6 +29,7 @@ class StatsTests(TestCase):
 		Tests the add stat function.
 		@precondition The user and quiz must exist, 
 		and the user must be enrolled in the course that has the quiz
+		@precondition.
 		@postcondition A new stat is added for the given data
 		'''
 		user = User.objects.get(username = 'fakeuser')
@@ -47,9 +48,3 @@ class StatsTests(TestCase):
 		dbTestStat = Stat.objects.get(id=testStat.id)
 		self.assertEquals(dbTestStat,testStat)
 
-		
-
-
-
-
-	
