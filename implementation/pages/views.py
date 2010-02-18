@@ -116,14 +116,35 @@ def move_page(request, course_slug, page_slug):
 			#verify that the refPage was found
 			if refPage == None:
 				return HttpResponse("error, the previously selected page somehow is no longer in the list of pages in this course")
+			
+			#movePage should be passed lessons or quizzes, 
+			#cast refPage and data['page'] appropriately
+			p1 = data['page']
+			try: #to cast to a lesson
+				p1 = p1.lesson
+			except Lesson.DoesNotExist:
+				try: #to cast to a quiz 
+					p1 = p1.quiz
+				except Quiz.DoesNotExist:
+					print "warning -- move_page view, page neither quiz nor lesson"
+
+			p2 = refPage
+			try: #to cast to a lesson
+				p2 = p2.lesson
+			except Lesson.DoesNotExist:
+				try: #to cast to a quiz 
+					p2 = p2.quiz
+				except Quiz.DoesNotExist:
+					print "warning -- move_page view, page neither quiz nor lesson"
 
 			if request.POST['siblingOrChild'] == "sibling":
 				#from pdb import set_trace; set_trace()
 				#move page to be the first sibling of refPage
-				movePage(data['page'], refPage)
+				movePage(p1, p2)
 			else:
 				#move the page to be the first child of refPage
-				movePageToParent(data['page'], refPage)
+				movePageToParent(p1, p2)
+
 			data['redirectUrl'] = "/"
 			data['redirectText'] = "the home page"
 			return master_rtr(request, 'redirect.html', data)

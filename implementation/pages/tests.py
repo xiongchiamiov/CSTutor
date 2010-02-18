@@ -9,6 +9,7 @@ from django.test.client import Client
 from courses.models import Course
 from pages.models import Page
 from pages.page import *
+from lesson.models import Lesson
 
 class PageTests(TestCase):
 	''' Unit tests and other tests on the Page class and it's related functions
@@ -161,4 +162,25 @@ class PageTests(TestCase):
 		'''
 		Tests moving a page from one part of the tree to another
 		'''
+		#RUSS
+		#test that a move doesn't break page->lesson linkage
+		#currently moving a page will disassociate it from its lesson or quiz
+		pageToMove = Lesson.objects.get(slug='PageTestsPage5')
+		newSibling = Lesson.objects.get(slug='PageTestsPage2')
+		r = movePage(pageToMove, newSibling)
+
+		#test the return of movePage
+		try:
+			r.lesson
+		except:
+			print "testMovePage page isn't a lesson"
+			self.assertTrue(False)#any exception should indicate failure
+
+		#get a new copy of pageToMove from the database and test it
+		r = Page.objects.get(slug='PageTestsPage5')
+		try:
+			r.lesson
+		except:
+			self.assertTrue(False)#any exception should indicate failure
+		
 		self.assertTrue(True)

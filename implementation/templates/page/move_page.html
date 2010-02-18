@@ -1,0 +1,20 @@
+{% extends "base.html" %} 
+
+{% block content %} 
+You have selected to move the page: {{page.name}}<br/>
+From the course: {{course.name}}<br/>
+<br/>
+Select a page from the list below to indicate where to move this page:<br/><br/>
+<form method="POST" action="">
+<select name="referencePageID" size="10">
+	{% for p in pagelist %}
+		<option value="{{p.slug}}">{{p.name}}</option>
+	{% endfor %}
+</select>
+<br/>
+Choose whether to move the page to be the next sibling or the first child of the selected page:<br/>
+Sibling <input type="radio" name="siblingOrChild" value="sibling" checked>
+Child <input type="radio" name="siblingOrChild" value="child">
+<input type="submit" value="Move Page">
+</form>
+{% endblock %} 
