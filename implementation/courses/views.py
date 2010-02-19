@@ -78,16 +78,8 @@ def show_roster(request, course_slug):
 		                   'course_slug': course.slug })
 
 def show_course(request, course_slug):
-	''' Handles a naughty user who tries to go to the course without a page 
-	    by sending them to the index page
-	'''
+	''' Shows the main page of a course. '''
 	return show_page(request, course_slug, course_slug)
-	try:
-		Course.objects.get(slug=course_slug)
-	except:
-		return master_rtr(request, '404.html')
-	else:
-		return master_rtr(request, 'index.html', {'course_slug': course_slug})
 
 @login_required
 def add_user(request, course_slug):
