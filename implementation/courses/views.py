@@ -53,8 +53,8 @@ def show_roster(request, course_slug):
 	post: if user.manage then show(roster/index.html) else show(roster/invalid_permissions.html)
 	'''
 	# It is better to get the enrollment by this method, because in this case
-   # the database searches using Primary Keys, which are indexed, instead of 
-   # username, which is not indexed. -mgius
+	# the database searches using Primary Keys, which are indexed, instead of 
+	# username, which is not indexed. -mgius
 	#enrollment = Enrollment.objects.get(user__username__exact=request.user.username, course__slug__exact=course_slug)
 	
 	try:
@@ -68,18 +68,18 @@ def show_roster(request, course_slug):
 		enrollments = course.roster.all();
 
 		return master_rtr(request, 'roster/index.html', \
-				            {'course': course, \
-								 'enrollments': enrollments, \
-								 'course_slug': course.slug })
+		                  {'course': course, \
+		                   'enrollments': enrollments, \
+		                   'course_slug': course.slug })
 
 	else:
 		return master_rtr(request, 'roster/invalid_permissions.html', \
-				            {'course': course, \
-								 'course_slug': course.slug })
+		                  {'course': course, \
+		                   'course_slug': course.slug })
 
 def show_course(request, course_slug):
 	''' Handles a naughty user who tries to go to the course without a page 
-		 by sending them to the index page
+	    by sending them to the index page
 	'''
 	return show_page(request, course_slug, course_slug)
 	try:
@@ -107,7 +107,6 @@ def add_user(request, course_slug):
 		
 			#if the command was an add try to add the user
 			if request.POST['command'] == 'add':
-			
 				usr = request.POST['username']
 
 				try:
@@ -118,28 +117,27 @@ def add_user(request, course_slug):
 				except User.DoesNotExist:
 					#if the user does not exist print error message
 					return master_rtr(request, 'adduser/failed.html', \
-							            {'course_slug':course_slug, \
-											 'course': course})
-			
+					                  {'course_slug':course_slug, \
+					                   'course': course})
+				
 				#show the roster screen
 				return HttpResponseRedirect(reverse('courses.views.show_roster', args=[course_slug]))
 
 			elif request.POST['command'] == 'search':
 				#if the command was a search, search for the user
-	
+				
 				firstname = request.POST['firstname'].strip()
 				lastname = request.POST['lastname'].strip()
 
 				users = User.objects.filter(first_name = firstname, last_name = lastname)
 
 				return master_rtr(request, 'adduser/search.html', \
-						            {'course_slug': course_slug, \
-										 'course':course, \
-										 'users':users, \
-										 'firstname': firstname, \
-										 'lastname': lastname})
+				                  {'course_slug': course_slug, \
+				                   'course':course, \
+				                   'users':users, \
+				                   'firstname': firstname, \
+				                   'lastname': lastname})
 		else:
-			
 			#display the adduser page
 			return master_rtr(request,'adduser/index.html', {'course_slug': course_slug, 'course': course, 'url': request.path})
 	else:
@@ -153,7 +151,7 @@ def update_roster(request, course_slug):
 		Updates the roster according to the checkboxes on the page
 		pre:none
 		post: for all enrollments in db changed(enrollment) in db' 
-				if not removing then db.length = db'.length
+		      if not removing then db.length = db'.length
 	'''
 
 	course = Course.objects.get(slug=course_slug)
@@ -165,7 +163,7 @@ def update_roster(request, course_slug):
 		statsList = request.POST.getlist('stats')
 		removeList = request.POST.getlist('remove')
 		enrollments = Enrollment.objects.select_related(depth=1).\
-							                  filter(course__slug__exact=course_slug)
+		                                 filter(course__slug__exact=course_slug)
 
 		#for each enrollment
 		for enrollment in enrollments:
@@ -213,8 +211,8 @@ def update_roster(request, course_slug):
 				#if the remove checkbox was checked attempt to remove the user
 				try:
 					# You've already got the course and user objects through the 
-		         # enrollment object. -mgius
-		         #user = User.objects.get(username=enrollment.user.username)
+					# enrollment object. -mgius
+					#user = User.objects.get(username=enrollment.user.username)
 					#course = Course.objects.get(slug=course_slug)
 					removeUser(enrollment.course,enrollment.user)
 				except User.DoesNotExist:
@@ -222,17 +220,17 @@ def update_roster(request, course_slug):
 			except ValueError:
 				pass
 		return HttpResponseRedirect(reverse('courses.views.show_roster', \
-					                           args=[course_slug]))
+		                                    args=[course_slug]))
 	else:
 		return master_rtr(request, 'roster/invalid_permissions.html', \
-				            {'course': course, 'course_slug': course.slug})
+		                  {'course': course, 'course_slug': course.slug})
 
 def cancel_add(request, course_slug):
 	'''
 	Redirects to the roster screen when viewing the add user page
 	'''
 	return HttpResponseRedirect(reverse('courses.views.show_roster', \
-				                           args=[course_slug]))
+	                                    args=[course_slug]))
 
 @login_required
 def manage_pending_requests(request, course_slug):
@@ -240,13 +238,13 @@ def manage_pending_requests(request, course_slug):
 	Accepts and denies users in the pending request list for a roster
 	pre: user.isLoggedIn = True
 	post: (for username in acceptList
-				course.enrollments.username.view = True
-			and
-			course.enrollments.length' = course.enrollments.length)
-			(for username in denyList
-				course.enrollments.remove(username)
-			and
-			course.enrollments.length' = course.enrollments.length - denyList.length)
+	         course.enrollments.username.view = True
+	      and
+	      course.enrollments.length' = course.enrollments.length)
+	      (for username in denyList
+	         course.enrollments.remove(username)
+	      and
+	      course.enrollments.length' = course.enrollments.length - denyList.length)
 	'''
 	
 	course = Course.objects.get(slug=course_slug)
@@ -273,11 +271,11 @@ def manage_pending_requests(request, course_slug):
 				pass
 	
 		return HttpResponseRedirect(reverse('courses.views.show_roster', \
-					                           args=[course_slug]))
+		                                    args=[course_slug]))
 
 	else:
 		return master_rtr(request, 'roster/invalid_permissions.html', \
-				{'course': course, 'course_slug': course.slug})
+		                  {'course': course, 'course_slug': course.slug})
 
 def join_course_form(request):
 	'''
@@ -295,7 +293,7 @@ def join_course_form(request):
 			courses = Course.objects.exclude(private=True)
 
 	return master_rtr(request, 'courses/join_course_form.html', \
-			{'join_courses' : courses})
+	                  {'join_courses' : courses})
 
 #@login_required //login is not required to join a course
 def join_course_request(request):
