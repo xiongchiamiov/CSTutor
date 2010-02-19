@@ -3,6 +3,7 @@ This file contains tests for the users package.
 
 @author John Hartquist
 @author Russell Mezzetta
+@author James Pearson
 """
 
 import unittest
@@ -15,8 +16,8 @@ class UserTests(unittest.TestCase):
 	@author John Hartquist
 	@author Russell Mezzetta
 	This class deals with all of the test cases regarding 'users'
-        We will be using 'Client()' objects to simulate client requests
-        for logging in and out, editing and viewing user profiles.
+	We will be using 'Client()' objects to simulate client requests
+	for logging in and out, editing and viewing user profiles.
 	
 	CLASS TEST PLAN
 	The tests will be called by the django testing framework
@@ -33,24 +34,24 @@ class UserTests(unittest.TestCase):
 	def testLogin(self):
 		'''
 		Tests that a user can login successfully
-                
-                case#            input        expected         output    remark
-                -----            -----        --------         ------    ------
-                1                status_code  200              200       posts a login request
+		
+		case#            input        expected         output    remark
+		-----            -----        --------         ------    ------
+		1                status_code  200              200       posts a login request
 		'''
 		username = 'jhartquist'
 		password = 'password'
 		response = self.client.post("/login/", {'username': username,
-                                                'password': password})
+		                                        'password': password})
 		self.failUnlessEqual(response.status_code, 200)
 
 	def testLogout(self):
 		'''
 		Tests that a user can logout successfully
-                
-                case#            input        expected         output    remark
-                -----            -----        --------         ------    ------
-                2                status_code  200              200       posts a logout request
+		
+		case#            input        expected         output    remark
+		-----            -----        --------         ------    ------
+		2                status_code  200              200       posts a logout request
 		'''
 		username = 'jhartquist'
 		password = 'password'
@@ -62,14 +63,14 @@ class UserTests(unittest.TestCase):
 		Tests that a user can view their profile
 		
 		case#            input        expected         output    remark
-        -----            -----        --------         ------    ------
-        1                status_code  200              200       shows a users profile
-        
+		-----            -----        --------         ------    ------
+		1                status_code  200              200       shows a users profile
+		
 		'''
 		username = 'jhartquist'
 		password = 'password'
 		self.client.post("/login/", {'username': username,
-                                     'password': password})
+		                             'password': password})
 		response = self.client.get("/profile/")
 		self.failUnlessEqual(response.status_code, 200)
 		
@@ -78,10 +79,10 @@ class UserTests(unittest.TestCase):
 		Tests that a user can change their e-mail address
 		
 		case#            input                         expected      output   remark
-        -----            -----                         --------      ------   ------
-        1                email='anemail@nothing'       1             1        valid e-mail check
-        2                email='jhartqui@calpoly.edu'  0             0        success
-        
+		-----            -----                         --------      ------   ------
+		1                email='anemail@nothing'       1             1        valid e-mail check
+		2                email='jhartqui@calpoly.edu'  0             0        success
+		
 		'''
 		badEmail = "anemail@nothing"
 		goodEmail = "jhartqui@calpoly.edu"
@@ -89,7 +90,7 @@ class UserTests(unittest.TestCase):
 		password = 'password'
 		
 		self.client.post("/login/", {'username': username,
-                                     'password': password})
+		                             'password': password})
 		
 		response = self.client.post("/profile/", {'form': "Change E-mail", 'email': badEmail })
 		self.failIfEqual(response.content.find("Invalid E-mail Address"), -1)
@@ -98,34 +99,34 @@ class UserTests(unittest.TestCase):
 		'''
 		@author Russell Mezzetta
 		Tests the registerNewUser helper function
-		                
-      case#		input        			expected output    	remark
-      -----    -----        			---------------    	------
-      1        username=""  			3                  	"all empty string params"
-			   pass=""
-			   pass2=""
-			   email=""
-			
-      2       	username="NewUser"  	4                		"just a username"
-				pass=""
-				pass2=""
-				email=""
-      
-      3       	username="NewUser"  	2                		"mismatched passwords"
-				pass="pass1"
-				pass2="pass2"
-				email=""
-      
-	  4       	username="NewUser"  	0                		"valid user registration"
-				pass="password"
-				pass2="password"
-				email="newuser@email.com"
-      
-	  5       	username="NewUser"  	1                		"try to add an already-existing username"
-				pass="something"
-				pass2="something"
-				email="other@email.com"
-				
+		
+		case#    input                 expected output     remark
+		-----    -----                 ---------------     ------
+		1        username=""           3                   "all empty string params"
+		         pass=""
+		         pass2=""
+		         email=""
+		
+		2        username="NewUser"    4                   "just a username"
+		         pass=""
+		         pass2=""
+		         email=""
+		
+		3        username="NewUser"    2                   "mismatched passwords"
+		         pass="pass1"
+		         pass2="pass2"
+		         email=""
+		
+		4        username="NewUser"    0                   "valid user registration"
+		         pass="password"
+		         pass2="password"
+		         email="newuser@email.com"
+		
+		5        username="NewUser"    1                   "try to add an already-existing username"
+		         pass="something"
+		         pass2="something"
+		         email="other@email.com"
+		
 		'''
 		#pass in all empty strings
 		r = registerNewUser("","","","")
@@ -182,5 +183,3 @@ class UserTests(unittest.TestCase):
 		response = self.client.post('/login/', {'username': testUser, "password": ""})
 		self.failIfEqual(response.content.find("CSTutor Login"), -1)
 		self.failUnlessEqual(response.status_code, 200)
-
-
