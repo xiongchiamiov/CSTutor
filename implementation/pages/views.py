@@ -21,6 +21,7 @@ Contains the show_page function
 
 @author Evan Kleist
 @author Russell Mezzetta
+@author James Pearson
 '''
 
 def show_page(request, course_slug, page_slug):
@@ -40,13 +41,13 @@ def show_page(request, course_slug, page_slug):
 			e = page.course.roster.get(user=request.user)
 			if not e.view:
 				return master_rtr(request, 'page/lesson/denied.html', \
-						            {'course':course,
-										 'enrolled':True})
+				                  {'course':course,
+				                   'enrolled':True})
 		except ObjectDoesNotExist:
 			# user is not enrolled in this course
 			return master_rtr(request, 'page/lesson/denied.html', \
-					            {'course':course,
-									 'enrolled':False})
+			                  {'course':course,
+			                   'enrolled':False})
 	#case the page to a lesson or quiz then call show on it
 	try:
 		page = page.lesson
@@ -151,4 +152,3 @@ def move_page(request, course_slug, page_slug):
 			#return master_rtr(request, 'page/move_page_success.html')
 
 	return master_rtr(request, 'page/move_page.html', data)
-
