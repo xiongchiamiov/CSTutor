@@ -40,6 +40,10 @@ def getPrevPage(self):
 	                   .filter(left__lt=self.left).order_by('-left')[0]
 	except KeyError:
 		p = None
+	except IndexError:
+		#happens if filter returns no objects which happens when called on the
+		#top-most page of a course
+		p = None
 	return p
 
 def insertPageAfterNum(self, course, insertAfterNum):

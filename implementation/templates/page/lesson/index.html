@@ -9,4 +9,11 @@
 <div id="lesson_content" style="text-align: left; font-size: medium">
 <br/><br/>{{content|safe}}
 </div>
+
+<div id="lesson_navigation">
+<form name="lesson_view" method="POST">
+<input type="submit" name="goToPrevPage" value="Previous"/>
+<input type="submit" name="goToNextPage" value="Next"/>
+<form/>
+</div>
 {% endblock %} 

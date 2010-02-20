@@ -51,16 +51,17 @@
 	});
 </script>
 <form method="post" action="">
-Lesson Name: <input type="text" name="lessonname" value="{{pid}}"/> <br />
-Course: <b>{{course}}</b>
+Lesson Name: <input type="text" name="lessonname" value="{{lesson.slug}}"/> <br />
+Course: <b>{{lesson.course.name}}</b>
 <br />
 <br />
 
 <textarea name="content" style="width:100%">
-{{content}}
+{{lesson.content}}
 </textarea>
 <input type="submit" name="Save" value="Save">
 <input type="submit" name="Remove" value="Remove Lesson">
+<input type="submit" name="Move" value="Move Lesson">
 </form>
 	
 	

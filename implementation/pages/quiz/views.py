@@ -87,6 +87,9 @@ def edit_quiz(request, course_slug, page_slug):
 			removeQuiz(quiz)
 			return HttpResponseRedirect(reverse('courses.views.show_course', args=[course_slug]))
 
+		if "Move" in request.POST:
+			return HttpResponseRedirect(reverse('pages.views.move_page', args=[course_slug, page_slug]))
+
 		if "NewMultQuestion" in request.POST:
 			addMultipleChoiceQuestion(quiz)
 			return HttpResponseRedirect(request.path)
