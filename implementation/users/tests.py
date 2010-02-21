@@ -43,7 +43,7 @@ class UserTests(unittest.TestCase):
 		password = 'password'
 		response = self.client.post("/login/", {'username': username,
 		                                        'password': password})
-		self.failUnlessEqual(response.status_code, 200)
+		self.failUnlessEqual(response.status_code, 302)
 
 	def testLogout(self):
 		'''
@@ -165,15 +165,15 @@ class UserTests(unittest.TestCase):
 		r = registerNewUser("NewUser", "pass1", "pass1", "firstname","","")
 		self.failUnlessEqual(r, 5)
 		#try mismatched passwords
-		r = registerNewUser("NewUser", "pass1", "pass2", "")
+		r = registerNewUser("NewUser", "pass1", "pass2", "first", "last", "")
 		self.failUnlessEqual(r, 2)
 		#add a user
-		r = registerNewUser("NewUser", "password", "password", "newuser@email.com")
+		r = registerNewUser("NewUser", "password", "password", "first", "last", "newuser@email.com")
 		self.failUnlessEqual(r, 0)
 		#check that user is in the Users list
 		
 		#try to add a user with the same name as another user(from previous successful test)
-		r = registerNewUser("NewUser", "something", "something", "other@email.com")
+		r = registerNewUser("NewUser", "something", "something", "first", "last", "other@email.com")
 		self.failUnlessEqual(r, 1)
 
 	def testLoginWrapper(self):
@@ -187,12 +187,12 @@ class UserTests(unittest.TestCase):
 		'''
 		testUser = "testuserLW"
 		testPass = "password"
-		registerNewUser(testUser, testPass, testPass, "email")
+		registerNewUser(testUser, testPass, testPass, "first", "last", "email")
 
 		#valid login
 		response = self.client.post('/login/', {'username': testUser, 'password': testPass})
 		self.failUnlessEqual(response.content.find("CSTutor Login"), -1)
-		self.failUnlessEqual(response.status_code, 200)
+		self.failUnlessEqual(response.status_code, 302)
 		
 		#invalid username
 		response = self.client.post('/login/', {'username': "defnotauser", "password": "pass"})
