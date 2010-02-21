@@ -37,6 +37,10 @@ def create_lesson(request, course_slug, page_slug = "forloops"):
 			 'pid':lesson.name, 'content':lesson.content, 'new':True})
 
 def show_lesson(request, course_slug, page_slug, lessonPage):
+	'''
+	@author Russell Mezzetta
+	This view displays a lesson to the user
+	'''
   # To get lessonConent now, you need to retreieve the page from the database, cast it to a lesson, and get the "text" attribute
 	#shouldn't have to try/except because previous calls should guarentee the page exists	
 	
@@ -63,6 +67,11 @@ def show_lesson(request, course_slug, page_slug, lessonPage):
 			 'content':content, 'lesson_title':title})
 
 def edit_lesson(request, course_slug, page_slug):
+	'''
+	@author Russell Mezzetta
+	@author John Hartquist
+	This view displays the lesson editing page
+	'''
 	print "EDIT"
 	if request.method == "POST":
 		if "Save" in request.POST:

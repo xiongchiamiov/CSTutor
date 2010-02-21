@@ -25,6 +25,11 @@ Contains the show_page function
 '''
 
 def show_page(request, course_slug, page_slug):
+	'''
+	This "view" does error checking to verify that the input course/page exist
+	Then it checks that the user has view permissions if they are required
+	Finally it invokes the lesson or quiz view depending on the type of page
+	'''
 	#check if the course is a real course in the database	
 	try: 
 		course = Course.objects.get(slug=course_slug)
@@ -65,14 +70,26 @@ def show_page(request, course_slug, page_slug):
 def edit_page(request, course_slug, page_slug):
 	#check if the course is a real course in the database	
 	try: 
-		Course.objects.get(slug=course_slug)
+		c = Course.objects.get(slug=course_slug)
 	except Course.DoesNotExist:
 		return HttpResponse("ERROR: BAD URL: The course: %s does not exist" % (course_slug))
 	#check if the page is a real page in the database
 	try:
-		page = Page.objects.get(slug=page_slug)
+		page = c.pages.get(slug=page_slug)
 	except Page.DoesNotExist:
 		return HttpResponse("ERROR: BAD URL: The course: %s does not contain the page: %s." % (course_slug, page_slug))
+
+	#check that user has permissions (edit)
+	if not request.user.is_authenticated():
+		return HttpResponse("ERROR: User must be logged in to edit")
+	try:
+		#get user's enrollment to check permissions
+		e = request.user.enrollments.get(course = c)
+	except Enrollment.DoesNotExist:
+		return HttpResponse("Error: User: %s is not enrolled in course: %s" % (request.user.username, c.name))
+	if not e.edit:
+		return HttpResponse("Error: User: %s does not have edit permissions on course: %s" % (request.user.username, c.name))
+
 	#cast the page to a lesson or quiz then call show on it
 	try:
 		page = page.lesson
@@ -88,8 +105,7 @@ def edit_page(request, course_slug, page_slug):
 def move_page(request, course_slug, page_slug):
 	'''
 	@author Russell Mezzetta
-	This view allows instructors (perms not yet enforced) to move pages around
-	in a course.
+	This view allows instructors to move pages around	in a course.
 	'''
 	#check if the course is a real course in the database 
 	data = {}
@@ -107,7 +123,7 @@ def move_page(request, course_slug, page_slug):
 	#TODO CHECK USER FOR EDIT PERMISSIONS, redirect to error page if invalid user
 
 	#save a list of all pages in the course EXCEPT the given page
-	data['pagelist'] = data['course'].pages.all().exclude(slug=page_slug)
+	data['pagelist'] = data['course'].pages.all().exclude(slug=page_slug).order_by('left')
 
 	if request.method == "POST":
 		if "referencePageID" in request.POST and "siblingOrChild" in request.POST:
