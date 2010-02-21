@@ -10,6 +10,7 @@ import unittest
 from django.test.client import Client
 from django.contrib.auth.models import User
 from users.user import registerNewUser, loginWrapper
+from django.contrib.auth import authenticate, login, logout
 
 class UserTests(unittest.TestCase):
 	'''
@@ -60,6 +61,7 @@ class UserTests(unittest.TestCase):
 
 	def testShowProfile(self):
 		'''
+		@author John Hartquist
 		Tests that a user can view their profile
 		
 		case#            input        expected         output    remark
@@ -76,6 +78,7 @@ class UserTests(unittest.TestCase):
 		
 	def testUpdateEmail(self):
 		'''
+		@author John Hartquist
 		Tests that a user can change their e-mail address
 		
 		case#            input                         expected      output   remark
@@ -129,21 +132,21 @@ class UserTests(unittest.TestCase):
 		
 		'''
 		#pass in all empty strings
-		r = registerNewUser("","","","")
+		r = registerNewUser("", "", "","","","")
 		self.failUnlessEqual(r,3)
 		#try a username no password
-		r = registerNewUser("NewUser", "", "", "")
+		r = registerNewUser("First", "Last", "NewUser", "", "", "")
 		self.failUnlessEqual(r, 4)
 		#try mismatched passwords
-		r = registerNewUser("NewUser", "pass1", "pass2", "")
+		r = registerNewUser("First", "Last", "NewUser", "pass1", "pass2", "")
 		self.failUnlessEqual(r, 2)
 		#add a user
-		r = registerNewUser("NewUser", "password", "password", "newuser@email.com")
+		r = registerNewUser("First", "Last", "NewUser", "password", "password", "newuser@email.com")
 		self.failUnlessEqual(r, 0)
 		#check that user is in the Users list
 		
 		#try to add a user with the same name as another user(from previous successful test)
-		r = registerNewUser("NewUser", "something", "something", "other@email.com")
+		r = registerNewUser("First", "Last", "NewUser", "something", "something", "other@email.com")
 		self.failUnlessEqual(r, 1)
 
 	def testLoginWrapper(self):
@@ -157,7 +160,9 @@ class UserTests(unittest.TestCase):
 		'''
 		testUser = "testuserLW"
 		testPass = "password"
-		registerNewUser(testUser, testPass, testPass, "email")
+		testFirst = "firstName"
+		testLast = "lastName"
+		registerNewUser(testFirst, testLast, testUser, testPass, testPass, "email")
 
 		#valid login
 		response = self.client.post('/login/', {'username': testUser, 'password': testPass})
