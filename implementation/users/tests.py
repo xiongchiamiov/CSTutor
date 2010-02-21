@@ -43,7 +43,7 @@ class UserTests(unittest.TestCase):
 		password = 'password'
 		response = self.client.post("/login/", {'username': username,
 		                                        'password': password})
-		self.failUnlessEqual(response.status_code, 200)
+		self.failUnlessEqual(response.status_code, 302)
 
 	def testLogout(self):
 		'''
@@ -162,7 +162,7 @@ class UserTests(unittest.TestCase):
 		#valid login
 		response = self.client.post('/login/', {'username': testUser, 'password': testPass})
 		self.failUnlessEqual(response.content.find("CSTutor Login"), -1)
-		self.failUnlessEqual(response.status_code, 200)
+		self.failUnlessEqual(response.status_code, 302)
 		
 		#invalid username
 		response = self.client.post('/login/', {'username': "defnotauser", "password": "pass"})
