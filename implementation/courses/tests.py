@@ -6,6 +6,7 @@ All the tests get run by the django test runner.
 @author Mark Gius
 @author James Pearson
 @author Matthew Tytel
+@author John Hartquist
 """
 
 from django.test import TestCase
@@ -219,7 +220,7 @@ class CourseViewTests(TestCase):
 		self.failUnlessEqual(enrollment.manage, True, 'manage should be true but was ' + str(enrollment.manage))
 		self.failUnlessEqual(enrollment.edit, True, 'edit should be true but was ' + str(enrollment.edit))
 
-	def testAccpetUser(self):
+	def testAcceptUser(self):
 		'''
 		Tests that a user who is enrolled can access a private course, and a 
 		student who is not enrolled cannot access a private course
@@ -331,6 +332,31 @@ class CourseViewTests(TestCase):
 
 		self.failUnlessEqual(userExists, False, 'User should not exist in the enrollment list')
 
+	def testAddAnonUser(self):
+		'''
+		@author John Hartquist
+		Tests that an anonymous user can join a public course
+		
+		case#      inputs                                ouputs                            
+		-----      ------                                ------                             
+		 1          courseid=101                         content includes                   
+		            not logged in
+		            session['anonCourses'] is empty      "You have been temporarily added"
+		                                                 course in session['anonCourses']   
+		                              
+		 2          courseid=101						 content includes
+		            not logged in                        "You are already enrolled in.."
+		            session['anonCourses'] includes      no changes are made to session
+		            course 101
+		            
+		'''
+		courseslug = "PageViewsPublicCourse" #100 = private, #101 = public
+		response = self.client.post('/submit_join_course_request/', {'courseid': 101 })
+		self.failIfEqual(response.content.find("You have been temporarily added to"), -1)
+		
+		response = self.client.post('/submit_join_course_request/', {'courseid':101 })
+		 
+		self.failIfEqual(response.content.find("You are already enrolled"), -1)
 # I don't know why, but for some reason join_course_request is returning a 
 # 302.  Why?
 #	def testPrivateEnrollment(self):
