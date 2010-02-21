@@ -309,7 +309,7 @@ def join_course_request(request):
 	else:
 		#anonymous user is joining course
 		if "anonCourses" in request.session:
-			print(request.session['anonCourses'])
+			
 			if course in request.session['anonCourses']:
 				message = "You are already enrolled in %s" % course
 			else:
@@ -320,7 +320,7 @@ def join_course_request(request):
 				print(request.session['anonCourses'])
 		else:
 			request.session['anonCourses'] = [course]
-			message = "First anon course"
+			message = "You have been temporarily added to %s"
 		
 		user = "Anonymous user"
 		
