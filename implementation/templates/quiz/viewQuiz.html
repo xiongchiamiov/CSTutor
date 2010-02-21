@@ -3,7 +3,7 @@
 
 {% block content %}
 <center><b><font size="4">{{quizTitle}}</font></b></center>
-<form name="submitQuiz" action="{% url pages.quiz.views.submitQuiz course_slug page_slug %}" method="post">
+<form name="sumitQuiz" action="{% url pages.quiz.views.submitQuiz course_slug page_slug %}" method="post">
 <table>
 {% for q in questions %}
 	{% if q.multiplechoicequestion %}
@@ -14,7 +14,7 @@
 	        {% for a in q.multiplechoicequestion.answers.all %}
 	        <tr>
 	                <td></td>
-	                <td><input type="radio" name="mcq{{q.multiplechoicequestion.order}}"/></td>
+	                <td><input type="radio" name="mcq{{q.multiplechoicequestion.order}}" value="{{a.order}}" /></td>
 	                <td>{{a.text}}</td>
 	        </tr>
 		{% endfor %}

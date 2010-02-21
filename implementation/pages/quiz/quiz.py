@@ -11,6 +11,7 @@ from question.models import *
 from question.question import isMultipleChoiceQuestion
 from question.question import removeQuestion
 from pages.page import removePage
+from stats.models import Stat
 
 #def createQuiz(name):
 	#return Quiz(text=name)
@@ -112,3 +113,29 @@ def reorderQuestions(self):
 	if (validateQuestionOrder(self)):
 		return 0
 	return -1
+
+def scoreQuiz(self, request, course_slug, quiz_slug):
+	'''
+		Takes a quiz and a request. Pulls the submitted answers from 
+		the form contained in the request and compares it to the 
+		correct answers specified in the quiz. Generates a statistic 
+		for a quiz, adds it to the database and returns their score.
+	'''
+	questions = self.questions.all()
+	course = Course.objects.get(slug=course_slug)
+	score = 0
+
+	for q in questions:
+		if (isMultipleChoiceQuestion(q)):
+			q = q.multiplechoicequestion
+			theirAnswer = request.POST['mcq%s' % q.order]
+			if (q.answers.get(order=theirAnswer).correct):
+				score = score + 1
+		else:
+			q = q.codequestion
+			print "Grade multiple choice question"
+
+	if (not request.user.is_anonymous()):
+		Stat.CreateStat(course, self, request.user, score)
+	
+	return score

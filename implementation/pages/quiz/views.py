@@ -56,9 +56,17 @@ def submitQuiz(request, course_slug, page_slug):
 		This view will submit a quiz and create a statistic in the database. It will give the user
 		their score and then direct the user to the appropriate path
 	'''
+	quiz = Quiz.objects.get(slug=page_slug)
+	maxScore = len(quiz.questions.all())
+	score = 0
+
+	if (request.method == "POST"):
+		score = scoreQuiz(quiz, request, course_slug, page_slug)
+	percentage = round(float(score) / float(maxScore), 2) * 100
+			
 	return master_rtr(request, 'quiz/submitQuiz.html', \
 			{'course':course_slug, 'course_slug':course_slug, \
-			 'page_slug':page_slug, 'pid':page_slug})
+			 'page_slug':page_slug, 'pid':page_slug, 'score':score, 'maxScore':maxScore, 'percentage':percentage})
 
 def edit_quiz(request, course_slug, page_slug):
 	''' edit_quiz View
