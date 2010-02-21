@@ -33,6 +33,7 @@ def create_lesson(request, course_slug, page_slug = "forloops"):
 	lesson = CreateLesson('')
 	return master_rtr(request, 'page/lesson/edit_lesson.html', \
 			{'course_slug':course_slug, \
+			 'course':course_slug, \
 			 'page_slug':page_slug, \
 			 'pid':lesson.name, 'content':lesson.content, 'new':True})
 
@@ -64,7 +65,7 @@ def show_lesson(request, course_slug, page_slug, lessonPage):
 	
 	return master_rtr(request, 'page/lesson/index.html', \
 			{'course_slug':course_slug, 'page_slug':page_slug, 
-			 'content':content, 'lesson_title':title})
+			 'content':content, 'lesson_title':title, 'create_enabled':True})
 
 def edit_lesson(request, course_slug, page_slug):
 	'''

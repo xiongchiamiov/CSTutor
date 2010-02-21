@@ -82,7 +82,7 @@
 						{% endfor %}
 					</ul><!-- #page-list -->
 				</li>
-				{% if page_slug %}
+				{% if create_enabled %}
 				<li>
 					<a class="button" href="{% url pages.quiz.views.create_quiz course_slug page_slug %}">
 						Create Quiz
