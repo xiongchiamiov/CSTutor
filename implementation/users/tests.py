@@ -33,6 +33,7 @@ class UserTests(unittest.TestCase):
 
 	def testLogin(self):
 		'''
+		@author John Hartquist
 		Tests that a user can login successfully
 		
 		case#            input        expected         output    remark
@@ -47,6 +48,7 @@ class UserTests(unittest.TestCase):
 
 	def testLogout(self):
 		'''
+		@author John Hartquist
 		Tests that a user can logout successfully
 		
 		case#            input        expected         output    remark
@@ -60,6 +62,7 @@ class UserTests(unittest.TestCase):
 
 	def testShowProfile(self):
 		'''
+		@author John Hartquist
 		Tests that a user can view their profile
 		
 		case#            input        expected         output    remark
