@@ -28,6 +28,8 @@ urlpatterns += patterns('courses.views',
 	(r'roster/adduser/$', 'add_user'),
 	(r'roster/adduser/cancel', 'cancel_add'),
 	(r'roster/$', 'show_roster'),
+	#redirect to the chat page
+	(r'chat/$', 'show_chat'),
 
 	# Catch just the course and render the course index anyway
 	(r'^$', 'show_course'),

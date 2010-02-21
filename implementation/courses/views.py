@@ -327,3 +327,10 @@ def join_course_request(request):
 		
 	return master_rtr(request, 'courses/join_course_status.html', \
 	                  {'course':course, 'user':user, 'message':message})
+
+def show_chat(request, course_slug):
+	''' 
+	Shows the chat for the course
+	'''
+
+	return master_rtr(request, 'chat/index.html', {'course_slug': course_slug})

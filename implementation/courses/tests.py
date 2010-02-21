@@ -142,22 +142,29 @@ class CourseViewTests(TestCase):
 		Case no.        	Inputs                                     	Expected Output	Remark
 		1               	adminUserName = enrollmentTestAdmin				true					true as in the user
 								password = password															exists in enrollment list
-								usrname = 'enrollmentTest'
-								slug = 'PageViewsPublicCourse'                           
+								username = 'enrollmentTest'
+								slug = 'PageViewsPublicCourse'
+		
+		2						adminUserName = enrollmentTestAdmin
+								password	= password
+								username = 'fakeUser'
+								slug = 'PageViewsPublicCourse'
+								template = 'adduser/failed.html'			                           
 		'''
 	
+		#Case 1
 		adminUsername = 'enrollmentTestAdmin'
-		passwd = 'password'
-		usrname = 'enrollmentTest'
+		password = 'password'
+		username = 'enrollmentTest'
 		slug = 'PageViewsPublicCourse'
 
 		#logs in and checks to make sure the login was successful
-		self.failUnlessEqual(self.client.login(username=adminUsername, password=passwd), True, 'logging in failed in enrollment test')
+		self.failUnlessEqual(self.client.login(username=adminUsername, password=password), True, 'logging in failed in enrollment test')
 
 		#Test to make sure the user is not enrolled
 		userNotExists = True
 		try:
-			enrollment = Enrollment.objects.get(user__username__exact=usrname, course__slug__exact=slug)
+			enrollment = Enrollment.objects.get(user__username__exact=username, course__slug__exact=slug)
 			userNotExists = False
 
 		except Enrollment.DoesNotExist:
@@ -166,17 +173,30 @@ class CourseViewTests(TestCase):
 		self.failUnlessEqual(userNotExists, True, 'user existed when it should not have')
 		
 		#Enroll the user in the class
-		self.client.post('/course/' + slug + '/roster/adduser/', {'username': usrname, 'command': 'add'})
+		self.client.post('/course/' + slug + '/roster/adduser/', {'username': username, 'command': 'add'})
 
 		#Test to make sure the user is enrolled
 		userExists = True				
 		try:
-			enrollment = Enrollment.objects.get(user__username__exact=usrname, course__slug__exact=slug)
+			enrollment = Enrollment.objects.get(user__username__exact=username, course__slug__exact=slug)
 
 		except Enrollment.DoesNotExist:
 			userExists = False
 	
 		self.failUnlessEqual(userExists, True,'the user should exist in the database')
+
+
+		#Case 2
+		username = 'fakeUser'
+		template = 'adduser/failed.html'
+
+		#tries to add a user that does not exist
+		response = self.client.post('/course/' + slug + '/roster/adduser/', {'username': username, 'command': 'add'})
+
+		templates = response.template
+
+		#asserts that failed.html page was rendered because a the username did not exist
+		self.assertTemplateUsed(response, template)
 
 	def testUpdateCourse(self):
 		'''
@@ -187,44 +207,80 @@ class CourseViewTests(TestCase):
 	def testUpdateRoster(self):
 		'''
 		Tests the updating the roster
-		Case no.       Inputs                  				Expected Output              Remark
-		1.             edit = {jinloes}        				enrollment.edit = True
-		               manage = {jinloes}      				enrollment.manage = True
-		               stats = {}              				enrollment.stats = False
+		Case no.       Inputs                  					Expected Output             	Remark
+		1.             edit = {username, adminUsername}     	enrollment.edit = True			enrollment is the enrollment of username	
+		               manage = {username, adminUsername}		enrollment.manage = True
+		               stats = {username, adminUsername}		enrollment.stats = False
 							adminUsername = enrollmentTestAdmin
-							passwd = password
+							passwordd = password
 							slug = PageViewsPublicCourse
-							usrname = updateTestUser
+							username = updateTestUser
 
-		2.             edit = {}              		 		enrollment.edit = False
-		               manage = {}             				enrollment.manage = False
-		               stats = {}              				enrollment.stats = False
+		2.             edit = {adminUsername}    		 			enrollment.edit = False			enrollment is the enrollment of username
+		               manage = {adminUsername}     				enrollment.manage = False
+		               stats = {adminUsername}      				enrollment.stats = False
+							adminUsername = enrollmentTestAdmin
+							password = password
+							slug = PageViewsPublicCourse
+							username = updateTestUser
 		'''
+		pass
+		
+	def testUpdateRosterCase1(self):
+		#Case 1			
 		adminUsername = 'enrollmentTestAdmin'
-		passwd = 'password'
-		usrname = 'updateTestUser'
+		password = 'password'
+		username = 'updateTestUser'
 		slug = 'updateTestCourse'
 
 		#logs in and checks to make sure the login was successful
-		self.failUnlessEqual(self.client.login(username=adminUsername, password=passwd), True, 'logging in failed')
+		self.failUnlessEqual(self.client.login(username=adminUsername, password=password), True, 'logging in failed')
 
 		#posts values to be used
-		self.client.post('/course/' + slug + '/roster/updateRoster/', {'edit':[usrname], 'manage':[usrname], 'stats':[usrname], 'view':[usrname]})
-		
-		enrollments = Enrollment.objects.filter(course__slug__exact=slug)
+		self.client.post('/course/' + slug + '/roster/updateRoster/', {'edit':[username, adminUsername], 'manage':[username, adminUsername], 'stats':[username, adminUsername]})
 
-		enrollment = Enrollment.objects.get(user__username__exact=usrname, course__slug__exact=slug)
+		enrollment = Enrollment.objects.get(user__username__exact=username, course__slug__exact=slug)
 
 		self.failUnlessEqual(enrollment.view, True, 'view should be true but was ' + str(enrollment.view))
 		self.failUnlessEqual(enrollment.stats, True, 'stats should be true but was ' + str(enrollment.stats))
 		self.failUnlessEqual(enrollment.manage, True, 'manage should be true but was ' + str(enrollment.manage))
 		self.failUnlessEqual(enrollment.edit, True, 'edit should be true but was ' + str(enrollment.edit))
 
+	def testUpdateRosterCase2(self):	
+		#Case 2
+
+		adminUsername = 'enrollmentTestAdmin'
+		password = 'password'
+		username = 'updateTestUser'
+		slug = 'updateTestCourse'
+
+		#logs in and checks to make sure the login was successful
+		self.failUnlessEqual(self.client.login(username=adminUsername, password=password), True, 'logging in failed')
+
+		self.client.post('/course/' + slug + '/roster/updateRoster/', {'edit': [adminUsername], 'manage':[adminUsername], 'stats': [adminUsername]})
+		
+		enrollment = Enrollment.objects.get(user__username__exact=username, course__slug__exact=slug)
+
+		self.failUnlessEqual(enrollment.view, True, 'view should be false but was ' + str(enrollment.view))
+		self.failUnlessEqual(enrollment.stats, False, 'stats should be false but was ' + str(enrollment.stats))
+		self.failUnlessEqual(enrollment.manage, False, 'manage should be false but was ' + str(enrollment.manage))
+		self.failUnlessEqual(enrollment.edit, False, 'edit should be false but was ' + str(enrollment.edit))
+
 	def testAcceptUser(self):
 		'''
 		Tests that a user who is enrolled can access a private course, and a 
 		student who is not enrolled cannot access a private course
+
+		Case no. 		Inputs											Expected Output 			Remarks
+		1. 				adminUsername = 'enrollmentTestAdmin'	enrollment.view = true	enrollment is the enrollment of username
+							username = 'PrivateUserNotEnrolled'
+							slug = 'PageViewsPrivateCourse'
+							password = 'password'
 		'''
+		pass
+
+	def testAccpetUserCase1(self):
+
 		adminUsername = 'enrollmentTestAdmin'
 		username = 'PrivateUserNotEnrolled'
 		slug = 'PageViewsPrivateCourse'
@@ -235,13 +291,15 @@ class CourseViewTests(TestCase):
 		#logs in and checks to make sure the login was successful
 		self.failUnlessEqual(self.client.login(username=adminUsername, password=password), True, 'logging in failed')
 
+		#get the enrollment and verify that the user has not been accepted yet
 		enrollment = Enrollment.objects.get(user__username__exact=username, course__slug__exact=slug)
 		self.failUnlessEqual(enrollment.view, False, 'User has not been enrollmed yet. View permission should be false')
 
-		self.client.post('/course/' + slug + '/roster/addPendingRequests/', {'accept':[username]})
+		#accept the user
+		self.client.post('/course/' + slug + '/roster/addPendingRequests/', {'accept':[username, 'baduser']})
 
+		#verify that the user has been accepted
 		enrollment = Enrollment.objects.get(user__username__exact=username, course__slug__exact=slug)
-
 		self.failUnlessEqual(enrollment.view, True, 'View for user should be true but was' + str(enrollment.view))
 
 	def testDenyUser(self):
