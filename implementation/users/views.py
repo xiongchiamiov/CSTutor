@@ -155,12 +155,14 @@ def show_register_new_user(request):
 	print "in show_register_new_user"
 	if request.method == 'POST':
 		#form was submitted
+		first_name = request.POST['first_name']
+		last_name = request.POST['last_name']
 		username = request.POST['username']
 		password = request.POST['password']
 		vpassword = request.POST['verifypassword']
 		email = request.POST['email']
 		#send form data to registerNewUser function
-		ret = registerNewUser(username, password, vpassword, email)
+		ret = registerNewUser(first_name, last_name, username, password, vpassword, email)
 		if ret == 0:
 			#successful registration
 			#return render_to_response('user/login.html', {'message': "User Registration Successful"})

@@ -7,20 +7,6 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.forms.fields import email_re
 
-# commented out by mgius on 2/16/10
-#def editProfile(oldUser, newUser):
-#   '''
-#   This operation takes a users profile and any modifications and 
-#   merges them together, returning an updated profile
-#   '''
-#   pass
-#
-#def logout(request):
-#   '''
-#   Logs a user out.
-#   '''
-#   
-#   pass
 
 def updateEmail(request):
 	'''
@@ -70,7 +56,7 @@ def setInstructor(user, instructor):
    '''
    pass
 
-def registerNewUser(username, password, vpassword, email):
+def registerNewUser(first_name, last_name, username, password, vpassword, email):
 	'''
 	@author Russell Mezzetta
 	Registers a new user. 
@@ -126,6 +112,8 @@ def registerNewUser(username, password, vpassword, email):
 		
 		#no errors, create and save user, return 0
 		user = User.objects.create_user(username, email, password)
+		user.first_name = first_name
+		user.last_name = last_name
 		user.save()
 		return 0
 
