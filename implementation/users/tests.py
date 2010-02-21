@@ -10,7 +10,6 @@ import unittest
 from django.test.client import Client
 from django.contrib.auth.models import User
 from users.user import registerNewUser, loginWrapper
-from django.contrib.auth import authenticate, login, logout
 
 class UserTests(unittest.TestCase):
 	'''
@@ -44,7 +43,7 @@ class UserTests(unittest.TestCase):
 		password = 'password'
 		response = self.client.post("/login/", {'username': username,
 		                                        'password': password})
-		self.failUnlessEqual(response.status_code, 302)
+		self.failUnlessEqual(response.status_code, 200)
 
 	def testLogout(self):
 		'''
@@ -61,7 +60,6 @@ class UserTests(unittest.TestCase):
 
 	def testShowProfile(self):
 		'''
-		@author John Hartquist
 		Tests that a user can view their profile
 		
 		case#            input        expected         output    remark
@@ -78,7 +76,6 @@ class UserTests(unittest.TestCase):
 		
 	def testUpdateEmail(self):
 		'''
-		@author John Hartquist
 		Tests that a user can change their e-mail address
 		
 		case#            input                         expected      output   remark
@@ -108,45 +105,75 @@ class UserTests(unittest.TestCase):
 		1        username=""           3                   "all empty string params"
 		         pass=""
 		         pass2=""
+					first=""
+					last=""
 		         email=""
 		
-		2        username="NewUser"    4                   "just a username"
+		2        username="NewUser"    4                   "password missing"
 		         pass=""
 		         pass2=""
+					first=""
+					last=""
 		         email=""
 		
-		3        username="NewUser"    2                   "mismatched passwords"
+		3        username="NewUser"    5                   "firstname missing"
+		         pass="pass1"
+		         pass2="pass1"
+					first=""
+					last="lastname"
+		         email=""
+		
+		4        username="NewUser"    5                   "lastname missing"
+		         pass="pass1"
+		         pass2="pass1"
+					first="firstname"
+					last=""
+		         email=""
+		
+		5        username="NewUser"    2                   "mismatched passwords"
 		         pass="pass1"
 		         pass2="pass2"
+					first="john"
+					last="smith"
 		         email=""
 		
-		4        username="NewUser"    0                   "valid user registration"
+		6        username="NewUser"    0                   "valid user registration"
 		         pass="password"
 		         pass2="password"
+					first="john"
+					last="smith"
 		         email="newuser@email.com"
 		
-		5        username="NewUser"    1                   "try to add an already-existing username"
+		7        username="NewUser"    1                   "try to add an already-existing username"
 		         pass="something"
 		         pass2="something"
+					first="johnny"
+					last="smithy"
 		         email="other@email.com"
 		
 		'''
 		#pass in all empty strings
-		r = registerNewUser("", "", "","","","")
+		r = registerNewUser("","","","","","")
 		self.failUnlessEqual(r,3)
 		#try a username no password
-		r = registerNewUser("First", "Last", "NewUser", "", "", "")
+		r = registerNewUser("NewUser", "", "", "","","")
 		self.failUnlessEqual(r, 4)
+		#try a user/pass/last with no first name
+		r = registerNewUser("NewUser", "pass1", "pass1", "","lastname","")
+		self.failUnlessEqual(r, 5)
+		#try a user/pass/first with no last name
+		r = registerNewUser("NewUser", "pass1", "pass1", "firstname","","")
+		self.failUnlessEqual(r, 5)
 		#try mismatched passwords
-		r = registerNewUser("First", "Last", "NewUser", "pass1", "pass2", "")
+		r = registerNewUser("NewUser", "pass1", "pass2", "")
 		self.failUnlessEqual(r, 2)
 		#add a user
-		r = registerNewUser("First", "Last", "NewUser", "password", "password", "newuser@email.com")
+		r = registerNewUser("NewUser", "password", "password", "newuser@email.com")
 		self.failUnlessEqual(r, 0)
 		#check that user is in the Users list
 		
 		#try to add a user with the same name as another user(from previous successful test)
-		r = registerNewUser("First", "Last", "NewUser", "something", "something", "other@email.com")
+		r = registerNewUser("NewUser", "something", "something", "other@email.com")
 		self.failUnlessEqual(r, 1)
 
 	def testLoginWrapper(self):
@@ -160,14 +187,12 @@ class UserTests(unittest.TestCase):
 		'''
 		testUser = "testuserLW"
 		testPass = "password"
-		testFirst = "firstName"
-		testLast = "lastName"
-		registerNewUser(testFirst, testLast, testUser, testPass, testPass, "email")
+		registerNewUser(testUser, testPass, testPass, "email")
 
 		#valid login
 		response = self.client.post('/login/', {'username': testUser, 'password': testPass})
 		self.failUnlessEqual(response.content.find("CSTutor Login"), -1)
-		self.failUnlessEqual(response.status_code, 302)
+		self.failUnlessEqual(response.status_code, 200)
 		
 		#invalid username
 		response = self.client.post('/login/', {'username': "defnotauser", "password": "pass"})

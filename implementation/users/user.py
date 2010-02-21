@@ -7,6 +7,20 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.forms.fields import email_re
 
+# commented out by mgius on 2/16/10
+#def editProfile(oldUser, newUser):
+#   '''
+#   This operation takes a users profile and any modifications and 
+#   merges them together, returning an updated profile
+#   '''
+#   pass
+#
+#def logout(request):
+#   '''
+#   Logs a user out.
+#   '''
+#   
+#   pass
 
 def updateEmail(request):
 	'''
@@ -56,27 +70,25 @@ def setInstructor(user, instructor):
    '''
    pass
 
-def registerNewUser(first_name, last_name, username, password, vpassword, email):
+def registerNewUser(username, password, vpassword, firstName, lastName, email):
 	'''
 	@author Russell Mezzetta
 	Registers a new user. 
 
-	pre: username is a string
-		  password is a string
-		  vpassword is a string
-		  email is a string
+	pre: all inputs are strings
 
 	post: added username unique
 
    returns:
-		  username not empty return 3
-	     username not already taken return 1
-	     password not empty return 4
-	     password and vpassword match return 2
+	   username not empty return 3
+	   username not already taken return 1
+	   password not empty return 4
+	   password and vpassword match return 2
+		First or last name empty return 5
 
 	Tests:
 	inputs                              outputs
-	("", "", "", "")	                  3
+	("", "", "", "","","")	                  3
 	("blah", "", "", "")                4
 	("blah", "pass", "some", "")        2
 	("blah", "pass", "pass", "myemail") 0
@@ -98,6 +110,9 @@ def registerNewUser(first_name, last_name, username, password, vpassword, email)
 	if len(password) <= 0:
 		#print "password is empty"
 		return 4
+	#check that first/last name aren't empty
+	if (len(firstName) <= 0) or (len(lastName) <= 0):
+		return 5
 	#check that passwords match
 	if password != vpassword:
 		#print "passwords don't match"
@@ -112,8 +127,8 @@ def registerNewUser(first_name, last_name, username, password, vpassword, email)
 		
 		#no errors, create and save user, return 0
 		user = User.objects.create_user(username, email, password)
-		user.first_name = first_name
-		user.last_name = last_name
+		user.first_name = firstName
+		user.last_name = lastName
 		user.save()
 		return 0
 

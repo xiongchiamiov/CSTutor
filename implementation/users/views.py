@@ -155,14 +155,14 @@ def show_register_new_user(request):
 	print "in show_register_new_user"
 	if request.method == 'POST':
 		#form was submitted
-		first_name = request.POST['first_name']
-		last_name = request.POST['last_name']
 		username = request.POST['username']
 		password = request.POST['password']
 		vpassword = request.POST['verifypassword']
 		email = request.POST['email']
+		firstN = request.POST['firstname']
+		lastN = request.POST['lastname']
 		#send form data to registerNewUser function
-		ret = registerNewUser(first_name, last_name, username, password, vpassword, email)
+		ret = registerNewUser(username, password, vpassword, firstN, lastN, email)
 		if ret == 0:
 			#successful registration
 			#return render_to_response('user/login.html', {'message': "User Registration Successful"})
@@ -174,8 +174,10 @@ def show_register_new_user(request):
 			errorMsg = "Passwords do not match"
 		elif ret == 3:
 			errorMsg = "The username field is empty"
-		else:#ret == 4
+		elif ret == 4:
 			errorMsg = "The password field is empty"
+		else: #ret == 5
+			errorMsg = "Either first name or last name field is empty"
 		return render_to_response('user/register-new-user.html', {'message': errorMsg})
 	else:
 		return render_to_response('user/register-new-user.html')
