@@ -36,8 +36,20 @@ class Course(models.Model):
 		Violates code standard because template tags can only call arg-less
 		functions
 		'''
+#		toc = []
+#		pages = [p for p in self.pages.order_by('left')]
+#		curPage = pages.pop(0)
+#		toc.append(curPage)
+#		prevPage = curPage
+#		while len(pages) > 0:
+#			curPage = pages.pop(0)
+#			if (curPage.left == prevPage.left + 1):
+#				# This page is one level down.  Append "in"
+#				toc.append("in")
+#				toc.append(curPage)
+#			elif (curPage.left == prevPage
+#
 		pages = [p for p in self.pages.order_by('left')]
-	
 		return self.tableOfContentsBuilder(pages)
 	
 	def tableOfContentsBuilder(self, pages):
