@@ -8,7 +8,7 @@ from django.shortcuts import render_to_response
 from django.http import HttpResponseRedirect
 from courses.models import Course
 from stats.models import Stat
-#from stats.stats import *
+from stats.stat import *
 from django.contrib.auth.models import User
 from django.db import IntegrityError
 from django.template.defaultfilters import slugify 
@@ -23,7 +23,8 @@ def display_course_stats(request, course_slug):
 	except Course.DoesNotExist:
 		raise Http404
 						
-	stat_data = {'course':course} 
+	bestQuizAggregates = getQuizBestAggregates(course)
+	stat_data = {'course':course, 'bestQuizAggregates':bestQuizAggregates} 
 
 	return master_rtr(request, 'stats/show_course_stats.html', stat_data)
 	#STUB... FIXME

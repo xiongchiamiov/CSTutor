@@ -7,12 +7,72 @@ testing/debugging, and will not be shown to most users.
 
 {% block content %}
     <h2>{{course}} Statistics</h2>
+	<h3>Overall Statistics</h3>
+	<table>
+		<tr>
+			<th>Statistic Type</th> 
+			<th>Value</th>
+		</tr>
+		<tr>
+			<td>Class Overall Average (all stats)</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>Class Overall Average (latest stats)</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>Class Overall Average (best stats)</td>
+			<td></td>
+		</tr>
+		<tr>
+	</table>
+	<h3>Per-Quiz Statistics (best scores)</h3>
+	<table>
+		<tr>
+			<th>Quiz</th>
+			<th>Number of Student Results</th>
+			<th>High Score</th>
+			<th>Low Score</th>
+			<th>Average Score</th>
+		</tr>
+		<tr>
+		{% for quizAggregate in bestQuizAggregates %}
+			<td>
+				{{ quizAggregate.page_name }}
+			</td>
+			<td>
+				{{ quizAggregate.result_count }}
+			</td>
+			<td>
+				{{ quizAggregate.result_max }}
+			</td>
+			<td>
+				{{ quizAggregate.result_min }}
+			</td>
+			<td>
+				{{ quizAggregate.result_avg }}
+			</td>
+		{% endfor %}
+		</tr>
+	</table>
+	<h3>Per-Student Statistics (best scores)</h3>
     <table>
         <tr>
             <th>Student</th>
-            <th>Quiz X (Ond of these will appear for eah quiz)</th></tr>
+            <th>Weighted Average</th>
+			<th>Quizzes Taken</th>
+			<th>Total Attempts</th>
+			<th>Average Attempts per Quiz</th>
+		</tr>
         {% for enrollment in course.roster.all %}
-            <tr><td>{{enrollment.user}}</td><td> 100/100 (Pass)</td></tr>
+            <tr>
+				<td>{{enrollment.user}}</td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+			</tr>
         {% endfor %}
     </table>
 

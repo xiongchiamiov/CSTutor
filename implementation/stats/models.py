@@ -36,9 +36,13 @@ class Stat(models.Model):
 		Creates a new entry in the stats table for the passed course, page,
 		and user.  The entry is timestamped automatically. The maxScore
 		is generated at the time that stat is created. This field is 
-		simply the number of questions in the quiz.
+		simply the number of questions in the quiz. 
 
-		Returns the statistic after saving it to the database
+		Returns the statistic after saving it to the database.
+
+		We assume you the page you are calling this function with is a quiz.
+		It is an error to call this function with a page that isn't a quiz.
+		Don't do that.
 		'''
 		maxScore = page.quiz.questions.count() 
 		s = Stat(course=course, page=page, user=user, score=score, 
