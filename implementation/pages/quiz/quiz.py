@@ -13,25 +13,55 @@ from question.question import removeQuestion
 from pages.page import removePage
 from stats.models import Stat
 
+
+def addMultipleChoiceQuestion(self):
+	'''
+		Takes a quiz and adds a blank multiple choice question to it
+	'''
+	questions = self.questions.all()
+	newQuestion = MultipleChoiceQuestion(text='Blank Question', order=(len(questions)+1), quiz=self)
+	newQuestion.save()
+	return 0
+
 #def createQuiz(name):
 	#return Quiz(text=name)
 	#return Quiz(slug=slugify(name), name=name)
 
-def validateQuestionOrder(self):
+def removeQuiz(self):
 	'''
-		Takes in a quiz, and verifies that all of its questions have
-		a unique ordering, and are ordered from 1 -> # of questions
-
-		Returns True if the above constraints are met, False otherwise
+		Removes a quiz from the database, as well as all related 
+		objects
 	'''
 	questions = self.questions.all()
-	usedNumbers = set([question.order for question in questions])
-	if len(questions) != len(usedNumbers) or \
-		min(usedNumbers) != 1 or max(usedNumbers) != len(questions):
-			return False
-	return True
+	for q in questions:
+		removeQuestion(q)
+	removePage(self)
+	# should also remove all associated quiz objects such as stats, questions, answers, paths
+	return 0
+
+def reorderQuestions(self):
+	'''
+		Takes a quiz, retrieves its questions, and then reorders the 
+		questions into a valid state.
+	'''
+	questions = self.questions.all().order_by("order")
+	qNum = 1
+	for q in questions:
+		q.order = qNum
+		q.save()
+		qNum = qNum + 1
+	# Sanity check to make sure the question ordering is still valid
+	if (validateQuestionOrder(self)):
+		return 0
+	return -1
 
 def saveQuiz(request, course, pid):
+	'''
+		Takes a request, a course, and a page id. It then pulls the 
+		quiz from the post data and updates the elements in the 
+		database. Before saving, it validates for proper data before 
+		saving
+	'''
 	if (request.method != "POST"):
 		return -1
 	if "Save" in request.POST:
@@ -90,32 +120,6 @@ def saveQuiz(request, course, pid):
 				q.save()
 	return -1
 
-def removeQuiz(self):
-	questions = self.questions.all()
-	for q in questions:
-		removeQuestion(q)
-	removePage(self)
-	# should also remove all associated quiz objects such as stats, questions, answers, paths
-	return 0
-
-def addMultipleChoiceQuestion(self):
-	questions = self.questions.all()
-	newQuestion = MultipleChoiceQuestion(text='Blank Question', order=(len(questions)+1), quiz=self)
-	newQuestion.save()
-	return 0
-
-def reorderQuestions(self):
-	questions = self.questions.all().order_by("order")
-	qNum = 1
-	for q in questions:
-		q.order = qNum
-		q.save()
-		qNum = qNum + 1
-	# Sanity check to make sure the question ordering is still valid
-	if (validateQuestionOrder(self)):
-		return 0
-	return -1
-
 def scoreQuiz(self, request, course_slug, quiz_slug):
 	'''
 		Takes a quiz and a request. Pulls the submitted answers from 
@@ -141,3 +145,17 @@ def scoreQuiz(self, request, course_slug, quiz_slug):
 		Stat.CreateStat(course, self, request.user, score)
 	
 	return score
+
+def validateQuestionOrder(self):
+	'''
+		Takes in a quiz, and verifies that all of its questions have
+		a unique ordering, and are ordered from 1 -> # of questions
+
+		Returns True if the above constraints are met, False otherwise
+	'''
+	questions = self.questions.all()
+	usedNumbers = set([question.order for question in questions])
+	if len(questions) != len(usedNumbers) or \
+		min(usedNumbers) != 1 or max(usedNumbers) != len(questions):
+			return False
+	return True
