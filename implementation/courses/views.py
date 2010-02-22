@@ -39,7 +39,8 @@ def create_course(request):
 			data['message'] = 'A Course name must be at least 3 characters.'
 		else:
 			try:
-				CreateCourse(name, User.objects.get(username=request.user.username), private)
+				c = CreateCourse(name, User.objects.get(username=request.user.username), private)
+				return master_rtr(request, 'page/lesson/edit_lesson.html', {'course':c.slug, 'course_slug':c.slug, 'page_slug':c.slug})
 			except IntegrityError:
 				data['message'] = 'A Course with that name already exists.'
 

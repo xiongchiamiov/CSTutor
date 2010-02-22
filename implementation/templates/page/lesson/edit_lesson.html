@@ -52,6 +52,12 @@
 </script>
 <form method="post" action="">
 Lesson Name: <input type="text" name="lessonname" value="{{lesson.slug}}"/> <br />
+{% if message %}
+<font size="1" color="red">
+{{message}}
+</font>
+<br />
+{% endif %}
 Course: <b>{{lesson.course.name}}</b>
 <br />
 <br />

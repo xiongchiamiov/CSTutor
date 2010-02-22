@@ -16,7 +16,7 @@ import re
 @author John Hartquist
 '''
 
-def create_lesson(request, course_slug, page_slug = "forloops"):
+def create_lesson(request, course_slug, page_slug):
 	'''
 	@author Matthew Tytel
 
@@ -24,18 +24,37 @@ def create_lesson(request, course_slug, page_slug = "forloops"):
 	does not save the lesson to the database
 	'''
 	if request.method == "POST" and "Save" in request.POST:
-		saveNewLesson(request, course_slug, page_slug)
-		return master_rtr(request, 'page/lesson/save_lesson.html', \
+		name = request.POST["lessonname"].strip()
+		lesson = CreateLesson(name)
+		lesson.content = request.POST["content"]
+
+		if len(name) < 3:
+			return master_rtr(request, 'page/lesson/edit_lesson.html', \
+				            {'course_slug':course_slug,
+								 'page_slug': page_slug,
+								 'course':course_slug,
+								 'message':'Lesson names must be at least 3 characters',
+								 'lesson':lesson, 'new':True})
+	
+		if saveNewLesson(request, course_slug, page_slug) == 0:
+			return master_rtr(request, 'page/lesson/save_lesson.html', \
 				            {'course_slug':course_slug, 
 								 'page_slug': page_slug, 
 								 'course':course_slug, 'pid':page_slug})
+		else:
+			return master_rtr(request, 'page/lesson/edit_lesson.html', \
+				            {'course_slug':course_slug,
+								 'page_slug': page_slug,
+								 'course':course_slug,
+								 'message':'A lesson with that name already exists',
+								 'lesson':lesson, 'new':True})
 	
 	lesson = CreateLesson('')
 	return master_rtr(request, 'page/lesson/edit_lesson.html', \
 			{'course_slug':course_slug, \
 			 'course':course_slug, \
 			 'page_slug':page_slug, \
-			 'pid':lesson.name, 'content':lesson.content, 'new':True})
+			 'pid':lesson.name, 'new':True})
 
 def show_lesson(request, course_slug, page_slug, lessonPage):
 	'''
