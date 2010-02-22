@@ -96,6 +96,7 @@ INSTALLED_APPS = (
 	'pages.quiz',
 	'pages.quiz.question',
 	'stats',
+	'tinymce',
 	'users',
 	'home',
 )
