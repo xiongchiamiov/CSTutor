@@ -20,31 +20,28 @@ Creating new users/courses works, and creating new lessons is working as well.
 Debugging output has been left enabled, so "error" pages will include ugly
 python stack traces.
 
+<h3>Setting up project using Apache and mod_python</h3>
+<p>
+These instructions assume a reasonable knowledge of Apache and it's
+configuration, and a full configuration help for Apache is available at the
+<a href="http://httpd.apache.org/docs/">Apache Documentation Site</a>.
+</p>
+<p>
+TODO: Mark needs to fill in basic Apache + mod_python here
+</p>
+<p>
+Our site does not depend upon Apache or mod_python in any way.  Any supported
+Django server setup should work with our site.  If you have interest in a 
+non Apache + mod_python hosting solution, please consult the Django 
+<a href="http://docs.djangoproject.com/en/1.0/howto/deployment/">Deployment Documentation</a>
+</p>
 <h3>Known Bugs</h3>
 <p>
 Our ticket tracker is available at <a href="https://autotutor.csc.calpoly.edu/trac/report/1">https://autotutor.csc.calpoly.edu/trac/report/1</a>
 if you would like to view all open issues.  Notable issues for this release include:
 <ul>
 <li>
-The "edit" button does not appear for all locations.
-</li>
-<li>
-Most statistic related functions do not work.
-</li>
-<li>
-The course/page list on the left hand side is ugly and out of order.
-</li>
-<li>
-Editing Quizzes isn't really implemented yet (although the interface is laid out)
-</li>
-<li>
 Permissions are only half implemented.  Many operations that should be priviledged are currently not.
-</li>
-<li>
-Anonymous usage is not yet working.
-</li>
-<li>
-The site is generally ugly.
 </li>
 </ul>
 <h2>How To Run Development Website</h2>
