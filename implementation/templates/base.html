@@ -25,9 +25,16 @@
 				<div class="span-3"><a href="{% url stats.views.display_course_stats course_slug %}">Stats</a></div>
 				<div class="span-3"><a href="{% url courses.views.show_roster course_slug %}">Roster</a></div>
 				<div class="span-3"><a href="{% url courses.views.show_chat course_slug %}">Chat</a></div>
+				{% else %}
+				<div class="span-3 nav-disabled">Stats</div>
+				<div class="span-3 nav-disabled">Roster</div>
+				<div class="span-3 nav-disabled">Chat</div>
+				{% endif %}
+
 				{% if page_slug %}
 				<div class="span-3"><a href="{% url pages.views.edit_page course_slug page_slug %}">Edit</a></div>
-				{% endif %}
+				{% else %}
+				<div class="span-3 nav-disabled">Edit</div>
 				{% endif %}
 				<div class="span-3"><a href="/help/">Help</a></div>
 			</div>

@@ -3,6 +3,7 @@
  * secondary light: #E9FAD4
  * primary dark:    #2D5231
  * secondary dark:  #193B1D
+ * disabled text:   #507959
  */
 
 body {
@@ -36,6 +37,14 @@ body {
 
 #top-nav #user a {
 	text-decoration: underline;
+}
+
+.nav-disabled {
+	color: #507959;
+}
+
+.nav-disabled:hover {
+	background-color: #2D5231 !important;
 }
 
 .button {
