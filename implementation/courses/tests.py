@@ -108,6 +108,7 @@ class CourseViewTests(TestCase):
 
 	def testRoster(self):
 		'''
+		@author Jon Inloes
 		Tests that redirection to the roster page works
 
 		Case no.        	Inputs                                       Expected Output    	Remark
@@ -137,6 +138,7 @@ class CourseViewTests(TestCase):
 
 	def testEnrollUser(self):
 		'''
+		@author Jon Inloes
 		Tests enrolling a user in a course through the view
 
 		Case no.        	Inputs                                     	Expected Output	Remark
@@ -151,8 +153,13 @@ class CourseViewTests(TestCase):
 								slug = 'PageViewsPublicCourse'
 								template = 'adduser/failed.html'			                           
 		'''
+		pass
 	
-		#Case 1
+	def testEnrollUserCase1(self):
+		'''
+		testEnrollUser Case 1
+		'''
+
 		adminUsername = 'enrollmentTestAdmin'
 		password = 'password'
 		username = 'enrollmentTest'
@@ -186,9 +193,30 @@ class CourseViewTests(TestCase):
 		self.failUnlessEqual(userExists, True,'the user should exist in the database')
 
 
-		#Case 2
+	def testEnrollUserCase2(self):
+		'''
+		testEnrollUser Case 2
+		'''
+
+		adminUsername = 'enrollmentTestAdmin'
+		password = 'password'
 		username = 'fakeUser'
 		template = 'adduser/failed.html'
+		slug = 'PageViewsPublicCourse'
+
+		#logs in and checks to make sure the login was successful
+		self.failUnlessEqual(self.client.login(username=adminUsername, password=password), True, 'logging in failed in enrollment test')
+
+		#Test to make sure the user is not enrolled
+		userNotExists = True
+		try:
+			enrollment = Enrollment.objects.get(user__username__exact=username, course__slug__exact=slug)
+			userNotExists = False
+
+		except Enrollment.DoesNotExist:
+			pass
+
+		self.failUnlessEqual(userNotExists, True, 'user existed when it should not have')
 
 		#tries to add a user that does not exist
 		response = self.client.post('/course/' + slug + '/roster/adduser/', {'username': username, 'command': 'add'})
@@ -206,6 +234,7 @@ class CourseViewTests(TestCase):
 
 	def testUpdateRoster(self):
 		'''
+		@author Jon Inloes
 		Tests the updating the roster
 		Case no.       Inputs                  					Expected Output             	Remark
 		1.             edit = {username, adminUsername}     	enrollment.edit = True			enrollment is the enrollment of username	
@@ -227,7 +256,10 @@ class CourseViewTests(TestCase):
 		pass
 		
 	def testUpdateRosterCase1(self):
-		#Case 1			
+		'''
+		testUpdateRoster Case 1
+		'''
+
 		adminUsername = 'enrollmentTestAdmin'
 		password = 'password'
 		username = 'updateTestUser'
@@ -247,7 +279,9 @@ class CourseViewTests(TestCase):
 		self.failUnlessEqual(enrollment.edit, True, 'edit should be true but was ' + str(enrollment.edit))
 
 	def testUpdateRosterCase2(self):	
-		#Case 2
+		'''
+		testUpdateRoster Case 2
+		'''
 
 		adminUsername = 'enrollmentTestAdmin'
 		password = 'password'
@@ -268,6 +302,7 @@ class CourseViewTests(TestCase):
 
 	def testAcceptUser(self):
 		'''
+		@author Jon Inloes
 		Tests that a user who is enrolled can access a private course, and a 
 		student who is not enrolled cannot access a private course
 
@@ -304,7 +339,15 @@ class CourseViewTests(TestCase):
 
 	def testDenyUser(self):
 		'''
+		@author Jon Inloes
 		Tests whether or not denying a user from a pending request works.
+	
+		Case no. 	Inputs											Expected Output	Remarks
+		1. 			adminUsername = 'enrollmentTestAdmin'	denied = true		
+						username = 'PrivateUserNotEnrolled'
+						slug = 'PageViewsPrivateCourse'
+						password = 'password'
+						denied = False
 		'''
 		
 		adminUsername = 'enrollmentTestAdmin'
@@ -316,6 +359,7 @@ class CourseViewTests(TestCase):
 		#logs in and checks to make sure the login was successful
 		self.failUnlessEqual(self.client.login(username=adminUsername, password=password), True, 'logging in failed')
 
+		#checks to make sure the enrollment does not exist
 		try:		
 			enrollment = Enrollment.objects.get(user__username__exact=username, course__slug__exact=slug)
 		except Enrollment.DoesNotExist:
@@ -324,8 +368,10 @@ class CourseViewTests(TestCase):
 		self.failUnlessEqual(denied, False, 'User does not exist in the enrollment list.')
 		self.failUnlessEqual(enrollment.view, False, 'User has not been enrollmed yet. View permission should be false')
 
+		#denies username from the request list
 		self.client.post('/course/' + slug + '/roster/addPendingRequests/', {'deny':[username]})
-	
+
+		#checks to see if the user is enrolled	
 		try:
 			enrollment = Enrollment.objects.get(user__username__exact=username, course__slug__exact=slug)
 		except Enrollment.DoesNotExist:
@@ -335,9 +381,27 @@ class CourseViewTests(TestCase):
 
 	def testSearchUser(self):
 		'''
+		@author Jon Inloes
 		Tests the search user function
-		'''
 
+		Case no.		Inputs											Expected Output 							Remarks
+		1. 			adminUsername = 'enrollmentTestAdmin'	response.contains(username) = true
+						username = 'enrollmentTestAdmin'
+						firstname = 'Test'
+						lastname = 'Admin'
+						slug = 'PageViewsPrivateCourse'
+						password = 'password'
+		
+		2.				adminUsername = 'enrollmentTestAdmin'	response.contains(username) = false
+						username = 'badUsername'
+						firstname = 'badFirstname'
+						lastname = 'badLastname'
+						slug = 'PageViewsPrivateCourse'
+						password = 'password'
+		'''
+		pass
+	
+	def testSearchUserCase1(self):
 		adminUsername = 'enrollmentTestAdmin'
 		username = 'enrollmentTestAdmin'
 		firstname = 'Test'
@@ -345,20 +409,32 @@ class CourseViewTests(TestCase):
 		slug = 'PageViewsPrivateCourse'
 		password = 'password'
 
-		badFirstname = 'badFirstname'
-		badLastname = 'badLastname'
-		badUsername = 'badUsername'
-
 		#logs in and checks to make sure the login was successful
 		self.failUnlessEqual(self.client.login(username=adminUsername, password=password), True, 'logging in failed')
  
-		response = self.client.post('/course/' + slug + '/roster/adduser/', {'firstname': badFirstname, 'lastname': badLastname, 'command': 'search'})
-
-		self.assertNotContains(response, badUsername)
 
 		response = self.client.post('/course/' + slug + '/roster/adduser/', {'firstname': firstname, 'lastname': lastname, 'command': 'search'})
 		
 		self.assertContains(response, username)
+
+	def testSearchUserCase2(self):
+		
+		adminUsername = 'enrollmentTestAdmin'
+		username = 'badUsername'
+		firstname = 'badFirstname'
+		lastname = 'badLastname'
+		slug = 'PageViewsPrivateCourse'
+		password = 'password'
+
+
+		#logs in and checks to make sure the login was successful
+		self.failUnlessEqual(self.client.login(username=adminUsername, password=password), True, 'logging in failed')
+ 
+		#seraches for a user that does not exist
+		response = self.client.post('/course/' + slug + '/roster/adduser/', {'firstname': firstname, 'lastname': lastname, 'command': 'search'})
+
+		#assert that the response does not contain the username
+		self.assertNotContains(response, username)
 
 	def testRemoveUser(self):
 		adminUsername = 'enrollmentTestAdmin'
