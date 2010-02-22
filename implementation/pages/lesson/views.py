@@ -92,22 +92,59 @@ def edit_lesson(request, course_slug, page_slug):
 	@author John Hartquist
 	This view displays the lesson editing page
 	'''
-	print "EDIT"
+	
+	#common dictionary fields
+	data={'course_slug':course_slug, 'page_slug':page_slug}
+	lesson = Course.objects.get(slug=course_slug).pages.get(slug=page_slug)
+	try:
+		lesson = lesson.lesson
+	except Lesson.DoesNotExist:
+		print "OH MY! page is not a lesson???"
+	data['lesson'] = lesson	
+
 	if request.method == "POST":
-		if "Save" in request.POST:
-			saveLesson(request, course_slug, page_slug)
-			return master_rtr(request, 'page/lesson/save_lesson.html', \
-					{'course':course_slug, 'course_slug':course_slug, \
-					 'page_slug':page_slug, 'pid':page_slug})
+		#Saves lesson's name, checks for uniqueness
+		if "SaveLessonName" in request.POST:
+			lesson = saveLessonName(lesson, request.POST['lessonname'])
+			if lesson != None: #successful name/slug change REDIRECT
+				#import time
+				#print "XXX"
+				#time.sleep(5)
+				#print "YYY"
+				#return HttpResponseRedirect(reverse('pages.lesson.views.edit_lesson', args=[course_slug, lesson.slug]))
+				return HttpResponseRedirect("/")
+			else: #unsuccessful name/slug change indicate error
+				data['nameError'] = "Name Change Failed, Already Exists"
+				#data['lesson'] = lesson
+				return master_rtr(request, 'page/lesson/edit_lesson.html', data)
+		
+		#Saves the working copy of the lesson
+		elif "Save" in request.POST:
+			data['lesson'] = saveLessonWorkingCopy(lesson, request.POST['content'])
+			return master_rtr(request, 'page/lesson/edit_lesson.html', data)
+			#return master_rtr(request, 'page/lesson/save_lesson.html', \
+			#		{'course':course_slug, 'course_slug':course_slug, \
+			#		 'page_slug':page_slug, 'pid':page_slug})
+
+		#removes the lesson from the course
 		elif "Remove" in request.POST:
 			removeLesson(request, course_slug, page_slug)
 			return master_rtr(request, 'page/lesson/remove_lesson.html', \
 					{'course': course_slug, 'course_slug':course_slug, \
 					 'page_slug':page_slug, 'pid':page_slug})
+		
+		#redirects to the move_page view
 		elif "Move" in request.POST:
 			return HttpResponseRedirect(reverse('pages.views.move_page', args=[course_slug, page_slug]))
-	
-	lesson = Lesson.objects.get(slug=page_slug)
-	return master_rtr(request, 'page/lesson/edit_lesson.html', \
-			{'course':course_slug, 'course_slug':course_slug, \
-			 'page_slug':page_slug, 'lesson':lesson})
+		
+		#Publishes the workingCopy
+		elif "Publish" in request.POST:
+			data['lesson'] = publishLessonChanges(lesson)
+			return master_rtr(request, 'page/lesson/edit_lesson.html', data)
+
+		#Revert the workingCopy to the published copy
+		elif "Revert" in request.POST:
+			data['lesson'] = revertLessonChanges(lesson)
+			return master_rtr(request, 'page/lesson/edit_lesson.html', data)
+
+	return master_rtr(request, 'page/lesson/edit_lesson.html', data)

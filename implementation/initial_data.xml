@@ -273,48 +273,63 @@
    </object>
    <object pk="1" model="lesson.lesson">
       <field type="TextField" name="content">This is an index page for CPE102</field>
+		<field type="TextField" name="workingCopy">This is an index page for CPE102</field>
    </object>
    <object pk="2" model="lesson.lesson">
       <field type="TextField" name="content">For loops are orgasmic</field>
+      <field type="TextField" name="workingCopy">For loops are orgasmic</field>
    </object>
    <object pk="3" model="lesson.lesson">
       <field type="TextField" name="content">While loops will make you crazy, like a fox</field>
+      <field type="TextField" name="workingCopy">While loops will make you crazy, like a fox</field>
    </object>
    <object pk="5" model="lesson.lesson">
       <field type="TextField" name="content">J-Dalbizzle's classy course content</field>
+      <field type="TextField" name="workingCopy">J-Dalbizzle's classy course content</field>
    </object>
    <object pk="6" model="lesson.lesson">
       <field type="TextField" name="content">Landing page for large-testing-course&lt;br /&gt;Your content here</field>
+      <field type="TextField" name="workingCopy">Landing page for large-testing-course&lt;br /&gt;Your content here</field>
    </object>
    <object pk="7" model="lesson.lesson">
       <field type="TextField" name="content">&lt;p&gt;111&lt;/p&gt;</field>
+      <field type="TextField" name="workingCopy">&lt;p&gt;111&lt;/p&gt;</field>
    </object>
    <object pk="8" model="lesson.lesson">
       <field type="TextField" name="content">&lt;p&gt;2222&lt;/p&gt;</field>
+      <field type="TextField" name="workingCopy">&lt;p&gt;2222&lt;/p&gt;</field>
    </object>
    <object pk="9" model="lesson.lesson">
       <field type="TextField" name="content">&lt;p&gt;333&lt;/p&gt;</field>
+      <field type="TextField" name="workingCopy">&lt;p&gt;333&lt;/p&gt;</field>
    </object>
    <object pk="10" model="lesson.lesson">
       <field type="TextField" name="content">&lt;p&gt;444&lt;/p&gt;</field>
+      <field type="TextField" name="workingCopy">&lt;p&gt;444&lt;/p&gt;</field>
    </object>
    <object pk="11" model="lesson.lesson">
       <field type="TextField" name="content">&lt;p&gt;555&lt;/p&gt;</field>
+      <field type="TextField" name="workingCopy">&lt;p&gt;555&lt;/p&gt;</field>
    </object>
    <object pk="12" model="lesson.lesson">
       <field type="TextField" name="content">&lt;p&gt;666&lt;/p&gt;</field>
+      <field type="TextField" name="workingCopy">&lt;p&gt;666&lt;/p&gt;</field>
    </object>
    <object pk="13" model="lesson.lesson">
       <field type="TextField" name="content">&lt;p&gt;77&lt;/p&gt;</field>
+      <field type="TextField" name="workingCopy">&lt;p&gt;77&lt;/p&gt;</field>
    </object>
    <object pk="14" model="lesson.lesson">
       <field type="TextField" name="content"></field>
+      <field type="TextField" name="workingCopy"></field>
    </object>
    <object pk="15" model="lesson.lesson">
       <field type="TextField" name="content">&lt;p&gt;99&lt;/p&gt;</field>
+      <field type="TextField" name="workingCopy">&lt;p&gt;99&lt;/p&gt;</field>
    </object>
    <object pk="16" model="lesson.lesson">
       <field type="TextField" name="content">&lt;p&gt;100&lt;/p&gt;</field>
+      <field type="TextField" name="workingCopy">&lt;p&gt;100&lt;/p&gt;</field>
    </object>
    <object pk="4" model="quiz.quiz">
       <field type="TextField" name="text">Sample Quiz</field>

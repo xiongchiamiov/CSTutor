@@ -42,7 +42,7 @@
 			{title : 'Table styles'},
 			{title : 'Table row 1', selector : 'tr', classes : 'tablerow1'}
 		],
- 
+
 		// Replace values for the template plugin
 		template_replace_values : {
 			username : "Some User",
@@ -51,7 +51,10 @@
 	});
 </script>
 <form method="post" action="">
-Lesson Name: <input type="text" name="lessonname" value="{{lesson.slug}}"/> <br />
+Lesson Name: <input type="text" name="lessonname" value="{{lesson.name}}"/> 
+<input type="submit" name="SaveLessonName" value="SaveLessonName"> 
+{{nameError}}<br />
+
 {% if message %}
 <font size="1" color="red">
 {{message}}
@@ -63,12 +66,14 @@ Course: <b>{{lesson.course.name}}</b>
 <br />
 
 <textarea name="content" style="width:100%">
-{{lesson.content}}
+{{lesson.workingCopy}}
 </textarea>
 <input type="submit" name="Save" value="Save">
 {% if new %} {% else %}
 <input type="submit" name="Remove" value="Remove Lesson">
 <input type="submit" name="Move" value="Move Lesson">
+<input type="submit" name="Publish" value="Publish">
+<input type="submit" name="Revert" value="Revert To Published">
 {% endif %}
 </form>
 	

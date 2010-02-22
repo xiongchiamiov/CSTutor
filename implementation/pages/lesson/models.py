@@ -12,6 +12,7 @@ class Lesson(Page):
 	segments and images.
 	'''
 	content = models.TextField()
+	workingCopy = models.TextField()
 
 	def __unicode__(self):
 		return self.content

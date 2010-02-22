@@ -30,7 +30,7 @@ def saveLesson(request, course, pid):
 			except Lesson.DoesNotExist:
 				lesson.slug = slugify(request.POST["lessonname"])
 		
-		lesson.content = request.POST["content"]
+		lesson.workingCopy = request.POST["content"]
 		lesson.save()
 		return 0
 	return -1
@@ -58,3 +58,52 @@ def removeLesson(request, course, pid):
 	if "Remove" in request.POST:
 	    Lesson.objects.get(slug=pid).delete()
 	    return 0
+
+def revertLessonChanges(lesson):
+	'''
+	@author Russell Mezzetta
+	This reverts the working copy to the published copy
+	'''
+	lesson.workingCopy = lesson.content
+	lesson.save()
+	return lesson
+
+def publishLessonChanges(lesson):
+	'''
+	@author Russell Mezzetta
+	This saves the working copy to the published copy
+	'''
+	lesson.content = lesson.workingCopy
+	lesson.save()
+	return lesson
+
+def saveLessonName(lesson, newLessonName):
+	'''
+	@author Russell Mezzetta
+	This saves the name of the lesson.
+	Returns none on failure, lesson on success
+	'''
+	#check that the newLessonName doesn't already exist in this course
+	newSlug = slugify(newLessonName)
+
+	notUnique = Lesson.objects.filter(course=lesson.course).filter(slug=newSlug).count()
+	if notUnique:
+		return None
+
+	lesson.name = newLessonName
+	lesson.slug = newSlug
+	lesson.save()
+	return lesson
+
+def saveLessonWorkingCopy(lesson, workingCopy):
+	'''
+	@author Russell Mezzetta
+	This saves the working copy content of the lesson.
+	returns the lesson
+	@pre valid course_slug and page_slug, workingCopy is string
+	@post input page.workingCopy = workingCopy
+	'''
+	lesson.workingCopy = workingCopy
+	lesson.save()
+	return lesson
+
