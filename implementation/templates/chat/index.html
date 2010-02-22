@@ -1,4 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
-	<p>Hi</p>
+<p><center><b><font size="5">{{course}} Chatroom</font></b></center></p>
+<br/>
+<iframe src="http://webchat.freenode.net/?nick={{username}}&amp;channels={{course_slug}}" 
+        width="647" height="400" frameborder="1"></iframe>
 {% endblock %}

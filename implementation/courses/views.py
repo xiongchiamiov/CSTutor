@@ -333,4 +333,5 @@ def show_chat(request, course_slug):
 	Shows the chat for the course
 	'''
 
-	return master_rtr(request, 'chat/index.html', {'course_slug': course_slug})
+	course = Course.objects.get(slug=course_slug)
+	return master_rtr(request, 'chat/index.html', {'course_slug': course_slug, 'username': request.user.username, 'course': course})

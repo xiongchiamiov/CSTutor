@@ -34,6 +34,8 @@ urlpatterns += patterns('',
 	(r'^profile', 'users.views.show_profile'),
 	(r'^create-course', 'courses.views.create_course'),
 	(r'^join-course', 'courses.views.join_course_form'),
+	#displays the help page
+	(r'help', 'home.views.show_help'),
 
    # courses should be handled by course urls
 	(r'^course/(?P<course_slug>[\w-]+)/', include('courses.urls')),

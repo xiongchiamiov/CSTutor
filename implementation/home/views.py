@@ -1,4 +1,4 @@
-''' @author James Pearson, Matt Tytel, John Hartquist '''
+''' @author James Pearson, Matt Tytel, John Hartquist, Jon Inloes '''
 
 from django.conf import settings
 from django.shortcuts import render_to_response
@@ -27,3 +27,9 @@ def master_rtr(request, template, data = {}):
 def index(request):
 	request.session.set_test_cookie()
 	return master_rtr(request, 'index.html')
+
+def show_help(request):
+	'''
+	Displays the help page
+	'''
+	return master_rtr(request, 'help/index.html')
