@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block content %}	
+<p><center><b><font size="5">Help page</font></b></center></p>
+<p>New users click <a href="{% url users.views.show_register_new_user %}">here</a> to register a new account.</p>
+<p>Returning users click <a href="{% url users.views.show_login %}"> here </a> to log in.</p>
+<p>To create a course click <a href="{% url courses.views.create_course %}"> here </a>.</p>
+<p>To join a course click <a href="{% url courses.views.join_course_form %}"> here</a>.</p>
+
+{% endblock %}
