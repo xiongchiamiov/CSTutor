@@ -1,4 +1,7 @@
-'''The profile section of the CSTutor - name and functions subject to change as we are going to use the build-in Django user management
+'''
+users.py handles all necessary user related functions not explicitly handled by the built in django user module.
+
+Example functions include, login, registerNewUser, logout, profiles....
 
 @author John Hartquist	
 @author Russell Mezzetta
@@ -75,9 +78,9 @@ def registerNewUser(username, password, vpassword, firstName, lastName, email):
 	@author Russell Mezzetta
 	Registers a new user. 
 
-	pre: all inputs are strings
+	@pre: all inputs are strings
 
-	post: added username unique
+	@post: if return == 0: added user=username to the database 
 
    returns:
 	   username not empty return 3
@@ -85,18 +88,6 @@ def registerNewUser(username, password, vpassword, firstName, lastName, email):
 	   password not empty return 4
 	   password and vpassword match return 2
 		First or last name empty return 5
-
-	Tests:
-	inputs                              outputs
-	("", "", "", "","","")	                  3
-	("blah", "", "", "")                4
-	("blah", "pass", "some", "")        2
-	("blah", "pass", "pass", "myemail") 0
-	("blah", "xyx", "xyx", "mailxyx")   1
-	
-	First checks for valid username.
-	Returns 0 on success, 1 if username already exists, 2 if passwords don't match
-	3 if the username is empty, 4 if the password(s) is/are empty.
 	'''
 
 	#TODO do we need to do anything special with username/password characters or length?

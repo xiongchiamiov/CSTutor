@@ -1,4 +1,5 @@
-'''users/views.py - This is where all the profile pages are rendered
+'''
+users/views.py - This is where all user-related pages are rendered, such as profile, login, logout, registerNewUser...
 @author John Hartquist
 @author Russell Mezzetta
 '''
@@ -72,6 +73,8 @@ def show_login(request):
 	'''
 	@author Russell Mezzetta
 	This shows the login page and displays any errors.
+	@pre request is a requestobject
+	@post
 	'''
 	#print 'in show_login'
 	
@@ -150,7 +153,8 @@ def show_login(request):
 def show_register_new_user(request):
 	'''
 	@author Russell Mezzetta
-	This def shows the register new user page and registers the user
+	This def shows the register new user page
+	@pre request is a requestobject
 	'''
 	print "in show_register_new_user"
 	if request.method == 'POST':

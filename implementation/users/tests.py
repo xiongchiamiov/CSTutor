@@ -20,9 +20,8 @@ class UserTests(unittest.TestCase):
 	for logging in and out, editing and viewing user profiles.
 	
 	CLASS TEST PLAN
-	The tests will be called by the django testing framework
-	Each test is a "def testname" which are run in the order they appear in
-	this file. The "canned" database is loaded at the beginning of testing.
+	Phase 0: Load test fixtures (initial-data.xml)
+	Phase 1: Unit test login, logout, register new user, show profile, updateEmail
 	'''
 	def setUp(self):
 		'''
@@ -108,50 +107,50 @@ class UserTests(unittest.TestCase):
 		1        username=""           3                   "all empty string params"
 		         pass=""
 		         pass2=""
-					first=""
-					last=""
+		         first=""
+		         last=""
 		         email=""
 		
 		2        username="NewUser"    4                   "password missing"
 		         pass=""
 		         pass2=""
-					first=""
-					last=""
+		         first=""
+		         last=""
 		         email=""
 		
 		3        username="NewUser"    5                   "firstname missing"
 		         pass="pass1"
 		         pass2="pass1"
-					first=""
-					last="lastname"
+		         first=""
+		         last="lastname"
 		         email=""
 		
 		4        username="NewUser"    5                   "lastname missing"
 		         pass="pass1"
 		         pass2="pass1"
-					first="firstname"
-					last=""
+		         first="firstname"
+		         last=""
 		         email=""
 		
 		5        username="NewUser"    2                   "mismatched passwords"
 		         pass="pass1"
 		         pass2="pass2"
-					first="john"
-					last="smith"
+		         first="john"
+		         last="smith"
 		         email=""
 		
 		6        username="NewUser"    0                   "valid user registration"
 		         pass="password"
 		         pass2="password"
-					first="john"
-					last="smith"
+		         first="john"
+		         last="smith"
 		         email="newuser@email.com"
 		
 		7        username="NewUser"    1                   "try to add an already-existing username"
 		         pass="something"
 		         pass2="something"
-					first="johnny"
-					last="smithy"
+		         first="johnny"
+		         last="smithy"
 		         email="other@email.com"
 		
 		'''
