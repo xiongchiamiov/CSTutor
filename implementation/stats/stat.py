@@ -61,22 +61,22 @@ def getQuizBestAggregates(course):
 	                    avg(Cast(score as FLOAT)/cast(maxScore as Float))
                    FROM (stats_stat 
                          INNER JOIN (select MAX(Cast(Score as FLOAT) 
-				              /cast (maxScore as Float)) as inner_maxScore,
+	                /cast (maxScore as Float)) as inner_maxScore,
                               user_id as inner_user_id, 
-							  page_id as inner_page_id,
-				              innerStats.course_id as inner_course_id
+	                      page_id as inner_page_id,
+		              innerStats.course_id as inner_course_id
                               FROM stats_stat as innerStats 
 	                          WHERE inner_course_ID=%s 
-		                      GROUP BY user_id, page_id, course_id)
-                         ON (Cast(score as FLOAT) / cast (maxScore as FLOAT)) = 
+	                          GROUP BY user_id, page_id, course_id)
+	                          ON (Cast(score as FLOAT) / cast (maxScore as FLOAT)) = 
 				         inner_maxScore and
-                         user_id = inner_user_id AND 
-					     page_id = inner_page_id and 
-                         course_id = inner_course_id ) as best_stats
-				        INNER JOIN pages_page ON
-						pages_page.id = page_id
-                   WHERE best_stats.course_id = %s
-				   GROUP BY page_id;
+	                         user_id = inner_user_id AND 
+	                         page_id = inner_page_id and 
+	                         course_id = inner_course_id ) as best_stats
+	                INNER JOIN pages_page ON
+	                    pages_page.id = page_id
+	                    WHERE best_stats.inner_course_id = %s
+	                    GROUP BY page_id;
 	               ''',[course.id,course.id] )
 	rawList = cursor.fetchall()
 	aggrigateList = []
