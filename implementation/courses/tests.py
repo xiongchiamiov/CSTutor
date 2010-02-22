@@ -102,9 +102,9 @@ class CourseViewTests(TestCase):
 		statusCode = self.client.get('/course/%s/page/%s/' % (self.slug,self.slug)).status_code
 		self.failUnlessEqual(statusCode, 200, "Oopsie!  We got a status code of %s. :/" % statusCode)
 		
-#     TODO: this currently returns a 200.  see ticket 115
-#		statusCode = self.client.get('/course/not-a-class/').status_code
-#		self.failUnlessEqual(statusCode, 404, "Oh my!  Our status code was %s." % statusCode)
+	def testBadCourse(self):
+		statusCode = self.client.get('/course/not-a-class/').status_code
+		self.failUnlessEqual(statusCode, 404, "Oh my!  Our status code was %s." % statusCode)
 
 	def testRoster(self):
 		'''

@@ -1,5 +1,5 @@
 from django.shortcuts import render_to_response
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, Http404
 #from page.models import Page
 from models import Page
 #from page.lesson.views import show_lesson
@@ -34,13 +34,15 @@ def show_page(request, course_slug, page_slug):
 	try: 
 		course = Course.objects.get(slug=course_slug)
 	except Course.DoesNotExist:
-		return HttpResponse("ERROR: BAD URL: The course: %s does not exist" % (course_slug))
+		#return HttpResponse("ERROR: BAD URL: The course: %s does not exist" % (course_slug))
+		raise Http404
 	
 	#check if the page is a real page in the database
 	try:
 		page = Page.objects.get(slug=page_slug)
 	except Page.DoesNotExist:
-		return HttpResponse("ERROR: BAD URL: The course: %s does not contain the page: %s." % (course_slug, page_slug))
+		#return HttpResponse("ERROR: BAD URL: The course: %s does not contain the page: %s." % (course_slug, page_slug))
+		raise Http404
 	
 	#if the course is private then check that the user is enrolled and has view permissions
 	if course.private:
