@@ -7,7 +7,6 @@ Contains a number of functions that manage and calculate user statistics.
 from models import Stat
 from courses.models import Enrollment
 from courses.models import Course
-from django.db.models import Avg, Max, Min, Count
 from django.db import connection, transaction
 
 
