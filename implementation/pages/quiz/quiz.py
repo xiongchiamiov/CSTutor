@@ -55,13 +55,14 @@ def saveQuiz(request, course, pid):
 					a.text = request.POST['mcq%sa%s' % (q.order, a.order)]
 					a.correct = (request.POST['mcq%sac' % q.order] == str(a.order))
 					a.save()
-				q.text = request.POST['mcq%dtext' % q.order]
-				q.order = request.POST['mcq%dorder' % q.order]
+				q.text = request.POST['mcq%stext' % q.order]
+				q.order = request.POST['mcq%sorder' % q.order]
 			else:
 				q = q.codequestion
-				origQuestions.append(CodeQuestion(text = q.text, order = q.order))
-				q.text = request.POST['cq%dtext' % q.order]
-				q.order = request.POST['cq%dorder' % q.order]
+				origQuestions.append(CodeQuestion(text = q.text, order = q.order, expectedOutput = q.expectedOutput))
+				q.text = request.POST['cq%stext' % q.order]
+				q.order = request.POST['cq%sorder' % q.order]
+				q.expectedOutput = request.POST['cq%seo' % q.order]
 			q.save()
 		if (validateQuestionOrder(quiz)):
 			quiz.save()
@@ -82,9 +83,10 @@ def saveQuiz(request, course, pid):
 						a.text = origA.text
 						a.save()
 				else:
+					q.codequestion
 					q.text = orig.text
 					q.order = orig.order
-					print "Revert code question"
+					q.expectedOutput = orig.expectedOutput
 				q.save()
 	return -1
 

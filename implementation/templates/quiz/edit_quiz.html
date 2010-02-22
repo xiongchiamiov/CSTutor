@@ -35,9 +35,14 @@
 	{% if q.codequestion %}
 	        <tr>
 	                <td><input type="text" name="cq{{q.codequestion.order}}order" value="{{q.codequestion.order}}" size="3" /></td>
-	                <td colspan="2"><textarea name="cq{{q.codequestion.order}}text" style="height: 5em; width: 40em;">{{q.codequestion.text}}</textarea><input type="submit" name="removeQuestion{{q.codequestion.order}}" value="X" /></td>
-			<td><input type="button" value="Edit" />
+	                <td colspan="2">Prompt<br /><textarea name="cq{{q.codequestion.order}}text" style="height: 5em; width: 40em;">{{q.codequestion.text}}</textarea><input type="submit" name="removeQuestion{{q.codequestion.order}}" value="X" /></td>
+			<td></td>
 	        </tr>
+		<tr>
+			<td></td>
+			<td colspan="2">Expected Output<br /><textarea name="cq{{q.codequestion.order}}eo" style="height: 5em; width: 40em;">{{q.codequestion.expectedOutput}}</textarea></td>
+			<td></td>
+		</tr>
 	{% endif %}
 {% endfor %}
 </table>
