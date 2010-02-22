@@ -69,7 +69,6 @@ MIDDLEWARE_CLASSES = (
 	'django.middleware.common.CommonMiddleware',
 	'django.contrib.sessions.middleware.SessionMiddleware',
 	'django.contrib.auth.middleware.AuthenticationMiddleware',
-	'debug_toolbar.middleware.DebugToolbarMiddleware',
 )
 
 ROOT_URLCONF = 'implementation.urls'
@@ -88,7 +87,6 @@ INSTALLED_APPS = (
 	'django.contrib.contenttypes',
 	'django.contrib.sessions',
 	'django.contrib.sites',
-	'debug_toolbar',
 	'courses',
 	'documentation',
 	'pages',

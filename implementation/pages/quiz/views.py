@@ -57,16 +57,16 @@ def submitQuiz(request, course_slug, page_slug):
 		their score and then direct the user to the appropriate path
 	'''
 	quiz = Quiz.objects.get(slug=page_slug)
-	maxScore = len(quiz.questions.all())
+	maxscore = len(quiz.questions.all())
 	score = 0
 
 	if (request.method == "POST"):
 		score = scoreQuiz(quiz, request, course_slug, page_slug)
-	percentage = round(float(score) / float(maxScore), 2) * 100
+	percentage = round(float(score) / float(maxscore), 2) * 100
 			
 	return master_rtr(request, 'quiz/submitQuiz.html', \
 			{'course':course_slug, 'course_slug':course_slug, \
-			 'page_slug':page_slug, 'pid':page_slug, 'score':score, 'maxScore':maxScore, 'percentage':percentage})
+			 'page_slug':page_slug, 'pid':page_slug, 'score':score, 'maxscore':maxscore, 'percentage':percentage})
 
 def edit_quiz(request, course_slug, page_slug):
 	''' edit_quiz View

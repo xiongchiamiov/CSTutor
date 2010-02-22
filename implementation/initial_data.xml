@@ -391,7 +391,7 @@
       <field to="auth.user" name="user" rel="ManyToOneRel">1</field>
       <field to="pages.page" name="page" rel="ManyToOneRel">4</field>
       <field type="IntegerField" name="score">100</field>
-      <field type="IntegerField" name="maxScore">100</field>
+      <field type="IntegerField" name="maxscore">100</field>
       <field type="DateTimeField" name="date">2010-02-10 11:22:21</field>
    </object>
    <object pk="2" model="stats.stat">
@@ -399,7 +399,7 @@
       <field to="auth.user" name="user" rel="ManyToOneRel">2</field>
       <field to="pages.page" name="page" rel="ManyToOneRel">4</field>
       <field type="IntegerField" name="score">100</field>
-      <field type="IntegerField" name="maxScore">100</field>
+      <field type="IntegerField" name="maxscore">100</field>
       <field type="DateTimeField" name="date">2010-02-10 11:22:47</field>
    </object>
    <object pk="3" model="stats.stat">
@@ -407,7 +407,7 @@
       <field to="auth.user" name="user" rel="ManyToOneRel">3</field>
       <field to="pages.page" name="page" rel="ManyToOneRel">4</field>
       <field type="IntegerField" name="score">100</field>
-      <field type="IntegerField" name="maxScore">100</field>
+      <field type="IntegerField" name="maxscore">100</field>
       <field type="DateTimeField" name="date">2010-02-10 11:22:51</field>
    </object>
 </django-objects>

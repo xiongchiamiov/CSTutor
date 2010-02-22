@@ -26,17 +26,17 @@ def getBestCourseStats(course):
 	'''
 	cursor = connection.cursor()
 	cursor.execute('''SELECT id, course_id, user_id, page_id, score, 
-	                   maxScore, date  
+	                   maxscore, date  
                    FROM stats_stat 
                    INNER JOIN (select MAX(Cast(Score as FLOAT) 
-				       / cast(maxScore as Float)) as inner_maxScore,
+				       / cast(maxscore as Float)) as inner_maxScore,
                        user_id as inner_user_id, page_id as inner_page_id,
 				       course_id as inner_course_id
                        FROM stats_stat 
 	                   WHERE course_ID=%s 
 		               GROUP BY user_id, page_id, course_id) as best_scores
-                   ON (Cast(score as FLOAT) / cast (maxScore as FLOAT)) = 
-				       inner_maxScore and
+                   ON (Cast(score as FLOAT) / cast (maxscore as FLOAT)) = 
+				       inner_maxscore and
                        user_id = inner_user_id AND 
 					   page_id = inner_page_id and 
                        course_id = inner_course_id
@@ -56,20 +56,20 @@ def getQuizBestAggregates(course):
 	cursor.execute('''SELECT pages_page.slug,
 	                    pages_page.name,
 						count(*),
-	                    max(Cast(score as FLOAT)/cast(maxScore as Float)),
-	                    min(Cast(score as FLOAT)/cast(maxScore as Float)),
-	                    avg(Cast(score as FLOAT)/cast(maxScore as Float))
+	                    max(Cast(score as FLOAT)/cast(maxscore as Float)),
+	                    min(Cast(score as FLOAT)/cast(maxscore as Float)),
+	                    avg(Cast(score as FLOAT)/cast(maxscore as Float))
                    FROM (stats_stat 
                          INNER JOIN (select MAX(Cast(Score as FLOAT) 
-	                /cast (maxScore as Float)) as inner_maxScore,
+	                /cast (maxscore as Float)) as inner_maxscore,
                               user_id as inner_user_id, 
 	                      page_id as inner_page_id,
 		              innerStats.course_id as inner_course_id
                               FROM stats_stat as innerStats 
 	                          WHERE inner_course_ID=%s 
 	                          GROUP BY user_id, page_id, course_id)
-	                          ON (Cast(score as FLOAT) / cast (maxScore as FLOAT)) = 
-				         inner_maxScore and
+	                          ON (Cast(score as FLOAT) / cast (maxscore as FLOAT)) = 
+				         inner_maxscore and
 	                         user_id = inner_user_id AND 
 	                         page_id = inner_page_id and 
 	                         course_id = inner_course_id ) as best_stats

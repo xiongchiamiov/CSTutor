@@ -27,14 +27,14 @@ class Stat(models.Model):
 	user = models.ForeignKey(User, related_name='stats')
 	page = models.ForeignKey(Page, related_name='stats')
 	score = models.IntegerField()
-	maxScore = models.IntegerField()
+	maxscore = models.IntegerField()
 	date = models.DateTimeField(auto_now_add=True)
 
 	@staticmethod
 	def CreateStat(course, page, user, score):
 		''' Create a new Stat Entry
 		Creates a new entry in the stats table for the passed course, page,
-		and user.  The entry is timestamped automatically. The maxScore
+		and user.  The entry is timestamped automatically. The maxscore
 		is generated at the time that stat is created. This field is 
 		simply the number of questions in the quiz. 
 
@@ -44,9 +44,9 @@ class Stat(models.Model):
 		It is an error to call this function with a page that isn't a quiz.
 		Don't do that.
 		'''
-		maxScore = page.quiz.questions.count() 
+		maxscore = page.quiz.questions.count() 
 		s = Stat(course=course, page=page, user=user, score=score, 
-			maxScore = maxScore)
+			maxscore = maxscore)
 		s.save()
 		return s
 

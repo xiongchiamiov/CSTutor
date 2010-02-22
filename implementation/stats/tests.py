@@ -43,7 +43,7 @@ class StatsTests(TestCase):
 		self.assertEquals(testStat.page , quiz)
 		self.assertEquals(testStat.user , user)
 		self.assertEquals(testStat.score , score)
-		self.assertEquals(testStat.maxScore , 3)
+		self.assertEquals(testStat.maxscore , 3)
 
 		#And test the that it's in the database
 		dbTestStat = Stat.objects.get(id=testStat.id)
