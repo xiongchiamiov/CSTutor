@@ -33,3 +33,8 @@ def show_help(request):
 	Displays the help page
 	'''
 	return master_rtr(request, 'help/index.html')
+
+def custom_404(request):
+	response = master_rtr(request, '404.html')
+	response.status_code = 404
+	return response

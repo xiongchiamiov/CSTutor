@@ -40,3 +40,5 @@ urlpatterns += patterns('',
    # courses should be handled by course urls
 	(r'^course/(?P<course_slug>[\w-]+)/', include('courses.urls')),
 )
+
+handler404 = 'home.views.custom_404'
