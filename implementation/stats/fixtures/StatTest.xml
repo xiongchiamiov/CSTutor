@@ -1,0 +1,593 @@
+<?xml version="1.0" encoding="utf-8"?>
+<django-objects version="1.0">
+   <object pk="1" model="auth.user">
+      <field type="CharField" name="username">mgius</field>
+      <field type="CharField" name="first_name">Mark</field>
+      <field type="CharField" name="last_name">Gius</field>
+      <field type="CharField" name="email"></field>
+      <field type="CharField" name="password">sha1$afeda$648e804b09a7bf98dbac6b7da13d6dbe0c7716f6</field>
+      <field type="BooleanField" name="is_staff">True</field>
+      <field type="BooleanField" name="is_active">True</field>
+      <field type="BooleanField" name="is_superuser">True</field>
+      <field type="DateTimeField" name="last_login">2010-01-22 13:14:05</field>
+      <field type="DateTimeField" name="date_joined">2010-01-22 13:14:05</field>
+      <field to="auth.group" name="groups" rel="ManyToManyRel"></field>
+      <field to="auth.permission" name="user_permissions" rel="ManyToManyRel"></field>
+   </object>
+   <object pk="2" model="auth.user">
+      <field type="CharField" name="username">rmezzetta</field>
+      <field type="CharField" name="first_name">Russell</field>
+      <field type="CharField" name="last_name">Mezzetta</field>
+      <field type="CharField" name="email"></field>
+      <field type="CharField" name="password">sha1$afeda$648e804b09a7bf98dbac6b7da13d6dbe0c7716f6</field>
+      <field type="BooleanField" name="is_staff">True</field>
+      <field type="BooleanField" name="is_active">True</field>
+      <field type="BooleanField" name="is_superuser">True</field>
+      <field type="DateTimeField" name="last_login">2010-01-22 13:14:39</field>
+      <field type="DateTimeField" name="date_joined">2010-01-22 13:14:39</field>
+      <field to="auth.group" name="groups" rel="ManyToManyRel"></field>
+      <field to="auth.permission" name="user_permissions" rel="ManyToManyRel"></field>
+   </object>
+   <object pk="3" model="auth.user">
+      <field type="CharField" name="username">pearson</field>
+      <field type="CharField" name="first_name">James</field>
+      <field type="CharField" name="last_name">Pearson</field>
+      <field type="CharField" name="email"></field>
+      <field type="CharField" name="password">sha1$b4740$4fc252a2ad47deaaa1c8306ca5b5591f5ed274b7</field>
+      <field type="BooleanField" name="is_staff">True</field>
+      <field type="BooleanField" name="is_active">True</field>
+      <field type="BooleanField" name="is_superuser">True</field>
+      <field type="DateTimeField" name="last_login">2010-01-22 13:15:16</field>
+      <field type="DateTimeField" name="date_joined">2010-01-22 13:15:16</field>
+      <field to="auth.group" name="groups" rel="ManyToManyRel"></field>
+      <field to="auth.permission" name="user_permissions" rel="ManyToManyRel"></field>
+   </object>
+   <object pk="4" model="auth.user">
+      <field type="CharField" name="username">jinloes</field>
+      <field type="CharField" name="first_name">Jon</field>
+      <field type="CharField" name="last_name">Inloes</field>
+      <field type="CharField" name="email"></field>
+      <field type="CharField" name="password">sha1$afeda$648e804b09a7bf98dbac6b7da13d6dbe0c7716f6</field>
+      <field type="BooleanField" name="is_staff">True</field>
+      <field type="BooleanField" name="is_active">True</field>
+      <field type="BooleanField" name="is_superuser">True</field>
+      <field type="DateTimeField" name="last_login">2010-01-22 13:15:38</field>
+      <field type="DateTimeField" name="date_joined">2010-01-22 13:15:38</field>
+      <field to="auth.group" name="groups" rel="ManyToManyRel"></field>
+      <field to="auth.permission" name="user_permissions" rel="ManyToManyRel"></field>
+   </object>
+   <object pk="5" model="auth.user">
+      <field type="CharField" name="username">jhartquist</field>
+      <field type="CharField" name="first_name">John</field>
+      <field type="CharField" name="last_name">Hartquist</field>
+      <field type="CharField" name="email"></field>
+      <field type="CharField" name="password">sha1$afeda$648e804b09a7bf98dbac6b7da13d6dbe0c7716f6</field>
+      <field type="BooleanField" name="is_staff">True</field>
+      <field type="BooleanField" name="is_active">True</field>
+      <field type="BooleanField" name="is_superuser">True</field>
+      <field type="DateTimeField" name="last_login">2010-01-22 13:16:01</field>
+      <field type="DateTimeField" name="date_joined">2010-01-22 13:16:01</field>
+      <field to="auth.group" name="groups" rel="ManyToManyRel"></field>
+      <field to="auth.permission" name="user_permissions" rel="ManyToManyRel"></field>
+   </object>
+   <object pk="6" model="auth.user">
+      <field type="CharField" name="username">mtytel</field>
+      <field type="CharField" name="first_name">Matt</field>
+      <field type="CharField" name="last_name">Tytel</field>
+      <field type="CharField" name="email"></field>
+      <field type="CharField" name="password">sha1$afeda$648e804b09a7bf98dbac6b7da13d6dbe0c7716f6</field>
+      <field type="BooleanField" name="is_staff">True</field>
+      <field type="BooleanField" name="is_active">True</field>
+      <field type="BooleanField" name="is_superuser">True</field>
+      <field type="DateTimeField" name="last_login">2010-01-22 13:16:33</field>
+      <field type="DateTimeField" name="date_joined">2010-01-22 13:16:33</field>
+      <field to="auth.group" name="groups" rel="ManyToManyRel"></field>
+      <field to="auth.permission" name="user_permissions" rel="ManyToManyRel"></field>
+   </object>
+   <object pk="7" model="auth.user">
+      <field type="CharField" name="username">ekleist</field>
+      <field type="CharField" name="first_name">Evan</field>
+      <field type="CharField" name="last_name">Kleist</field>
+      <field type="CharField" name="email"></field>
+      <field type="CharField" name="password">sha1$afeda$648e804b09a7bf98dbac6b7da13d6dbe0c7716f6</field>
+      <field type="BooleanField" name="is_staff">True</field>
+      <field type="BooleanField" name="is_active">True</field>
+      <field type="BooleanField" name="is_superuser">True</field>
+      <field type="DateTimeField" name="last_login">2010-01-22 13:16:33</field>
+      <field type="DateTimeField" name="date_joined">2010-01-22 13:16:33</field>
+      <field to="auth.group" name="groups" rel="ManyToManyRel"></field>
+      <field to="auth.permission" name="user_permissions" rel="ManyToManyRel"></field>
+   </object>
+   <object pk="8" model="auth.user">
+      <field type="CharField" name="username">fakeuser</field>
+      <field type="CharField" name="first_name">I Am</field>
+      <field type="CharField" name="last_name">A Fake User</field>
+      <field type="CharField" name="email"></field>
+      <field type="CharField" name="password">sha1$afeda$648e804b09a7bf98dbac6b7da13d6dbe0c7716f6</field>
+      <field type="BooleanField" name="is_staff">False</field>
+      <field type="BooleanField" name="is_active">True</field>
+      <field type="BooleanField" name="is_superuser">False</field>
+      <field type="DateTimeField" name="last_login">2010-01-22 13:17:33</field>
+      <field type="DateTimeField" name="date_joined">2010-01-21 13:16:33</field>
+      <field to="auth.group" name="groups" rel="ManyToManyRel"></field>
+      <field to="auth.permission" name="user_permissions" rel="ManyToManyRel"></field>
+   </object>
+   <!-- These users are used in my first getBestCourseStats test -->
+   <object pk="9" model="auth.user">
+      <field type="CharField" name="username">testUserNo1</field>
+      <field type="CharField" name="first_name">Test User No. 1</field>
+      <field type="CharField" name="last_name">#01</field>
+      <field type="CharField" name="email"></field>
+      <field type="CharField" name="password">sha1$afeda$648e804b09a7bf98dbac6b7da13d6dbe0c7716f6</field>
+      <field type="BooleanField" name="is_staff">False</field>
+      <field type="BooleanField" name="is_active">True</field>
+      <field type="BooleanField" name="is_superuser">False</field>
+      <field type="DateTimeField" name="last_login">2010-01-22 13:17:33</field>
+      <field type="DateTimeField" name="date_joined">2010-01-21 13:16:33</field>
+      <field to="auth.group" name="groups" rel="ManyToManyRel"></field>
+      <field to="auth.permission" name="user_permissions" rel="ManyToManyRel"></field>
+   </object>  
+   <object pk="10" model="auth.user">
+      <field type="CharField" name="username">testUserNo2</field>
+      <field type="CharField" name="first_name">Test User No. 2</field>
+      <field type="CharField" name="last_name">#02</field>
+      <field type="CharField" name="email"></field>
+      <field type="CharField" name="password">sha1$afeda$648e804b09a7bf98dbac6b7da13d6dbe0c7716f6</field>
+      <field type="BooleanField" name="is_staff">False</field>
+      <field type="BooleanField" name="is_active">True</field>
+      <field type="BooleanField" name="is_superuser">False</field>
+      <field type="DateTimeField" name="last_login">2010-01-22 13:17:33</field>
+      <field type="DateTimeField" name="date_joined">2010-01-21 13:16:33</field>
+      <field to="auth.group" name="groups" rel="ManyToManyRel"></field>
+      <field to="auth.permission" name="user_permissions" rel="ManyToManyRel"></field>
+   </object>    
+   <object pk="1" model="courses.course">
+      <field type="SlugField" name="slug">gene-fishers-cpe102-fall-08</field>
+      <field type="CharField" name="name">Gene Fisher's CPE102 Fall 08</field>
+      <field type="BooleanField" name="private">False</field>
+   </object>
+   <object pk="2" model="courses.course">
+      <field type="SlugField" name="slug">john-dalbeys-cpe103-fall-09</field>
+      <field type="CharField" name="name">John Dalbey's CPE103 Fall 09</field>
+      <field type="BooleanField" name="private">False</field>
+   </object>
+   <object pk="3" model="courses.course">
+      <field type="SlugField" name="slug">dummyCourse</field>
+      <field type="CharField" name="name">It's a course for dummies (like this team)</field>
+      <field type="BooleanField" name="private">False</field>
+   </object>
+   <!-- These courses are used in my first getBestCourseStats test -->
+   <object pk="4" model="courses.course">
+      <field type="SlugField" name="slug">testcourse1</field>
+      <field type="CharField" name="name">Test Course No. 1</field>
+      <field type="BooleanField" name="private">False</field>
+   </object>
+   <object pk="5" model="courses.course">
+      <field type="SlugField" name="slug">testcourse2</field>
+      <field type="CharField" name="name">Test Course No. 3</field>
+      <field type="BooleanField" name="private">False</field>
+   </object> 
+   <object pk="1" model="courses.enrollment">
+      <field to="auth.user" name="user" rel="ManyToOneRel">1</field>
+      <field to="courses.course" name="course" rel="ManyToOneRel">1</field>
+      <field type="BooleanField" name="view">True</field>
+      <field type="BooleanField" name="edit">True</field>
+      <field type="BooleanField" name="stats">True</field>
+      <field type="BooleanField" name="manage">True</field>
+   </object>
+   <object pk="2" model="courses.enrollment">
+      <field to="auth.user" name="user" rel="ManyToOneRel">3</field>
+      <field to="courses.course" name="course" rel="ManyToOneRel">2</field>
+      <field type="BooleanField" name="view">True</field>
+      <field type="BooleanField" name="edit">True</field>
+      <field type="BooleanField" name="stats">True</field>
+      <field type="BooleanField" name="manage">True</field>
+   </object>
+   <object pk="3" model="courses.enrollment">
+      <field to="auth.user" name="user" rel="ManyToOneRel">7</field>
+      <field to="courses.course" name="course" rel="ManyToOneRel">1</field>
+      <field type="BooleanField" name="view">True</field>
+      <field type="BooleanField" name="edit">True</field>
+      <field type="BooleanField" name="stats">True</field>
+      <field type="BooleanField" name="manage">True</field>
+   </object>
+   <object pk="3" model="courses.enrollment">
+      <field to="auth.user" name="user" rel="ManyToOneRel">8</field>
+      <field to="courses.course" name="course" rel="ManyToOneRel">1</field>
+      <field type="BooleanField" name="view">True</field>
+      <field type="BooleanField" name="edit">True</field>
+      <field type="BooleanField" name="stats">True</field>
+      <field type="BooleanField" name="manage">True</field>
+   </object>
+   <object pk="3" model="courses.enrollment">
+      <field to="auth.user" name="user" rel="ManyToOneRel">8</field>
+      <field to="courses.course" name="course" rel="ManyToOneRel">2</field>
+      <field type="BooleanField" name="view">True</field>
+      <field type="BooleanField" name="edit">True</field>
+      <field type="BooleanField" name="stats">True</field>
+      <field type="BooleanField" name="manage">True</field>
+   </object>
+   <!-- These users are used in my first getBestCourseStats test -->
+   <object pk="4" model="courses.enrollment">
+      <field to="auth.user" name="user" rel="ManyToOneRel">9</field>
+      <field to="courses.course" name="course" rel="ManyToOneRel">4</field>
+      <field type="BooleanField" name="view">True</field>
+      <field type="BooleanField" name="edit">True</field>
+      <field type="BooleanField" name="stats">True</field>
+      <field type="BooleanField" name="manage">True</field>
+   </object>
+   <object pk="4" model="courses.enrollment">
+      <field to="auth.user" name="user" rel="ManyToOneRel">10</field>
+      <field to="courses.course" name="course" rel="ManyToOneRel">4</field>
+      <field type="BooleanField" name="view">True</field>
+      <field type="BooleanField" name="edit">True</field>
+      <field type="BooleanField" name="stats">True</field>
+      <field type="BooleanField" name="manage">True</field>
+   </object>
+
+
+  <object pk="1" model="pages.page">
+      <field to="courses.course" name="course" rel="ManyToOneRel">1</field>
+      <field type="SlugField" name="slug">gene-fishers-cpe102-fall-08</field>
+      <field type="TextField" name="name">Gene Fisher's CPE102 Fall 08</field>
+      <field type="IntegerField" name="left">1</field>
+      <field type="IntegerField" name="right">8</field>
+   </object>
+   <object pk="2" model="pages.page">
+      <field to="courses.course" name="course" rel="ManyToOneRel">1</field>
+      <field type="SlugField" name="slug">forloops</field>
+      <field type="TextField" name="name">CPE102 forloops</field>
+      <field type="IntegerField" name="left">2</field>
+      <field type="IntegerField" name="right">3</field>
+   </object>
+   <object pk="3" model="pages.page">
+      <field to="courses.course" name="course" rel="ManyToOneRel">1</field>
+      <field type="SlugField" name="slug">whileloops</field>
+      <field type="TextField" name="name">CPE102 while loops</field>
+      <field type="IntegerField" name="left">4</field>
+      <field type="IntegerField" name="right">5</field>
+   </object>
+   <object pk="4" model="pages.page">
+      <field to="courses.course" name="course" rel="ManyToOneRel">1</field>
+      <field type="SlugField" name="slug">samplequiz</field>
+      <field type="TextField" name="name">samplequiz</field>
+      <field type="IntegerField" name="left">6</field>
+      <field type="IntegerField" name="right">7</field>
+   </object>
+   <object pk="5" model="pages.page">
+      <field to="courses.course" name="course" rel="ManyToOneRel">2</field>
+      <field type="SlugField" name="slug">john-dalbeys-cpe103-fall-09</field>
+      <field type="TextField" name="name">John Dalbey's CPE103 Fall 09</field>
+      <field type="IntegerField" name="left">1</field>
+      <field type="IntegerField" name="right">2</field>
+   </object>
+   <!-- This is page is for the getBestCourseStats test -->
+   <object pk="5" model="pages.page">
+      <field to="courses.course" name="course" rel="ManyToOneRel">4</field>
+      <field type="SlugField" name="slug">test_class_no01_quiz</field>
+      <field type="TextField" name="name">TestClass No. 01 Quiz 1</field>
+      <field type="IntegerField" name="left">1</field>
+      <field type="IntegerField" name="right">2</field>
+   </object>
+
+   <object pk="1" model="lesson.lesson">
+      <field type="TextField" name="content">This is an index page for CPE102</field>
+   </object>
+   <object pk="2" model="lesson.lesson">
+      <field type="TextField" name="content">For loops are unsafe for work</field>
+   </object>
+   <object pk="3" model="lesson.lesson">
+      <field type="TextField" name="content">While loops will make you crazy, like a fox</field>
+   </object>
+   <object pk="5" model="lesson.lesson">
+      <field type="TextField" name="content">J-Dalbizzle's classy course content</field>
+   </object>
+   <object pk="4" model="quiz.quiz">
+      <field type="TextField" name="text">Sample Quiz</field>
+      <field type="BooleanField" name="hidden">False</field>
+   </object>
+   <!-- This quiz is for the testgetBestCourseCourseStats function -->
+   <object pk="5" model="quiz.quiz">
+      <field type="TextField" name="text">Test Quiz No. 1</field>
+      <field type="BooleanField" name="hidden">False</field>
+   </object>  
+
+   <object pk="1" model="question.question">
+      <field type="TextField" name="text">What is your name</field>
+      <field type="IntegerField" name="order">1</field>
+      <field to="quiz.quiz" name="quiz" rel="ManyToOneRel">4</field>
+   </object>
+   <object pk="2" model="question.question">
+      <field type="TextField" name="text">What is your gender?</field>
+      <field type="IntegerField" name="order">3</field>
+      <field to="quiz.quiz" name="quiz" rel="ManyToOneRel">4</field>
+   </object>
+   <object pk="3" model="question.question">
+      <field type="TextField" name="text">Write a statement in python that prints "Hello World"?</field>
+      <field type="IntegerField" name="order">2</field>
+      <field to="quiz.quiz" name="quiz" rel="ManyToOneRel">4</field>
+   </object>
+   <!-- These questions are for the getBestCourseStats quiz -->
+   <object pk="4" model="question.question">
+      <field type="TextField" name="text">Does (true==true)==true?</field>
+      <field type="IntegerField" name="order">1</field>
+      <field to="quiz.quiz" name="quiz" rel="ManyToOneRel">5</field>
+   </object>
+   <object pk="5" model="question.question">
+      <field type="TextField" name="text">Does (true==true)==true?</field>
+      <field type="IntegerField" name="order">2</field>
+      <field to="quiz.quiz" name="quiz" rel="ManyToOneRel">5</field>
+   </object>
+   <object pk="6" model="question.question">
+      <field type="TextField" name="text">Does (true==true)==true?</field>
+      <field type="IntegerField" name="order">3</field>
+      <field to="quiz.quiz" name="quiz" rel="ManyToOneRel">5</field>
+   </object>
+   <object pk="7" model="question.question">
+      <field type="TextField" name="text">Does (true==true)==true?</field>
+      <field type="IntegerField" name="order">4</field>
+      <field to="quiz.quiz" name="quiz" rel="ManyToOneRel">5</field>
+   </object>
+   <object pk="8" model="question.question">
+      <field type="TextField" name="text">Does (true==true)==true?</field>
+      <field type="IntegerField" name="order">5</field>
+      <field to="quiz.quiz" name="quiz" rel="ManyToOneRel">5</field>
+   </object>
+   <object pk="9" model="question.question">
+      <field type="TextField" name="text">Does (true==true)==true?</field>
+      <field type="IntegerField" name="order">6</field>
+      <field to="quiz.quiz" name="quiz" rel="ManyToOneRel">5</field>
+   </object>
+   <object pk="10" model="question.question">
+      <field type="TextField" name="text">Does (true==true)==true?</field>
+      <field type="IntegerField" name="order">7</field>
+      <field to="quiz.quiz" name="quiz" rel="ManyToOneRel">5</field>
+   </object>
+   <object pk="11" model="question.question">
+      <field type="TextField" name="text">Does (true==true)==true?</field>
+      <field type="IntegerField" name="order">8</field>
+      <field to="quiz.quiz" name="quiz" rel="ManyToOneRel">5</field>
+   </object>
+   <object pk="12" model="question.question">
+      <field type="TextField" name="text">Does (true==true)==true?</field>
+      <field type="IntegerField" name="order">9</field>
+      <field to="quiz.quiz" name="quiz" rel="ManyToOneRel">5</field>
+   </object>
+   <object pk="13" model="question.question">
+      <field type="TextField" name="text">Does (true==true)==true?</field>
+      <field type="IntegerField" name="order">10</field>
+      <field to="quiz.quiz" name="quiz" rel="ManyToOneRel">5</field>
+   </object>
+
+
+   <object pk="1" model="question.multiplechoicequestion">
+   </object>
+   <object pk="2" model="question.multiplechoicequestion">
+   </object>
+   <object pk="3" model="question.codequestion">
+      <field type="TextField" name="beforeCode">test1</field>
+      <field type="BooleanField" name="showBeforeCode">True</field>
+      <field type="TextField" name="editableCode">test3</field>
+      <field type="TextField" name="afterCode">test2</field>
+      <field type="BooleanField" name="showAfterCode">True</field>
+      <field type="TextField" name="expectedOutput">test3</field>
+   </object>
+   <!-- These questions are for the getBestCourseStats test -->
+   <object pk="4" model="question.multiplechoicequestion">
+   </object>
+   <object pk="5" model="question.multiplechoicequestion">
+   </object>
+   <object pk="6" model="question.multiplechoicequestion">
+   </object>
+   <object pk="7" model="question.multiplechoicequestion">
+   </object>
+   <object pk="8" model="question.multiplechoicequestion">
+   </object>
+   <object pk="9" model="question.multiplechoicequestion">
+   </object>
+   <object pk="10" model="question.multiplechoicequestion">
+   </object>
+   <object pk="11" model="question.multiplechoicequestion">
+   </object>
+   <object pk="12" model="question.multiplechoicequestion">
+   </object>
+   <object pk="13" model="question.multiplechoicequestion">
+   </object>
+   
+   <object pk="1" model="question.answer">
+      <field to="question.multiplechoicequestion" name="question" rel="ManyToOneRel">1</field>
+      <field type="BooleanField" name="correct">True</field>
+      <field type="IntegerField" name="order">0</field>
+      <field type="TextField" name="text">Russell. (correct)</field>
+   </object>
+   <object pk="2" model="question.answer">
+      <field to="question.multiplechoicequestion" name="question" rel="ManyToOneRel">1</field>
+      <field type="BooleanField" name="correct">False</field>
+      <field type="IntegerField" name="order">1</field>
+      <field type="TextField" name="text">Barney Rubble. (incorrect)</field>
+   </object>
+   <object pk="3" model="question.answer">
+      <field to="question.multiplechoicequestion" name="question" rel="ManyToOneRel">2</field>
+      <field type="BooleanField" name="correct">True</field>
+      <field type="IntegerField" name="order">1</field>
+      <field type="TextField" name="text">Male</field>
+   </object>
+   <object pk="4" model="question.answer">
+      <field to="question.multiplechoicequestion" name="question" rel="ManyToOneRel">2</field>
+      <field type="BooleanField" name="correct">False</field>
+      <field type="IntegerField" name="order">2</field>
+      <field type="TextField" name="text">Female</field>
+   </object>
+   <!-- These answers are for the getBestCourseStats test -->
+   <object pk="5" model="question.answer">
+      <field to="question.multiplechoicequestion" name="question" rel="ManyToOneRel">4</field>
+      <field type="BooleanField" name="correct">True</field>
+      <field type="IntegerField" name="order">0</field>
+      <field type="TextField" name="text">True</field>
+   </object>
+   <object pk="6" model="question.answer">
+      <field to="question.multiplechoicequestion" name="question" rel="ManyToOneRel">4</field>
+      <field type="BooleanField" name="correct">False</field>
+      <field type="IntegerField" name="order">1</field>
+      <field type="TextField" name="text">False</field>
+	</object>
+	<object pk="7" model="question.answer">
+      <field to="question.multiplechoicequestion" name="question" rel="ManyToOneRel">5</field>
+      <field type="BooleanField" name="correct">True</field>
+      <field type="IntegerField" name="order">0</field>
+      <field type="TextField" name="text">True</field>
+   </object>
+   <object pk="8" model="question.answer">
+      <field to="question.multiplechoicequestion" name="question" rel="ManyToOneRel">5</field>
+      <field type="BooleanField" name="correct">False</field>
+      <field type="IntegerField" name="order">1</field>
+      <field type="TextField" name="text">False</field>
+	</object>
+	<object pk="9" model="question.answer">
+      <field to="question.multiplechoicequestion" name="question" rel="ManyToOneRel">6</field>
+      <field type="BooleanField" name="correct">True</field>
+      <field type="IntegerField" name="order">0</field>
+      <field type="TextField" name="text">True</field>
+   </object>
+   <object pk="10" model="question.answer">
+      <field to="question.multiplechoicequestion" name="question" rel="ManyToOneRel">6</field>
+      <field type="BooleanField" name="correct">False</field>
+      <field type="IntegerField" name="order">1</field>
+      <field type="TextField" name="text">False</field>
+	</object>
+	<object pk="11" model="question.answer">
+      <field to="question.multiplechoicequestion" name="question" rel="ManyToOneRel">7</field>
+      <field type="BooleanField" name="correct">True</field>
+      <field type="IntegerField" name="order">0</field>
+      <field type="TextField" name="text">True</field>
+   </object>
+   <object pk="12" model="question.answer">
+      <field to="question.multiplechoicequestion" name="question" rel="ManyToOneRel">7</field>
+      <field type="BooleanField" name="correct">False</field>
+      <field type="IntegerField" name="order">1</field>
+      <field type="TextField" name="text">False</field>
+	</object>
+	<object pk="13" model="question.answer">
+      <field to="question.multiplechoicequestion" name="question" rel="ManyToOneRel">8</field>
+      <field type="BooleanField" name="correct">True</field>
+      <field type="IntegerField" name="order">0</field>
+      <field type="TextField" name="text">True</field>
+   </object>
+   <object pk="14" model="question.answer">
+      <field to="question.multiplechoicequestion" name="question" rel="ManyToOneRel">8</field>
+      <field type="BooleanField" name="correct">False</field>
+      <field type="IntegerField" name="order">1</field>
+      <field type="TextField" name="text">False</field>
+	</object>
+	<object pk="15" model="question.answer">
+      <field to="question.multiplechoicequestion" name="question" rel="ManyToOneRel">9</field>
+      <field type="BooleanField" name="correct">True</field>
+      <field type="IntegerField" name="order">0</field>
+      <field type="TextField" name="text">True</field>
+   </object>
+   <object pk="16" model="question.answer">
+      <field to="question.multiplechoicequestion" name="question" rel="ManyToOneRel">9</field>
+      <field type="BooleanField" name="correct">False</field>
+      <field type="IntegerField" name="order">1</field>
+      <field type="TextField" name="text">False</field>
+	</object>
+	<object pk="17" model="question.answer">
+      <field to="question.multiplechoicequestion" name="question" rel="ManyToOneRel">10</field>
+      <field type="BooleanField" name="correct">True</field>
+      <field type="IntegerField" name="order">0</field>
+      <field type="TextField" name="text">True</field>
+   </object>
+   <object pk="18" model="question.answer">
+      <field to="question.multiplechoicequestion" name="question" rel="ManyToOneRel">10</field>
+      <field type="BooleanField" name="correct">False</field>
+      <field type="IntegerField" name="order">1</field>
+      <field type="TextField" name="text">False</field>
+	</object>
+	<object pk="19" model="question.answer">
+      <field to="question.multiplechoicequestion" name="question" rel="ManyToOneRel">11</field>
+      <field type="BooleanField" name="correct">True</field>
+      <field type="IntegerField" name="order">0</field>
+      <field type="TextField" name="text">True</field>
+   </object>
+   <object pk="20" model="question.answer">
+      <field to="question.multiplechoicequestion" name="question" rel="ManyToOneRel">11</field>
+      <field type="BooleanField" name="correct">False</field>
+      <field type="IntegerField" name="order">1</field>
+      <field type="TextField" name="text">False</field>
+	</object>
+	<object pk="21" model="question.answer">
+      <field to="question.multiplechoicequestion" name="question" rel="ManyToOneRel">12</field>
+      <field type="BooleanField" name="correct">True</field>
+      <field type="IntegerField" name="order">0</field>
+      <field type="TextField" name="text">True</field>
+   </object>
+   <object pk="22" model="question.answer">
+      <field to="question.multiplechoicequestion" name="question" rel="ManyToOneRel">12</field>
+      <field type="BooleanField" name="correct">False</field>
+      <field type="IntegerField" name="order">1</field>
+      <field type="TextField" name="text">False</field>
+	</object>
+	<object pk="23" model="question.answer">
+      <field to="question.multiplechoicequestion" name="question" rel="ManyToOneRel">13</field>
+      <field type="BooleanField" name="correct">True</field>
+      <field type="IntegerField" name="order">0</field>
+      <field type="TextField" name="text">True</field>
+   </object>
+   <object pk="24" model="question.answer">
+      <field to="question.multiplechoicequestion" name="question" rel="ManyToOneRel">13</field>
+      <field type="BooleanField" name="correct">False</field>
+      <field type="IntegerField" name="order">1</field>
+      <field type="TextField" name="text">False</field>
+	</object>
+    <object pk="1" model="stats.stat">
+      <field to="courses.course" name="course" rel="ManyToOneRel">4</field>
+      <field to="auth.user" name="user" rel="ManyToOneRel">9</field>
+      <field to="pages.page" name="page" rel="ManyToOneRel">4</field>
+      <field type="IntegerField" name="score">1</field>
+      <field type="IntegerField" name="maxScore">10</field>
+      <field type="DateTimeField" name="date">2010-02-10 11:22:21</field>
+    </object>
+    <object pk="2" model="stats.stat">
+      <field to="courses.course" name="course" rel="ManyToOneRel">4</field>
+      <field to="auth.user" name="user" rel="ManyToOneRel">9</field>
+      <field to="pages.page" name="page" rel="ManyToOneRel">4</field>
+      <field type="IntegerField" name="score">9</field>
+      <field type="IntegerField" name="maxScore">10</field>
+      <field type="DateTimeField" name="date">2010-03-10 11:22:21</field>
+    </object>
+	<object pk="3" model="stats.stat">
+      <field to="courses.course" name="course" rel="ManyToOneRel">4</field>
+      <field to="auth.user" name="user" rel="ManyToOneRel">9</field>
+      <field to="pages.page" name="page" rel="ManyToOneRel">4</field>
+      <field type="IntegerField" name="score">5</field>
+      <field type="IntegerField" name="maxScore">10</field>
+      <field type="DateTimeField" name="date">2010-04-10 11:22:21</field>
+    </object>
+	<object pk="4" model="stats.stat">
+      <field to="courses.course" name="course" rel="ManyToOneRel">4</field>
+      <field to="auth.user" name="user" rel="ManyToOneRel">10</field>
+      <field to="pages.page" name="page" rel="ManyToOneRel">4</field>
+      <field type="IntegerField" name="score">2</field>
+      <field type="IntegerField" name="maxScore">10</field>
+      <field type="DateTimeField" name="date">2010-01-10 11:22:21</field>
+    </object>
+	<object pk="5" model="stats.stat">
+      <field to="courses.course" name="course" rel="ManyToOneRel">4</field>
+      <field to="auth.user" name="user" rel="ManyToOneRel">10</field>
+      <field to="pages.page" name="page" rel="ManyToOneRel">4</field>
+      <field type="IntegerField" name="score">8</field>
+      <field type="IntegerField" name="maxScore">10</field>
+      <field type="DateTimeField" name="date">2010-02-10 11:22:21</field>
+    </object>
+	<object pk="6" model="stats.stat">
+      <field to="courses.course" name="course" rel="ManyToOneRel">4</field>
+      <field to="auth.user" name="user" rel="ManyToOneRel">10</field>
+      <field to="pages.page" name="page" rel="ManyToOneRel">4</field>
+      <field type="IntegerField" name="score">10</field>
+      <field type="IntegerField" name="maxScore">10</field>
+      <field type="DateTimeField" name="date">2010-03-10 11:22:21</field>
+    </object>
+
+
+
+</django-objects>
