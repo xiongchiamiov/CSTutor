@@ -70,6 +70,10 @@ def show_page(request, course_slug, page_slug):
 	return show_lesson(request, course_slug, page_slug, page)
 
 def edit_page(request, course_slug, page_slug):
+	'''
+	This view verifies that a valid course/page pair is given, then verifies that the user has edit permissions,
+	finally it calls the quiz/lesson edit view depending on what kind of page is given.
+	'''
 	#check if the course is a real course in the database	
 	try: 
 		c = Course.objects.get(slug=course_slug)
