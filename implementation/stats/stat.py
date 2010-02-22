@@ -29,7 +29,7 @@ def getBestCourseStats(course):
 	                   maxScore, date  
                    FROM stats_stat 
                    INNER JOIN (select MAX(Cast(Score as FLOAT) 
-				       /cast (maxScore as Float)) as inner_maxScore,
+				       / cast(maxScore as Float)) as inner_maxScore,
                        user_id as inner_user_id, page_id as inner_page_id,
 				       course_id as inner_course_id
                        FROM stats_stat 
