@@ -32,9 +32,9 @@ def getBestCourseStats(course):
 				       /cast (maxScore as Float)) as inner_maxScore,
                        user_id as inner_user_id, page_id as inner_page_id,
 				       course_id as inner_course_id
-                   FROM stats_stat 
-	               WHERE course_ID=%s 
-		           GROUP BY user_id, page_id, course_id)
+                       FROM stats_stat 
+	                   WHERE course_ID=%s 
+		               GROUP BY user_id, page_id, course_id) as best_scores
                    ON (Cast(score as FLOAT) / cast (maxScore as FLOAT)) = 
 				       inner_maxScore and
                        user_id = inner_user_id AND 
