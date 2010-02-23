@@ -410,4 +410,42 @@
       <field type="IntegerField" name="maxscore">100</field>
       <field type="DateTimeField" name="date">2010-02-10 11:22:51</field>
    </object>
+
+   <object pk="10000" model="courses.course">
+      <field type="SlugField" name="slug">QuizUnitTests_Course</field>
+      <field type="CharField" name="name">QuizUnitTests_Course</field>
+      <field type="BooleanField" name="private">False</field>
+   </object>
+   <object pk="10001" model="pages.page">
+      <field to="courses.course" name="course" rel="ManyToOneRel">10000</field>
+      <field type="SlugField" name="slug">QuizUnitTests_Course</field>
+      <field type="TextField" name="name">testIndexPage</field>
+      <field type="IntegerField" name="left">1</field>
+      <field type="IntegerField" name="right">6</field>
+   </object>
+	<object pk="10001" model="lesson.lesson">
+		<field type="TextField" name="content">QuizUnitTests_IndexPage</field>
+	</object>
+   <object pk="10002" model="pages.page">
+      <field to="courses.course" name="course" rel="ManyToOneRel">10000</field>
+      <field type="SlugField" name="slug">QuizUnitTests_Quiz1</field>
+      <field type="TextField" name="name">QuizUnitTests Quiz 1</field>
+      <field type="IntegerField" name="left">2</field>
+      <field type="IntegerField" name="right">3</field>
+   </object>
+	   <object pk="10002" model="quiz.quiz">
+	      <field type="TextField" name="text">QuizUnitTests Quiz 1</field>
+	      <field type="BooleanField" name="hidden">False</field>
+	   </object>
+   <object pk="10003" model="pages.page">
+      <field to="courses.course" name="course" rel="ManyToOneRel">10000</field>
+      <field type="SlugField" name="slug">QuizUnitTests_Quiz2</field>
+      <field type="TextField" name="name">QuizUnitTests Quiz 2</field>
+      <field type="IntegerField" name="left">4</field>
+      <field type="IntegerField" name="right">5</field>
+   </object>
+	   <object pk="10003" model="quiz.quiz">
+	      <field type="TextField" name="text">QuizUnitTests Quiz 2</field>
+	      <field type="BooleanField" name="hidden">False</field>
+	   </object>
 </django-objects>

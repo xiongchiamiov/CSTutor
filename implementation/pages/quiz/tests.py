@@ -8,6 +8,21 @@ import unittest
 from django.test.client import Client
 from django.contrib.auth.models import User
 
+class QuizUnitTests(unittest.TestCase):
+	'''
+		Unit Tests on backend quiz operations.
+
+	'''
+	fixtures = ['QuizUnitTests']
+
+	def setUp(self):
+		self.courseSlug = 'QuizUnitTests_Course'
+		self.quizSlug1 = 'QuizUnitTests_Quiz1'
+		self.quizSlug2 = 'QuizUnitTests_Quiz2'
+
+	def test1(self):
+		pass
+
 class QuizViewTests(unittest.TestCase):
 	''' 
 		Unit Tests on Quiz Views.  Tests use an emulated Web Client
@@ -40,20 +55,20 @@ class QuizViewTests(unittest.TestCase):
 		'''
 
 		# Case 1 - A good course and a good quiz should display properly		
-		#response = self.client.get('/course/' + self.courseSlug + '/page/' + self.quizSlug1 + '/')
-		#self.failUnlessEqual(response.status_code, 200)
+		response = self.client.get('/course/' + self.courseSlug + '/page/' + self.quizSlug1 + '/')
+		self.failUnlessEqual(response.status_code, 200)
 
 		# Case 2 - A bad course and a good quiz should display an error
-		#response = self.client.get('/course/' + 'badClass' + '/page/' + self.quizSlug1 + '/')
-		#self.failUnlessEqual(response.status_code, 404) 
+		response = self.client.get('/course/' + 'badClass' + '/page/' + self.quizSlug1 + '/')
+		self.failUnlessEqual(response.status_code, 404) 
 
 		# Case 3 - A good course and a bad quiz should display an error
-		#response = self.cleint.get('/course/' + self.courseSlug + '/page/' + 'badQuiz' + '/')
-		#self.failUnlessEqual(response.status_code, 404) 
+		response = self.client.get('/course/' + self.courseSlug + '/page/' + 'badQuiz' + '/')
+		self.failUnlessEqual(response.status_code, 404) 
 
 		# Case 4 - A bad course and a bad quiz should display an error
-		#response = self.client.get('/course/' + 'badClass' + '/page/' + 'badQuiz' + '/')
-		#self.failUnlessEqual(response.status_code, 404) 
+		response = self.client.get('/course/' + 'badClass' + '/page/' + 'badQuiz' + '/')
+		self.failUnlessEqual(response.status_code, 404) 
 
 	def testSubmitQuizUrl(self):
 		'''
@@ -67,20 +82,20 @@ class QuizViewTests(unittest.TestCase):
 		'''
 
 		# Case 1 - A good course and a good quiz should display properly		
-		#response = self.client.get('/course/' + self.courseSlug + '/page/' + self.quizSlug1 + '/submitQuiz/')
-		#self.failUnlessEqual(response.status_code, 200)
+		response = self.client.get('/course/' + self.courseSlug + '/page/' + self.quizSlug1 + '/submitQuiz/')
+		self.failUnlessEqual(response.status_code, 200)
 
 		# Case 2 - A bad course and a good quiz should display an error
-		#response = self.client.get('/course/' + 'badClass' + '/page/' + self.quizSlug1 + '/submitQuiz/')
-		#self.failUnlessEqual(response.status_code, 404) 
+		response = self.client.get('/course/' + 'badClass' + '/page/' + self.quizSlug1 + '/submitQuiz/')
+		self.failUnlessEqual(response.status_code, 404) 
 
 		# Case 3 - A good course and a bad quiz should display an error
-		#response = self.client.get('/course/' + self.courseSlug + '/page/' + 'badQuiz' + '/submitQuiz/')
-		#self.failUnlessEqual(response.status_code, 404) 
+		response = self.client.get('/course/' + self.courseSlug + '/page/' + 'badQuiz' + '/submitQuiz/')
+		self.failUnlessEqual(response.status_code, 404) 
 
 		# Case 4 - A bad course and a bad quiz should display an error
-		#response = self.client.get('/course/' + 'badClass' + '/page/' + 'badQuiz' + '/submitQuiz/')
-		#self.failUnlessEqual(response.status_code, 404) 
+		response = self.client.get('/course/' + 'badClass' + '/page/' + 'badQuiz' + '/submitQuiz/')
+		self.failUnlessEqual(response.status_code, 404) 
 
 	def testSubmitQuizUrl_BadData(self):
 		'''
@@ -102,17 +117,17 @@ class QuizViewTests(unittest.TestCase):
 		'''
 
 		# Case 1 - A good course and a good quiz should display properly		
-		#response = self.client.get('/course/' + self.courseSlug + '/page/' + self.quizSlug1 + '/edit/')
-		#self.failUnlessEqual(response.status_code, 200)
+		response = self.client.get('/course/' + self.courseSlug + '/page/' + self.quizSlug1 + '/edit/')
+		self.failUnlessEqual(response.status_code, 200)
 
 		# Case 2 - A bad course and a good quiz should display an error
-		#response = self.client.get('/course/' + 'badClass' + '/page/' + self.quizSlug1 + '/edit/')
-		#self.failUnlessEqual(response.status_code, 404) 
+		response = self.client.get('/course/' + 'badClass' + '/page/' + self.quizSlug1 + '/edit/')
+		self.failUnlessEqual(response.status_code, 404) 
 
 		# Case 3 - A good course and a bad quiz should display an error
-		#response = self.client.get('/course/' + self.courseSlug + '/page/' + 'badQuiz' + '/edit/')
-		#self.failUnlessEqual(response.status_code, 404) 
+		response = self.client.get('/course/' + self.courseSlug + '/page/' + 'badQuiz' + '/edit/')
+		self.failUnlessEqual(response.status_code, 404) 
 
 		# Case 4 - A bad course and a bad quiz should display an error
-		#response = self.client.get('/course/' + 'badClass' + '/page/' + 'badQuiz' + '/edit/')
-		#self.failUnlessEqual(response.status_code, 404) 
+		response = self.client.get('/course/' + 'badClass' + '/page/' + 'badQuiz' + '/edit/')
+		self.failUnlessEqual(response.status_code, 404) 

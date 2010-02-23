@@ -8,7 +8,7 @@ from django.views.generic.simple import direct_to_template
 #if the original url was "/coursename/pagename/"
 #the expression here would be "pagename/"
 #if it were just "/coursename/" then it would be "" (an empty string)
-
+	
 urlpatterns = patterns('',
    # create a quiz in these pages
 	(r'create-quiz', 'pages.quiz.views.create_quiz'),
@@ -16,7 +16,6 @@ urlpatterns = patterns('',
 
    # redirect to stats
 	(r'stats/.*', include ('stats.urls')),
-
    # redirect to lesson or quiz
 	(r'page/(?P<page_slug>[\w-]+)/', include('pages.urls')),
 )

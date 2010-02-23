@@ -65,7 +65,7 @@ def show_page(request, course_slug, page_slug):
 		try:
 			page = page.quiz
 		except Quiz.DoesNotExist:
-			print "Page is neither quiz or lesson"
+			raise Http404
 		return show_quiz(request, course_slug, page_slug)
 	return show_lesson(request, course_slug, page_slug, page)
 
@@ -78,12 +78,12 @@ def edit_page(request, course_slug, page_slug):
 	try: 
 		c = Course.objects.get(slug=course_slug)
 	except Course.DoesNotExist:
-		return HttpResponse("ERROR: BAD URL: The course: %s does not exist" % (course_slug))
+		raise Http404
 	#check if the page is a real page in the database
 	try:
 		page = c.pages.get(slug=page_slug)
 	except Page.DoesNotExist:
-		return HttpResponse("ERROR: BAD URL: The course: %s does not contain the page: %s." % (course_slug, page_slug))
+		raise Http404
 
 	#check that user has permissions (edit)
 	if not request.user.is_authenticated():
@@ -103,7 +103,7 @@ def edit_page(request, course_slug, page_slug):
 		try:
 			page = page.quiz
 		except Quiz.DoesNotExist:
-			return HttpResponse("ERROR: Page is neither quiz or lesson")
+			return Http404
 		return edit_quiz(request, course_slug, page_slug)
 	return edit_lesson(request, course_slug, page_slug)
 

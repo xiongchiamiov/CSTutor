@@ -8,7 +8,7 @@ This file contains methods for creating a quiz and showing a quiz. More methods 
 
 from django.core.urlresolvers import reverse
 from django.shortcuts import render_to_response
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, Http404
 from courses.models import Course
 from models import Page
 from models import Quiz
@@ -56,17 +56,31 @@ def submitQuiz(request, course_slug, page_slug):
 		This view will submit a quiz and create a statistic in the database. It will give the user
 		their score and then direct the user to the appropriate path
 	'''
-	quiz = Quiz.objects.get(slug=page_slug)
-	maxscore = len(quiz.questions.all())
+	# Make sure the course actually exists in the database
+	try:
+		course = Course.objects.get(slug=course_slug)
+	except Course.DoesNotExist:
+		raise Http404
+
+	# Make sure the quiz actually exists in the database
+	try:
+		quiz = Quiz.objects.get(slug=page_slug)
+	except Quiz.DoesNotExist:
+		raise Http404
+
+	maxScore = len(quiz.questions.all())
 	score = 0
+	percentage = 100
 
 	if (request.method == "POST"):
 		score = scoreQuiz(quiz, request, course_slug, page_slug)
-	percentage = round(float(score) / float(maxscore), 2) * 100
+
+	if (not (maxScore == 0)):
+		percentage = round(float(score) / float(maxscore), 2) * 100
 			
 	return master_rtr(request, 'quiz/submitQuiz.html', \
 			{'course':course_slug, 'course_slug':course_slug, \
-			 'page_slug':page_slug, 'pid':page_slug, 'score':score, 'maxscore':maxscore, 'percentage':percentage})
+			 'page_slug':page_slug, 'pid':page_slug, 'score':score, 'maxScore':maxScore, 'percentage':percentage})
 
 def edit_quiz(request, course_slug, page_slug):
 	''' edit_quiz View
@@ -76,7 +90,18 @@ def edit_quiz(request, course_slug, page_slug):
 		Note 1) Pressing "New Multiple Choice Question" will discard any changes made to the quiz, returning it 
 				to its previous state but with a new multiple choice question appended at the end
 	'''
-	quiz = Quiz.objects.get(slug=page_slug)
+	# Make sure the course actually exists in the database
+	try:
+		course = Course.objects.get(slug=course_slug)
+	except Course.DoesNotExist:
+		raise Http404
+
+	# Make sure the quiz actually exists in the database
+	try:
+		quiz = Quiz.objects.get(slug=page_slug)
+	except Quiz.DoesNotExist:
+		raise Http404
+
 	pages = Course.objects.get(slug=course_slug).pages.all()
 	questions = quiz.questions.all().order_by("order")
 
