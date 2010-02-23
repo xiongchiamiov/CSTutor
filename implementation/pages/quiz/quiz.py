@@ -21,7 +21,7 @@ def addMultipleChoiceQuestion(self):
 	questions = self.questions.all()
 	newQuestion = MultipleChoiceQuestion(text='Blank Question', order=(len(questions)+1), quiz=self)
 	newQuestion.save()
-	return 0
+	return newQuestion
 
 #def createQuiz(name):
 	#return Quiz(text=name)

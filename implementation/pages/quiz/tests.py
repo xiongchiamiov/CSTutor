@@ -7,6 +7,9 @@ This file contains tests for the Quiz package.
 import unittest
 from django.test.client import Client
 from django.contrib.auth.models import User
+from pages.quiz.models import *
+from pages.quiz.quiz import *
+from pages.quiz.question.models import *
 
 class QuizUnitTests(unittest.TestCase):
 	'''
@@ -16,12 +19,63 @@ class QuizUnitTests(unittest.TestCase):
 	fixtures = ['QuizUnitTests']
 
 	def setUp(self):
+		'''
+			Set up the tests
+		'''
 		self.courseSlug = 'QuizUnitTests_Course'
 		self.quizSlug1 = 'QuizUnitTests_Quiz1'
 		self.quizSlug2 = 'QuizUnitTests_Quiz2'
 
-	def test1(self):
-		pass
+	def test_addMultipleChoiceQuestion(self):
+		'''
+			Test that adding a multiple choice question to a quiz works as expected
+
+			Case no.    Input                                     Expected Output                           Remark
+			1           questionCount, newQuestionCount           questionCount + 1 == questionCount        Ensure that 1 new question has been added
+			2           newQuestion.order, newQuestionCount       newQuestion.order == newQuestionCount     Ensure that the new question is the last question
+			3           newQuestion.text                          newQuestion.text == "Blank Question"      Ensure that the new question is indeed a new question               
+		'''
+		quiz = Quiz.objects.get(slug=self.quizSlug1)
+		questionCount = len(quiz.questions.all())
+
+		# Add a question to the quiz
+		newQuestion = addMultipleChoiceQuestion(quiz)
+
+		# Case 1
+		newQuestionCount = len(quiz.questions.all())
+		self.failUnlessEqual(questionCount + 1, newQuestionCount)
+
+		# Case 2
+		self.failUnlessEqual(newQuestion.order, newQuestionCount)
+
+		# Case 3
+		self.failUnlessEqual(newQuestion.text, "Blank Question")
+
+	def test_removeQuiz(self):
+		'''
+			Test that removing a quiz actually removes it and all its associated data
+
+			Case no.    Input                                     Expected Output                           Remark
+			1           questionCount, newQuestionCount           questionCount + 1 == questionCount        Ensure that 1 new question has been added
+			2           newQuestion.order, newQuestionCount       newQuestion.order == newQuestionCount     Ensure that the new question is the last question
+			3           newQuestion.text                          newQuestion.text == "Blank Question"      Ensure that the new question is indeed a new question
+		'''
+		quiz = Quiz.objects.get(slug=self.quizSlug2)
+		questions = quiz.questions.all()
+		answers = []
+
+		# Get all the answers
+		for q in questions:
+			if (isMultipleChoiceQuestion(q)):
+				q = q.multiplechoicequestion
+				answers.append(q.answers.all())
+		
+		# Delete the quiz
+		removeQuiz(quiz)
+
+		# Make sure the quiz does not exist anymore
+		#deletedQuiz = quiz.objects.get(slug=quizSlug2)
+		         
 
 class QuizViewTests(unittest.TestCase):
 	''' 
