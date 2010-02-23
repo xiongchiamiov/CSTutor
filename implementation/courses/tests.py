@@ -437,6 +437,16 @@ class CourseViewTests(TestCase):
 		self.assertNotContains(response, username)
 
 	def testRemoveUser(self):
+		'''
+		Tests the reumove user function
+		@author Jon Inloes
+
+		Case no.		Inputs											Outputs		Remarks
+		1				adminUsername = 'enrollmentTestAdmin'
+						password = 'password'
+						username = 'PrivateUserNotEnrolled'
+						slug = 'PageViewsPublicCourse'
+		'''
 		adminUsername = 'enrollmentTestAdmin'
 		password = 'password'
 		username = 'PrivateUserNotEnrolled'
