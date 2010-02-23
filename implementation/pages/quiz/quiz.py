@@ -19,7 +19,16 @@ def addMultipleChoiceQuestion(self):
 		Takes a quiz and adds a blank multiple choice question to it
 	'''
 	questions = self.questions.all()
-	newQuestion = MultipleChoiceQuestion(text='Blank Question', order=(len(questions)+1), quiz=self)
+	newQuestion = MultipleChoiceQuestion(order=(len(questions)+1), quiz=self)
+	newQuestion.save()
+	return newQuestion
+
+def addCodeQuestion(self):
+	'''
+		Takes a quiz and adds a blank code question to it
+	'''
+	questions = self.questions.all()
+	newQuestion = CodeQuestion(order=(len(questions)+1), quiz=self)
 	newQuestion.save()
 	return newQuestion
 

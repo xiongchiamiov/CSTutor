@@ -51,6 +51,27 @@ def show_quiz(request, course, page_slug):
 							 'quizTitle':quizTitle, \
 							 'page_slug':page_slug, 'questions':questions})
 
+def delete_quiz(request, course_slug, page_slug):
+	''' delete_quiz View
+		This view confirms deletion of a quiz. The user can then choose
+		 to delete the quiz or cancel
+	'''
+	quiz = Quiz.objects.get(slug=page_slug)
+
+	return master_rtr(request, 'quiz/delete_quiz.html', \
+			            {'course':course_slug, 'course_slug':course_slug, 'page_slug':page_slug, 'quiz':quiz})
+
+def remove_question(request, course_slug, page_slug, qNum):
+	''' remove_question View
+		This view confirms deletion of a question. The user can then choose
+		 to delete the question or cancel
+	'''
+	quiz = Quiz.objects.get(slug=page_slug)
+	question = quiz.questions.get(order=qNum)
+
+	return master_rtr(request, 'quiz/remove_question.html', \
+			            {'course':course_slug, 'course_slug':course_slug, 'page_slug':page_slug, 'question':question})
+
 def submitQuiz(request, course_slug, page_slug):
 	''' submitQuiz View
 		This view will submit a quiz and create a statistic in the database. It will give the user
@@ -106,6 +127,7 @@ def edit_quiz(request, course_slug, page_slug):
 	questions = quiz.questions.all().order_by("order")
 
 	if (request.method == "POST"):
+		print request.POST
 		if "Save" in request.POST:
 			page_slug = saveQuiz(request, course_slug, page_slug)
 			if (page_slug == -1):
@@ -117,6 +139,8 @@ def edit_quiz(request, course_slug, page_slug):
 			return HttpResponseRedirect(reverse('pages.views.show_page', args=[course_slug, page_slug]))
 
 		if "Delete" in request.POST:
+			return delete_quiz(request, course_slug, page_slug)
+		if "ConfirmDelete" in request.POST:
 			removeQuiz(quiz)
 			return HttpResponseRedirect(reverse('courses.views.show_course', args=[course_slug]))
 
@@ -127,8 +151,15 @@ def edit_quiz(request, course_slug, page_slug):
 			addMultipleChoiceQuestion(quiz)
 			return HttpResponseRedirect(request.path)
 
+		if "NewCodeQuestion" in request.POST:
+			print "new code question"
+			addCodeQuestion(quiz)
+			return HttpResponseRedirect(request.path)
+
 		for q in questions:
 			if ("removeQuestion%s" % q.order) in request.POST:
+				return remove_question(request, course_slug, page_slug, q.order)
+			if ("confirmRemoveQuestion%s" % q.order) in request.POST:
 				removeQuestion(q)
 				reorderQuestions(quiz)
 				return HttpResponseRedirect(request.path)

@@ -49,7 +49,32 @@ class QuizUnitTests(unittest.TestCase):
 		self.failUnlessEqual(newQuestion.order, newQuestionCount)
 
 		# Case 3
-		self.failUnlessEqual(newQuestion.text, "Blank Question")
+		self.failUnlessEqual(newQuestion.text, "")
+
+	def test_addCodeQuestion(self):
+		'''
+			Test that adding a code question to a quiz works as expected
+
+			Case no.    Input                                     Expected Output                           Remark
+			1           questionCount, newQuestionCount           questionCount + 1 == questionCount        Ensure that 1 new question has been added
+			2           newQuestion.order, newQuestionCount       newQuestion.order == newQuestionCount     Ensure that the new question is the last question
+			3           newQuestion.text                          newQuestion.text == "Blank Question"      Ensure that the new question is indeed a new question               
+		'''
+		quiz = Quiz.objects.get(slug=self.quizSlug1)
+		questionCount = len(quiz.questions.all())
+
+		# Add a question to the quiz
+		newQuestion = addCodeQuestion(quiz)
+
+		# Case 1
+		newQuestionCount = len(quiz.questions.all())
+		self.failUnlessEqual(questionCount + 1, newQuestionCount)
+
+		# Case 2
+		self.failUnlessEqual(newQuestion.order, newQuestionCount)
+
+		# Case 3
+		self.failUnlessEqual(newQuestion.text, "")
 
 	def test_removeQuiz(self):
 		'''

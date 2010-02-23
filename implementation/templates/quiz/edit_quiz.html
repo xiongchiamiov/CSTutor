@@ -2,7 +2,7 @@
 {% load smart_if %}
 
 {% block content %}
-<form name="Quiz" method="post">
+<form name="quizForm" method="post">
 <center><b><input type="text" name="quizTitle" value="{{quiz.text}}" /></b></center>
 <table>
 {% for q in questions %}
@@ -54,9 +54,13 @@
 			<td rowspan="3" style="border-width: 1px; padding: 1px; border-style: dashed; border-color: black;">
 				Prerequisites
 				<br>
-				<select size="4" multiple="multiple">
+				<select size="4" multiple="multiple" style="width: 10em;">
 				{% for page in pages %}
-					<option>{{page.name}}</option>
+					{% if page.quiz %}
+					{% if page.slug != page_slug %}
+						<option>{{page.name}}</option>
+					{% endif %}
+					{% endif %}
 				{% endfor %}
 				</select>
 				<br>
@@ -68,7 +72,7 @@
 				{% endif %}
 			</td>
 			<td>
-				<input type="submit" value="New Code Question" onclick="newCodeQuestion()"/>
+				<input type="submit" value="New Code Question" name="NewCodeQuestion"/>
 			</td>
 			<td rowspan="2" style="border-width: 1px; padding: 1px; border-style: dashed; border-color: black;">
 				<table>
@@ -109,9 +113,9 @@
 			<td colspan="2">
 				<input type="submit" value="Save" name="Save" />
 				<input type="submit" value="Cancel" name="Cancel" />
-				<input type="submit" value="Delete" name = "Delete" />
+				<input type="submit" value="Delete" name="Delete" />
 				<input type="submit" value="Publish" onclick="publishQuiz()"/>
-				<input type="submit" value="Import" onclick="importQuiz()";/>
+				<input type="submit" value="Import" onclick="importQuiz()" />
 				<input type="submit" value="Move" name="Move"/>
 			</td>
 		</tr>
