@@ -55,10 +55,10 @@ class QuizUnitTests(unittest.TestCase):
 		'''
 			Test that removing a quiz actually removes it and all its associated data
 
-			Case no.    Input                                     Expected Output                           Remark
-			1           questionCount, newQuestionCount           questionCount + 1 == questionCount        Ensure that 1 new question has been added
-			2           newQuestion.order, newQuestionCount       newQuestion.order == newQuestionCount     Ensure that the new question is the last question
-			3           newQuestion.text                          newQuestion.text == "Blank Question"      Ensure that the new question is indeed a new question
+			Case no.    Input          Expected Output          Remark
+			1           quiz           Quiz.DoesNotExist        Make sure the quiz does not exist anymore
+			2           questions      Question.DoesNotExist    Make sure all of the quizzes questions were also deleted
+			3           answers        Answer.DoesNotExist      Make sure all of the answers were also deleted
 		'''
 		quiz = Quiz.objects.get(slug=self.quizSlug2)
 		questions = quiz.questions.all()
@@ -73,9 +73,130 @@ class QuizUnitTests(unittest.TestCase):
 		# Delete the quiz
 		removeQuiz(quiz)
 
-		# Make sure the quiz does not exist anymore
-		#deletedQuiz = quiz.objects.get(slug=quizSlug2)
-		         
+		# Case 1
+		try:
+			Quiz.objects.get(slug=self.quizSlug2)
+			self.failUnlessEqual(0, 1, "The quiz was not deleted")
+		except Quiz.DoesNotExist:
+			pass
+
+		# Case 2
+		for q in questions:
+			try:
+				quiz.objects.get(order=q.order)
+				self.failUnlessEqual(0, 1, "A question still exists in the database")
+			except Question.DoesNotExist:
+				pass
+
+		# Case 3
+		answers = iter(answers)
+		for q in questions:
+			if (isMultipleChoiceQuestion(q)):
+				q = q.multiplechoicequestion
+				a = answers.next()
+				try:
+					q.answers.get(order=a.order)
+					self.failUnlessEqual(0, 1, "An answer still exists in the database")
+				except Answer.DoesNotExist:
+					pass
+
+	def test_reorderQuestions(self):
+		'''
+			Test that reoderQuestions actually does reorder the questions into a valid state
+
+			Case no.    Input          Expected Output          Remark
+			1           quiz           false                    Make sure the questions are not in order
+			2           quiz           true                     Check to make sure that the questions are in a valid state
+		'''
+		quiz = Quiz.objects.get(slug=self.quizSlug1)
+		questions = quiz.questions.all()
+
+		# Make the questions order something arbitrary
+		for q in questions:
+			q.order = 0
+			q.save()
+
+		# Case 1
+		self.failUnlessEqual(validateQuestionOrder(quiz), False)
+
+		# Now reorder the questions
+		reorderQuestions(quiz)
+
+		# Case 2
+		self.failUnlessEqual(validateQuestionOrder(quiz), True)
+
+	def test_saveQuiz(self):
+		'''
+			Test that saveQuiz actually saves a quiz and updates all of its components
+
+			Case no.    Input          Expected Output          Remark
+			1           
+			2           
+		'''
+		pass
+
+	def test_saveQuiz_badData(self):
+		'''
+			Test that saveQuiz with bad data does not modify any of its components
+
+			Case no.    Input          Expected Output          Remark
+			1           
+			2           
+		'''
+		pass
+
+	def test_scoreQuiz(self):
+		'''
+			Test that scoreQuiz correctly returns a score for the submitted quiz
+
+			Case no.    Input          Expected Output          Remark
+			1           
+			2           
+		'''
+		pass
+
+	def test_validateQuestionOrder(self):
+		'''
+			Test that reoderQuestions actually does reorder the questions into a valid state
+
+			Case no.    Input          Expected Output          Remark
+			1           quiz           true                     Quiz with all questions in valid order
+			2           quiz           false                    Quiz with first question 0, not 1
+			3           quiz           false                    Quiz with duplicate ordering
+			4           quiz           false                    Quiz with last question not last order
+		'''
+		quiz = Quiz.objects.get(slug=self.quizSlug1)
+		questions = quiz.questions.all()
+
+		# Case 1
+		self.failUnlessEqual(validateQuestionOrder(quiz), True)
+
+		# Case2
+		q = quiz.questions.get(order=1)
+		q.order = 0
+		q.save()
+		self.failUnlessEqual(validateQuestionOrder(quiz), False)
+		q = quiz.questions.get(order=0)
+		q.order = 1
+		q.save()
+
+		# Case 3
+		q = quiz.questions.get(order=2)
+		q.order = 1
+		q.save()
+		self.failUnlessEqual(validateQuestionOrder(quiz), False)
+		q = quiz.questions.get(text="Test question 2")
+		q.order = 2
+		q.save()
+
+		# Case 4
+		q = quiz.questions.get(order=3)
+		q.order = 99
+		q.save()
+		self.failUnlessEqual(validateQuestionOrder(quiz), False)
+		q = quiz.questions.get(order=99)
+		q.order = 3
+		q.save()
 
 class QuizViewTests(unittest.TestCase):
 	''' 
