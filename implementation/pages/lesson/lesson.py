@@ -9,6 +9,7 @@ Contains operations for all lessons
 from django.template.defaultfilters import slugify
 from pages.page import insertChildPage
 from models import *
+from pages.models import Page
 
 def CreateLesson(name):
 	return Lesson(slug=slugify(name), name=name)
@@ -81,12 +82,17 @@ def saveLessonName(lesson, newLessonName):
 	'''
 	@author Russell Mezzetta
 	This saves the name of the lesson.
-	Returns none on failure, lesson on success
+	Returns none on failure, lesson on success, 1 on invalid name
 	'''
+	#check that newLessonName has 3 or more characters
+	if len(newLessonName) < 3:
+		return 1
+
 	#check that the newLessonName doesn't already exist in this course
 	newSlug = slugify(newLessonName)
 
-	notUnique = Lesson.objects.filter(course=lesson.course).filter(slug=newSlug).count()
+	#search the pages in the course to see if the slug is unique
+	notUnique = Page.objects.filter(course=lesson.course).filter(slug=newSlug).count()
 	if notUnique:
 		return None
 
@@ -100,7 +106,7 @@ def saveLessonWorkingCopy(lesson, workingCopy):
 	@author Russell Mezzetta
 	This saves the working copy content of the lesson.
 	returns the lesson
-	@pre valid course_slug and page_slug, workingCopy is string
+	@pre valid lesson is a Lesson, workingCopy is string
 	@post input page.workingCopy = workingCopy
 	'''
 	lesson.workingCopy = workingCopy

@@ -120,7 +120,21 @@ def edit_lesson(request, course_slug, page_slug):
 		
 		#Saves the working copy of the lesson
 		elif "Save" in request.POST:
+			#save the content of the lesson
 			data['lesson'] = saveLessonWorkingCopy(lesson, request.POST['content'])
+
+			#check if the name changed
+			if lesson.name != request.POST['lessonname']:
+				r = saveLessonName(lesson, request.POST['lessonname'])
+				if r == 1:
+					data['message'] = "Name change failed: name must be 3 characters or longer"
+				elif r != None:
+					#yes this is ugly but reverse wouldn't work for some reason
+					return HttpResponseRedirect("/course/"+lesson.course.slug+"/page/"+lesson.slug+"/edit/")
+				#return HttpResponseRedirect(reverse('pages.lesson.views.edit_lesson', args=[course_slug, lesson.slug]))
+				else:#name was not unique
+					data['message'] = "Name change failed. A page with that name already exists in this course"
+
 			return master_rtr(request, 'page/lesson/edit_lesson.html', data)
 			#return master_rtr(request, 'page/lesson/save_lesson.html', \
 			#		{'course':course_slug, 'course_slug':course_slug, \
