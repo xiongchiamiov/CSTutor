@@ -129,16 +129,17 @@ def edit_quiz(request, course_slug, page_slug):
 	questions = quiz.questions.all().order_by("order")
 	prerequisites = quiz.prerequisites.all()
 	prereqs = []
+	print pages
 	for p in prerequisites:
 		prereqs.append(p.requiredQuiz.slug)
 	print prereqs
 	if (request.method == "POST"):
 		if "Save" in request.POST:
-			page_slug = saveQuiz(request, course_slug, page_slug)
-			if (page_slug == -1):
+			r = saveQuiz(request, course_slug, page_slug)
+			if (r == -1):
 				print "Bad question ordering!"
 			else:
-				return HttpResponseRedirect(reverse('pages.views.show_page', args=[course_slug, page_slug]))
+				return HttpResponseRedirect(reverse('pages.views.show_page', args=[course_slug, r]))
 
 		if "Cancel" in request.POST:
 			return HttpResponseRedirect(reverse('pages.views.show_page', args=[course_slug, page_slug]))

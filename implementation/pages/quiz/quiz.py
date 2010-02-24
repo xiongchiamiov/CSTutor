@@ -84,7 +84,9 @@ def saveQuiz(request, course, pid):
 			quiz.hidden = False
 		# Delete current prerequisites
 		curPrereqs = quiz.prerequisites.all()
+		origPrereqs = []
 		for p in curPrereqs:
+			origPrereqs.append(p)
 			p.delete()
 		print request.POST
 		if "prereqs" in request.POST:
@@ -112,8 +114,8 @@ def saveQuiz(request, course, pid):
 				q = q.codequestion
 				origQuestions.append(CodeQuestion(text = q.text, order = q.order, expectedOutput = q.expectedOutput))
 				q.text = request.POST['cq%stext' % q.order]
-				q.order = request.POST['cq%sorder' % q.order]
 				q.expectedOutput = request.POST['cq%seo' % q.order]
+				q.order = request.POST['cq%sorder' % q.order]
 			q.save()
 		if (validateQuestionOrder(quiz)):
 			quiz.save()
@@ -121,6 +123,12 @@ def saveQuiz(request, course, pid):
 		else:
 			origQuestions = iter(origQuestions)
 			origAnswers = iter(origAnswers)
+			origPrereqs = iter(origPrereqs)
+			curPrereqs = quiz.prerequisites.all()
+			for p in curPrereqs:
+				p.delete()
+			for p in origPrereqs:
+				p.save()
 			for q in questions:
 				orig = origQuestions.next()
 				if (isMultipleChoiceQuestion(q)):

@@ -182,8 +182,8 @@
    </object>
    <object pk="4" model="pages.page">
       <field to="courses.course" name="course" rel="ManyToOneRel">1</field>
-      <field type="SlugField" name="slug">samplequiz</field>
-      <field type="TextField" name="name">samplequiz</field>
+      <field type="SlugField" name="slug">Sample_Quiz</field>
+      <field type="TextField" name="name">Sample Quiz</field>
       <field type="IntegerField" name="left">6</field>
       <field type="IntegerField" name="right">7</field>
    </object>
