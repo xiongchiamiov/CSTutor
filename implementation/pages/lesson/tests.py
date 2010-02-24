@@ -15,7 +15,8 @@ class LessonTests(TestCase):
 	Unit tests on some lesson specific functions
 	'''
 
-	course = Course.objects.get(slug="large-testing-course")
+	def setUp(self):
+		self.course = Course.objects.get(slug="large-testing-course")
 
 	def test_revertLessonChanges(self):
 		'''
