@@ -9,7 +9,7 @@
 	{% if q.multiplechoicequestion %}
 		<tr>
 	                <td><b>{{q.multiplechoicequestion.order}}</b></td>
-	                <td colspan="2">{{q.multiplechoicequestion.text}}</td>
+	                <td colspan="2">{{q.multiplechoicequestion.text|safe}}</td>
 	        </tr>
 	        {% for a in q.multiplechoicequestion.answers.all %}
 	        <tr>
@@ -22,7 +22,7 @@
 	{% if q.codequestion %}
 	        <tr>
 	                <td><b>{{q.codequestion.order}}</b></td>
-	                <td colspan="2">{{q.codequestion.text}}</td>
+	                <td colspan="2">{{q.codequestion.text|safe}}</td>
 	        </tr>
 	        <tr>
 	                <td></td>

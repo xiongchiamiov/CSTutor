@@ -35,7 +35,7 @@ def create_quiz(request, course_slug, page_slug):
 		insertChildPage(newQuiz, Page.objects.get(slug=page_slug))
 		return edit_quiz(request, course_slug, slugify(name))
 	else:
-		return master_rtr(request, 'quiz/create-quiz.html')
+		return master_rtr(request, 'page/quiz/create-quiz.html')
 
 def show_quiz(request, course, page_slug):
 	''' show_Quiz View
@@ -46,7 +46,7 @@ def show_quiz(request, course, page_slug):
 	quizTitle = quiz.text
 	questions = quiz.questions.all().order_by("order")
 
-	return master_rtr(request, 'quiz/viewQuiz.html', \
+	return master_rtr(request, 'page/quiz/viewQuiz.html', \
 			            {'course':course, 'course_slug':course, \
 							 'quizTitle':quizTitle, \
 							 'page_slug':page_slug, 'questions':questions})
@@ -58,7 +58,7 @@ def delete_quiz(request, course_slug, page_slug):
 	'''
 	quiz = Quiz.objects.get(slug=page_slug)
 
-	return master_rtr(request, 'quiz/delete_quiz.html', \
+	return master_rtr(request, 'page/quiz/delete_quiz.html', \
 			            {'course':course_slug, 'course_slug':course_slug, 'page_slug':page_slug, 'quiz':quiz})
 
 def remove_question(request, course_slug, page_slug, qNum):
@@ -69,7 +69,7 @@ def remove_question(request, course_slug, page_slug, qNum):
 	quiz = Quiz.objects.get(slug=page_slug)
 	question = quiz.questions.get(order=qNum)
 
-	return master_rtr(request, 'quiz/remove_question.html', \
+	return master_rtr(request, 'page/quiz/remove_question.html', \
 			            {'course':course_slug, 'course_slug':course_slug, 'page_slug':page_slug, 'question':question})
 
 def submitQuiz(request, course_slug, page_slug):
@@ -95,11 +95,13 @@ def submitQuiz(request, course_slug, page_slug):
 
 	if (request.method == "POST"):
 		score = scoreQuiz(quiz, request, course_slug, page_slug)
+	else:
+		return master_rtr(request, 'page/denied.html', {'course':course_slug, 'loggedIn':False})
 
 	if (not (maxScore == 0)):
 		percentage = round(float(score) / float(maxscore), 2) * 100
 			
-	return master_rtr(request, 'quiz/submitQuiz.html', \
+	return master_rtr(request, 'page/quiz/submitQuiz.html', \
 			{'course':course_slug, 'course_slug':course_slug, \
 			 'page_slug':page_slug, 'pid':page_slug, 'score':score, 'maxScore':maxScore, 'percentage':percentage})
 
@@ -125,9 +127,12 @@ def edit_quiz(request, course_slug, page_slug):
 
 	pages = Course.objects.get(slug=course_slug).pages.all()
 	questions = quiz.questions.all().order_by("order")
-
+	prerequisites = quiz.prerequisites.all()
+	prereqs = []
+	for p in prerequisites:
+		prereqs.append(p.requiredQuiz.slug)
+	print prereqs
 	if (request.method == "POST"):
-		print request.POST
 		if "Save" in request.POST:
 			page_slug = saveQuiz(request, course_slug, page_slug)
 			if (page_slug == -1):
@@ -173,6 +178,6 @@ def edit_quiz(request, course_slug, page_slug):
 						removeAnswer(q, a)
 						return HttpResponseRedirect(request.path)
 
-	return master_rtr(request, 'quiz/edit_quiz.html', \
+	return master_rtr(request, 'page/quiz/edit_quiz.html', \
 			{'course':course_slug, 'course_slug':course_slug, 'page_slug':page_slug, \
-			 'pages':pages, 'quiz':quiz, 'questions':questions})
+			 'pages':pages, 'quiz':quiz, 'questions':questions, 'prereqs':prereqs})

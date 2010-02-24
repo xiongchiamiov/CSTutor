@@ -46,17 +46,16 @@ def show_page(request, course_slug, page_slug):
 	
 	#if the course is private then check that the user is enrolled and has view permissions
 	if course.private:
+		if not request.user.is_authenticated():
+			return master_rtr(request, 'page/denied.html', {'course':course, 'enrolled':False, 'edit':False, 'loggedIn':False})
 		try:#try to get the enrollment for this user and check view permission
 			e = page.course.roster.get(user=request.user)
 			if not e.view:
-				return master_rtr(request, 'page/lesson/denied.html', \
-				                  {'course':course,
-				                   'enrolled':True})
+				return master_rtr(request, 'page/denied.html', {'course':course, 'enrolled':True, 'edit':False, 'loggedIn':True})
 		except ObjectDoesNotExist:
 			# user is not enrolled in this course
-			return master_rtr(request, 'page/lesson/denied.html', \
-			                  {'course':course,
-			                   'enrolled':False})
+			return master_rtr(request, 'page/denied.html', {'course':course, 'enrolled':False, 'edit':False, 'loggedIn':True})
+
 
 	#cast the page to a lesson or quiz then call show on it
 	try:
@@ -87,14 +86,14 @@ def edit_page(request, course_slug, page_slug):
 
 	#check that user has permissions (edit)
 	if not request.user.is_authenticated():
-		return HttpResponse("ERROR: User must be logged in to edit")
+		return master_rtr(request, 'page/denied.html', {'course':course_slug, 'enrolled':False, 'edit':True, 'loggedIn':False})
 	try:
 		#get user's enrollment to check permissions
 		e = request.user.enrollments.get(course = c)
-	except Enrollment.DoesNotExist:
-		return HttpResponse("Error: User: %s is not enrolled in course: %s" % (request.user.username, c.name))
+	except ObjectDoesNotExist:
+		return master_rtr(request, 'page/denied.html', {'course':course_slug, 'enrolled':False, 'edit':True, 'loggedIn':True})
 	if not e.edit:
-		return HttpResponse("Error: User: %s does not have edit permissions on course: %s" % (request.user.username, c.name))
+		return master_rtr(request, 'page/denied.html', {'course':course_slug, 'enrolled':True, 'edit':True, 'loggedIn':True})
 
 	#cast the page to a lesson or quiz then call show on it
 	try:

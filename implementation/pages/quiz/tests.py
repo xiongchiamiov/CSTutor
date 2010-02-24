@@ -243,9 +243,9 @@ class QuizViewTests(unittest.TestCase):
 		self.quizSlug1 = 'QuizViewTests_Quiz1'
 		self.quizSlug2 = 'QuizViewTests_Quiz2'
 
-	def testQuizUrl(self):
+	def testPublicQuizUrl(self):
 		'''
-			Test that the urls to a known quiz page works properly
+			Test that the urls to a known public quiz page works properly
 
 			Case no.    Input                                                        Expected Output         Remark
 			1           url = /course/courseSlug/page/quizSlug1/                     200                     302 is a found code
@@ -268,11 +268,37 @@ class QuizViewTests(unittest.TestCase):
 
 		# Case 4 - A bad course and a bad quiz should display an error
 		response = self.client.get('/course/' + 'badClass' + '/page/' + 'badQuiz' + '/')
-		self.failUnlessEqual(response.status_code, 404) 
+		self.failUnlessEqual(response.status_code, 404)
 
-	def testSubmitQuizUrl(self):
+	def testPrivateQuizUrl(self):
 		'''
-			Test that the urls to submit a quiz page works properly
+			Test that the urls to a known private quiz page works properly when logged in and errors otherwise
+
+			Case no.    Input                                                        Expected Output         Remark
+			1           url = /course/courseSlug/page/quizSlug1/                     200                     302 is a found code
+			2           url = /course/badCourse/page/quizSlug1/                      404                     404 is a bad link error
+			3           url = /course/courseSlug/page/badQuiz/                       404                     404 is a bad link error
+			4           url = /course/badCourse/page/badQuiz/                        404                     404 is a bad link error
+		'''
+
+		pass
+
+	def testHiddenQuizUrl(self):
+		'''
+			Test that the urls to a known hiddeb quiz page works properly when logged in and prerequisites are satisfied and errors otherwise
+
+			Case no.    Input                                                        Expected Output         Remark
+			1           url = /course/courseSlug/page/quizSlug1/                     200                     302 is a found code
+			2           url = /course/badCourse/page/quizSlug1/                      404                     404 is a bad link error
+			3           url = /course/courseSlug/page/badQuiz/                       404                     404 is a bad link error
+			4           url = /course/badCourse/page/badQuiz/                        404                     404 is a bad link error
+		'''
+
+		pass
+
+	def testSubmitPublicQuizUrl(self):
+		'''
+			Test that the urls to submit a public quiz page works properly
 
 			Case no.    Input                                                        Expected Output         Remark
 			1           url = /course/courseSlug/page/quizSlug1/submitQuiz/                200                     302 is a found code
@@ -296,6 +322,32 @@ class QuizViewTests(unittest.TestCase):
 		# Case 4 - A bad course and a bad quiz should display an error
 		response = self.client.get('/course/' + 'badClass' + '/page/' + 'badQuiz' + '/submitQuiz/')
 		self.failUnlessEqual(response.status_code, 404) 
+
+	def testSubmitPrivateQuizUrl(self):
+		'''
+			Test that the urls to submit a private quiz page works properly
+
+			Case no.    Input                                                        Expected Output         Remark
+			1           url = /course/courseSlug/page/quizSlug1/submitQuiz/                200                     302 is a found code
+			2           url = /course/badCourse/page/quizSlug1/submitQuiz/                 404                     404 is a bad link error
+			3           url = /course/courseSlug/page/badQuiz/submitQuiz/                  404                     404 is a bad link error
+			4           url = /course/badCourse/page/badQuiz/submitQuiz/                   404                     404 is a bad link error
+		'''
+
+		pass
+
+	def testSubmitHiddenQuizUrl(self):
+		'''
+			Test that the urls to submit a hidden quiz page works properly
+
+			Case no.    Input                                                        Expected Output         Remark
+			1           url = /course/courseSlug/page/quizSlug1/submitQuiz/                200                     302 is a found code
+			2           url = /course/badCourse/page/quizSlug1/submitQuiz/                 404                     404 is a bad link error
+			3           url = /course/courseSlug/page/badQuiz/submitQuiz/                  404                     404 is a bad link error
+			4           url = /course/badCourse/page/badQuiz/submitQuiz/                   404                     404 is a bad link error
+		'''
+
+		pass
 
 	def testSubmitQuizUrl_BadData(self):
 		'''

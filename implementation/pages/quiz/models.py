@@ -22,6 +22,7 @@ class Quiz(Page):
 	# paths implied from Path
 	# questions implied from Question
 	# course inherited from Page
+	# prerequisites inherited from Prerequisites
 	hidden = models.BooleanField()
 
 	@staticmethod
@@ -45,7 +46,7 @@ class Path(models.Model):
 
 	A path determines where a student is sent after taking a quiz.  It contains
 	a high and low score (path matches low <= score < high)
-   and an optional message to display to a student.
+	and an optional message to display to a student.
 	'''
 	quiz = models.ForeignKey(Quiz, related_name='paths')
 	highscore = models.IntegerField()
@@ -56,3 +57,15 @@ class Path(models.Model):
 
 	def __unicode__(self):
 		return u'Path on Quiz ' + unicode(quiz)
+
+class Prerequisite(models.Model):
+	'''
+	Model for a Prerequisite.
+
+	A prerequsite is a quiz that must be "passed" before being able to submit the quiz. If a quiz is hidden, the prerequisites must also be met before being able to view the quiz. It contains the page being required, and a link to the quiz it belongs to
+	'''
+	containingQuiz = models.ForeignKey(Quiz, related_name='prerequisites')
+	requiredQuiz = models.ForeignKey(Quiz)
+
+	def __unicode__(self):
+		return u'Prerequsite on Quiz ' + unicode(self.containingQuiz)

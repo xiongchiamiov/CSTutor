@@ -82,6 +82,18 @@ def saveQuiz(request, course, pid):
 			quiz.hidden = True
 		else:
 			quiz.hidden = False
+		# Delete current prerequisites
+		curPrereqs = quiz.prerequisites.all()
+		for p in curPrereqs:
+			p.delete()
+		print request.POST
+		if "prereqs" in request.POST:
+			# Create prerequisites
+			for p in request.POST.getlist("prereqs"):
+				reqQuiz = Course.objects.get(slug=course).pages.get(slug=p).quiz
+				newPrereq = Prerequisite(containingQuiz=quiz, requiredQuiz=reqQuiz)
+				newPrereq.save()
+				
 		questions = [question for question in quiz.questions.all()]
 		origQuestions = []
 		origAnswers = []
