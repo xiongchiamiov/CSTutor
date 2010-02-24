@@ -1,5 +1,5 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
@@ -8,49 +8,76 @@ How to Run Website
 </title>
 </head>
 <body>
+
 <h2>Hosted website environment</h2>
+
 <p>
 Our project is hosted at 
 <a href="https://autotutor.csc.calpoly.edu/demo/">https://autotutor.csc.calpoly.edu/demo/</a>
 </p>
+
 <p>
 We are using a self-signed SSL certificate that most modern browsers will
 complain about.  You will need to add the certificate to your browsers trust store
 in order for this to work properly.  This process will vary by browser.  
 The SHA1 fingerprint for this certificate is 
 </p>
+
 <pre>D3:06:7B:AE:DA:2A:08:AA:E1:CE:B5:FA:98:D9:AD:1C</pre>
+
 <p>
 Test data has been loaded.  Several users exist that can be logged in.  Of note
 are the "mgius" user, who is the course owner of the CPE102 course, and "jinloes"
 who is the course owner of the CPE103 course. 
 </p>
+
 <p>
 Creating new users/courses works, and creating new lessons is working as well.
 </p>
+
 <p>
 Debugging output has been left enabled, so "error" pages will include ugly
 python stack traces.
 </p>
-<h3>Setting up project using Apache and mod_python on Linux</h3>
+
+<h3>Known Bugs</h3>
+
+<p>
+Our ticket tracker is available at <a href="https://autotutor.csc.calpoly.edu/trac/report/1">https://autotutor.csc.calpoly.edu/trac/report/1</a>
+if you would like to view all open issues.  Notable issues for this release include:
+</p>
+
+<ul>
+<li>
+Permissions are only half implemented.  Many operations that should be priviledged are currently not.
+</li>
+</ul>
+
+<h2>Setting up project using Apache and mod_python on Linux</h2>
+
 <p>
 These instructions assume a reasonable knowledge of Apache and it's
 configuration. A full configuration manual for Apache is available at the
 <a href="http://httpd.apache.org/docs/">Apache Documentation Site</a>. Package
 names are based off Debian 5.0 ("lenny") and will vary by distribution.
 </p>
+
 <p>
 Ensure that django, sqlite, apache, and mod_python are installed.
 </p>
+
 <pre> apt-get install python-django libsqlite3-0 apache2 libapache2-mod-python </pre>
+
 <p>
 Once these are installed, deploy the CSTutor source somewhere on your 
 filesystem.  Examples will use the local path '/opt/cstutor' and the server
 location of http://hostname/cstutor
 </p>
+
 <p>
 Edit your apache configuration file and add the following directives.
 </p>
+
 <pre>
 Alias /cstutor/media /var/www/trunk/implementation/static
 Alias /cstutor /var/www/trunk/implementation
@@ -71,7 +98,7 @@ SetEnv DJANGO_SETTINGS_MODULE cstutor.settings
 PythonDebug On
 
 # isolates the site from other mod_python projects
-PythonInterpreter cstutor
+PythonIntercodeter cstutor
 
 &lt;/LocationMatch&gt;
 
@@ -107,21 +134,15 @@ TO THE USER THAT APACHE RUNS AS</strong>
 <p>
 Restart apache, and attempt to reach the site at http://hostname/cstutor/
 </p>
-<h4> Other webserver/Python handlers</h4>
+
+<h3> Other webserver/Python handlers</h3>
+<p>
 Our site does not depend upon Apache or mod_python in any way.  Any supported
 Django server setup should work with our site.  If you have interest in a 
 non Apache + mod_python hosting solution, please consult the Django 
 <a href="http://docs.djangoproject.com/en/1.0/howto/deployment/">Deployment Documentation</a>
-<h3>Known Bugs</h3>
-<p>
-Our ticket tracker is available at <a href="https://autotutor.csc.calpoly.edu/trac/report/1">https://autotutor.csc.calpoly.edu/trac/report/1</a>
-if you would like to view all open issues.  Notable issues for this release include:
 </p>
-<ul>
-<li>
-Permissions are only half implemented.  Many operations that should be priviledged are currently not.
-</li>
-</ul>
+
 <h2>How To Run Development Website</h2>
 <ol>
 	<li> Install Django
