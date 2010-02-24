@@ -37,4 +37,25 @@
 	      <field type="TextField" name="text">QuizUnitTests Quiz 2</field>
 	      <field type="BooleanField" name="hidden">False</field>
 	   </object>
+   <object pk="10004" model="question.question">
+      <field type="TextField" name="text">Test question 1</field>
+      <field type="IntegerField" name="order">1</field>
+      <field to="quiz.quiz" name="quiz" rel="ManyToOneRel">10002</field>
+   </object>
+   <object pk="10004" model="question.multiplechoicequestion">
+   </object>
+   <object pk="10005" model="question.question">
+      <field type="TextField" name="text">Test question 2</field>
+      <field type="IntegerField" name="order">2</field>
+      <field to="quiz.quiz" name="quiz" rel="ManyToOneRel">10002</field>
+   </object>
+   <object pk="10005" model="question.multiplechoicequestion">
+   </object>
+   <object pk="10006" model="question.question">
+      <field type="TextField" name="text">Test question 3</field>
+      <field type="IntegerField" name="order">3</field>
+      <field to="quiz.quiz" name="quiz" rel="ManyToOneRel">10002</field>
+   </object>
+   <object pk="10006" model="question.multiplechoicequestion">
+   </object>
 </django-objects>

@@ -4,14 +4,14 @@ This file contains tests for the Quiz package.
 @author Evan Kleist
 '''
 
-import unittest
+from django.test import TestCase
 from django.test.client import Client
 from django.contrib.auth.models import User
 from pages.quiz.models import *
 from pages.quiz.quiz import *
 from pages.quiz.question.models import *
 
-class QuizUnitTests(unittest.TestCase):
+class QuizUnitTests(TestCase):
 	'''
 		Unit Tests on backend quiz operations.
 
@@ -223,7 +223,7 @@ class QuizUnitTests(unittest.TestCase):
 		q.order = 3
 		q.save()
 
-class QuizViewTests(unittest.TestCase):
+class QuizViewTests(TestCase):
 	''' 
 		Unit Tests on Quiz Views.  Tests use an emulated Web Client
 		to simulate a user making requests via the web interface
@@ -239,7 +239,7 @@ class QuizViewTests(unittest.TestCase):
 			Set up the tests
 		'''
 		self.client = Client()
-		self.courseSlug = 'QuizViewTests_Course'
+		self.courseSlug = 'QuizViewTests_Course1'
 		self.quizSlug1 = 'QuizViewTests_Quiz1'
 		self.quizSlug2 = 'QuizViewTests_Quiz2'
 
@@ -275,23 +275,50 @@ class QuizViewTests(unittest.TestCase):
 			Test that the urls to a known private quiz page works properly when logged in and errors otherwise
 
 			Case no.    Input                                                        Expected Output         Remark
-			1           url = /course/courseSlug/page/quizSlug1/                     200                     302 is a found code
-			2           url = /course/badCourse/page/quizSlug1/                      404                     404 is a bad link error
-			3           url = /course/courseSlug/page/badQuiz/                       404                     404 is a bad link error
-			4           url = /course/badCourse/page/badQuiz/                        404                     404 is a bad link error
+			1           url = /course/courseSlug/page/quizSlug1/                     200                     User not logged in, course private
+			            user not logged in                                           denied.html
+			2           url = /course/courseSlug/page/quizSlug1/                     200                     User logged in, not enrolled, course private
+			            user logged in, not enrolled                                 denied.html
+			3           url = /course/courseSlug/page/quizSlug1/                     200                     User logged in, enrolled, course private
+			            user logged in, enrolled                                     viewQuiz.html
 		'''
+		courseSlug = "QuizViewTests_Course2"
+		quizSlug = "QuizViewTests_Quiz3"
+		enrolledUser = "testUser2"
+		unenrolledUser = "testUser1"
+		enrolledUserPwd = "password"
+		unenrolledUserPwd = "password"
 
+		# Case 1		
+		response = self.client.get('/course/' + courseSlug + '/page/' + quizSlug + '/')
+		self.assertTemplateUsed(response, "page/denied.html")
+
+		# Case 2
+		self.failUnlessEqual(self.client.login(username=unenrolledUser, password=unenrolledUserPwd), True)
+		response = self.client.get('/course/' + courseSlug + '/page/' + quizSlug + '/')
+		self.assertTemplateUsed(response, "page/denied.html")
+
+		# Case 3
+		self.client.logout()
+		self.failUnlessEqual(self.client.login(username=enrolledUser, password=enrolledUserPwd), True)
+		response = self.client.get('/course/' + courseSlug + '/page/' + quizSlug + '/')
+		self.assertTemplateUsed(response, "page/quiz/viewQuiz.html")
+		
 		pass
 
 	def testHiddenQuizUrl(self):
 		'''
-			Test that the urls to a known hiddeb quiz page works properly when logged in and prerequisites are satisfied and errors otherwise
+			Test that the urls to a known private quiz page works properly when logged in and errors otherwise
 
 			Case no.    Input                                                        Expected Output         Remark
-			1           url = /course/courseSlug/page/quizSlug1/                     200                     302 is a found code
-			2           url = /course/badCourse/page/quizSlug1/                      404                     404 is a bad link error
-			3           url = /course/courseSlug/page/badQuiz/                       404                     404 is a bad link error
-			4           url = /course/badCourse/page/badQuiz/                        404                     404 is a bad link error
+			1           url = /course/courseSlug/page/quizSlug1/                     200                     User not logged in, no prereqs
+			            user not logged in                                           denied.html
+			2           url = /course/courseSlug/page/quizSlug1/                     200                     User logged in, not enrolled, no prereqs
+			            user logged in, not enrolled                                denied.html
+			3           url = /course/courseSlug/page/quizSlug1/                     200                     User logged in, enrolled, no prereqs
+			            user logged in, enrolled                                     denied.html
+			4           url = /course/courseSlug/page/quizSlug1/                     200                     User logged in, enrolled, prereqs
+			            user logged in, enrolled                                     viewQuiz.html
 		'''
 
 		pass
@@ -357,9 +384,9 @@ class QuizViewTests(unittest.TestCase):
 		'''
 		pass
 
-	def testEditQuizUrl(self):
+	def testEditPublicQuizUrl(self):
 		'''
-			Test that the urls to edit a known quiz page works properly
+			Test that the urls to edit a known public quiz page works properly
 
 			Case no.    Input                                                        Expected Output         Remark
 			1           url = /course/courseSlug/page/quizSlug1/edit/                200                     302 is a found code
@@ -382,4 +409,45 @@ class QuizViewTests(unittest.TestCase):
 
 		# Case 4 - A bad course and a bad quiz should display an error
 		response = self.client.get('/course/' + 'badClass' + '/page/' + 'badQuiz' + '/edit/')
-		self.failUnlessEqual(response.status_code, 404) 
+		self.failUnlessEqual(response.status_code, 404)
+
+	def testEditPrivateQuizUrl(self):
+		'''
+			Test that the urls to edit a known private quiz page works properly
+
+			Case no.    Input                                                        Expected Output         Remark
+			1           url = /course/courseSlug/page/quizSlug1/edit/                200                     302 is a found code
+			2           url = /course/badCourse/page/quizSlug1/edit/                 404                     404 is a bad link error
+			3           url = /course/courseSlug/page/badQuiz/edit/                  404                     404 is a bad link error
+			4           url = /course/badCourse/page/badQuiz/edit/                   404                     404 is a bad link error
+		'''
+
+		pass
+
+	def testEditHiddenQuizUrl(self):
+		'''
+			Test that the urls to edit a known hidden quiz page works properly
+
+			Case no.    Input                                                        Expected Output         Remark
+			1           url = /course/courseSlug/page/quizSlug1/edit/                200                     302 is a found code
+			2           url = /course/badCourse/page/quizSlug1/edit/                 404                     404 is a bad link error
+			3           url = /course/courseSlug/page/badQuiz/edit/                  404                     404 is a bad link error
+			4           url = /course/badCourse/page/badQuiz/edit/                   404                     404 is a bad link error
+		'''
+
+		pass
+
+	def testDeleteQuizView(self):
+		'''
+			Test that will make sure the quiz deletion confirmation
+			 dialogue is working properly
+		'''
+		pass
+
+	def testDeleteQuestionView(self):
+		'''
+			Test that will make sure the question deletion
+			confirmation dialogue is working properly
+		'''
+		pass
+
