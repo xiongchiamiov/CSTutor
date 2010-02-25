@@ -1,3 +1,4 @@
+#! /usr/bin/perl
 use strict;
 use warnings;
 # get input filename
@@ -28,7 +29,7 @@ while (<$template>) {
 		my $count = 1;
 		while (@lines > 0) {
 			my $line = shift @lines;
-			if ($line =~ m/'(.*?)','(.*?)','(.*?)','(.*?)'/) {;
+			if ($line =~ m/['"](.*?)['"],['"](.*?)['"],['"](.*?)['"],['"](.*?)['"]/) {
 				print $outHandle "<tr>\n";
 				print $outHandle "<td align=\"center\"><p>$count</p></td>\n";
 				print $outHandle "<td><p>$1</p></td>\n";
