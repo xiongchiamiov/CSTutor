@@ -99,7 +99,7 @@ def submitQuiz(request, course_slug, page_slug):
 		return master_rtr(request, 'page/denied.html', {'course':course_slug, 'loggedIn':False})
 
 	if (not (maxScore == 0)):
-		percentage = round(float(score) / float(maxscore), 2) * 100
+		percentage = round(float(score) / float(maxScore), 2) * 100
 			
 	return master_rtr(request, 'page/quiz/submitQuiz.html', \
 			{'course':course_slug, 'course_slug':course_slug, \
