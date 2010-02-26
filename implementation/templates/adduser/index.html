@@ -28,9 +28,19 @@ Username:
 <input type="submit" value="Submit" />
 </form>
 
+<br/>
+
+<p>Add users from text file</p>
+<form name="fileInput" action="addFromFile/" enctype="multipart/form-data" method="post">
+<input type="file" name="datafile" size="40"/>
+<input type="submit" value="Submit"/>
+</form>
+
+
 <form method="link" action="cancel/">
 <br/>
 <input type="hidden" name="command" value="cancel"/>
 <input type="submit" value="Cancel">
 </form>
+
 {% endblock %}
