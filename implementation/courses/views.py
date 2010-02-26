@@ -13,6 +13,8 @@ from django.template.defaultfilters import slugify
 from home.views import master_rtr
 from django.contrib.auth.decorators import login_required
 from pages.views import show_page
+import StringIO
+
 
 
 @login_required
@@ -57,6 +59,12 @@ def show_roster(request, course_slug):
 	# the database searches using Primary Keys, which are indexed, instead of 
 	# username, which is not indexed. -mgius
 	#enrollment = Enrollment.objects.get(user__username__exact=request.user.username, course__slug__exact=course_slug)
+
+	failedList = []
+
+	if request.session.has_key('badusers'):
+		failedList = request.session['badusers']
+		del request.session['badusers']
 	
 	try:
 		course = Course.objects.get(slug=course_slug)	
@@ -71,7 +79,7 @@ def show_roster(request, course_slug):
 		return master_rtr(request, 'roster/index.html', \
 		                  {'course': course, \
 		                   'enrollments': enrollments, \
-		                   'course_slug': course.slug })
+		                   'course_slug': course.slug, 'failedList': failedList})
 
 	else:
 		return master_rtr(request, 'roster/invalid_permissions.html', \
@@ -336,3 +344,45 @@ def show_chat(request, course_slug):
 
 	course = Course.objects.get(slug=course_slug)
 	return master_rtr(request, 'chat/index.html', {'course_slug': course_slug, 'username': request.user.username, 'course': course})
+
+@login_required
+def add_from_file(request, course_slug):
+	'''
+	Adds usernames from a text file
+	pre: none
+	post: for each username in request.FILES
+				enrollment.username.view = true
+	'''
+	course = Course.objects.get(slug=course_slug)
+	enrollment = request.user.enrollments.get(course=course)
+	failedList = []
+
+	if enrollment.manage:
+		for k,v, in request.FILES.iteritems():
+			#print k, v
+			infile = request.FILES[k]
+
+			output = StringIO.StringIO(infile.read())
+		
+			for line in output:
+				name = line.strip()
+				#print line.strip()
+				try:
+					#if the user exists add it
+					user = User.objects.get(username=name)
+					addUser(course, user)
+
+				except User.DoesNotExist:
+					#if the user does not exist print error message
+					failedList.append(name);
+					#return master_rtr(request, 'adduser/failed.html', \
+					#		               {'course_slug':course_slug, \
+					#		                'course': course})
+					
+		print failedList
+		request.session['badusers']=failedList
+		return HttpResponseRedirect(reverse('courses.views.show_roster', \
+	                                    args=[course_slug]))
+	else:
+			return master_rtr(request, 'roster/invalid_permissions.html', \
+				               {'course': course, 'course_slug': course.slug})

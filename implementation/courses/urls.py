@@ -25,6 +25,7 @@ urlpatterns += patterns('courses.views',
 	(r'roster/addPendingRequests/$', 'manage_pending_requests'),
 	(r'roster/updateRoster/$', 'update_roster'),
 	(r'roster/adduser/$', 'add_user'),
+	(r'roster/adduser/addFromFile/', 'add_from_file'),
 	(r'roster/adduser/cancel', 'cancel_add'),
 	(r'roster/$', 'show_roster'),
 	#redirect to the chat page
