@@ -58,10 +58,16 @@
 		</td>	
 	</tr>
 	{% endif %}
-	{% endfor%}
+	{% endfor %}
 	</form>
 </table>
 <br />
+{% if failedList %}
+	<p>Usernames that failed to be added</p>
+	{% for name in failedList %}
+			{{name}}
+	{% endfor %}
+{% endif %}
 {% if course.private %}
 <p>
 <center>
