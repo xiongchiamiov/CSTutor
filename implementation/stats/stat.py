@@ -9,6 +9,16 @@ from courses.models import Enrollment
 from courses.models import Course
 from django.db import connection, transaction
 
+def dropAllUserStats(user):
+	'''Drops all statistics assoicated with a user, reguardless of what course 
+	the user is in.
+	@precondition The User must exist
+	@precondition User.models.get(user.id) = user
+	@postcondition There should be no stats assoicated with the user in the DB
+	@postcondition Stat.models.filter(user=user) = null set
+	'''
+	Stat.objects.filter(user=user).delete();
+
 
 def getAllCourseStats(course):
 	'''
@@ -66,8 +76,8 @@ def getQuizBestAggregates(course):
 	                      page_id as inner_page_id,
 		              innerStats.course_id as inner_course_id
                               FROM stats_stat as innerStats 
-	                          WHERE inner_course_ID=%s 
-	                          GROUP BY user_id, page_id, course_id)
+	                          WHERE innerStats.course_id=%s 
+	                          GROUP BY user_id, page_id, course_id) as best_score
 	                          ON (Cast(score as FLOAT) / cast (maxscore as FLOAT)) = 
 				         inner_maxscore and
 	                         user_id = inner_user_id AND 
@@ -76,7 +86,7 @@ def getQuizBestAggregates(course):
 	                INNER JOIN pages_page ON
 	                    pages_page.id = page_id
 	                    WHERE best_stats.inner_course_id = %s
-	                    GROUP BY page_id;
+	                    GROUP BY page_id,pages_page.slug,pages_page.name ;
 	               ''',[course.id,course.id] )
 	rawList = cursor.fetchall()
 	aggrigateList = []
