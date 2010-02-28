@@ -1,0 +1,3 @@
+Roster Acceptance Test
+'User input Enter in jinloes on the add user screen','User Jon Inloes, username jinloes shows up in the roster','This test verifies that adding users to the roster works','Pass'
+'2User input Click manage checkbox for jinloes, click the update roster button, c','2jinloes now has manage permission','2This test verifies that changing a user's permissions works','2Pass'
