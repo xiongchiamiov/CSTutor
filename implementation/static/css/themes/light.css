@@ -4,6 +4,7 @@
  * primary dark:    #2D5231
  * secondary dark:  #193B1D
  * disabled text:   #507959
+ * disabled button: #CCCCCC
  */
 
 body {
@@ -70,6 +71,22 @@ body {
 
 .button:hover {
 	color: #D1FC9D;
+}
+
+.button-disabled {
+	background-image: url('/media/images/light/button_disabled.png');
+	filter:alpha(opacity=60);
+	opacity:0.6;
+	color: #CCCCCC;
+}
+
+.button-disabled:hover {
+	color: #CCCCCC;
+}
+
+.button-disabled:active {
+	background-image: url('/media/images/light/button_disabled.png');
+	color: #CCCCCC;
 }
 
 #page-list li {

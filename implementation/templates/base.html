@@ -89,18 +89,26 @@
 						{% endfor %}
 					</ul><!-- #page-list -->
 				</li>
-				{% if create_enabled %}
 				<li>
-					<a class="button" href="{% url pages.quiz.views.create_quiz course_slug page_slug %}">
+					<a class=
+					{% if create_enabled %}
+						"button" href="{% url pages.quiz.views.create_quiz course_slug page_slug %}"
+					{% else %}
+						"button button-disabled"
+					{% endif %}>
 						Create Quiz
 					</a>
 				</li>
 				<li>
-					<a class="button" href="{% url pages.lesson.views.create_lesson course_slug page_slug %}">
+					<a class=
+					{% if create_enabled %}
+						"button" href="{% url pages.lesson.views.create_lesson course_slug page_slug %}"
+					{% else %}
+						"button button-disabled"
+					{% endif %}>
 						Create Lesson
 					</a>
 				</li>
-				{% endif %}
 			</ul>
 		</div><!-- #left-nav .span-6 -->
 		<div id="right-col" class="span-18 last">
