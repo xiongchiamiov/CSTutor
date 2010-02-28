@@ -9,7 +9,7 @@ from django.shortcuts import render_to_response
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from home.views import index, master_rtr
-from user import registerNewUser, loginWrapper, updateEmail, changePassword
+from user import registerNewUser, loginWrapper, updateEmail, changePassword, updateName, deleteUser
 
 def show_profile(request):
 	'''
@@ -43,7 +43,19 @@ def show_profile(request):
 					return master_rtr(request, 'user/profile.html', 
 		                                       {'user': request.user,
 											    'passError': "Password do not match"})	
-		
+			if (request.POST["form"] == "Delete Account"):
+				return master_rtr(request, 'user/confirmDelete.html')
+			
+			if (request.POST["form"] == "Update Name"):
+				status = updateName(request)
+				if status == 0:
+					return master_rtr(request, 'user/profile.html', {'user': request.user, 'nameMessage':"Update Successful" })
+			if (request.POST["form"] == "Yes"):
+				status = deleteUser(request)
+				if status == 0:
+					return HttpResponseRedirect(reverse('home.views.index'))		
+			
+			
 		return master_rtr(request, 'user/profile.html', {'user':request.user})
 	else:
 		return master_rtr(request, 'user/notloggedin.html')

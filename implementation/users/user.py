@@ -41,6 +41,36 @@ def updateEmail(request):
 	else:
 		#failure
 		return 1
+	
+def updateName(request):
+	'''
+	Updates a users name
+	@author John Hartquist
+	@pre request.POST["form"] == "Change Name"
+	@post request.user.first_name = request.POST["first_name"]
+	@post request.user.last_name = request.POST["last_name"]
+ 	'''
+ 	user = request.user
+ 	if (request.POST["first_name"] == ""):
+ 		return 1
+ 	elif (request.POST["last_name"] == ""):
+ 		return 1
+  	else:
+ 		user.first_name = request.POST["first_name"]
+ 		user.last_name = request.POST["last_name"]
+ 		user.save()
+ 		return 0
+ 	
+def deleteUser(request):
+	'''
+	Deletes a user account
+	@author John Hartquist
+	@pre request.POST["form"] == "Yes"
+	@post user not in User.objects.all()
+	'''
+	request.user.delete()
+	return 0
+
 
 def changePassword(request):
     oldpass = request.POST["oldpass"]
