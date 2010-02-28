@@ -1,0 +1,153 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
+	<title> Profile
+ </title>
+</head>
+<body>
+
+<table width="100%" border="1" cellpadding="4" cellspacing="3">
+	<!-- Defines the columns -->
+	<col align="center"/>
+	<col />
+	<col />
+	<col />
+	<col />
+
+	<!-- Header row -->
+	<thead>
+	<tr>
+		<th >
+			<p>
+			<strong>Case No</strong> 
+			</p>
+		</th>
+			<th >
+			<p>
+			<strong>User Inputs and Command</strong>
+			</p>
+		</th>
+		<th >
+			<p>
+			<strong>Excpected Output</strong> 
+			</p>
+		</th>
+		<th >
+			<p>
+			<strong>Remarks</strong> 
+			</p>
+		</th>
+		<th >
+			<p>
+			<strong>Results</strong> 
+			</p>
+		</th>
+	</tr>
+	</thead>
+	<!-- Footer row -->
+	<tfoot>
+	<tr>
+		<th >
+			<p>
+			<strong>Case No</strong> 
+			</p>
+		</th>
+			<th >
+			<p>
+			<strong>User Inputs and Command</strong>
+			</p>
+		</th>
+		<th >
+			<p>
+			<strong>Excpected Output</strong> 
+			</p>
+		</th>
+		<th >
+			<p>
+			<strong>Remarks</strong> 
+			</p>
+		</th>
+		<th >
+			<p>
+			<strong>Results</strong> 
+			</p>
+		</th>
+	</tr>
+	</tfoot>
+	<tbody>
+<tr>
+<td align="center"><p>1</p></td>
+<td><p>User is logged in and clickc on 'Profile' link</p></td>
+<td><p>Profile page comes up displaying name, email, and option to change password</p></td>
+<td><p></p></td>
+<td><p>Pass</p></td>
+</tr>
+<tr>
+<td align="center"><p>2</p></td>
+<td><p>User edits name, and selects 'Update Name'</p></td>
+<td><p>User's name is updated successfully</p></td>
+<td><p>Message appears displaying Update Successful</p></td>
+<td><p>Pass</p></td>
+</tr>
+<tr>
+<td align="center"><p>3</p></td>
+<td><p>User deletes first name and selects 'Update Name'</p></td>
+<td><p>Nothing happens</p></td>
+<td><p>A user must enter a non blank name</p></td>
+<td><p>Pass</p></td>
+</tr>
+<tr>
+<td align="center"><p>4</p></td>
+<td><p>User edits e-mail address and selects Change E-Mail</p></td>
+<td><p>Displayed e-mail address reflects the changes</p></td>
+<td><p></p></td>
+<td><p>Pass</p></td>
+</tr>
+<tr>
+<td align="center"><p>5</p></td>
+<td><p>User provides an invalid e-mail address and seleccts Change E-Mail</p></td>
+<td><p>Error message displays "Invalid E-Mail Address"</p></td>
+<td><p>User must enter valid address</p></td>
+<td><p>Pass</p></td>
+</tr>
+<tr>
+<td align="center"><p>6</p></td>
+<td><p>User attempts to change password but provides invalid "Old Password"</p></td>
+<td><p>Error message displays "Invalid Current Password"</p></td>
+<td><p>User must provide current password</p></td>
+<td><p>Pass</p></td>
+</tr>
+<tr>
+<td align="center"><p>7</p></td>
+<td><p>User provides current password but non matching new password</p></td>
+<td><p>Error message displays "Password Do Not Match"</p></td>
+<td><p>Passwords must match</p></td>
+<td><p>Pass</p></td>
+</tr>
+<tr>
+<td align="center"><p>8</p></td>
+<td><p>User selects Delete Account button</p></td>
+<td><p>New page prompts user for confirmation for deleting account</p></td>
+<td><p>User has choice of yes or no to continue</p></td>
+<td><p>Pass</p></td>
+</tr>
+<tr>
+<td align="center"><p>9</p></td>
+<td><p>User selects No from Delete Account confirmation page</p></td>
+<td><p>User is taken back to profile page, no changes made</p></td>
+<td><p>User account is not deleted</p></td>
+<td><p>Pass</p></td>
+</tr>
+<tr>
+<td align="center"><p>10</p></td>
+<td><p>User selects Yes from Delete Account confirmation page</p></td>
+<td><p>User's account is removed from database, and user is redirected back to home page</p></td>
+<td><p>Account no longer exists</p></td>
+<td><p>Pass</p></td>
+</tr>
+	</tbody>
+</table>
+</body>
+</html>
