@@ -70,7 +70,7 @@ class Course(models.Model):
 			page = pages.pop(0)
 			toc.append(page)
 			if page.left != (page.right - 1):
-				print str(page) + " has children "
+				#print str(page) + " has children "
 				# This page has children.  Get them
 				childPages = []
 				while len(pages) > 0 and pages[0].left < page.right:

@@ -103,23 +103,8 @@ def edit_lesson(request, course_slug, page_slug):
 	data['lesson'] = lesson	
 
 	if request.method == "POST":
-		#Saves lesson's name, checks for uniqueness
-		if "SaveLessonName" in request.POST:
-			lesson = saveLessonName(lesson, request.POST['lessonname'])
-			if lesson != None: #successful name/slug change REDIRECT
-				#import time
-				#print "XXX"
-				#time.sleep(5)
-				#print "YYY"
-				#return HttpResponseRedirect(reverse('pages.lesson.views.edit_lesson', args=[course_slug, lesson.slug]))
-				return HttpResponseRedirect("/")
-			else: #unsuccessful name/slug change indicate error
-				data['nameError'] = "Name Change Failed, Already Exists"
-				#data['lesson'] = lesson
-				return master_rtr(request, 'page/lesson/edit_lesson.html', data)
-		
 		#Saves the working copy of the lesson
-		elif "Save" in request.POST:
+		if "Save" in request.POST:
 			#save the content of the lesson
 			data['lesson'] = saveLessonWorkingCopy(lesson, request.POST['content'])
 
@@ -127,7 +112,7 @@ def edit_lesson(request, course_slug, page_slug):
 			if lesson.name != request.POST['lessonname']:
 				r = saveLessonName(lesson, request.POST['lessonname'])
 				if r == 1:
-					data['message'] = "Name change failed: name must be 3 characters or longer"
+					data['message'] = "Name change failed: name must be non-empty"
 				elif r != None:
 					#yes this is ugly but reverse wouldn't work for some reason
 					return HttpResponseRedirect("/course/"+lesson.course.slug+"/page/"+lesson.slug+"/edit/")

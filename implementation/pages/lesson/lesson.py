@@ -84,8 +84,8 @@ def saveLessonName(lesson, newLessonName):
 	This saves the name of the lesson.
 	Returns none on failure, lesson on success, 1 on invalid name
 	'''
-	#check that newLessonName has 3 or more characters
-	if len(newLessonName) < 3:
+	#check that newLessonName has 1 or more characters
+	if len(newLessonName) < 1:
 		return 1
 
 	#check that the newLessonName doesn't already exist in this course

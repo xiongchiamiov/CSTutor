@@ -53,10 +53,7 @@ class LessonTests(TestCase):
 		#test adding a name that is too small
 		r = saveLessonName(l, "")
 		self.assertEquals(r,1)
-		r = saveLessonName(l,"x")
-		self.assertEquals(r,1)
-		r = saveLessonName(l, "xx")
-		self.assertEquals(r,1)
+
 		#test adding a duplicate entry
 		r = saveLessonName(l, "testpage2")
 		self.assertEquals(r,None)
@@ -64,6 +61,13 @@ class LessonTests(TestCase):
 		r = saveLessonName(l, "testtestpage6")
 		self.assertEquals(r.name,"testtestpage6")
 		self.assertEquals(r.slug,"testtestpage6")
+		#test adding small valid entries
+		r = saveLessonName(l,"x")
+		self.assertEquals(r.name,"x")
+		self.assertEquals(r.slug,"x")
+		r = saveLessonName(l, "xx")
+		self.assertEquals(r.name,"xx")
+		self.assertEquals(r.slug,"xx")
 
 	def test_saveLessonWorkingCopy(self):
 		'''
