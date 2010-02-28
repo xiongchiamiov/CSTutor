@@ -2,11 +2,18 @@
 
 {% block content %}
 <form action="{% url courses.views.join_course_request %}" method="post">
+{% if join_courses %}
 <select name="courseid" size="10">
 	{% for course in join_courses %}
 	<option value="{{course.id}}">{{course.name}}</option>
    {% endfor %}
 	<input type="submit" value="Submit Request" />
 </select>
+{% else %}
+<p>
+There are no courses available for you to join.  Instead, here's a puppy.
+</p>
+<img src="/media/images/bunchofpants_cutepuppy.jpg" />
+{% endif %}
 </form>
 {% endblock %}
