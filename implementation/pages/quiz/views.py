@@ -33,7 +33,7 @@ def create_quiz(request, course_slug, page_slug):
 		name = request.POST['name']
 		newQuiz = Quiz(course=course, name=name, slug=slugify(name), text=name)
 		insertChildPage(newQuiz, Page.objects.get(slug=page_slug))
-		return edit_quiz(request, course_slug, slugify(name))
+		return HttpResponseRedirect('/course/' + course_slug + '/page/' + slugify(name) + '/edit/')
 	else:
 		return master_rtr(request, 'page/quiz/create-quiz.html')
 
