@@ -92,21 +92,21 @@
 				<li>
 					<a class=
 					{% if create_enabled %}
-						"button" href="{% url pages.quiz.views.create_quiz course_slug page_slug %}"
-					{% else %}
-						"button button-disabled"
-					{% endif %}>
-						Create Quiz
-					</a>
-				</li>
-				<li>
-					<a class=
-					{% if create_enabled %}
 						"button" href="{% url pages.lesson.views.create_lesson course_slug page_slug %}"
 					{% else %}
 						"button button-disabled"
 					{% endif %}>
 						Create Lesson
+					</a>
+				</li>
+				<li>
+					<a class=
+					{% if create_enabled %}
+						"button" href="{% url pages.quiz.views.create_quiz course_slug page_slug %}"
+					{% else %}
+						"button button-disabled"
+					{% endif %}>
+						Create Quiz
 					</a>
 				</li>
 			</ul>
