@@ -37,7 +37,7 @@ def create_lesson(request, course_slug, page_slug):
 								 'lesson':lesson, 'new':True})
 	
 		if saveNewLesson(request, course_slug, page_slug) == 0:
-			return HttpResponseRedirect("/course/"+course_slug+"/page/"+lesson.slug)
+			return HttpResponseRedirect(reverse('pages.views.show_page', args=[course_slug, lesson.slug]))
 		else:
 			return master_rtr(request, 'page/lesson/edit_lesson.html', \
 				            {'course_slug':course_slug,

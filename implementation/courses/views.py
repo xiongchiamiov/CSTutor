@@ -42,7 +42,7 @@ def create_course(request):
 		else:
 			try:
 				c = CreateCourse(name, User.objects.get(username=request.user.username), private)
-				return HttpResponseRedirect("/course/"+c.slug+"/page/"+c.slug+"/edit/")
+				return HttpResponseRedirect(reverse('pages.views.edit_page', args=[c.slug, c.slug]))
 			except IntegrityError:
 				data['message'] = 'A Course with that name already exists.'
 
