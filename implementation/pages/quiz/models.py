@@ -24,6 +24,7 @@ class Quiz(Page):
 	# course inherited from Page
 	# prerequisites inherited from Prerequisites
 	hidden = models.BooleanField()
+	published = models.BooleanField()
 
 	@staticmethod
 	def createQuiz(text_, hidden_, course_, parent_, ):
@@ -54,6 +55,7 @@ class Path(models.Model):
 	text = models.TextField()
 	toPage = models.ForeignKey(Page)
 	passed = models.BooleanField()
+	published = models.BooleanField()
 
 	def __unicode__(self):
 		return u'Path on Quiz ' + unicode(quiz)
@@ -66,6 +68,7 @@ class Prerequisite(models.Model):
 	'''
 	containingQuiz = models.ForeignKey(Quiz, related_name='prerequisites')
 	requiredQuiz = models.ForeignKey(Quiz)
+	published = models.BooleanField()
 
 	def __unicode__(self):
 		return u'Prerequsite on Quiz ' + unicode(self.containingQuiz)
