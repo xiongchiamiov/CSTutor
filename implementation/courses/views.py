@@ -7,6 +7,7 @@ from django.core.urlresolvers import reverse
 from django.shortcuts import render_to_response
 from django.http import HttpResponseRedirect
 from courses.models import Course
+from pages.models import Page
 from courses.course import *
 from django.db import IntegrityError
 from django.template.defaultfilters import slugify
@@ -14,7 +15,6 @@ from home.views import master_rtr
 from django.contrib.auth.decorators import login_required
 from pages.views import show_page
 import StringIO
-
 
 
 @login_required
@@ -42,7 +42,7 @@ def create_course(request):
 		else:
 			try:
 				c = CreateCourse(name, User.objects.get(username=request.user.username), private)
-				return master_rtr(request, 'page/lesson/edit_lesson.html', {'course':c.slug, 'course_slug':c.slug, 'page_slug':c.slug})
+				return HttpResponseRedirect("/course/"+c.slug+"/page/"+c.slug+"/edit/")
 			except IntegrityError:
 				data['message'] = 'A Course with that name already exists.'
 
