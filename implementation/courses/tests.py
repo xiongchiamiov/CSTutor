@@ -501,6 +501,52 @@ class CourseViewTests(TestCase):
 		response = self.client.post('/submit_join_course_request/', {'courseid':101 })
 		 
 		self.failIfEqual(response.content.find("You are already enrolled"), -1)
+
+	def testChat(self):
+		'''
+		@author Jon Inloes
+		Tests that the chat page displays properly
+
+		Case #		Inputs											Outputs							Remark
+
+		1				adminUsername = 'enrollmentTestAdmin'	response.status_code = 200
+						password = 'password'
+						slug = 'PageViewsPublicCourse'
+		
+		2				adminUsername = 'enrollmentTestAdmin'	response.status_code = 404
+						password = 'password'
+						slug = 'badcourse'
+		'''
+		pass
+	
+	def testChatCase1(self):
+		'''
+		Case 1
+		'''
+
+		adminUsername = 'enrollmentTestAdmin'
+		password = 'password'
+		slug = 'PageViewsPublicCourse'
+
+		#logs in and checks to make sure the login was successful
+		self.failUnlessEqual(self.client.login(username=adminUsername, password=password), True, 'logging in failed in enrollment test')
+
+		#Displays the roster and checks to make sure it was successful		
+		response = self.client.get('/course/' + slug + '/chat/')
+		self.failUnlessEqual(response.status_code, 200, 'redirection to the chat page failed')
+
+	def testChatCase2(self):
+		'''
+		Case 2
+		'''
+		adminUsername = 'enrollmentTestAdmin'
+		password = 'password'
+		slug = 'badcourse'
+
+		#Displays the roster and checks to make sure it was successful		
+		response = self.client.get('/course/' + slug + '/chat/')
+		self.failUnlessEqual(response.status_code, 404, 'redirection to the chat page failed')
+
 # I don't know why, but for some reason join_course_request is returning a 
 # 302.  Why?
 #	def testPrivateEnrollment(self):
