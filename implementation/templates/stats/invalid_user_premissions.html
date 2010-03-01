@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% extends "base.html" %}
+{% comment %} Error page if the user tries to view stats when he/she does not
+have premission to do that.
+@author Andrew J. Musselman 
+{% endcomment %}
+
+{% block content %}
+<p>You do not have premission to view the course-wide stats for {{course}}</p>
+{% endblock %}

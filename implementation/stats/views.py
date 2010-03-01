@@ -26,13 +26,21 @@ def display_course_stats(request, course_slug):
 		raise Http404
 						
 	#make sure the user has premissions to view stats.
+	enrollment = request.user.enrollments.get(course=course)
+	if enrollment.stats:
+		bestQuizAggregates = getQuizBestAggregates(course)
+		bestUserAggregates = getUserBestAggregates(course)
+		stat_data = {'course':course,\
+		             'bestQuizAggregates':bestQuizAggregates,\
+					 'bestUserAggregates':bestUserAggregates, \
+					 'course_slug':course_slug} 
 
-	bestQuizAggregates = getQuizBestAggregates(course)
-	bestUserAggregates = getUserBestAggregates(course)
-	stat_data = {'course':course, 'bestQuizAggregates':bestQuizAggregates,\
-	             'bestUserAggregates':bestUserAggregates, \
-				 'course_slug':course_slug} 
+		return master_rtr(request, 'stats/show_course_stats.html', stat_data)
+	else:
+		#Or else, you don't have premeission to view stats
+		return master_rtr(request, 'stats/invalid__user_permissions.html', \
+				{'course': course, \
+				 'course_slug': course_slug})
 
-	return master_rtr(request, 'stats/show_course_stats.html', stat_data)
 
 
