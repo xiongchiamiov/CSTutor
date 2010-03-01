@@ -12,17 +12,21 @@ from stats.stat import *
 from django.contrib.auth.models import User
 from django.db import IntegrityError
 from django.template.defaultfilters import slugify 
+from django.contrib.auth.decorators import login_required
 from home.views import master_rtr
 
 # Create your views here.
+@login_required
 def display_course_stats(request, course_slug):
 	'''Displays stats for a given course'''
-	#return render_to_response('stats/show_couse_stats.html', 
+	#Make sure the course is a real course in the DBMS
 	try:
 		course = Course.objects.get(slug=course_slug)   
 	except Course.DoesNotExist:
 		raise Http404
 						
+	#make sure the user has premissions to view stats.
+
 	bestQuizAggregates = getQuizBestAggregates(course)
 	bestUserAggregates = getUserBestAggregates(course)
 	stat_data = {'course':course, 'bestQuizAggregates':bestQuizAggregates,\
@@ -30,10 +34,5 @@ def display_course_stats(request, course_slug):
 				 'course_slug':course_slug} 
 
 	return master_rtr(request, 'stats/show_course_stats.html', stat_data)
-	#STUB... FIXME
 
-def display_all_stats(request):
-	'''Displays stats for ALL users in all courses''' 
-	#FIXME Made changes because master_rtr must be used
-	data = {}
-	return master_rtr(request, 'stats/show_all_stats.html', data)
+
