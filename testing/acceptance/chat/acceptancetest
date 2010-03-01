@@ -1,0 +1,2 @@
+Chat Acceptance Test
+'User input Select Gene Fisher's CPE 102 Fall 08 Course, Click on the chat button','User joins the chat room associated with the course under username','This verifies that joining a chat room for a course works','Pass' 

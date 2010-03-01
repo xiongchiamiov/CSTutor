@@ -1,3 +1,11 @@
 Roster Acceptance Test
 'User input Enter in jinloes on the add user screen','User Jon Inloes, username jinloes shows up in the roster','This test verifies that adding users to the roster works','Pass'
-'2User input Click manage checkbox for jinloes, click the update roster button, c','2jinloes now has manage permission','2This test verifies that changing a user's permissions works','2Pass'
+'User input Select Gene Fisher's CPE 102 Fall 08 Course Click on the roster page for the course','The roster page for the course is shown','This verifies that showing the roster for a course works','Pass'
+'User input Click manage checkbox for jinloes, click the update roster button','jinloes now has manage permission','This test verifies that changing a user's permissions works','Pass'
+'User input Click edit checkbox for jinloes, Click the Update Roster button','user jinloes does not have edit permission for the course','This test verifies that changing a user's edit permission works','Pass'
+'User input Click stats checking for jinloes, Click the Update Roster button','user jinloes does not have stats permission for the course','This test verifies that chaning a user's edit permission works','Pass'
+'User input Enter in Jon in the first name text field, Enter in Inloes in the last name text field, Click the search button','username jinloes shows up on the screen','This test verfies that searching for a users works','Pass'
+'User input Select Gene Fisher's CPE 102 Fall 08 Course, Click Add User, Select usernames.txt, Click submit','pearson and mtytel show up in the roster','This test verifies that adding users from a text file works','Pass'
+'User input Checking Evan Kleist's remove checkbox','Evan Kleist is removed from the roster','This test verifies that removing a user from the roster works','Pass'
+'User input click a user's accept checkbox, Click the Update Pending button','The user is now in the roster','This test verifies that accpeting a user into the roster works','Pass'
+'User input click a user's deny checkbox, Click the Update Pending button','The user is no longer in the pending requests list and is not in the roster list','This test verifies that denying a user from a course works','Pass'
