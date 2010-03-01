@@ -1,5 +1,6 @@
 from django.shortcuts import render_to_response
 from django.http import HttpResponse, HttpResponseRedirect, Http404
+from django.contrib.auth.decorators import login_required
 #from page.models import Page
 from models import Page
 #from page.lesson.views import show_lesson
@@ -11,7 +12,7 @@ from quiz.models import Quiz
 from lesson.models import Lesson
 from models import Course
 from django.core.exceptions import ObjectDoesNotExist
-from home.views import master_rtr
+from home.views import master_rtr, custom_403, custom_404
 from pages.page import movePage, movePageToParent
 
 '''
@@ -106,7 +107,7 @@ def edit_page(request, course_slug, page_slug):
 		return edit_quiz(request, course_slug, page_slug)
 	return edit_lesson(request, course_slug, page_slug)
 
-
+@login_required
 def move_page(request, course_slug, page_slug):
 	'''
 	@author Russell Mezzetta
@@ -119,12 +120,22 @@ def move_page(request, course_slug, page_slug):
 	try:
 		data['course'] = Course.objects.get(slug=course_slug)
 	except Course.DoesNotExist:
-		return HttpResponse("ERROR: BAD URL: The course: %s does not exist" % (course_slug))
+		return custom_404(request, "BAD URL: The course: %s does not exist" % (course_slug))
+	
+	#check that user has edit permissions on the course
+	try:
+		e = request.user.enrollments.get(course = data['course'])
+		if not e.edit:
+			#return ("ERROR: User does not have edit permissions on the course")
+			return custom_403(request, "User does not have edit permissions on the course")
+	except ObjectDoesNotExist:
+		return custom_403(request, "User is not enrolled in the course")
+	
 	#check if the page is a real page in the database
 	try:
 		data['page'] = Page.objects.get(slug=page_slug)
 	except Page.DoesNotExist:
-		return HttpResponse("ERROR: BAD URL: The course: %s does not contain the page: %s." % (course_slug, page_slug))
+		return custom_404(request, "ERROR: BAD URL: The course: %s does not contain the page: %s." % (course_slug, page_slug))
 	#TODO CHECK USER FOR EDIT PERMISSIONS, redirect to error page if invalid user
 
 	#save a list of all pages in the course EXCEPT the given page

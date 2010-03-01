@@ -28,12 +28,12 @@ def create_lesson(request, course_slug, page_slug):
 		lesson = CreateLesson(name)
 		lesson.content = request.POST["content"]
 
-		if len(name) < 3:
+		if len(name) < 1:
 			return master_rtr(request, 'page/lesson/edit_lesson.html', \
 				            {'course_slug':course_slug,
 								 'page_slug': page_slug,
 								 'course':course_slug,
-								 'message':'Lesson names must be at least 3 characters',
+								 'message':'Lesson names must be non-empty',
 								 'lesson':lesson, 'new':True})
 	
 		if saveNewLesson(request, course_slug, page_slug) == 0:

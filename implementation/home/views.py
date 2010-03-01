@@ -34,7 +34,17 @@ def show_help(request):
 	'''
 	return master_rtr(request, 'help/index.html')
 
-def custom_404(request):
-	response = master_rtr(request, '404.html')
+def custom_404(request, message=''):
+	response = master_rtr(request, '404.html', {'message':message})
 	response.status_code = 404
 	return response
+
+
+def custom_403(request, message=''):
+	'''
+	Generic forbidden page view
+	'''
+	response = master_rtr(request, '403.html', {'message':message})
+	response.status_code = 403
+	return response
+
