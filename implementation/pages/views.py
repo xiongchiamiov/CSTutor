@@ -1,6 +1,7 @@
 from django.shortcuts import render_to_response
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.contrib.auth.decorators import login_required
+from django.core.urlresolvers import reverse
 #from page.models import Page
 from models import Page
 #from page.lesson.views import show_lesson
@@ -113,6 +114,10 @@ def move_page(request, course_slug, page_slug):
 	@author Russell Mezzetta
 	This view allows instructors to move pages around	in a course.
 	'''
+	#check to make sure that we are not trying to move a course-page
+	if course_slug == page_slug:
+		return custom_404(request, "You may not move a course's home page")
+
 	#check if the course is a real course in the database 
 	data = {}
 	data['course_slug'] = course_slug
@@ -183,7 +188,8 @@ def move_page(request, course_slug, page_slug):
 
 			data['redirectUrl'] = "/"
 			data['redirectText'] = "the home page"
-			return master_rtr(request, 'redirect.html', data)
+			return HttpResponseRedirect(reverse('pages.views.edit_page', args=[p1.course.slug, p1.slug]))
+			#return master_rtr(request, 'redirect.html', data)
 			#return master_rtr(request, 'page/move_page_success.html')
 
 	return master_rtr(request, 'page/move_page.html', data)
