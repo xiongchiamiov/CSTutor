@@ -129,17 +129,17 @@ def edit_quiz(request, course_slug, page_slug):
 	questions = quiz.questions.all().order_by("order")
 	prerequisites = quiz.prerequisites.all()
 	prereqs = []
-	print pages
+	errors = []
+
 	for p in prerequisites:
 		prereqs.append(p.requiredQuiz.slug)
-	print prereqs
+
 	if (request.method == "POST"):
 		if "Save" in request.POST:
 			r = saveQuiz(request, course_slug, page_slug)
-			if (r == -1):
-				print "Bad question ordering!"
-			else:
-				return HttpResponseRedirect(reverse('pages.views.show_page', args=[course_slug, r]))
+			errors = r["errors"]
+			if (len(errors) == 0):
+				return HttpResponseRedirect(reverse('pages.views.show_page', args=[course_slug, r["quiz_slug"]]))
 
 		if "Cancel" in request.POST:
 			return HttpResponseRedirect(reverse('pages.views.show_page', args=[course_slug, page_slug]))
@@ -179,6 +179,4 @@ def edit_quiz(request, course_slug, page_slug):
 						removeAnswer(q, a)
 						return HttpResponseRedirect(request.path)
 
-	return master_rtr(request, 'page/quiz/edit_quiz.html', \
-			{'course':course_slug, 'course_slug':course_slug, 'page_slug':page_slug, \
-			 'pages':pages, 'quiz':quiz, 'questions':questions, 'prereqs':prereqs})
+	return master_rtr(request, 'page/quiz/edit_quiz.html', {'course_slug':course_slug, 'page_slug':page_slug, 'pages':pages, 'quiz':quiz, 'questions':questions, 'prereqs':prereqs, 'errors':errors})

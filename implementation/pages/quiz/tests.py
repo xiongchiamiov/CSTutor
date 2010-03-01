@@ -223,6 +223,16 @@ class QuizUnitTests(TestCase):
 		q.order = 3
 		q.save()
 
+	def test_validateQuizFromPost(self):
+		'''
+			Test that validateQuizFromPost correctly handles bad data
+
+			Case no.    Input          Expected Output          Remark
+			1           
+			2           
+		'''
+		pass
+
 class QuizViewTests(TestCase):
 	''' 
 		Unit Tests on Quiz Views.  Tests use an emulated Web Client

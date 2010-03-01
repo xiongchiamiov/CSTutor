@@ -49,6 +49,12 @@
 	});
 </script>
 
+<ul>
+{% for e in errors %}
+	<li>{{e}}</li>
+{% endfor %}
+</ul>
+
 <form name="quizForm" method="post">
 <center><b><input type="text" name="quizTitle" value="{{quiz.text}}" /></b></center>
 <table>
