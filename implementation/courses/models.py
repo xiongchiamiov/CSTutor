@@ -116,6 +116,8 @@ class Enrollment(models.Model):
 	
 	#Can grant premissions on a given course
 	manage = models.BooleanField(default = False)
+
+	lastAction = models.DateTimeField(auto_now=True)
 	
 	def __unicode__(self):
 		return unicode(self.user) + u' in ' + unicode(self.course)

@@ -175,6 +175,7 @@
       <field type="BooleanField" name="edit">True</field>
       <field type="BooleanField" name="stats">True</field>
       <field type="BooleanField" name="manage">True</field>
+      <field type="DateTimeField" name="lastAction">2010-03-01 15:10:28</field>
    </object>
    <object pk="2" model="courses.enrollment">
       <field to="auth.user" name="user" rel="ManyToOneRel">3</field>
@@ -183,6 +184,7 @@
       <field type="BooleanField" name="edit">True</field>
       <field type="BooleanField" name="stats">True</field>
       <field type="BooleanField" name="manage">True</field>
+      <field type="DateTimeField" name="lastAction">2010-03-01 15:10:28</field>
    </object>
    <object pk="3" model="courses.enrollment">
       <field to="auth.user" name="user" rel="ManyToOneRel">7</field>
@@ -191,6 +193,7 @@
       <field type="BooleanField" name="edit">True</field>
       <field type="BooleanField" name="stats">True</field>
       <field type="BooleanField" name="manage">True</field>
+      <field type="DateTimeField" name="lastAction">2010-03-01 15:10:28</field>
    </object>
    <object pk="3" model="courses.enrollment">
       <field to="auth.user" name="user" rel="ManyToOneRel">8</field>
@@ -199,6 +202,7 @@
       <field type="BooleanField" name="edit">True</field>
       <field type="BooleanField" name="stats">True</field>
       <field type="BooleanField" name="manage">True</field>
+      <field type="DateTimeField" name="lastAction">2010-03-01 15:10:28</field>
    </object>
    <object pk="4" model="courses.enrollment">
       <field to="auth.user" name="user" rel="ManyToOneRel">8</field>
@@ -207,6 +211,7 @@
       <field type="BooleanField" name="edit">True</field>
       <field type="BooleanField" name="stats">True</field>
       <field type="BooleanField" name="manage">True</field>
+      <field type="DateTimeField" name="lastAction">2010-03-01 15:10:28</field>
    </object>
    <!-- These users are used in my first getBestCourseStats test -->
    <object pk="5" model="courses.enrollment">
@@ -216,6 +221,7 @@
       <field type="BooleanField" name="edit">True</field>
       <field type="BooleanField" name="stats">True</field>
       <field type="BooleanField" name="manage">True</field>
+      <field type="DateTimeField" name="lastAction">2010-03-01 15:10:28</field>
    </object>
    <object pk="6" model="courses.enrollment">
       <field to="auth.user" name="user" rel="ManyToOneRel">10</field>
@@ -224,6 +230,7 @@
       <field type="BooleanField" name="edit">True</field>
       <field type="BooleanField" name="stats">True</field>
       <field type="BooleanField" name="manage">True</field>
+      <field type="DateTimeField" name="lastAction">2010-03-01 15:10:28</field>
    </object>
    <object pk="7" model="courses.enrollment">
       <field to="auth.user" name="user" rel="ManyToOneRel">9</field>
@@ -232,6 +239,7 @@
       <field type="BooleanField" name="edit">True</field>
       <field type="BooleanField" name="stats">True</field>
       <field type="BooleanField" name="manage">True</field>
+      <field type="DateTimeField" name="lastAction">2010-03-01 15:10:28</field>
    </object>
    <object pk="8" model="courses.enrollment">
       <field to="auth.user" name="user" rel="ManyToOneRel">10</field>
@@ -240,6 +248,7 @@
       <field type="BooleanField" name="edit">True</field>
       <field type="BooleanField" name="stats">True</field>
       <field type="BooleanField" name="manage">True</field>
+      <field type="DateTimeField" name="lastAction">2010-03-01 15:10:28</field>
    </object>
 
   <object pk="1" model="pages.page">

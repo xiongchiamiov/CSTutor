@@ -134,6 +134,7 @@
       <field type="BooleanField" name="edit">True</field>
       <field type="BooleanField" name="stats">True</field>
       <field type="BooleanField" name="manage">True</field>
+      <field type="DateTimeField" name="lastAction">2010-03-01 15:10:28</field>
    </object>
    <object pk="2" model="courses.enrollment">
       <field to="auth.user" name="user" rel="ManyToOneRel">3</field>
@@ -142,6 +143,7 @@
       <field type="BooleanField" name="edit">True</field>
       <field type="BooleanField" name="stats">True</field>
       <field type="BooleanField" name="manage">True</field>
+      <field type="DateTimeField" name="lastAction">2010-03-01 15:10:28</field>
    </object>
    <object pk="3" model="courses.enrollment">
       <field to="auth.user" name="user" rel="ManyToOneRel">7</field>
@@ -150,6 +152,7 @@
       <field type="BooleanField" name="edit">True</field>
       <field type="BooleanField" name="stats">True</field>
       <field type="BooleanField" name="manage">True</field>
+      <field type="DateTimeField" name="lastAction">2010-03-01 15:10:28</field>
    </object>
    <object pk="4" model="courses.enrollment">
       <field to="auth.user" name="user" rel="ManyToOneRel">2</field>
@@ -158,6 +161,7 @@
       <field type="BooleanField" name="edit">True</field>
       <field type="BooleanField" name="stats">True</field>
       <field type="BooleanField" name="manage">True</field>
+      <field type="DateTimeField" name="lastAction">2010-03-01 15:10:28</field>
    </object>
    <object pk="1" model="pages.page">
       <field to="courses.course" name="course" rel="ManyToOneRel">1</field>
@@ -183,13 +187,6 @@
    <object pk="4" model="pages.page">
       <field to="courses.course" name="course" rel="ManyToOneRel">1</field>
       <field type="SlugField" name="slug">Sample_Quiz</field>
-      <field type="TextField" name="name">Sample Quiz</field>
-      <field type="IntegerField" name="left">6</field>
-      <field type="IntegerField" name="right">7</field>
-   </object>
-   <object pk="17" model="pages.page">
-      <field to="courses.course" name="course" rel="ManyToOneRel">1</field>
-      <field type="SlugField" name="slug">Sample_Quiz_workingCopy</field>
       <field type="TextField" name="name">Sample Quiz</field>
       <field type="IntegerField" name="left">6</field>
       <field type="IntegerField" name="right">7</field>
@@ -278,9 +275,16 @@
       <field type="IntegerField" name="left">15</field>
       <field type="IntegerField" name="right">16</field>
    </object>
+   <object pk="17" model="pages.page">
+      <field to="courses.course" name="course" rel="ManyToOneRel">1</field>
+      <field type="SlugField" name="slug">Sample_Quiz_workingCopy</field>
+      <field type="TextField" name="name">Sample Quiz</field>
+      <field type="IntegerField" name="left">6</field>
+      <field type="IntegerField" name="right">7</field>
+   </object>
    <object pk="1" model="lesson.lesson">
       <field type="TextField" name="content">This is an index page for CPE102</field>
-		<field type="TextField" name="workingCopy">This is an index page for CPE102</field>
+      <field type="TextField" name="workingCopy">This is an index page for CPE102</field>
    </object>
    <object pk="2" model="lesson.lesson">
       <field type="TextField" name="content">For loops are orgasmic</field>
@@ -351,25 +355,25 @@
       <field type="IntegerField" name="order">1</field>
       <field to="quiz.quiz" name="quiz" rel="ManyToOneRel">4</field>
    </object>
-   <object pk="4" model="question.question">
-      <field type="TextField" name="text">What is your name</field>
-      <field type="IntegerField" name="order">1</field>
-      <field to="quiz.quiz" name="quiz" rel="ManyToOneRel">17</field>
-   </object>
    <object pk="2" model="question.question">
       <field type="TextField" name="text">What is your gender?</field>
       <field type="IntegerField" name="order">3</field>
       <field to="quiz.quiz" name="quiz" rel="ManyToOneRel">4</field>
    </object>
-   <object pk="5" model="question.question">
-      <field type="TextField" name="text">What is your gender?</field>
-      <field type="IntegerField" name="order">3</field>
-      <field to="quiz.quiz" name="quiz" rel="ManyToOneRel">17</field>
-   </object>
    <object pk="3" model="question.question">
       <field type="TextField" name="text">Write a statement in python that prints "Hello World"?</field>
       <field type="IntegerField" name="order">2</field>
       <field to="quiz.quiz" name="quiz" rel="ManyToOneRel">4</field>
+   </object>
+   <object pk="4" model="question.question">
+      <field type="TextField" name="text">What is your name</field>
+      <field type="IntegerField" name="order">1</field>
+      <field to="quiz.quiz" name="quiz" rel="ManyToOneRel">17</field>
+   </object>
+   <object pk="5" model="question.question">
+      <field type="TextField" name="text">What is your gender?</field>
+      <field type="IntegerField" name="order">3</field>
+      <field to="quiz.quiz" name="quiz" rel="ManyToOneRel">17</field>
    </object>
    <object pk="6" model="question.question">
       <field type="TextField" name="text">Write a statement in python that prints "Hello World"?</field>
@@ -406,20 +410,8 @@
       <field type="IntegerField" name="order">1</field>
       <field type="TextField" name="text">Russell. (correct)</field>
    </object>
-   <object pk="5" model="question.answer">
-      <field to="question.multiplechoicequestion" name="question" rel="ManyToOneRel">4</field>
-      <field type="BooleanField" name="correct">True</field>
-      <field type="IntegerField" name="order">1</field>
-      <field type="TextField" name="text">Russell. (correct)</field>
-   </object>
    <object pk="2" model="question.answer">
       <field to="question.multiplechoicequestion" name="question" rel="ManyToOneRel">1</field>
-      <field type="BooleanField" name="correct">False</field>
-      <field type="IntegerField" name="order">2</field>
-      <field type="TextField" name="text">Barney Rubble. (incorrect)</field>
-   </object>
-   <object pk="6" model="question.answer">
-      <field to="question.multiplechoicequestion" name="question" rel="ManyToOneRel">4</field>
       <field type="BooleanField" name="correct">False</field>
       <field type="IntegerField" name="order">2</field>
       <field type="TextField" name="text">Barney Rubble. (incorrect)</field>
@@ -430,17 +422,29 @@
       <field type="IntegerField" name="order">1</field>
       <field type="TextField" name="text">Male</field>
    </object>
-   <object pk="7" model="question.answer">
-      <field to="question.multiplechoicequestion" name="question" rel="ManyToOneRel">5</field>
-      <field type="BooleanField" name="correct">True</field>
-      <field type="IntegerField" name="order">1</field>
-      <field type="TextField" name="text">Male</field>
-   </object>
    <object pk="4" model="question.answer">
       <field to="question.multiplechoicequestion" name="question" rel="ManyToOneRel">2</field>
       <field type="BooleanField" name="correct">False</field>
       <field type="IntegerField" name="order">2</field>
       <field type="TextField" name="text">Female</field>
+   </object>
+   <object pk="5" model="question.answer">
+      <field to="question.multiplechoicequestion" name="question" rel="ManyToOneRel">4</field>
+      <field type="BooleanField" name="correct">True</field>
+      <field type="IntegerField" name="order">1</field>
+      <field type="TextField" name="text">Russell. (correct)</field>
+   </object>
+   <object pk="6" model="question.answer">
+      <field to="question.multiplechoicequestion" name="question" rel="ManyToOneRel">4</field>
+      <field type="BooleanField" name="correct">False</field>
+      <field type="IntegerField" name="order">2</field>
+      <field type="TextField" name="text">Barney Rubble. (incorrect)</field>
+   </object>
+   <object pk="7" model="question.answer">
+      <field to="question.multiplechoicequestion" name="question" rel="ManyToOneRel">5</field>
+      <field type="BooleanField" name="correct">True</field>
+      <field type="IntegerField" name="order">1</field>
+      <field type="TextField" name="text">Male</field>
    </object>
    <object pk="8" model="question.answer">
       <field to="question.multiplechoicequestion" name="question" rel="ManyToOneRel">5</field>

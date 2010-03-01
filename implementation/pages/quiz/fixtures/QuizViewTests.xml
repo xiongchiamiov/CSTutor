@@ -35,6 +35,7 @@
       <field type="BooleanField" name="edit">False</field>
       <field type="BooleanField" name="stats">False</field>
       <field type="BooleanField" name="manage">False</field>
+      <field type="DateTimeField" name="lastAction">2010-03-01 15:10:28</field>
    </object>
    <object pk="1000" model="courses.course">
       <field type="SlugField" name="slug">QuizViewTests_Course1</field>
