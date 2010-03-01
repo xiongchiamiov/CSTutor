@@ -29,13 +29,13 @@ testing/debugging, and will not be shown to most users.
 	</table>
 	<h3>Per-Quiz Statistics (best scores)</h3>
 	<table>
-		<tr>
+		<thead>
 			<th>Quiz</th>
 			<th>Number of Student Results</th>
 			<th>High Score</th>
 			<th>Low Score</th>
 			<th>Average Score</th>
-		</tr>
+		</thead>
 		<tr>
 		{% for quizAggregate in bestQuizAggregates %}
 			<td>
@@ -58,20 +58,20 @@ testing/debugging, and will not be shown to most users.
 	</table>
 	<h3>Per-Student Statistics (best scores)</h3>
     <table>
-        <tr>
+        <thead>
             <th>Student</th>
-            <th>Average</th>
 			<th>Quizzes Taken</th>
-			<th>Total Attempts</th>
-			<th>Average Attempts per Quiz</th>
-		</tr>
-        {% for enrollment in course.roster.all %}
+            <th>Average</th>
+            <th>Min</th>
+			<th>Max</th>
+		</thead>
+        {% for userAggregate in bestUserAggregates %}
             <tr>
-				<td>{{enrollment.user}}</td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
+				<td>{{userAggregate.user_name}}</td>
+				<td>{{userAggregate.result_count}}</td>
+				<td>{{userAggregate.result_avg}}</td>
+				<td>{{userAggregate.result_max}}</td>
+				<td>{{userAggregate.result_min}}</td>
 			</tr>
         {% endfor %}
     </table>
