@@ -4,9 +4,10 @@
 <b>Profile</b><br>
 
 
- 
-First name : {{user.first_name}}<br>
-Last name : {{user.last_name}}<br>
+ <form method="POST" action="">
+First name : <input type="text" name="first_name" value="{{user.first_name}}"><br>
+Last name : <input type="text" name="last_name" value="{{user.last_name}}"><br>
+<input type="submit" name="form" value="Update Name"></form>{{ nameMessage }}<br><br>
 Username : {{user.username}}<br>
 E-mail : {{user.email}}<br><br><br>
 
@@ -23,5 +24,7 @@ New Password (again): <input type="password" name="newpass2"><br>
 <input type="submit" name="form" value="Change Password"></input>
 </form>
 
-
+<br>
+<form action="" method="POST">
+<input type="submit" name="form" value="Delete Account"></form>
 {% endblock %}
