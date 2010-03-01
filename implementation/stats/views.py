@@ -38,7 +38,7 @@ def display_course_stats(request, course_slug):
 		return master_rtr(request, 'stats/show_course_stats.html', stat_data)
 	else:
 		#Or else, you don't have premeission to view stats
-		return master_rtr(request, 'stats/invalid__user_permissions.html', \
+		return master_rtr(request, 'stats/invalid_user_premissions.html', \
 				{'course': course, \
 				 'course_slug': course_slug})
 
