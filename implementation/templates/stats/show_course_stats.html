@@ -7,26 +7,6 @@ testing/debugging, and will not be shown to most users.
 
 {% block content %}
     <h2>{{course}} Statistics</h2>
-	<h3>Overall Statistics</h3>
-	<table>
-		<tr>
-			<th>Statistic Type</th> 
-			<th>Value</th>
-		</tr>
-		<tr>
-			<td>Class Overall Average (all stats)</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>Class Overall Average (latest stats)</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>Class Overall Average (best stats)</td>
-			<td></td>
-		</tr>
-		<tr>
-	</table>
 	<h3>Per-Quiz Statistics (best scores)</h3>
 	<table>
 		<thead>
@@ -42,16 +22,16 @@ testing/debugging, and will not be shown to most users.
 				{{ quizAggregate.page_name }}
 			</td>
 			<td>
-				{{ quizAggregate.result_count }}
+				{{ quizAggregate.result_count}}
 			</td>
 			<td>
-				{{ quizAggregate.result_max }}
+				{{ quizAggregate.result_max|floatformat:"-3" }}%
 			</td>
 			<td>
-				{{ quizAggregate.result_min }}
+				{{ quizAggregate.result_min|floatformat:"-3" }}%
 			</td>
 			<td>
-				{{ quizAggregate.result_avg }}
+				{{ quizAggregate.result_avg|floatformat:"-3" }}%
 			</td>
 		{% endfor %}
 		</tr>
@@ -69,9 +49,9 @@ testing/debugging, and will not be shown to most users.
             <tr>
 				<td>{{userAggregate.user_name}}</td>
 				<td>{{userAggregate.result_count}}</td>
-				<td>{{userAggregate.result_avg}}</td>
-				<td>{{userAggregate.result_max}}</td>
-				<td>{{userAggregate.result_min}}</td>
+				<td>{{userAggregate.result_avg|floatformat:"-3"}}%</td>
+				<td>{{userAggregate.result_max|floatformat:"-3"}}%</td>
+				<td>{{userAggregate.result_min|floatformat:"-3"}}%</td>
 			</tr>
         {% endfor %}
     </table>

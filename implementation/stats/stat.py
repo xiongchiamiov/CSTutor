@@ -95,9 +95,9 @@ def getQuizBestAggregates(course):
 		aggrigateDict = {'page_slug':listItem[0],
 		                 'page_name':listItem[1],
 		                 'result_count':listItem[2],
-		                 'result_max':listItem[3],
-		                 'result_min':listItem[4],
-		                 'result_avg':listItem[5]}
+		                 'result_max':listItem[3]*100,
+		                 'result_min':listItem[4]*100,
+		                 'result_avg':listItem[5]*100}
 		aggrigateList.append(aggrigateDict)
 	return aggrigateList; 
 
@@ -142,9 +142,9 @@ def getUserBestAggregates(course):
 		aggrigateDict = {'user_id':listItem[0],
 		                 'user_name':listItem[1],
 		                 'result_count':listItem[2],
-		                 'result_max':listItem[3],
-		                 'result_min':listItem[4],
-		                 'result_avg':listItem[5]}
+		                 'result_max':listItem[3]*100,
+		                 'result_min':listItem[4]*100,
+		                 'result_avg':listItem[5]*100}
 		aggrigateList.append(aggrigateDict)
 	return aggrigateList; 
 

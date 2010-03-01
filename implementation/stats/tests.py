@@ -114,10 +114,10 @@ class StatsTests(TestCase):
 				#Quiz no 1, which should have an average of 10
 				#Since each student in the test data has a best result of
 				#10
-				self.assertEquals(aggregates['result_avg'],10)
+				self.assertEquals(aggregates['result_avg'],10*100)
 			elif(aggregates['page_slug'] == 'test_class_no01_quiz2'):
 				#Quiz no 2, which should have an average of 5
-				self.assertEquals(aggregates['result_avg'],10)
+				self.assertEquals(aggregates['result_avg'],10*100)
 	
 
 	def test_numGetBestUserAggregates(self):
