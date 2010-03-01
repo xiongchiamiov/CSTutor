@@ -112,8 +112,7 @@ def edit_lesson(request, course_slug, page_slug):
 					data['message'] = "Name change failed: name must be non-empty"
 				elif r != None:
 					#yes this is ugly but reverse wouldn't work for some reason
-					return HttpResponseRedirect("/course/"+lesson.course.slug+"/page/"+lesson.slug+"/edit/")
-				#return HttpResponseRedirect(reverse('pages.lesson.views.edit_lesson', args=[course_slug, lesson.slug]))
+					return HttpResponseRedirect(reverse('pages.views.edit_page', args=[course_slug, lesson.slug]))
 				else:#name was not unique
 					data['message'] = "Name change failed. A page with that name already exists in this course"
 
