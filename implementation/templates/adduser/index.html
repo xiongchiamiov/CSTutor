@@ -15,24 +15,28 @@ Last name:
 <input type="text" name="lastname" />
 <br />
 <input type="hidden" name="command" value="search"/>
-<input type="submit" value="Search" />
+<input type="submit" value="Search"/>
 </form>
 	{% block table %}
 	{% endblock table %}
 <br/>
 
+<p><b><font size ="3">Add Single Username</font></b></p>
+
 <form name="inputUser" action="" method="post">
 Username:
 <input type="text" name="username" />
 <input type="hidden" name="command" value="add"/>
+<br/>
 <input type="submit" value="Submit" />
 </form>
 
 <br/>
 
-<p>Add users from text file</p>
+<p><b><font size ="3">Add Usernames from Text File</font></b></p>
 <form name="fileInput" action="addFromFile/" enctype="multipart/form-data" method="post">
 <input type="file" name="datafile" size="40"/>
+<br/>
 <input type="submit" value="Submit"/>
 </form>
 
