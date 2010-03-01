@@ -106,7 +106,7 @@ class StatsTests(TestCase):
 		test checks the value of the returned average for each quiz. 
 		'''
 		course = Course.objects.get(pk = '4')
-		aggregatesList = getQuizBestAggregates(course);
+		aggregatesList = getQuizBestAggregates(course)
 
 		#Now, we loop though the quizes 
 		for aggregates in aggregatesList:
@@ -114,12 +114,20 @@ class StatsTests(TestCase):
 				#Quiz no 1, which should have an average of 10
 				#Since each student in the test data has a best result of
 				#10
-				#self.assertEquals(aggregates['result_avg'],10)
-				pass
+				self.assertEquals(aggregates['result_avg'],10)
 			elif(aggregates['page_slug'] == 'test_class_no01_quiz2'):
 				#Quiz no 2, which should have an average of 5
-				#self.assertEquals(aggregates['result_avg'],10)
-				pass
-			##FIXME! TESTS DISABLED!!!! 
+				self.assertEquals(aggregates['result_avg'],10)
+	
 
+	def test_numGetBestUserAggregates(self):
+		'''
+		Tests the per-user aggregates function. This particular test
+		checks that the proper number of results is returned
+		'''
+		course = Course.objects.get(pk = '4')
+		aggregatesList = getUserBestAggregates(course) 
 
+		#There are two users with stats results in this course.
+		self.assertEquals(len(aggregatesList),2)
+		

@@ -326,7 +326,7 @@
       <field type="BooleanField" name="hidden">False</field>
    </object>  
    <object pk="8" model="quiz.quiz">
-      <field type="TextField" name="text">Test Quiz No. 1 (the other class)</field>
+      <field type="TextField" name="text">Test Quiz No. 3 (the other class)</field>
       <field type="BooleanField" name="hidden">False</field>
    </object>  
 

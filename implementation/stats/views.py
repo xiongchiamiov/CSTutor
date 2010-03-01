@@ -24,8 +24,10 @@ def display_course_stats(request, course_slug):
 		raise Http404
 						
 	bestQuizAggregates = getQuizBestAggregates(course)
-	stat_data = {'course':course, 'course_slug':course_slug, \
-	             'bestQuizAggregates':bestQuizAggregates} 
+	bestUserAggregates = getUserBestAggregates(course)
+	stat_data = {'course':course, 'bestQuizAggregates':bestQuizAggregates,\
+	             'bestUserAggregates':bestUserAggregates, \
+				 'course_slug':course_slug} 
 
 	return master_rtr(request, 'stats/show_course_stats.html', stat_data)
 	#STUB... FIXME

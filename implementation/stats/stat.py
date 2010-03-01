@@ -59,8 +59,8 @@ def getQuizBestAggregates(course):
 	'''	
 	Gets the aggrigate data for each quiz in a course. This should return
 	a list of dictionaries, one for each quiz in the course. Each dictionary
-	contains the 'page_slug', and the 'page_name' for the quiz, along with the quiz's 
-	'result_count', 'result_min', 'result_max' and 'result_avg'.
+	contains the 'page_slug', and the 'page_name' for the quiz, along with
+	the quiz's 'result_count', 'result_min', 'result_max' and 'result_avg'.
 	'''
 	cursor = connection.cursor()
 	cursor.execute('''SELECT pages_page.slug,
@@ -77,7 +77,8 @@ def getQuizBestAggregates(course):
 		              innerStats.course_id as inner_course_id
                               FROM stats_stat as innerStats 
 	                          WHERE innerStats.course_id=%s 
-	                          GROUP BY user_id, page_id, course_id) as best_score
+	                          GROUP BY user_id, page_id, course_id) as
+							      best_score
 	                          ON (Cast(score as FLOAT) / cast (maxscore as FLOAT)) = 
 				         inner_maxscore and
 	                         user_id = inner_user_id AND 
@@ -93,6 +94,53 @@ def getQuizBestAggregates(course):
 	for listItem in rawList:
 		aggrigateDict = {'page_slug':listItem[0],
 		                 'page_name':listItem[1],
+		                 'result_count':listItem[2],
+		                 'result_max':listItem[3],
+		                 'result_min':listItem[4],
+		                 'result_avg':listItem[5]}
+		aggrigateList.append(aggrigateDict)
+	return aggrigateList; 
+
+def getUserBestAggregates(course):
+	'''
+	Calculates the aggregate stats for the best results for each user
+	in a course.
+	@precondition Course exists
+	@precondition Course.objects.get(course) != null
+	@postcondition For each user in the course, return a dictionary of their
+	               aggregates
+	'''
+	cursor = connection.cursor()
+	cursor.execute('''SELECT user_id, username,
+						count(*),
+	                    max(Cast(score as FLOAT)/cast(maxscore as Float)),
+	                    min(Cast(score as FLOAT)/cast(maxscore as Float)),
+	                    avg(Cast(score as FLOAT)/cast(maxscore as Float))
+                   FROM (stats_stat 
+                         INNER JOIN (select MAX(Cast(Score as FLOAT) 
+	                /cast (maxscore as Float)) as inner_maxscore,
+                              user_id as inner_user_id, 
+	                      page_id as inner_page_id,
+		              innerStats.course_id as inner_course_id
+                              FROM stats_stat as innerStats 
+	                          WHERE innerStats.course_id=%s 
+	                          GROUP BY user_id, page_id, course_id) as
+							      best_score
+	                          ON (Cast(score as FLOAT) / cast (maxscore as FLOAT)) = 
+				         inner_maxscore and
+	                         user_id = inner_user_id AND 
+	                         page_id = inner_page_id and 
+	                         course_id = inner_course_id ) as best_stats
+	                INNER JOIN auth_user ON
+					    user_id = auth_user.id    
+	                WHERE best_stats.inner_course_id = %s
+	                    GROUP BY user_id,username ;
+	               ''',[course.id,course.id] )
+	rawList = cursor.fetchall()
+	aggrigateList = []
+	for listItem in rawList:
+		aggrigateDict = {'user_id':listItem[0],
+		                 'user_name':listItem[1],
 		                 'result_count':listItem[2],
 		                 'result_max':listItem[3],
 		                 'result_min':listItem[4],
