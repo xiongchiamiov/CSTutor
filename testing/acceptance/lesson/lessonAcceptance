@@ -2,4 +2,4 @@ Show Lesson Page
 'User presses "next lesson" button','The next page is displayed','Do not test with the "last" page in a course',''
 'User presses "previous lesson" button','The previous page is displayed','Do not test with the "first" page in a course',''
 'User presses "next lesson" button while on the last page of a course','The current page is redisplayed','must test with the "last" page in a course',''
-'User presses "previous lesson" button while on the first page of a course','The current pagfe is redisplayed','must test with the "first" page in a course',''
+'User presses "previous lesson" button while on the first page of a course','The current page is redisplayed','must test with the "first" page in a course',''
