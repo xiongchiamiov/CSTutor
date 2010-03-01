@@ -21,7 +21,6 @@ class Question(models.Model):
 	text = models.TextField()
 	order = models.IntegerField()
 	quiz = models.ForeignKey(Quiz, related_name='questions')
-	published = models.BooleanField()
 
 
 class MultipleChoiceQuestion(Question):
@@ -64,4 +63,3 @@ class Answer(models.Model):
 	correct = models.BooleanField(default=False)
 	order = models.IntegerField()
 	text = models.TextField()
-	published = models.BooleanField()

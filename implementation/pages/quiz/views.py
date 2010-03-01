@@ -121,7 +121,7 @@ def edit_quiz(request, course_slug, page_slug):
 
 	# Make sure the quiz actually exists in the database
 	try:
-		quiz = Quiz.objects.get(slug=page_slug)
+		quiz = Quiz.objects.get(slug=(page_slug + "_workingCopy"))
 	except Quiz.DoesNotExist:
 		raise Http404
 
@@ -141,26 +141,28 @@ def edit_quiz(request, course_slug, page_slug):
 			if (len(errors) == 0):
 				return HttpResponseRedirect(reverse('pages.views.show_page', args=[course_slug, r["quiz_slug"]]))
 
-		if "Cancel" in request.POST:
+		elif "Cancel" in request.POST:
 			return HttpResponseRedirect(reverse('pages.views.show_page', args=[course_slug, page_slug]))
 
-		if "Delete" in request.POST:
+		elif "Delete" in request.POST:
 			return delete_quiz(request, course_slug, page_slug)
-		if "ConfirmDelete" in request.POST:
+		elif "ConfirmDelete" in request.POST:
 			removeQuiz(quiz)
 			return HttpResponseRedirect(reverse('courses.views.show_course', args=[course_slug]))
 
-		if "Move" in request.POST:
+		elif "Move" in request.POST:
 			return HttpResponseRedirect(reverse('pages.views.move_page', args=[course_slug, page_slug]))
 
-		if "NewMultQuestion" in request.POST:
+		elif "NewMultQuestion" in request.POST:
 			addMultipleChoiceQuestion(quiz)
 			return HttpResponseRedirect(request.path)
 
-		if "NewCodeQuestion" in request.POST:
-			print "new code question"
+		elif "NewCodeQuestion" in request.POST:
 			addCodeQuestion(quiz)
 			return HttpResponseRedirect(request.path)
+
+		elif "Publish" in request.POST:
+			publishQuiz(quiz)
 
 		for q in questions:
 			if ("removeQuestion%s" % q.order) in request.POST:
