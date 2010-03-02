@@ -498,13 +498,36 @@ class QuizViewTests(TestCase):
 			Test that the urls to submit a private quiz page works properly
 
 			Case no.    Input                                                        Expected Output         Remark
-			1           url = /course/courseSlug/page/quizSlug1/submitQuiz/                200                     302 is a found code
-			2           url = /course/badCourse/page/quizSlug1/submitQuiz/                 404                     404 is a bad link error
-			3           url = /course/courseSlug/page/badQuiz/submitQuiz/                  404                     404 is a bad link error
-			4           url = /course/badCourse/page/badQuiz/submitQuiz/                   404                     404 is a bad link error
+			1           url = /course/courseSlug/page/quizSlug1/submitQuiz/          200                     User not logged in, course private
+			            user not logged in                                           denied.html
+			2           url = /course/courseSlug/page/quizSlug1/submitQuiz/          200                     User logged in, not enrolled, course private
+			            user logged in, not enrolled                                 denied.html
+			3           url = /course/courseSlug/page/quizSlug1/submitQuiz/          viewQUiz.html           User logged in, enrolled, course private, no POST
+			4           url = /course/courseSlug/page/quizSlug1/submitQuiz/                                  User logged in, enrolled, course private, with POST
+			            user logged in, enrolled                                     viewQuiz.html
 		'''
+		courseSlug = "QuizViewTests_Course2"
+		quizSlug = "QuizViewTests_Quiz3"
+		enrolledUser = "testUser2"
+		unenrolledUser = "testUser1"
+		enrolledUserPwd = "password"
+		unenrolledUserPwd = "password"
 
-		pass
+		# Case 1		
+		response = self.client.get('/course/' + courseSlug + '/page/' + quizSlug + '/submitQuiz/')
+		self.assertTemplateUsed(response, "page/denied.html")
+
+		# Case 2
+		self.failUnlessEqual(self.client.login(username=unenrolledUser, password=unenrolledUserPwd), True)
+		response = self.client.get('/course/' + courseSlug + '/page/' + quizSlug + '/submitQuiz/')
+		self.assertTemplateUsed(response, "page/denied.html")
+
+		# Case 3
+		self.client.logout()
+		self.failUnlessEqual(self.client.login(username=enrolledUser, password=enrolledUserPwd), True)
+		response = self.client.get('/course/' + courseSlug + '/page/' + quizSlug + '/submitQuiz/')
+		self.assertTemplateUsed(response, "page/denied.html")
+
 
 	def testSubmitHiddenQuizUrl(self):
 		'''

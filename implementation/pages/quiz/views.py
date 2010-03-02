@@ -28,7 +28,7 @@ def create_quiz(request, course_slug, page_slug):
 	if request.method == "POST" and "Create Quiz" in request.POST:
 		course = Course.objects.get(slug=course_slug)
 		name = request.POST['name']
-		newQuiz = Quiz(course=course, name=name, slug=slugify(name), text=name)
+		newQuiz = Quiz(course=course, name=name, slug=slugify(name), text=name, upToDate=True)
 		newQuizWorkingCopy = Quiz(course=course, name=name, slug=(newQuiz.slug + "_workingCopy"), text=name)
 		insertChildPage(newQuiz, Page.objects.get(slug=page_slug))
 		newQuiz = Quiz.objects.get(slug=newQuiz.slug)
