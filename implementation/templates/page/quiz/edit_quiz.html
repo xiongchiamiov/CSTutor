@@ -140,12 +140,14 @@
 					</tr>
 					<tr>
 						<td rowspan="3">
-							<select size="4" multiple="multiple">
-							<option>< 60% ---> Loops</option><option>Between 60% and 74% ---> </option><option>>= 75% ---> Pointers</option>
+							<select size="4">
+							{% for p in paths %}
+								<option>{{p.lowscore}} <= x <= {{p.highscore}} --> {{p.toPage.name}}</option>
+							{% endfor %}
 							</select>
 						</td>
 						<td>
-							<input type="submit" value="Add" onclick="addPath()"/>
+							<input type="submit" value="Add" name="AddPath"/>
 						</td>
 					</tr>
 					<tr>
@@ -172,6 +174,7 @@
 				<input type="submit" value="Cancel" name="Cancel" />
 				<input type="submit" value="Delete" name="Delete" />
 				<input type="submit" value="Publish" name="Publish"/>
+				<input type="submit" value="Revert" name="Revert" />
 				<input type="submit" value="Import" onclick="importQuiz()" />
 				<input type="submit" value="Move" name="Move"/>
 			</td>

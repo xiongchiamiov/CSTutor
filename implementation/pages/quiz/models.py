@@ -24,6 +24,7 @@ class Quiz(Page):
 	# course inherited from Page
 	# prerequisites inherited from Prerequisites
 	hidden = models.BooleanField()
+	upToDate = models.BooleanField()
 
 	@staticmethod
 	def createQuiz(text_, hidden_, course_, parent_, ):

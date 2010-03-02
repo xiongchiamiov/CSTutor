@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% load smart_if %}
+
+{% block content %}
+<form name="Path" method="post">
+<table>
+	<tr>
+		<th colspan="2">Quiz Path</th>
+	</tr>
+	<tr>
+		<td>Low Score:&nbsp;<input type="text" size="3" name="LowScore" /></td>
+		<td>High Score:&nbsp;<input type="text" size="3" name="HighScore" /></td>
+	</tr>
+	<tr>
+		<td colspan="2">Page<br><select name="pathPage">
+		{% for p in pages %}
+			<option value="{{p.slug}}">{{p.name}}</option>
+		{% endfor %}
+		</select>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2">Dialogue<br><textarea name="dialogue"></textarea>
+	</tr>
+	<tr>
+		<td colspan="2">Passing:&nbsp;<input type="checkbox" value="passing" /></td>
+	</tr>
+	<tr>
+		<td><input type="submit" value="Submit Path" name="SubmitPath"/></td>
+		<td><input type="submit" value="Cancel Path" name="CancelPath"/></td>
+	</tr>
+</table>
+</form>
+{% endblock %}

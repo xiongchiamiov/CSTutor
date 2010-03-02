@@ -51,6 +51,16 @@ class QuizUnitTests(TestCase):
 		# Case 3
 		self.failUnlessEqual(newQuestion.text, "")
 
+	def test_addPath(self):
+		'''
+			Test that adding a path works as expected
+
+			Case no.    Input                                     Expected Output                           Remark
+			1 
+			2
+		'''
+		pass
+
 	def test_addCodeQuestion(self):
 		'''
 			Test that adding a code question to a quiz works as expected
@@ -75,6 +85,17 @@ class QuizUnitTests(TestCase):
 
 		# Case 3
 		self.failUnlessEqual(newQuestion.text, "")
+
+	def test_copyQuiz(self):
+		'''
+			Test that copyQuiz actually copies over all the 
+			quizzes contents to the published version and doesnt
+			leave any fragments in database
+
+			Case no.    Input          Expected Output          Remark
+			1           
+			2           
+		'''
 
 	def test_publishQuiz(self):
 		'''
@@ -234,6 +255,17 @@ class QuizUnitTests(TestCase):
 
 		# Case 2
 		self.failUnlessEqual(validateQuestionOrder(quiz), True)
+
+	def test_revertQuiz(self):
+		'''
+			Test that revertQuiz actually reverts all the 
+			working copies contents to the published version and doesnt
+			leave any fragments in database
+
+			Case no.    Input          Expected Output          Remark
+			1           
+			2           
+		'''
 
 	def test_safeSlug(self):
 		'''
@@ -559,6 +591,17 @@ class QuizViewTests(TestCase):
 		'''
 			Test that will make sure the question deletion
 			confirmation dialogue is working properly
+		'''
+		pass
+
+	def testAddPathView(self):
+		'''
+			Test that will make sure add path view is working properly
+		'''
+		pass
+	def testEditPathView(self):
+		'''
+			Test that will make sure the edit path view is working properly
 		'''
 		pass
 

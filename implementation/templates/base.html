@@ -81,10 +81,14 @@
 							{% else %} {% if forloop.first %}
 								<li><a href="{% url courses.views.show_course course.slug %}">{{page}}</a>
 								</li>
+							{% else %} {% if page.quiz and not page.quiz.upToDate %}
+								<li><a href="{% url pages.views.show_page course.slug page.slug %}"><i>{{page}}</i></a>
+								</li>
+
 							{% else %}
 								<li><a href="{% url pages.views.show_page course.slug page.slug %}">{{page}}</a>
 								</li>
-							{% endif %} {% endifequal %} {% endifequal %} 
+							{% endif %} {% endif %} {% endifequal %} {% endifequal %} 
 							{% endfor %}
 						{% endfor %}
 					</ul><!-- #page-list -->

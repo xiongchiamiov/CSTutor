@@ -69,6 +69,24 @@ def delete_quiz(request, course_slug, page_slug):
 	return master_rtr(request, 'page/quiz/delete_quiz.html', \
 			            {'course':course_slug, 'course_slug':course_slug, 'page_slug':page_slug, 'quiz':quiz})
 
+def add_path(request, course_slug, page_slug):
+	''' add_path View
+		This view allows you to add a path to the quiz. The user can then choose
+		 to save the path or cancel
+	'''
+	page_slug = safeSlug(page_slug)
+	quiz = Quiz.objects.get(slug=page_slug)
+	course = Course.objects.get(slug=course_slug)
+	allPages = course.pages.all()
+	pages = []
+	for p in allPages:
+		if (p.slug == safeSlug(p.slug)):
+			pages.append(p)
+
+	return master_rtr(request, 'page/quiz/path.html', \
+			            {'course_slug':course_slug, 'page_slug':page_slug, 'pages':pages})
+
+
 def remove_question(request, course_slug, page_slug, qNum):
 	''' remove_question View
 		This view confirms deletion of a question. The user can then choose
@@ -141,6 +159,7 @@ def edit_quiz(request, course_slug, page_slug):
 	pages = Course.objects.get(slug=course_slug).pages.all()
 	questions = workingCopy.questions.all().order_by("order")
 	prerequisites = workingCopy.prerequisites.all()
+	paths = workingCopy.paths.all()
 	prereqs = []
 	errors = []
 
@@ -183,6 +202,16 @@ def edit_quiz(request, course_slug, page_slug):
 				publishQuiz(workingCopy)
 				return HttpResponseRedirect(reverse('pages.views.show_page', args=[course_slug, page_slug]))
 
+		elif "Revert" in request.POST:
+			revertQuiz(workingCopy)
+			return HttpResponseRedirect(reverse('pages.views.show_page', args=[course_slug, page_slug]))
+
+		elif "AddPath" in request.POST:
+			return add_path(request, course_slug, page_slug)
+		elif "SubmitPath" in request.POST:
+			addPath(workingCopy, request, course_slug)
+			return HttpResponseRedirect(request.path)
+
 		for q in questions:
 			if ("removeQuestion%s" % q.order) in request.POST:
 				return remove_question(request, course_slug, page_slug, q.order)
@@ -200,4 +229,4 @@ def edit_quiz(request, course_slug, page_slug):
 						removeAnswer(q, a)
 						return HttpResponseRedirect(request.path)
 
-	return master_rtr(request, 'page/quiz/edit_quiz.html', {'course_slug':course_slug, 'page_slug':page_slug, 'pages':pages, 'quiz':workingCopy, 'questions':questions, 'prereqs':prereqs, 'errors':errors})
+	return master_rtr(request, 'page/quiz/edit_quiz.html', {'course_slug':course_slug, 'page_slug':page_slug, 'pages':pages, 'quiz':workingCopy, 'questions':questions, 'prereqs':prereqs, 'errors':errors, 'paths':paths})

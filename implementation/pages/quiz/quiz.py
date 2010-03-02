@@ -32,37 +32,53 @@ def addCodeQuestion(self):
 	newQuestion.save()
 	return newQuestion
 
-def publishQuiz(self):
+def addPath(self, request, course_slug):
 	'''
-		Takes a working copy of a quiz and copies it over to the published version of the quiz
+		Takes a working copy of a quiz, a request containing post data, and a course_slug
+		and adds a path to the quiz
 	'''
-	publishedSlug = safeSlug(self.slug)
-	publishedQuiz = Quiz.objects.get(slug=publishedSlug)
+	lowScore = request.POST["LowScore"]
+	highScore = request.POST["HighScore"]
+	course = Course.objects.get(slug=course_slug)
+	page = course.pages.get(slug=request.POST["pathPage"])
+	passing = False
+	dialogue = request.POST["dialogue"]
+
+	if "passing" in request.POST:
+		passing = True
+
+	newPath = Path(quiz = self, highscore = highScore, lowscore = lowScore, toPage = page, passed = passing, text = dialogue)
+	newPath.save()
+
+def copyQuiz(quiz1, quiz2):
+	'''
+		Takes two quizzes and copies the contents of quiz1 into quiz2
+	'''
 
 	# Copy Title
-	publishedQuiz.text = self.text
+	quiz2.text = quiz1.text
 
 	# Copy Hidden
-	publishedQuiz.hidden = self.hidden
+	quiz2.hidden = quiz1.hidden
 
 	# Copy Prerequisites
-	curPrereqs = publishedQuiz.prerequisites.all()
+	curPrereqs = quiz2.prerequisites.all()
 	for p in curPrereqs:
 		p.delete()
-	curPrereqs = self.prerequisites.all()
+	curPrereqs = quiz1.prerequisites.all()
 	for p in curPrereqs:
-		newPrereq = Prerequisite(containingQuiz = publishedQuiz, requiredQuiz = p.requiredQuiz)
+		newPrereq = Prerequisite(containingQuiz = quiz2, requiredQuiz = p.requiredQuiz)
 		newPrereq.save()
 
 	# Copy Questions
-	curQuestions = publishedQuiz.questions.all()
+	curQuestions = quiz2.questions.all()
 	for q in curQuestions:
 		removeQuestion(q)
-	curQuestions = self.questions.all()
+	curQuestions = quiz1.questions.all()
 	for q in curQuestions:
 		if (isMultipleChoiceQuestion(q)):
 			q = q.multiplechoicequestion
-			newQ = MultipleChoiceQuestion(text = q.text, order = q.order, quiz = publishedQuiz)
+			newQ = MultipleChoiceQuestion(text = q.text, order = q.order, quiz = quiz2)
 			newQ.save()
 			# Copy Answers
 			curAnswers = q.answers.all()
@@ -71,8 +87,22 @@ def publishQuiz(self):
 				newA.save()
 		else:
 			q = q.codequestion
-			newQ = CodeQuestion(text = q.text, order = q.order, quiz = publishedQuiz, beforeCode = q.beforeCode, showBeforeCode = q.showBeforeCode, editableCode = q.editableCode, afterCode = q.afterCode, showAfterCode = q.showAfterCode, expectedOutput = q.expectedOutput)
+			newQ = CodeQuestion(text = q.text, order = q.order, quiz = quiz2, beforeCode = q.beforeCode, showBeforeCode = q.showBeforeCode, editableCode = q.editableCode, afterCode = q.afterCode, showAfterCode = q.showAfterCode, expectedOutput = q.expectedOutput)
 			newQ.save()
+
+		quiz2.save()
+
+def publishQuiz(self):
+	''' 
+		Takes a working copy of a quiz and copies it over to the published copy
+	'''
+	publishedSlug = safeSlug(self.slug)
+	publishedQuiz = Quiz.objects.get(slug=publishedSlug)
+	
+	copyQuiz(self, publishedQuiz)
+	publishedQuiz.upToDate = True
+	publishedQuiz.save()
+
 			
 
 def removeQuiz(self):
@@ -119,6 +149,18 @@ def reorderQuestions(self):
 	if (validateQuestionOrder(self)):
 		return 0
 	return -1
+
+def revertQuiz(self):
+	'''
+		Takes a working copy of a quiz and reverts it to its published version
+	'''
+	publishedSlug = safeSlug(self.slug)
+	publishedQuiz = Quiz.objects.get(slug=publishedSlug)
+	
+	copyQuiz(publishedQuiz, self)
+	publishedQuiz.upToDate = True
+	publishedQuiz.save()
+
 
 def safeSlug(page_slug):
 	'''
@@ -184,6 +226,7 @@ def saveQuiz(request, course, pid):
 					q.order = request.POST['cq%sorder' % q.order]
 				q.save()
 
+			publishedQuiz.upToDate = False
 			quiz.save()
 			publishedQuiz.save()
 
