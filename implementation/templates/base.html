@@ -20,7 +20,7 @@
 		<!-- we have 24 columns across to split among these divs -->
 		<div id="top-nav" class="span-24 last">
 			<div id="nav">
-				<div class="span-3"><a href="{% url home.views.index %}">Home</a></div>
+				<div class="span-3"><a href="{% url home.views.show_homepage %}">Home</a></div>
 				{% if course_slug %}
 				<div class="span-3"><a href="{% url stats.views.display_course_stats course_slug %}">Stats</a></div>
 				<div class="span-3"><a href="{% url courses.views.show_roster course_slug %}">Roster</a></div>
