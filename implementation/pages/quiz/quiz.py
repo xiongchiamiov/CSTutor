@@ -32,9 +32,48 @@ def addCodeQuestion(self):
 	newQuestion.save()
 	return newQuestion
 
-#def createQuiz(name):
-	#return Quiz(text=name)
-	#return Quiz(slug=slugify(name), name=name)
+def publishQuiz(self):
+	'''
+		Takes a working copy of a quiz and copies it over to the published version of the quiz
+	'''
+	publishedSlug = safeSlug(self.slug)
+	publishedQuiz = Quiz.objects.get(slug=publishedSlug)
+
+	# Copy Title
+	publishedQuiz.text = self.text
+
+	# Copy Hidden
+	publishedQuiz.hidden = self.hidden
+
+	# Copy Prerequisites
+	curPrereqs = publishedQuiz.prerequisites.all()
+	for p in curPrereqs:
+		p.delete()
+	curPrereqs = self.prerequisites.all()
+	for p in curPrereqs:
+		newPrereq = Prerequisite(containingQuiz = publishedQuiz, requiredQuiz = p.requiredQuiz)
+		newPrereq.save()
+
+	# Copy Questions
+	curQuestions = publishedQuiz.questions.all()
+	for q in curQuestions:
+		removeQuestion(q)
+	curQuestions = self.questions.all()
+	for q in curQuestions:
+		if (isMultipleChoiceQuestion(q)):
+			q = q.multiplechoicequestion
+			newQ = MultipleChoiceQuestion(text = q.text, order = q.order, quiz = publishedQuiz)
+			newQ.save()
+			# Copy Answers
+			curAnswers = q.answers.all()
+			for a in curAnswers:
+				newA = Answer(question = newQ, correct = a.correct, order = a.order, text = a.text)
+				newA.save()
+		else:
+			q = q.codequestion
+			newQ = CodeQuestion(text = q.text, order = q.order, quiz = publishedQuiz, beforeCode = q.beforeCode, showBeforeCode = q.showBeforeCode, editableCode = q.editableCode, afterCode = q.afterCode, showAfterCode = q.showAfterCode, expectedOutput = q.expectedOutput)
+			newQ.save()
+			
 
 def removeQuiz(self):
 	'''
@@ -42,9 +81,26 @@ def removeQuiz(self):
 		objects
 	'''
 	questions = self.questions.all()
+	prerequisites = self.prerequisites.all()
+	workingQuiz = Quiz.objects.get(slug=(self.slug + "_workingCopy"))
+	workingQuestions = workingQuiz.questions.all()
+	workingPrerequisites = workingQuiz.prerequisites.all()
+
+	# Remove Questions
 	for q in questions:
 		removeQuestion(q)
+	for q in workingQuestions:
+		removeQuestion(q)
+
+	# Remove Prerequisites
+	for p in prerequisites:
+		p.delete()
+	for p in workingPrerequisites:
+		p.delete()
+
+	# Remove Pages
 	removePage(self)
+	removePage(workingQuiz)
 	# should also remove all associated quiz objects such as stats, questions, answers, paths
 	return 0
 
@@ -64,6 +120,18 @@ def reorderQuestions(self):
 		return 0
 	return -1
 
+def safeSlug(page_slug):
+	'''
+		Takes a quiz slug and makes sure they are not trying to directly access
+		the working copy. If so, it returns the slug to the published copy
+	'''
+
+	if (page_slug.endswith("_workingCopy") != False and page_slug.find("_workingCopy") == len(page_slug) - 12):
+		return page_slug[:-12]
+
+	return page_slug
+		
+
 def saveQuiz(request, course, pid):
 	'''
 		Takes a request, a course, and a page id. It then pulls the 
@@ -72,24 +140,25 @@ def saveQuiz(request, course, pid):
 	'''
 	data = {}
 	errors = []
-	quiz = Page.objects.get(slug=pid).quiz
+	quiz = Page.objects.get(slug=(pid + "_workingCopy")).quiz
+	publishedQuiz = Page.objects.get(slug=pid).quiz
 
 	if (request.method != "POST"):
 		errors.append("Trying to save quiz from a non POST request")
 
-	elif "Save" in request.POST:
-		errors = validateQuizFromPost(request, pid)
+	elif "Save" in request.POST or "Publish" in request.POST:
+		errors = validateQuizFromPost(quiz, request)
 		if (len(errors) == 0):
 			quiz.text = request.POST["quizTitle"]
 			quiz.name = request.POST["quizTitle"]
-			quiz.slug = slugify(quiz.name)
+			publishedQuiz.slug = slugify(quiz.name)
+			quiz.slug = publishedQuiz.slug + "_workingCopy"
 			if "hidden" in request.POST:
 				quiz.hidden = True
 			else:
 				quiz.hidden = False
 			# Delete current prerequisites
 			for p in quiz.prerequisites.all():
-				origPrereqs.append(p)
 				p.delete()
 			if "prereqs" in request.POST:
 				# Create prerequisites
@@ -116,8 +185,9 @@ def saveQuiz(request, course, pid):
 				q.save()
 
 			quiz.save()
+			publishedQuiz.save()
 
-	data = {"quiz_slug":quiz.slug, "errors":errors}
+	data = {"quiz_slug":publishedQuiz.slug, "errors":errors}
 	return data
 
 def scoreQuiz(self, request, course_slug, quiz_slug):
@@ -139,7 +209,7 @@ def scoreQuiz(self, request, course_slug, quiz_slug):
 				score = score + 1
 		else:
 			q = q.codequestion
-			print "Grade multiple choice question"
+			print "Grade code question\n"
 
 	if (not request.user.is_anonymous()):
 		Stat.CreateStat(course, self, request.user, score)
@@ -162,15 +232,14 @@ def validateQuestionOrder(self):
 			return False
 	return True
 
-def validateQuizFromPost(request, quiz_slug):
+def validateQuizFromPost(self, request):
 	'''
 		Takes a request containing POST data for a quiz and makes sure
 		any changed elements are valid. It returns and array array of
 		or an emtpy array if no errors were found
 	'''
-	quiz = Quiz.objects.get(slug=quiz_slug)
 	errors = []
-	questions = quiz.questions.all();
+	questions = self.questions.all();
 	
 	# Title - Make sure its not blank
 	if (len(request.POST["quizTitle"]) == 0):
@@ -213,7 +282,7 @@ def validateQuizFromPost(request, quiz_slug):
 				errors.append("Code Question expected output must not be blank")
 
 	# Question Ordering - Must be valid
-	if (not validateQuestionOrder(quiz)):
+	if (not validateQuestionOrder(self)):
 		errors.append("Questions must have a valid ordering")
 
 	return errors

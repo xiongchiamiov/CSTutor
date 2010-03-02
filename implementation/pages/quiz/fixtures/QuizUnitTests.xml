@@ -26,6 +26,17 @@
 	      <field type="TextField" name="text">QuizUnitTests Quiz 1</field>
 	      <field type="BooleanField" name="hidden">False</field>
 	   </object>
+   <object pk="10004" model="pages.page">
+      <field to="courses.course" name="course" rel="ManyToOneRel">10000</field>
+      <field type="SlugField" name="slug">QuizUnitTests_Quiz1_workingCopy</field>
+      <field type="TextField" name="name">QuizUnitTests Quiz 1</field>
+      <field type="IntegerField" name="left">2</field>
+      <field type="IntegerField" name="right">3</field>
+   </object>
+	   <object pk="10004" model="quiz.quiz">
+	      <field type="TextField" name="text">QuizUnitTests Quiz 1</field>
+	      <field type="BooleanField" name="hidden">False</field>
+	   </object>
    <object pk="10003" model="pages.page">
       <field to="courses.course" name="course" rel="ManyToOneRel">10000</field>
       <field type="SlugField" name="slug">QuizUnitTests_Quiz2</field>
@@ -34,6 +45,17 @@
       <field type="IntegerField" name="right">5</field>
    </object>
 	   <object pk="10003" model="quiz.quiz">
+	      <field type="TextField" name="text">QuizUnitTests Quiz 2</field>
+	      <field type="BooleanField" name="hidden">False</field>
+	   </object>
+   <object pk="10005" model="pages.page">
+      <field to="courses.course" name="course" rel="ManyToOneRel">10000</field>
+      <field type="SlugField" name="slug">QuizUnitTests_Quiz2_workingCopy</field>
+      <field type="TextField" name="name">QuizUnitTests Quiz 2</field>
+      <field type="IntegerField" name="left">4</field>
+      <field type="IntegerField" name="right">5</field>
+   </object>
+	   <object pk="10005" model="quiz.quiz">
 	      <field type="TextField" name="text">QuizUnitTests Quiz 2</field>
 	      <field type="BooleanField" name="hidden">False</field>
 	   </object>
@@ -57,5 +79,26 @@
       <field to="quiz.quiz" name="quiz" rel="ManyToOneRel">10002</field>
    </object>
    <object pk="10006" model="question.multiplechoicequestion">
+   </object>
+   <object pk="10007" model="question.question">
+      <field type="TextField" name="text">Test question 1</field>
+      <field type="IntegerField" name="order">1</field>
+      <field to="quiz.quiz" name="quiz" rel="ManyToOneRel">10004</field>
+   </object>
+   <object pk="10007" model="question.multiplechoicequestion">
+   </object>
+   <object pk="10008" model="question.question">
+      <field type="TextField" name="text">Test question 2</field>
+      <field type="IntegerField" name="order">2</field>
+      <field to="quiz.quiz" name="quiz" rel="ManyToOneRel">10004</field>
+   </object>
+   <object pk="10008" model="question.multiplechoicequestion">
+   </object>
+   <object pk="10009" model="question.question">
+      <field type="TextField" name="text">Test question 3</field>
+      <field type="IntegerField" name="order">3</field>
+      <field to="quiz.quiz" name="quiz" rel="ManyToOneRel">10004</field>
+   </object>
+   <object pk="10009" model="question.multiplechoicequestion">
    </object>
 </django-objects>

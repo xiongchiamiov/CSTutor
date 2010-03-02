@@ -5,7 +5,7 @@
 <form name="quizForm" method="post">
 <table>
 	<tr>
-		<td>Are you sure you wish to delete the question: <b>{{question.text}}</b></td>
+		<td>Are you sure you wish to delete the question: <b>{{question.text|safe}}</b></td>
 	</tr>
 	<tr>
 		<td><input type="submit" name="confirmRemoveQuestion{{question.order}}" value="Yes" /><input type="submit" name="DontDelete" value="No" /></td>

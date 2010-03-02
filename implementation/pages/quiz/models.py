@@ -29,7 +29,6 @@ class Quiz(Page):
 	def createQuiz(text_, hidden_, course_, parent_, ):
 		''' Creates a new Quiz object, and returns it unsaved '''
 		q = Quiz(text=text_, hidden = hidden_)
-		print ("creating a quiz")
 		return q
 
 	def __unicode__(self):

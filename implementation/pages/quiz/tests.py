@@ -76,25 +76,66 @@ class QuizUnitTests(TestCase):
 		# Case 3
 		self.failUnlessEqual(newQuestion.text, "")
 
+	def test_publishQuiz(self):
+		'''
+			Test that publishQuiz actually copies over all the 
+			quizzes contents to the published version and doesnt
+			leave any fragments in database
+
+			Case no.    Input          Expected Output          Remark
+			1           
+			2           
+		'''
+
+
 	def test_removeQuiz(self):
 		'''
 			Test that removing a quiz actually removes it and all its associated data
 
-			Case no.    Input          Expected Output          Remark
-			1           quiz           Quiz.DoesNotExist        Make sure the quiz does not exist anymore
-			2           questions      Question.DoesNotExist    Make sure all of the quizzes questions were also deleted
-			3           answers        Answer.DoesNotExist      Make sure all of the answers were also deleted
+			Case no.    Input          Expected Output            Remark
+			1           quiz           Quiz.DoesNotExist          Make sure the quiz does not exist anymore
+			2           questions      Question.DoesNotExist      Make sure all of the quizzes questions were also deleted
+			3           answers        Answer.DoesNotExist        Make sure all of the answers were also deleted
+			4           quiz           Quiz.DoesNotExist          Make sure the working_copy quiz does not exist anymore
+			5           questions      Question.DoesNotExist      Make sure all of the working_copy questions were also deleted
+			6           answers        Answer.DoesNotExist        Make sure all of the working_copy answers were also deleted
+			7           prerequisites  Prerequisite.DoesNotExist  Make sure all of the prerequisites were also deleted
+			8           prerequisites  Prerequisite.DoesNotExist  Make sure all of the working_copy prereqs were also deleted
 		'''
 		quiz = Quiz.objects.get(slug=self.quizSlug2)
-		questions = quiz.questions.all()
+		quiz2 = Quiz.objects.get(slug=(self.quizSlug2 + "_workingCopy"))
+		questions = []
+		questions2 = []
 		answers = []
+		answers2 = []
+		prereqs = []
+		prereqs2 = []
 
+		# Get all the questions
+		for q in quiz.questions.all():
+			if (isMultipleChoiceQuestion(q)):
+				questions.append(q.multiplechoicequestion)
+			else:
+				questions.append(q.codequestion)
+		for q in quiz2.questions.all():
+			if (isMultipleChoiceQuestion(q)):
+				questions2.append(q.multiplechoicequestion)
+			else:
+				questions2.append(q.codequestion)
 		# Get all the answers
-		for q in questions:
+		for q in quiz.questions.all():
 			if (isMultipleChoiceQuestion(q)):
 				q = q.multiplechoicequestion
 				answers.append(q.answers.all())
-		
+		for q in questions2:
+			if (isMultipleChoiceQuestion(q)):
+				answers2.append(q.answers.all())
+		# Get all the prerequisites
+		for p in quiz.prerequisites.all():
+			prereqs.append(p)
+		for p in quiz2.prerequisites.all():
+			prereqs2.append(p)		
+
 		# Delete the quiz
 		removeQuiz(quiz)
 
@@ -103,27 +144,71 @@ class QuizUnitTests(TestCase):
 			Quiz.objects.get(slug=self.quizSlug2)
 			self.failUnlessEqual(0, 1, "The quiz was not deleted")
 		except Quiz.DoesNotExist:
-			pass
+			self.failUnlessEqual(1, 1)
 
 		# Case 2
 		for q in questions:
 			try:
-				quiz.objects.get(order=q.order)
+				quiz.questions.get(order=q.order)
 				self.failUnlessEqual(0, 1, "A question still exists in the database")
 			except Question.DoesNotExist:
-				pass
+				self.failUnlessEqual(1, 1)
 
 		# Case 3
 		answers = iter(answers)
 		for q in questions:
 			if (isMultipleChoiceQuestion(q)):
 				q = q.multiplechoicequestion
-				a = answers.next()
-				try:
-					q.answers.get(order=a.order)
-					self.failUnlessEqual(0, 1, "An answer still exists in the database")
-				except Answer.DoesNotExist:
-					pass
+				anss = answers.next()
+				for a in anss:
+					try:
+						q.answers.get(order=a.order)
+						self.failUnlessEqual(0, 1, "An answer still exists in the database")
+					except Answer.DoesNotExist:
+						self.failUnlessEqual(1, 1)
+
+		# Case 4
+		try:
+			Quiz.objects.get(slug=(self.quizSlug2 + "_workingCopy"))
+			self.failUnlessEqual(0, 1, "The working_copy was not deleted")
+		except Quiz.DoesNotExist:
+			self.failUnlessEqual(1, 1)
+
+		# Case 5
+		for q in questions2:
+			try:
+				quiz2.questions.get(order=q.order)
+				self.failUnlessEqual(0, 1, "A question still exists in the database")
+			except Question.DoesNotExist:
+				self.failUnlessEqual(1, 1)
+
+		# Case 6
+		answers2 = iter(answers2)
+		for q in questions2:
+			if (isMultipleChoiceQuestion(q)):
+				q = q.multiplechoicequestion
+				anss = answers2.next()
+				for a in anss:
+					try:
+						q.answers.get(order=a.order)
+						self.failUnlessEqual(0, 1, "An answer still exists in the database")
+					except Answer.DoesNotExist:
+						self.failUnlessEqual(1, 1)
+
+		# Case 7
+		for p in prereqs:
+			try:
+				quiz.prerequisites.get(containingQuiz = p.containingQuiz, requiredQuiz = p.requiredQuiz)
+				self.failUnlessEqual(0, 1, "A prerequisite still exists in the database")
+			except Answer.DoesNotExist:
+				self.failUnlessEqual(1, 1)
+		for p in prereqs2:
+			try:
+				quiz2.prerequisites.get(containingQuiz = p.containingQuiz, requiredQuiz = p.requiredQuiz)
+				self.failUnlessEqual(0, 1, "A prerequisite still exists in the database")
+			except Answer.DoesNotExist:
+				self.failUnlessEqual(1, 1)
+
 
 	def test_reorderQuestions(self):
 		'''
@@ -149,6 +234,22 @@ class QuizUnitTests(TestCase):
 
 		# Case 2
 		self.failUnlessEqual(validateQuestionOrder(quiz), True)
+
+	def test_safeSlug(self):
+		'''
+			Test that safeSlug actually returns a safe slug when expected to
+
+			Case no.    Input          Expected Output          Remark
+			1           quizSlug1      quizSlug1                A "safe" slug
+			2           quizSlug1_workingCopy  quizSlug1        An "unsafe" slug
+		'''
+		# Case 1
+		slug = safeSlug(self.quizSlug1)
+		self.failUnlessEqual(slug, self.quizSlug1)
+
+		# Case 2
+		slug = safeSlug(self.quizSlug1 + "_workingCopy")
+		self.failUnlessEqual(slug, self.quizSlug1)
 
 	def test_saveQuiz(self):
 		'''
