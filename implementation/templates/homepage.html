@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% load smart_if %}
+{% block content %}
+<p>
+Hello{% if user.is_authenticated %} {{user.get_full_name}}{% endif %}, and welcome to CSTutor.
+</p>
+<p>
+
+{% if not_enrolled %}
+You are currently not enrolled in any courses. Click the <a href="{% url courses.views.join_course_form %}">Join Course</a> button in the left navigation bar to join a course.<br/>
+{% else %}
+You are currently enrolled in {{numClasses}} classes.<br/>
+{% endif %}
+
+{% if user.is_authenticated %}
+<br/>You last logged in {{loginDate}} at {{loginTime}}
+	{% if lastCourse %}
+		{% if lastPageEdit %}
+			<br/>You were last editing <a href="{% url pages.views.edit_page lastCourse.slug lastPage.slug %}">{{lastPage.name}} </a>
+		{% else %}
+			<br/>You were last viewing <a href="{% url pages.views.show_page lastCourse.slug lastPage.slug %}">{{lastPage.name}} </a>
+		{% endif %}
+	{% endif %}
+{% endif %}
+
+</p>
+{% endblock %}

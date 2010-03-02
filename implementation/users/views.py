@@ -53,7 +53,7 @@ def show_profile(request):
 			if (request.POST["form"] == "Yes"):
 				status = deleteUser(request)
 				if status == 0:
-					return HttpResponseRedirect(reverse('home.views.index'))		
+					return HttpResponseRedirect(reverse('home.views.show_homepage'))		
 			
 			
 		return master_rtr(request, 'user/profile.html', {'user':request.user})
@@ -70,14 +70,24 @@ def show_logout(request):
 	'''
 	#russ--making logout not really log people out in certain cases
 	username = None
+	lastCourseSlug = None
 	if request.user.is_authenticated() == True:
 		if 'rememberme' in request.session:
 		   username = request.user.username
+		if 'lastCourseSlug' in request.session and 'lastPageSlug' in request.session and 'lastPageEdit' in request.session:
+			lastCourseSlug = request.session['lastCourseSlug']
+			lastPageSlug = request.session['lastPageSlug']
+			lastPageEdit = request.session['lastPageEdit']
+
 	#logout flushes the contents of the session/cookie
 	logout(request)
 	if username != None:
 		request.session['username'] = username
 		request.session['rememberme'] = True
+	if lastCourseSlug != None:
+		request.session['lastCourseSlug'] = lastCourseSlug
+		request.session['lastPageSlug'] = lastPageSlug
+		request.session['lastPageEdit'] = lastPageEdit
 
 	return render_to_response('user/logout.html')
 
@@ -96,7 +106,7 @@ def show_login(request):
 		#print "user authenticated"
 		if 'autologin' in request.session:
 			if request.session['autologin'] == True:
-				return index(request)
+				return HttpResponseRedirect(reverse('home.views.show_homepage'))
 
 	if request.method == 'POST':
 		#form was submitted
@@ -117,7 +127,7 @@ def show_login(request):
 				request.session['autologin'] = False
 			if 'rememberme' in request.session:
 				request.session['rememberme'] = False
-			return index(request)
+			return HttpResponseRedirect(reverse('home.views.show_homepage'))
 
 		#all autologin will do is make sure the cookie doesn't expire on browser close
 		if "autologin" in checkboxList:
@@ -145,7 +155,7 @@ def show_login(request):
 				return HttpResponseRedirect(request.GET['next'])
 			else:
 			   # send em to the index
-				return HttpResponseRedirect(reverse('home.views.index'))
+				return HttpResponseRedirect(reverse('home.views.show_homepage'))
 		elif ret == 1:
 			# Return an 'invalid login' error message.
 			#print "invalid login"

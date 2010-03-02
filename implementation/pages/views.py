@@ -62,13 +62,23 @@ def show_page(request, course_slug, page_slug):
 	#cast the page to a lesson or quiz then call show on it
 	try:
 		page = page.lesson
+		if request.user.is_authenticated():
+			#save this data to session
+			request.session['lastCourseSlug'] = course_slug
+			request.session['lastPageSlug'] = page_slug
+			request.session['lastPageEdit'] = False
+		return show_lesson(request, course_slug, page_slug, page)
 	except Lesson.DoesNotExist:
 		try:
 			page = page.quiz
+			if request.user.is_authenticated():
+				#save this data to session
+				request.session['lastCourseSlug'] = course_slug
+				request.session['lastPageSlug'] = page_slug
+				request.session['lastPageEdit'] = False
+			return show_quiz(request, course_slug, page_slug)
 		except Quiz.DoesNotExist:
 			raise Http404
-		return show_quiz(request, course_slug, page_slug)
-	return show_lesson(request, course_slug, page_slug, page)
 
 def edit_page(request, course_slug, page_slug):
 	'''
@@ -96,17 +106,24 @@ def edit_page(request, course_slug, page_slug):
 		return master_rtr(request, 'page/denied.html', {'course':course_slug, 'enrolled':False, 'edit':True, 'loggedIn':True})
 	if not e.edit:
 		return master_rtr(request, 'page/denied.html', {'course':course_slug, 'enrolled':True, 'edit':True, 'loggedIn':True})
-
 	#cast the page to a lesson or quiz then call show on it
 	try:
 		page = page.lesson
+		#save this data to session
+		request.session['lastCourseSlug'] = course_slug
+		request.session['lastPageSlug'] = page_slug
+		request.session['lastPageEdit'] = True
+		return edit_lesson(request, course_slug, page_slug)
 	except Lesson.DoesNotExist:
 		try:
 			page = page.quiz
+			#save this data to session
+			request.session['lastCourseSlug'] = course_slug
+			request.session['lastPageSlug'] = page_slug
+			request.session['lastPageEdit'] = True
+			return edit_quiz(request, course_slug, page_slug)
 		except Quiz.DoesNotExist:
 			return Http404
-		return edit_quiz(request, course_slug, page_slug)
-	return edit_lesson(request, course_slug, page_slug)
 
 @login_required
 def move_page(request, course_slug, page_slug):
