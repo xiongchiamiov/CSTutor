@@ -43,4 +43,3 @@ def display_course_stats(request, course_slug):
 				 'course_slug': course_slug})
 
 
-

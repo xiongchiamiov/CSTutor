@@ -4,9 +4,11 @@ Unit tests for functions in the Stats module
 @author Andrew J. Musselman
 '''
 
+
 from django.test import TestCase
 from django.test.client import Client
 from django.contrib.auth.models import User
+from django.core.exceptions import ObjectDoesNotExist
 from courses.models import Course
 from stats.models import Stat
 from pages.models import Page
@@ -14,7 +16,14 @@ from stat import *
 
 class StatsTests(TestCase):
 	'''
-	This class runs test for Stats functions
+	This class runs test for Stats functions.
+
+	This tests the insertStat function, and the various queries that 
+	get information from stats. These tests depend on the StatTest
+	fixture, which provides 2 courses, 2 users, and three 10-question 
+	quizzes ind addation to the initalData.xml It also includes some
+	statistics objects that are organized in such a way to produce easily
+	known average, min and max values. 
 
 	'''
 	fixtures = ['StatTest']
@@ -50,6 +59,9 @@ class StatsTests(TestCase):
 		self.assertEquals(dbTestStat,testStat)
 	
 	def test_removeUserStats(self):
+		'''This test tests the return User stats function.
+		It enters in a stat, gets it back, then removes it.
+		Then the test confirms the test is gone'''
 		user = User.objects.get(username = 'fakeuser')
 		#First we insert it into the database.
 		quiz = Page.objects.get(pk = '4') #sample quiz 
@@ -63,8 +75,13 @@ class StatsTests(TestCase):
 
 		#Now remove it from the database
 		dropAllUserStats(user)
-		#self.assertRaises(DoesNotExist,Stat.objects.get(user=user))
-		#FIXME
+		try:
+			Stat.objects.get(user=user)
+			self.assertTrue(False)
+		except Stat.DoesNotExist:
+			self.assertTrue(True)
+
+		#self.assertRaises(Stat.DoesNotExist,Stat.objects.get(user=user))
 
 	def test_getBestCourseStats(self):
 		'''

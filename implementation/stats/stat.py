@@ -61,6 +61,15 @@ def getQuizBestAggregates(course):
 	a list of dictionaries, one for each quiz in the course. Each dictionary
 	contains the 'page_slug', and the 'page_name' for the quiz, along with
 	the quiz's 'result_count', 'result_min', 'result_max' and 'result_avg'.
+	
+	@postcondition Returns aggrigates for the best scores in each 
+	@postcondition for quiz in course.enrollmet:
+						aggrigateDist['page_name'] = (page_name)
+	                    aggrigateDict['result_avg'] = 
+						     (sum(best scores)/count(best scores)
+	                    aggrigateDict['result_max'] =  max(best scores)
+	                    aggrigateDict['result_min'] =  min(best scores)
+	                    aggrigateDict['result_count'] = count(best scores)
 	'''
 	cursor = connection.cursor()
 	cursor.execute('''SELECT pages_page.slug,
@@ -104,12 +113,20 @@ def getQuizBestAggregates(course):
 def getUserBestAggregates(course):
 	'''
 	Calculates the aggregate stats for the best results for each user
-	in a course.
+	in a course. This will run even if there are no stats.
 	@precondition Course exists
 	@precondition Course.objects.get(course) != null
 	@postcondition For each user in the course, return a dictionary of their
 	               aggregates
+	@postcondition for user in course.enrollmet:
+						aggrigateDist['user_id'] = (user.id)
+	                    aggrigateDict['result_avg'] = 
+						     (sum(best scores)/count(best scores)
+	                    aggrigateDict['result_max'] =  max(best scores)
+	                    aggrigateDict['result_min'] =  min(best scores)
+	                    aggrigateDict['result_count'] = count(best scores)
 	'''
+
 	cursor = connection.cursor()
 	cursor.execute('''SELECT user_id, username,
 						count(*),
