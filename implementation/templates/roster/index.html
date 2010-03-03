@@ -12,6 +12,7 @@
 		
 		<td><center><b><font size="3">Name</font></center></td>
 		<td><center><b><font size="3">Username</font></center></td>
+		<td><center><b><font size="3">Last Used</font></center></td>
 		<td><center><b><font size="3">Edit</font></b></center></td>
 		<td><center><b><font size="3">Manage</font></b></center></td>
 		<td><center><b><font size="3">Stats</font></b></center></td>
@@ -24,6 +25,7 @@
 	<tr>	
 	<td><center>{{enrollment.user.first_name}} {{enrollment.user.last_name}}</center></td>
 	<td><center>{{enrollment.user.username}}</center></td>
+	<td><center>{{enrollment.user.last_login}}</center></td>
 	<td>	{% if enrollment.edit %}
 				<center>
 				<input type="checkbox" name="edit" value="{{enrollment.user.username}}" checked="yes"/>
@@ -87,6 +89,7 @@
 			<td><center><input type="checkbox" name="accept" value="{{enrollment.user.username}}" /></center></td>
 			<td><center><input type="checkbox" name="deny" value="{{enrollment.user.username}}" /></center></td>		
 			<td><center>{{enrollment.user.username}}</center></td>
+			<td><center>{{enrollment.lastAction}}</center></td>
 		</tr>
 		{% endif %}
 	{% endfor %}
