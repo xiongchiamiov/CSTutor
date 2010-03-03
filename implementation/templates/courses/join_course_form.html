@@ -7,8 +7,9 @@
 	{% for course in join_courses %}
 	<option value="{{course.id}}">{{course.name}}</option>
    {% endfor %}
-	<input type="submit" value="Submit Request" />
 </select>
+<br />
+<input type="submit" value="Submit Request" />
 {% else %}
 <p>
 There are no courses available for you to join.  Instead, here's a puppy.
