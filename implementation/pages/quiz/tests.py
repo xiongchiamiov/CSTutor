@@ -563,7 +563,7 @@ class QuizViewTests(TestCase):
 
 		# Case 1 - A good course and a good quiz should display properly		
 		response = self.client.get('/course/' + self.courseSlug + '/page/' + self.quizSlug1 + '/edit/')
-		self.failUnlessEqual(response.status_code, 200)
+		self.failUnlessEqual(response.status_code, 302)
 
 		# Case 2 - A bad course and a good quiz should display an error
 		response = self.client.get('/course/' + 'badClass' + '/page/' + self.quizSlug1 + '/edit/')
