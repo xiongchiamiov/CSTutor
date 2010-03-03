@@ -1,0 +1,229 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+  "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>code coverage of user.py</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+
+<style type="text/css">
+pre.code {
+    font-style: Lucida,"Courier New";
+}
+.number {
+    color: #0080C0;
+}
+.operator {
+    color: #000000;
+}
+.string {
+    color: #008000;
+}
+.comment {
+    color: #808080;
+}
+.name {
+    color: #000000;
+}
+.error {
+    color: #FF8080;
+    border: solid 1.5pt #FF0000;
+}
+.keyword {
+    color: #0000FF;
+    font-weight: bold;
+}
+.text {
+    color: #000000;
+}
+.notcovered {
+    background-color: #FFB2B2;
+}
+</style>
+
+</head>
+<body>
+<pre class="code">
+<span class="string">'''
+users.py handles all necessary user related functions not explicitly handled by the built in django user module.
+
+Example functions include, login, registerNewUser, logout, profiles....
+
+@author John Hartquist  
+@author Russell Mezzetta
+'''</span><span class="text">
+</span><span class="notcovered"><span class="keyword">from</span> <span class="name">django</span><span class="operator">.</span><span class="name">contrib</span><span class="operator">.</span><span class="name">auth</span><span class="operator">.</span><span class="name">models</span> <span class="keyword">import</span> <span class="name">User</span></span><span class="text">
+</span><span class="notcovered"><span class="keyword">from</span> <span class="name">django</span><span class="operator">.</span><span class="name">contrib</span><span class="operator">.</span><span class="name">auth</span> <span class="keyword">import</span> <span class="name">authenticate</span><span class="operator">,</span> <span class="name">login</span><span class="operator">,</span> <span class="name">logout</span></span><span class="text">
+</span><span class="notcovered"><span class="keyword">from</span> <span class="name">django</span><span class="operator">.</span><span class="name">forms</span><span class="operator">.</span><span class="name">fields</span> <span class="keyword">import</span> <span class="name">email_re</span></span><span class="text">
+</span><span class="notcovered"></span><span class="text">
+</span><span class="notcovered"><span class="comment"># commented out by mgius on 2/16/10
+</span><span class="comment">#def editProfile(oldUser, newUser):
+</span><span class="comment">#   '''
+</span><span class="comment">#   This operation takes a users profile and any modifications and 
+</span><span class="comment">#   merges them together, returning an updated profile
+</span><span class="comment">#   '''
+</span><span class="comment">#   pass
+</span><span class="comment">#
+</span><span class="comment">#def logout(request):
+</span><span class="comment">#   '''
+</span><span class="comment">#   Logs a user out.
+</span><span class="comment">#   '''
+</span><span class="comment">#   
+</span><span class="comment">#   pass
+</span></span><span class="text">
+</span><span class="notcovered"><span class="keyword">def</span> <span class="name">updateEmail</span><span class="operator">(</span><span class="name">request</span><span class="operator">)</span><span class="operator">:</span></span><span class="text">
+</span>        <span class="string">'''
+        Updates a users e-mail address
+        @author John Hartquist
+        @pre request.POST["form"] == "Change E-mail"
+        @post request.user.email = email
+        '''</span><span class="text">
+</span>        <span class="name">email</span> <span class="operator">=</span> <span class="name">request</span><span class="operator">.</span><span class="name">POST</span><span class="operator">[</span><span class="string">"email"</span><span class="operator">]</span><span class="text">
+</span>        <span class="keyword">if</span> <span class="operator">(</span><span class="name">email_re</span><span class="operator">.</span><span class="name">match</span><span class="operator">(</span><span class="name">email</span><span class="operator">)</span><span class="operator">)</span><span class="operator">:</span><span class="text">
+</span><span class="notcovered">                <span class="name">request</span><span class="operator">.</span><span class="name">user</span><span class="operator">.</span><span class="name">email</span> <span class="operator">=</span> <span class="name">email</span></span><span class="text">
+</span><span class="notcovered">                <span class="name">request</span><span class="operator">.</span><span class="name">user</span><span class="operator">.</span><span class="name">save</span><span class="operator">(</span><span class="operator">)</span></span><span class="text">
+</span><span class="notcovered">                <span class="comment">#success 
+</span>                <span class="keyword">return</span> <span class="number">0</span></span><span class="text">
+</span>        <span class="keyword">else</span><span class="operator">:</span><span class="text">
+</span>                <span class="comment">#failure
+</span>                <span class="keyword">return</span> <span class="number">1</span><span class="text">
+</span>        <span class="text">
+</span><span class="notcovered"><span class="keyword">def</span> <span class="name">updateName</span><span class="operator">(</span><span class="name">request</span><span class="operator">)</span><span class="operator">:</span></span><span class="text">
+</span><span class="notcovered">        <span class="string">'''
+        Updates a users name
+        @author John Hartquist
+        @pre request.POST["form"] == "Change Name"
+        @post request.user.first_name = request.POST["first_name"]
+        @post request.user.last_name = request.POST["last_name"]
+        '''</span></span><span class="text">
+</span><span class="notcovered">        <span class="name">user</span> <span class="operator">=</span> <span class="name">request</span><span class="operator">.</span><span class="name">user</span></span><span class="text">
+</span><span class="notcovered">        <span class="keyword">if</span> <span class="operator">(</span><span class="name">request</span><span class="operator">.</span><span class="name">POST</span><span class="operator">[</span><span class="string">"first_name"</span><span class="operator">]</span> <span class="operator">==</span> <span class="string">""</span><span class="operator">)</span><span class="operator">:</span></span><span class="text">
+</span><span class="notcovered">                <span class="keyword">return</span> <span class="number">1</span></span><span class="text">
+</span><span class="notcovered">        <span class="keyword">elif</span> <span class="operator">(</span><span class="name">request</span><span class="operator">.</span><span class="name">POST</span><span class="operator">[</span><span class="string">"last_name"</span><span class="operator">]</span> <span class="operator">==</span> <span class="string">""</span><span class="operator">)</span><span class="operator">:</span></span><span class="text">
+</span><span class="notcovered">                <span class="keyword">return</span> <span class="number">1</span></span><span class="text">
+</span><span class="notcovered">        <span class="keyword">else</span><span class="operator">:</span></span><span class="text">
+</span><span class="notcovered">                <span class="name">user</span><span class="operator">.</span><span class="name">first_name</span> <span class="operator">=</span> <span class="name">request</span><span class="operator">.</span><span class="name">POST</span><span class="operator">[</span><span class="string">"first_name"</span><span class="operator">]</span></span><span class="text">
+</span><span class="notcovered">                <span class="name">user</span><span class="operator">.</span><span class="name">last_name</span> <span class="operator">=</span> <span class="name">request</span><span class="operator">.</span><span class="name">POST</span><span class="operator">[</span><span class="string">"last_name"</span><span class="operator">]</span></span><span class="text">
+</span><span class="notcovered">                <span class="name">user</span><span class="operator">.</span><span class="name">save</span><span class="operator">(</span><span class="operator">)</span></span><span class="text">
+</span><span class="notcovered">                <span class="keyword">return</span> <span class="number">0</span></span><span class="text">
+</span><span class="notcovered"></span>        <span class="text">
+</span><span class="notcovered"><span class="keyword">def</span> <span class="name">deleteUser</span><span class="operator">(</span><span class="name">request</span><span class="operator">)</span><span class="operator">:</span></span><span class="text">
+</span><span class="notcovered">        <span class="string">'''
+        Deletes a user account
+        @author John Hartquist
+        @pre request.POST["form"] == "Yes"
+        @post user not in User.objects.all()
+        '''</span></span><span class="text">
+</span><span class="notcovered">        <span class="name">request</span><span class="operator">.</span><span class="name">user</span><span class="operator">.</span><span class="name">delete</span><span class="operator">(</span><span class="operator">)</span></span><span class="text">
+</span><span class="notcovered">        <span class="keyword">return</span> <span class="number">0</span></span><span class="text">
+</span><span class="notcovered"></span><span class="text">
+</span><span class="notcovered"></span><span class="text">
+</span><span class="notcovered"><span class="keyword">def</span> <span class="name">changePassword</span><span class="operator">(</span><span class="name">request</span><span class="operator">)</span><span class="operator">:</span></span><span class="text">
+</span><span class="notcovered">    <span class="name">oldpass</span> <span class="operator">=</span> <span class="name">request</span><span class="operator">.</span><span class="name">POST</span><span class="operator">[</span><span class="string">"oldpass"</span><span class="operator">]</span></span><span class="text">
+</span><span class="notcovered">    <span class="name">newpass1</span> <span class="operator">=</span> <span class="name">request</span><span class="operator">.</span><span class="name">POST</span><span class="operator">[</span><span class="string">"newpass1"</span><span class="operator">]</span></span><span class="text">
+</span><span class="notcovered">    <span class="name">newpass2</span> <span class="operator">=</span> <span class="name">request</span><span class="operator">.</span><span class="name">POST</span><span class="operator">[</span><span class="string">"newpass2"</span><span class="operator">]</span></span><span class="text">
+</span><span class="notcovered">    <span class="keyword">if</span> <span class="operator">(</span><span class="name">request</span><span class="operator">.</span><span class="name">user</span><span class="operator">.</span><span class="name">check_password</span><span class="operator">(</span><span class="name">oldpass</span><span class="operator">)</span> <span class="operator">==</span> <span class="name">False</span><span class="operator">)</span><span class="operator">:</span></span><span class="text">
+</span><span class="notcovered">        <span class="comment">#invalid password
+</span>        <span class="keyword">return</span> <span class="number">1</span></span><span class="text">
+</span><span class="notcovered"></span>                                                       <span class="text">
+</span><span class="notcovered">    <span class="keyword">if</span> <span class="operator">(</span><span class="name">newpass1</span> <span class="operator">!=</span> <span class="name">newpass2</span><span class="operator">)</span><span class="operator">:</span></span><span class="text">
+</span><span class="notcovered">        <span class="comment">#passwords don't match
+</span>        <span class="keyword">return</span> <span class="number">2</span></span><span class="text">
+</span><span class="notcovered"></span><span class="text">
+</span><span class="notcovered">    <span class="name">request</span><span class="operator">.</span><span class="name">user</span><span class="operator">.</span><span class="name">set_password</span><span class="operator">(</span><span class="name">newpass1</span><span class="operator">)</span></span><span class="text">
+</span><span class="notcovered">    <span class="name">request</span><span class="operator">.</span><span class="name">user</span><span class="operator">.</span><span class="name">save</span><span class="operator">(</span><span class="operator">)</span></span><span class="text">
+</span><span class="notcovered">    <span class="keyword">return</span> <span class="number">0</span></span><span class="text">
+</span><span class="notcovered"></span><span class="text">
+</span><span class="notcovered"><span class="keyword">def</span> <span class="name">removeUser</span><span class="operator">(</span><span class="name">username</span><span class="operator">,</span> <span class="name">userDB</span><span class="operator">)</span><span class="operator">:</span></span><span class="text">
+</span><span class="notcovered">   <span class="string">'''
+   Removes the given user from the user database
+        TODO
+   '''</span></span><span class="text">
+</span><span class="notcovered">   <span class="keyword">pass</span></span><span class="text">
+</span><span class="notcovered"></span><span class="text">
+</span><span class="notcovered"></span><span class="text">
+</span><span class="notcovered"><span class="keyword">def</span> <span class="name">setInstructor</span><span class="operator">(</span><span class="name">user</span><span class="operator">,</span> <span class="name">instructor</span><span class="operator">)</span><span class="operator">:</span></span><span class="text">
+</span><span class="notcovered">   <span class="string">'''
+   Grants a user permission to create a course
+        TODO:
+   '''</span></span><span class="text">
+</span><span class="notcovered">   <span class="keyword">pass</span></span><span class="text">
+</span><span class="notcovered"></span><span class="text">
+</span><span class="notcovered"><span class="keyword">def</span> <span class="name">registerNewUser</span><span class="operator">(</span><span class="name">username</span><span class="operator">,</span> <span class="name">password</span><span class="operator">,</span> <span class="name">vpassword</span><span class="operator">,</span> <span class="name">firstName</span><span class="operator">,</span> <span class="name">lastName</span><span class="operator">,</span> <span class="name">email</span><span class="operator">)</span><span class="operator">:</span></span><span class="text">
+</span>        <span class="string">'''
+        @author Russell Mezzetta
+        Registers a new user. 
+
+        @pre: all inputs are strings
+
+        @post: if return == 0: added user=username to the database 
+
+   returns:
+           username not empty return 3
+           username not already taken return 1
+           password not empty return 4
+           password and vpassword match return 2
+                First or last name empty return 5
+        '''</span><span class="text">
+</span><span class="text">
+</span>        <span class="comment">#TODO do we need to do anything special with username/password characters or length?
+</span><span class="text">
+</span>        <span class="comment">#print "in users.user.registerNewUser"
+</span>        <span class="comment">#check that username isn't empty
+</span>        <span class="keyword">if</span> <span class="name">len</span><span class="operator">(</span><span class="name">username</span><span class="operator">)</span> <span class="operator">&lt;=</span> <span class="number">0</span><span class="operator">:</span><span class="text">
+</span>                <span class="comment">#print "username is empty"
+</span>                <span class="keyword">return</span> <span class="number">3</span><span class="text">
+</span>        <span class="comment">#check that password isn't empty
+</span>        <span class="keyword">if</span> <span class="name">len</span><span class="operator">(</span><span class="name">password</span><span class="operator">)</span> <span class="operator">&lt;=</span> <span class="number">0</span><span class="operator">:</span><span class="text">
+</span>                <span class="comment">#print "password is empty"
+</span>                <span class="keyword">return</span> <span class="number">4</span><span class="text">
+</span>        <span class="comment">#check that first/last name aren't empty
+</span>        <span class="keyword">if</span> <span class="operator">(</span><span class="name">len</span><span class="operator">(</span><span class="name">firstName</span><span class="operator">)</span> <span class="operator">&lt;=</span> <span class="number">0</span><span class="operator">)</span> <span class="keyword">or</span> <span class="operator">(</span><span class="name">len</span><span class="operator">(</span><span class="name">lastName</span><span class="operator">)</span> <span class="operator">&lt;=</span> <span class="number">0</span><span class="operator">)</span><span class="operator">:</span><span class="text">
+</span>                <span class="keyword">return</span> <span class="number">5</span><span class="text">
+</span>        <span class="comment">#check that passwords match
+</span>        <span class="keyword">if</span> <span class="name">password</span> <span class="operator">!=</span> <span class="name">vpassword</span><span class="operator">:</span><span class="text">
+</span>                <span class="comment">#print "passwords don't match"
+</span>                <span class="keyword">return</span> <span class="number">2</span><span class="text">
+</span>        <span class="comment">#check that the username does not already exist
+</span>        <span class="keyword">try</span><span class="operator">:</span><span class="text">
+</span>                <span class="name">User</span><span class="operator">.</span><span class="name">objects</span><span class="operator">.</span><span class="name">get</span><span class="operator">(</span><span class="name">username</span> <span class="operator">=</span> <span class="name">username</span><span class="operator">)</span><span class="text">
+</span>                <span class="comment">#print "username already exists"
+</span>                <span class="keyword">return</span> <span class="number">1</span><span class="text">
+</span>        <span class="keyword">except</span> <span class="name">User</span><span class="operator">.</span><span class="name">DoesNotExist</span><span class="operator">:</span><span class="text">
+</span>                <span class="comment">#print "username is not taken, hurrah!"
+</span>                <span class="text">
+</span>                <span class="comment">#no errors, create and save user, return 0
+</span>                <span class="name">user</span> <span class="operator">=</span> <span class="name">User</span><span class="operator">.</span><span class="name">objects</span><span class="operator">.</span><span class="name">create_user</span><span class="operator">(</span><span class="name">username</span><span class="operator">,</span> <span class="name">email</span><span class="operator">,</span> <span class="name">password</span><span class="operator">)</span><span class="text">
+</span>                <span class="name">user</span><span class="operator">.</span><span class="name">first_name</span> <span class="operator">=</span> <span class="name">firstName</span><span class="text">
+</span>                <span class="name">user</span><span class="operator">.</span><span class="name">last_name</span> <span class="operator">=</span> <span class="name">lastName</span><span class="text">
+</span>                <span class="name">user</span><span class="operator">.</span><span class="name">save</span><span class="operator">(</span><span class="operator">)</span><span class="text">
+</span>                <span class="keyword">return</span> <span class="number">0</span><span class="text">
+</span><span class="text">
+</span><span class="notcovered"><span class="keyword">def</span> <span class="name">loginWrapper</span><span class="operator">(</span><span class="name">request</span><span class="operator">,</span> <span class="name">username</span><span class="operator">,</span> <span class="name">password</span><span class="operator">)</span><span class="operator">:</span></span><span class="text">
+</span>        <span class="string">'''
+        @author Russell Mezzetta
+        This login wrapper logs the user in.
+        pre:    request is a request object
+                        username is a string
+                        password is a string
+
+        post: username and password match a username/password in the system
+              username denotes an active account
+        returns 0 on success, 1 invalid login, 2 inactive account
+        '''</span><span class="text">
+</span>        <span class="name">user</span> <span class="operator">=</span> <span class="name">authenticate</span><span class="operator">(</span><span class="name">username</span><span class="operator">=</span><span class="name">username</span><span class="operator">,</span> <span class="name">password</span><span class="operator">=</span><span class="name">password</span><span class="operator">)</span><span class="text">
+</span>        <span class="keyword">if</span> <span class="name">user</span> <span class="keyword">is</span> <span class="keyword">not</span> <span class="name">None</span><span class="operator">:</span><span class="text">
+</span>                <span class="keyword">if</span> <span class="name">user</span><span class="operator">.</span><span class="name">is_active</span><span class="operator">:</span><span class="text">
+</span>                        <span class="name">login</span><span class="operator">(</span><span class="name">request</span><span class="operator">,</span> <span class="name">user</span><span class="operator">)</span><span class="text">
+</span>                        <span class="comment"># Redirect to a success page.
+</span>                        <span class="comment">#print "successful login"
+</span>                        <span class="keyword">return</span> <span class="number">0</span><span class="text">
+</span>                <span class="keyword">else</span><span class="operator">:</span><span class="text">
+</span>                        <span class="comment"># Return a 'disabled account' error message
+</span>                        <span class="comment">#print "account marked as inactive"
+</span><span class="notcovered">                        <span class="keyword">return</span> <span class="number">2</span></span><span class="text">
+</span>        <span class="keyword">else</span><span class="operator">:</span><span class="text">
+</span>                <span class="comment"># Return an 'invalid login' error message.
+</span>                <span class="comment">#print "invalid login"
+</span>                <span class="keyword">return</span> <span class="number">1</span><span class="text"></span>
+</pre></body>
+</html>

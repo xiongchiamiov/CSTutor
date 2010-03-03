@@ -1,0 +1,170 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+  "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>code coverage of models.py</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+
+<style type="text/css">
+pre.code {
+    font-style: Lucida,"Courier New";
+}
+.number {
+    color: #0080C0;
+}
+.operator {
+    color: #000000;
+}
+.string {
+    color: #008000;
+}
+.comment {
+    color: #808080;
+}
+.name {
+    color: #000000;
+}
+.error {
+    color: #FF8080;
+    border: solid 1.5pt #FF0000;
+}
+.keyword {
+    color: #0000FF;
+    font-weight: bold;
+}
+.text {
+    color: #000000;
+}
+.notcovered {
+    background-color: #FFB2B2;
+}
+</style>
+
+</head>
+<body>
+<pre class="code">
+<span class="string">'''
+Models file for course related classes
+
+Contains the Overall "Course" class, plus the Classes that are primarily
+contained within a Course, such as Page, Quiz, Lesson, and Roster.
+
+@author Andrew Mussellman
+@author Jon Inloes
+@author Mark Gius
+SVN Commit Info:
+$Id: models.py 1217 2010-03-01 21:27:12Z mgius $
+'''</span><span class="text">
+</span><span class="keyword">from</span> <span class="name">django</span><span class="operator">.</span><span class="name">db</span> <span class="keyword">import</span> <span class="name">models</span><span class="text">
+</span><span class="keyword">from</span> <span class="name">django</span><span class="operator">.</span><span class="name">contrib</span><span class="operator">.</span><span class="name">auth</span><span class="operator">.</span><span class="name">models</span> <span class="keyword">import</span> <span class="name">User</span><span class="text">
+</span><span class="keyword">from</span> <span class="name">django</span><span class="operator">.</span><span class="name">template</span><span class="operator">.</span><span class="name">defaultfilters</span> <span class="keyword">import</span> <span class="name">slugify</span><span class="text">
+</span><span class="text">
+</span><span class="comment"># Create your models here.
+</span><span class="text">
+</span><span class="keyword">class</span> <span class="name">Course</span><span class="operator">(</span><span class="name">models</span><span class="operator">.</span><span class="name">Model</span><span class="operator">)</span><span class="operator">:</span><span class="text">
+</span>        <span class="string">''' 
+        Top level model for sets of lessons
+
+        A course is a set of zero or more pages.  A course is either public or
+        private, and contains a roster of authorized users.  Every course has a
+        landing page. 
+        '''</span><span class="text">
+</span>        <span class="name">slug</span> <span class="operator">=</span> <span class="name">models</span><span class="operator">.</span><span class="name">SlugField</span><span class="operator">(</span><span class="name">unique</span> <span class="operator">=</span> <span class="name">True</span><span class="operator">)</span><span class="text">
+</span>        <span class="name">name</span> <span class="operator">=</span> <span class="name">models</span><span class="operator">.</span><span class="name">CharField</span><span class="operator">(</span><span class="name">max_length</span> <span class="operator">=</span> <span class="number">255</span><span class="operator">)</span><span class="text">
+</span>        <span class="name">private</span> <span class="operator">=</span> <span class="name">models</span><span class="operator">.</span><span class="name">BooleanField</span><span class="operator">(</span><span class="name">default</span> <span class="operator">=</span> <span class="name">False</span><span class="operator">)</span><span class="text">
+</span>        <span class="text">
+</span>        <span class="keyword">def</span> <span class="name">tableOfContents</span><span class="operator">(</span><span class="name">self</span><span class="operator">)</span><span class="operator">:</span><span class="text">
+</span>                <span class="string">'''
+                Returns a list of tuples, representing the table of contents for this course,
+                and the indentation level for each item.
+        
+                Violates code standard because template tags can only call arg-less
+                functions
+                '''</span><span class="text">
+</span><span class="comment">#               toc = []
+</span><span class="comment">#               pages = [p for p in self.pages.order_by('left')]
+</span><span class="comment">#               curPage = pages.pop(0)
+</span><span class="comment">#               toc.append(curPage)
+</span><span class="comment">#               prevPage = curPage
+</span><span class="comment">#               while len(pages) &gt; 0:
+</span><span class="comment">#                       curPage = pages.pop(0)
+</span><span class="comment">#                       if (curPage.left == prevPage.left + 1):
+</span><span class="comment">#                               # This page is one level down.  Append "in"
+</span><span class="comment">#                               toc.append("in")
+</span><span class="comment">#                               toc.append(curPage)
+</span><span class="comment">#                       elif (curPage.left == prevPage
+</span><span class="comment">#
+</span>                <span class="name">pages</span> <span class="operator">=</span> <span class="operator">[</span><span class="name">p</span> <span class="keyword">for</span> <span class="name">p</span> <span class="keyword">in</span> <span class="name">self</span><span class="operator">.</span><span class="name">pages</span><span class="operator">.</span><span class="name">order_by</span><span class="operator">(</span><span class="string">'left'</span><span class="operator">)</span><span class="operator">]</span><span class="text">
+</span>                <span class="keyword">return</span> <span class="name">self</span><span class="operator">.</span><span class="name">tableOfContentsBuilder</span><span class="operator">(</span><span class="name">pages</span><span class="operator">)</span><span class="text">
+</span>        <span class="text">
+</span>        <span class="keyword">def</span> <span class="name">tableOfContentsBuilder</span><span class="operator">(</span><span class="name">self</span><span class="operator">,</span> <span class="name">pages</span><span class="operator">)</span><span class="operator">:</span><span class="text">
+</span>                <span class="string">'''
+                Recursive helper function for tableOfContents.
+        
+                Takes in a list of pages, an indentation level, 
+                and the left and right bounds for this indentation level.
+        
+                This function is ganky. Improvement ideas are welcome
+
+                Violates code standard because template tags can only call arg-less
+                functions
+                '''</span><span class="text">
+</span>                <span class="name">toc</span> <span class="operator">=</span>   <span class="operator">[</span><span class="operator">]</span><span class="text">
+</span>        <span class="text">
+</span>                <span class="keyword">while</span> <span class="name">len</span><span class="operator">(</span><span class="name">pages</span><span class="operator">)</span> <span class="operator">&gt;</span> <span class="number">0</span><span class="operator">:</span><span class="text">
+</span>                        <span class="name">page</span> <span class="operator">=</span> <span class="name">pages</span><span class="operator">.</span><span class="name">pop</span><span class="operator">(</span><span class="number">0</span><span class="operator">)</span><span class="text">
+</span>                        <span class="name">toc</span><span class="operator">.</span><span class="name">append</span><span class="operator">(</span><span class="name">page</span><span class="operator">)</span><span class="text">
+</span>                        <span class="keyword">if</span> <span class="name">page</span><span class="operator">.</span><span class="name">left</span> <span class="operator">!=</span> <span class="operator">(</span><span class="name">page</span><span class="operator">.</span><span class="name">right</span> <span class="operator">-</span> <span class="number">1</span><span class="operator">)</span><span class="operator">:</span><span class="text">
+</span>                                <span class="comment">#print str(page) + " has children "
+</span>                                <span class="comment"># This page has children.  Get them
+</span>                                <span class="name">childPages</span> <span class="operator">=</span> <span class="operator">[</span><span class="operator">]</span><span class="text">
+</span>                                <span class="keyword">while</span> <span class="name">len</span><span class="operator">(</span><span class="name">pages</span><span class="operator">)</span> <span class="operator">&gt;</span> <span class="number">0</span> <span class="keyword">and</span> <span class="name">pages</span><span class="operator">[</span><span class="number">0</span><span class="operator">]</span><span class="operator">.</span><span class="name">left</span> <span class="operator">&lt;</span> <span class="name">page</span><span class="operator">.</span><span class="name">right</span><span class="operator">:</span><span class="text">
+</span>                                        <span class="name">childPages</span><span class="operator">.</span><span class="name">append</span><span class="operator">(</span><span class="name">pages</span><span class="operator">.</span><span class="name">pop</span><span class="operator">(</span><span class="number">0</span><span class="operator">)</span><span class="operator">)</span><span class="text">
+</span>                                <span class="comment"># now that I have the list of papes, recursive call on it
+</span>                                <span class="name">toc</span><span class="operator">.</span><span class="name">append</span><span class="operator">(</span><span class="string">"in"</span><span class="operator">)</span><span class="text">
+</span>                                <span class="name">toc</span><span class="operator">.</span><span class="name">extend</span><span class="operator">(</span><span class="name">self</span><span class="operator">.</span><span class="name">tableOfContentsBuilder</span><span class="operator">(</span><span class="name">childPages</span><span class="operator">)</span><span class="operator">)</span><span class="text">
+</span>                                <span class="name">toc</span><span class="operator">.</span><span class="name">append</span><span class="operator">(</span><span class="string">"out"</span><span class="operator">)</span><span class="text">
+</span>        <span class="text">
+</span>                <span class="keyword">return</span> <span class="name">toc</span><span class="text">
+</span><span class="text">
+</span>        <span class="keyword">def</span> <span class="name">__unicode__</span><span class="operator">(</span><span class="name">self</span><span class="operator">)</span><span class="operator">:</span><span class="text">
+</span>                <span class="string">''' Returns the Course's name.'''</span><span class="text">
+</span>                <span class="keyword">return</span> <span class="name">self</span><span class="operator">.</span><span class="name">name</span><span class="text">
+</span>        <span class="text">
+</span>        <span class="operator">@</span><span class="name">models</span><span class="operator">.</span><span class="name">permalink</span><span class="text">
+</span>        <span class="keyword">def</span> <span class="name">get_absolute_url</span><span class="operator">(</span><span class="name">self</span><span class="operator">)</span><span class="operator">:</span><span class="text">
+</span><span class="notcovered">                <span class="keyword">return</span> <span class="operator">(</span><span class="string">'courses.views.view_course'</span><span class="operator">,</span> <span class="operator">[</span><span class="name">str</span><span class="operator">(</span><span class="name">self</span><span class="operator">.</span><span class="name">slug</span><span class="operator">)</span><span class="operator">]</span><span class="operator">)</span></span><span class="text">
+</span><span class="text">
+</span><span class="keyword">class</span> <span class="name">Enrollment</span><span class="operator">(</span><span class="name">models</span><span class="operator">.</span><span class="name">Model</span><span class="operator">)</span><span class="operator">:</span><span class="text">
+</span>        <span class="string">''' Model for an Enrollment in a Course
+
+                 An enrollment ties a User to a Course and manages their permissions
+                 on that course.
+
+                 In the case of a Public Course, enrollments should only be made when
+                 a user needs permission beyond view.  
+
+                 In the case of a Private course, an enrollment relationship is necessary
+                 to allow the user to view the course.
+        '''</span><span class="text">
+</span>        <span class="name">user</span> <span class="operator">=</span> <span class="name">models</span><span class="operator">.</span><span class="name">ForeignKey</span><span class="operator">(</span><span class="name">User</span><span class="operator">,</span> <span class="name">related_name</span><span class="operator">=</span><span class="string">'enrollments'</span><span class="operator">)</span><span class="text">
+</span>        <span class="name">course</span> <span class="operator">=</span> <span class="name">models</span><span class="operator">.</span><span class="name">ForeignKey</span><span class="operator">(</span><span class="name">Course</span><span class="operator">,</span> <span class="name">related_name</span><span class="operator">=</span><span class="string">'roster'</span><span class="operator">)</span><span class="text">
+</span><span class="text">
+</span>        <span class="comment">#User can view the course contents 
+</span>        <span class="name">view</span> <span class="operator">=</span> <span class="name">models</span><span class="operator">.</span><span class="name">BooleanField</span><span class="operator">(</span><span class="name">default</span> <span class="operator">=</span> <span class="name">False</span><span class="operator">)</span><span class="text">
+</span><span class="text">
+</span>        <span class="comment">#Can edit the contents of the course
+</span>        <span class="name">edit</span> <span class="operator">=</span> <span class="name">models</span><span class="operator">.</span><span class="name">BooleanField</span><span class="operator">(</span><span class="name">default</span> <span class="operator">=</span> <span class="name">False</span><span class="operator">)</span><span class="text">
+</span><span class="text">
+</span>        <span class="comment">#Can view stats for all users in the givne course
+</span>        <span class="name">stats</span> <span class="operator">=</span> <span class="name">models</span><span class="operator">.</span><span class="name">BooleanField</span><span class="operator">(</span><span class="name">default</span> <span class="operator">=</span> <span class="name">False</span><span class="operator">)</span><span class="text">
+</span>        <span class="text">
+</span>        <span class="comment">#Can grant premissions on a given course
+</span>        <span class="name">manage</span> <span class="operator">=</span> <span class="name">models</span><span class="operator">.</span><span class="name">BooleanField</span><span class="operator">(</span><span class="name">default</span> <span class="operator">=</span> <span class="name">False</span><span class="operator">)</span><span class="text">
+</span><span class="text">
+</span>        <span class="name">lastAction</span> <span class="operator">=</span> <span class="name">models</span><span class="operator">.</span><span class="name">DateTimeField</span><span class="operator">(</span><span class="name">auto_now</span><span class="operator">=</span><span class="name">True</span><span class="operator">)</span><span class="text">
+</span>        <span class="text">
+</span>        <span class="keyword">def</span> <span class="name">__unicode__</span><span class="operator">(</span><span class="name">self</span><span class="operator">)</span><span class="operator">:</span><span class="text">
+</span><span class="notcovered">                <span class="keyword">return</span> <span class="name">unicode</span><span class="operator">(</span><span class="name">self</span><span class="operator">.</span><span class="name">user</span><span class="operator">)</span> <span class="operator">+</span> <span class="string">u' in '</span> <span class="operator">+</span> <span class="name">unicode</span><span class="operator">(</span><span class="name">self</span><span class="operator">.</span><span class="name">course</span><span class="operator">)</span><span class="text"></span></span>
+</pre></body>
+</html>

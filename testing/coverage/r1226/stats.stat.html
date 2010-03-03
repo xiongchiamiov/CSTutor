@@ -1,0 +1,273 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+  "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>code coverage of stat.py</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+
+<style type="text/css">
+pre.code {
+    font-style: Lucida,"Courier New";
+}
+.number {
+    color: #0080C0;
+}
+.operator {
+    color: #000000;
+}
+.string {
+    color: #008000;
+}
+.comment {
+    color: #808080;
+}
+.name {
+    color: #000000;
+}
+.error {
+    color: #FF8080;
+    border: solid 1.5pt #FF0000;
+}
+.keyword {
+    color: #0000FF;
+    font-weight: bold;
+}
+.text {
+    color: #000000;
+}
+.notcovered {
+    background-color: #FFB2B2;
+}
+</style>
+
+</head>
+<body>
+<pre class="code">
+<span class="string">'''
+stats.py
+
+Contains a number of functions that manage and calculate user statistics. 
+@author Andrew J. Musselman
+'''</span><span class="text">
+</span><span class="notcovered"><span class="keyword">from</span> <span class="name">models</span> <span class="keyword">import</span> <span class="name">Stat</span></span><span class="text">
+</span><span class="notcovered"><span class="keyword">from</span> <span class="name">courses</span><span class="operator">.</span><span class="name">models</span> <span class="keyword">import</span> <span class="name">Enrollment</span></span><span class="text">
+</span><span class="notcovered"><span class="keyword">from</span> <span class="name">courses</span><span class="operator">.</span><span class="name">models</span> <span class="keyword">import</span> <span class="name">Course</span></span><span class="text">
+</span><span class="notcovered"><span class="keyword">from</span> <span class="name">django</span><span class="operator">.</span><span class="name">db</span> <span class="keyword">import</span> <span class="name">connection</span><span class="operator">,</span> <span class="name">transaction</span></span><span class="text">
+</span><span class="notcovered"></span><span class="text">
+</span><span class="notcovered"><span class="keyword">def</span> <span class="name">dropAllUserStats</span><span class="operator">(</span><span class="name">user</span><span class="operator">)</span><span class="operator">:</span></span><span class="text">
+</span>        <span class="string">'''Drops all statistics assoicated with a user, reguardless of what course 
+        the user is in.
+        @precondition The User must exist
+        @precondition User.models.get(user.id) = user
+        @postcondition There should be no stats assoicated with the user in the DB
+        @postcondition Stat.models.filter(user=user) = null set
+        '''</span><span class="text">
+</span>        <span class="name">Stat</span><span class="operator">.</span><span class="name">objects</span><span class="operator">.</span><span class="name">filter</span><span class="operator">(</span><span class="name">user</span><span class="operator">=</span><span class="name">user</span><span class="operator">)</span><span class="operator">.</span><span class="name">delete</span><span class="operator">(</span><span class="operator">)</span><span class="operator">;</span><span class="text">
+</span><span class="text">
+</span><span class="text">
+</span><span class="notcovered"><span class="keyword">def</span> <span class="name">getAllCourseStats</span><span class="operator">(</span><span class="name">course</span><span class="operator">)</span><span class="operator">:</span></span><span class="text">
+</span><span class="notcovered">        <span class="string">'''
+        Get the a list of all user statistics in from a given course. A user 
+        may have many stats for each quiz, since a user may take a quiz
+        many times
+        '''</span></span><span class="text">
+</span><span class="notcovered">        <span class="name">statsList</span> <span class="operator">=</span> <span class="name">Stats</span><span class="operator">.</span><span class="name">object</span><span class="operator">.</span><span class="name">get</span><span class="operator">(</span><span class="name">course</span><span class="operator">=</span><span class="name">course</span><span class="operator">)</span></span><span class="text">
+</span><span class="notcovered">        <span class="keyword">return</span> <span class="name">statsList</span></span><span class="text">
+</span><span class="notcovered"></span><span class="text">
+</span><span class="notcovered"><span class="keyword">def</span> <span class="name">getBestCourseStats</span><span class="operator">(</span><span class="name">course</span><span class="operator">)</span><span class="operator">:</span></span><span class="text">
+</span>        <span class="string">'''
+        Get the list of the best statistics for every quiz in a given course.
+        There will be at most ONE stat per quiz per user.  
+        '''</span><span class="text">
+</span>        <span class="name">cursor</span> <span class="operator">=</span> <span class="name">connection</span><span class="operator">.</span><span class="name">cursor</span><span class="operator">(</span><span class="operator">)</span><span class="text">
+</span>        <span class="name">cursor</span><span class="operator">.</span><span class="name">execute</span><span class="operator">(</span><span class="string">'''SELECT id, course_id, user_id, page_id, score, 
+                           maxscore, date  
+                   FROM stats_stat 
+                   INNER JOIN (select MAX(Cast(Score as FLOAT) 
+                                       / cast(maxscore as Float)) as inner_maxScore,
+                       user_id as inner_user_id, page_id as inner_page_id,
+                                       course_id as inner_course_id
+                       FROM stats_stat 
+                           WHERE course_ID=%s 
+                               GROUP BY user_id, page_id, course_id) as best_scores
+                   ON (Cast(score as FLOAT) / cast (maxscore as FLOAT)) = 
+                                       inner_maxscore and
+                       user_id = inner_user_id AND 
+                                           page_id = inner_page_id and 
+                       course_id = inner_course_id
+                   WHERE course_id = %s;
+                       '''</span><span class="operator">,</span><span class="operator">[</span><span class="name">course</span><span class="operator">.</span><span class="name">id</span><span class="operator">,</span><span class="name">course</span><span class="operator">.</span><span class="name">id</span><span class="operator">]</span> <span class="operator">)</span><span class="text">
+</span>        <span class="name">rawList</span> <span class="operator">=</span> <span class="name">cursor</span><span class="operator">.</span><span class="name">fetchall</span><span class="operator">(</span><span class="operator">)</span><span class="text">
+</span>        <span class="keyword">return</span> <span class="name">rawList</span><span class="text">
+</span>        <span class="text">
+</span><span class="notcovered"><span class="keyword">def</span> <span class="name">getQuizBestAggregates</span><span class="operator">(</span><span class="name">course</span><span class="operator">)</span><span class="operator">:</span></span><span class="text">
+</span>        <span class="string">'''     
+        Gets the aggrigate data for each quiz in a course. This should return
+        a list of dictionaries, one for each quiz in the course. Each dictionary
+        contains the 'page_slug', and the 'page_name' for the quiz, along with
+        the quiz's 'result_count', 'result_min', 'result_max' and 'result_avg'.
+        '''</span><span class="text">
+</span>        <span class="name">cursor</span> <span class="operator">=</span> <span class="name">connection</span><span class="operator">.</span><span class="name">cursor</span><span class="operator">(</span><span class="operator">)</span><span class="text">
+</span>        <span class="name">cursor</span><span class="operator">.</span><span class="name">execute</span><span class="operator">(</span><span class="string">'''SELECT pages_page.slug,
+                            pages_page.name,
+                                                count(*),
+                            max(Cast(score as FLOAT)/cast(maxscore as Float)),
+                            min(Cast(score as FLOAT)/cast(maxscore as Float)),
+                            avg(Cast(score as FLOAT)/cast(maxscore as Float))
+                   FROM (stats_stat 
+                         INNER JOIN (select MAX(Cast(Score as FLOAT) 
+                        /cast (maxscore as Float)) as inner_maxscore,
+                              user_id as inner_user_id, 
+                              page_id as inner_page_id,
+                              innerStats.course_id as inner_course_id
+                              FROM stats_stat as innerStats 
+                                  WHERE innerStats.course_id=%s 
+                                  GROUP BY user_id, page_id, course_id) as
+                                                              best_score
+                                  ON (Cast(score as FLOAT) / cast (maxscore as FLOAT)) = 
+                                         inner_maxscore and
+                                 user_id = inner_user_id AND 
+                                 page_id = inner_page_id and 
+                                 course_id = inner_course_id ) as best_stats
+                        INNER JOIN pages_page ON
+                            pages_page.id = page_id
+                            WHERE best_stats.inner_course_id = %s
+                            GROUP BY page_id,pages_page.slug,pages_page.name ;
+                       '''</span><span class="operator">,</span><span class="operator">[</span><span class="name">course</span><span class="operator">.</span><span class="name">id</span><span class="operator">,</span><span class="name">course</span><span class="operator">.</span><span class="name">id</span><span class="operator">]</span> <span class="operator">)</span><span class="text">
+</span>        <span class="name">rawList</span> <span class="operator">=</span> <span class="name">cursor</span><span class="operator">.</span><span class="name">fetchall</span><span class="operator">(</span><span class="operator">)</span><span class="text">
+</span>        <span class="name">aggrigateList</span> <span class="operator">=</span> <span class="operator">[</span><span class="operator">]</span><span class="text">
+</span>        <span class="keyword">for</span> <span class="name">listItem</span> <span class="keyword">in</span> <span class="name">rawList</span><span class="operator">:</span><span class="text">
+</span>                <span class="name">aggrigateDict</span> <span class="operator">=</span> <span class="operator">{</span><span class="string">'page_slug'</span><span class="operator">:</span><span class="name">listItem</span><span class="operator">[</span><span class="number">0</span><span class="operator">]</span><span class="operator">,</span><span class="text">
+</span>                                 <span class="string">'page_name'</span><span class="operator">:</span><span class="name">listItem</span><span class="operator">[</span><span class="number">1</span><span class="operator">]</span><span class="operator">,</span><span class="text">
+</span>                                 <span class="string">'result_count'</span><span class="operator">:</span><span class="name">listItem</span><span class="operator">[</span><span class="number">2</span><span class="operator">]</span><span class="operator">,</span><span class="text">
+</span>                                 <span class="string">'result_max'</span><span class="operator">:</span><span class="name">listItem</span><span class="operator">[</span><span class="number">3</span><span class="operator">]</span><span class="operator">*</span><span class="number">100</span><span class="operator">,</span><span class="text">
+</span>                                 <span class="string">'result_min'</span><span class="operator">:</span><span class="name">listItem</span><span class="operator">[</span><span class="number">4</span><span class="operator">]</span><span class="operator">*</span><span class="number">100</span><span class="operator">,</span><span class="text">
+</span>                                 <span class="string">'result_avg'</span><span class="operator">:</span><span class="name">listItem</span><span class="operator">[</span><span class="number">5</span><span class="operator">]</span><span class="operator">*</span><span class="number">100</span><span class="operator">}</span><span class="text">
+</span>                <span class="name">aggrigateList</span><span class="operator">.</span><span class="name">append</span><span class="operator">(</span><span class="name">aggrigateDict</span><span class="operator">)</span><span class="text">
+</span>        <span class="keyword">return</span> <span class="name">aggrigateList</span><span class="operator">;</span> <span class="text">
+</span><span class="text">
+</span><span class="notcovered"><span class="keyword">def</span> <span class="name">getUserBestAggregates</span><span class="operator">(</span><span class="name">course</span><span class="operator">)</span><span class="operator">:</span></span><span class="text">
+</span>        <span class="string">'''
+        Calculates the aggregate stats for the best results for each user
+        in a course.
+        @precondition Course exists
+        @precondition Course.objects.get(course) != null
+        @postcondition For each user in the course, return a dictionary of their
+                       aggregates
+        '''</span><span class="text">
+</span>        <span class="name">cursor</span> <span class="operator">=</span> <span class="name">connection</span><span class="operator">.</span><span class="name">cursor</span><span class="operator">(</span><span class="operator">)</span><span class="text">
+</span>        <span class="name">cursor</span><span class="operator">.</span><span class="name">execute</span><span class="operator">(</span><span class="string">'''SELECT user_id, username,
+                                                count(*),
+                            max(Cast(score as FLOAT)/cast(maxscore as Float)),
+                            min(Cast(score as FLOAT)/cast(maxscore as Float)),
+                            avg(Cast(score as FLOAT)/cast(maxscore as Float))
+                   FROM (stats_stat 
+                         INNER JOIN (select MAX(Cast(Score as FLOAT) 
+                        /cast (maxscore as Float)) as inner_maxscore,
+                              user_id as inner_user_id, 
+                              page_id as inner_page_id,
+                              innerStats.course_id as inner_course_id
+                              FROM stats_stat as innerStats 
+                                  WHERE innerStats.course_id=%s 
+                                  GROUP BY user_id, page_id, course_id) as
+                                                              best_score
+                                  ON (Cast(score as FLOAT) / cast (maxscore as FLOAT)) = 
+                                         inner_maxscore and
+                                 user_id = inner_user_id AND 
+                                 page_id = inner_page_id and 
+                                 course_id = inner_course_id ) as best_stats
+                        INNER JOIN auth_user ON
+                                            user_id = auth_user.id    
+                        WHERE best_stats.inner_course_id = %s
+                            GROUP BY user_id,username ;
+                       '''</span><span class="operator">,</span><span class="operator">[</span><span class="name">course</span><span class="operator">.</span><span class="name">id</span><span class="operator">,</span><span class="name">course</span><span class="operator">.</span><span class="name">id</span><span class="operator">]</span> <span class="operator">)</span><span class="text">
+</span>        <span class="name">rawList</span> <span class="operator">=</span> <span class="name">cursor</span><span class="operator">.</span><span class="name">fetchall</span><span class="operator">(</span><span class="operator">)</span><span class="text">
+</span>        <span class="name">aggrigateList</span> <span class="operator">=</span> <span class="operator">[</span><span class="operator">]</span><span class="text">
+</span>        <span class="keyword">for</span> <span class="name">listItem</span> <span class="keyword">in</span> <span class="name">rawList</span><span class="operator">:</span><span class="text">
+</span>                <span class="name">aggrigateDict</span> <span class="operator">=</span> <span class="operator">{</span><span class="string">'user_id'</span><span class="operator">:</span><span class="name">listItem</span><span class="operator">[</span><span class="number">0</span><span class="operator">]</span><span class="operator">,</span><span class="text">
+</span>                                 <span class="string">'user_name'</span><span class="operator">:</span><span class="name">listItem</span><span class="operator">[</span><span class="number">1</span><span class="operator">]</span><span class="operator">,</span><span class="text">
+</span>                                 <span class="string">'result_count'</span><span class="operator">:</span><span class="name">listItem</span><span class="operator">[</span><span class="number">2</span><span class="operator">]</span><span class="operator">,</span><span class="text">
+</span>                                 <span class="string">'result_max'</span><span class="operator">:</span><span class="name">listItem</span><span class="operator">[</span><span class="number">3</span><span class="operator">]</span><span class="operator">*</span><span class="number">100</span><span class="operator">,</span><span class="text">
+</span>                                 <span class="string">'result_min'</span><span class="operator">:</span><span class="name">listItem</span><span class="operator">[</span><span class="number">4</span><span class="operator">]</span><span class="operator">*</span><span class="number">100</span><span class="operator">,</span><span class="text">
+</span>                                 <span class="string">'result_avg'</span><span class="operator">:</span><span class="name">listItem</span><span class="operator">[</span><span class="number">5</span><span class="operator">]</span><span class="operator">*</span><span class="number">100</span><span class="operator">}</span><span class="text">
+</span>                <span class="name">aggrigateList</span><span class="operator">.</span><span class="name">append</span><span class="operator">(</span><span class="name">aggrigateDict</span><span class="operator">)</span><span class="text">
+</span>        <span class="keyword">return</span> <span class="name">aggrigateList</span><span class="operator">;</span> <span class="text">
+</span><span class="text">
+</span><span class="notcovered"><span class="keyword">def</span> <span class="name">getUserAggregate</span><span class="operator">(</span><span class="name">user</span><span class="operator">,</span> <span class="name">course</span><span class="operator">)</span><span class="operator">:</span></span><span class="text">
+</span><span class="notcovered">        <span class="string">'''
+        Calculates aggregate stats for a single user in a particular
+        course
+        '''</span></span><span class="text">
+</span><span class="notcovered">        <span class="keyword">pass</span></span><span class="text">
+</span><span class="notcovered"></span><span class="text">
+</span><span class="notcovered"><span class="keyword">def</span> <span class="name">getUserLatestWeightedAverage</span><span class="operator">(</span><span class="name">user</span><span class="operator">,</span> <span class="name">couse</span><span class="operator">)</span><span class="operator">:</span></span><span class="text">
+</span><span class="notcovered">        <span class="string">'''
+        Calculates the weighted average of the users latest scores that the
+        user has posted for each quiz. This does not count quizzes the user 
+        hasn't taken yet.
+        '''</span></span><span class="text">
+</span><span class="notcovered">        <span class="keyword">pass</span></span><span class="text">
+</span><span class="notcovered"></span><span class="text">
+</span><span class="notcovered"><span class="keyword">def</span> <span class="name">getUserBestWeightedAverage</span><span class="operator">(</span><span class="name">user</span><span class="operator">,</span> <span class="name">course</span><span class="operator">)</span><span class="operator">:</span></span><span class="text">
+</span><span class="notcovered">        <span class="string">'''
+        Calculates the weighted average of the best scores that the user has posted
+        for each quiz. This does not count quizzes the user hasn't taken yet
+        '''</span></span><span class="text">
+</span><span class="notcovered">        <span class="keyword">pass</span></span><span class="text">
+</span><span class="notcovered"></span><span class="text">
+</span><span class="notcovered"><span class="keyword">def</span> <span class="name">getUserBestScore</span><span class="operator">(</span><span class="name">user</span><span class="operator">,</span> <span class="name">quiz</span><span class="operator">)</span><span class="operator">:</span></span><span class="text">
+</span><span class="notcovered">        <span class="string">'''
+        Gets the best score for a given user on a given quiz
+        '''</span></span><span class="text">
+</span><span class="notcovered">        <span class="keyword">pass</span></span><span class="text">
+</span><span class="notcovered"></span><span class="text">
+</span><span class="notcovered"><span class="keyword">def</span> <span class="name">getUserLatestScore</span><span class="operator">(</span><span class="name">user</span><span class="operator">,</span><span class="name">quiz</span><span class="operator">)</span><span class="operator">:</span></span><span class="text">
+</span><span class="notcovered">        <span class="string">'''
+        Gets the latest score for a given user on a given quiz.
+        '''</span></span><span class="text">
+</span><span class="notcovered">        <span class="keyword">pass</span></span><span class="text">
+</span><span class="notcovered"></span><span class="text">
+</span><span class="notcovered"><span class="keyword">def</span> <span class="name">getUserAverageScore</span><span class="operator">(</span><span class="name">user</span><span class="operator">,</span><span class="name">quiz</span><span class="operator">)</span><span class="operator">:</span></span><span class="text">
+</span><span class="notcovered">        <span class="string">'''
+        Gets the average score for a given user on a given quiz.
+        Note that weighting makes no sense for this use case, as the max score for a
+        quiz should be the same each time you take it.
+        '''</span></span><span class="text">
+</span><span class="notcovered">        <span class="keyword">pass</span></span><span class="text">
+</span><span class="notcovered"></span><span class="text">
+</span><span class="notcovered"><span class="keyword">def</span> <span class="name">getCourseLatestAverage</span><span class="operator">(</span><span class="name">course</span><span class="operator">,</span> <span class="name">quiz</span><span class="operator">)</span><span class="operator">:</span></span><span class="text">
+</span><span class="notcovered">        <span class="string">'''
+        Gets the average score for the the latest quiz results for a given quiz.
+        Note that weighting makes no sense for this use case, as the max score for a
+        quiz should be the same each time you take it.
+        '''</span></span><span class="text">
+</span><span class="notcovered">        <span class="keyword">pass</span></span><span class="text">
+</span><span class="notcovered"></span><span class="text">
+</span><span class="notcovered"><span class="keyword">def</span> <span class="name">getCourseBestAverage</span><span class="operator">(</span><span class="name">course</span><span class="operator">,</span> <span class="name">quiz</span><span class="operator">)</span><span class="operator">:</span></span><span class="text">
+</span><span class="notcovered">        <span class="string">'''
+        Gets the average score of the best quiz results for a given quiz.
+        Note that weighting makes no sense for this use case, as the max score for a
+        quiz should be the same each time you take it.
+        '''</span></span><span class="text">
+</span><span class="notcovered">        <span class="keyword">pass</span></span><span class="text">
+</span><span class="notcovered"></span><span class="text">
+</span><span class="notcovered"><span class="keyword">def</span> <span class="name">getCourseAggregates</span><span class="operator">(</span><span class="name">course</span><span class="operator">)</span><span class="operator">:</span></span><span class="text">
+</span><span class="notcovered">        <span class="string">'''
+        Calculate aggragte stats for all users in a particular course
+        '''</span></span><span class="text">
+</span><span class="notcovered">        <span class="keyword">pass</span></span><span class="text">
+</span><span class="notcovered"></span><span class="text">
+</span><span class="notcovered"></span><span class="text">
+</span><span class="notcovered"><span class="keyword">def</span> <span class="name">removeStat</span><span class="operator">(</span><span class="name">stat</span><span class="operator">,</span> <span class="name">user</span><span class="operator">)</span><span class="operator">:</span></span><span class="text">
+</span><span class="notcovered">        <span class="string">'''
+        Removes a stat from a user
+        '''</span></span><span class="text">
+</span><span class="notcovered">        <span class="keyword">pass</span></span><span class="text">
+</span><span class="notcovered"></span><span class="text">
+</span><span class="notcovered"><span class="keyword">def</span> <span class="name">purgeDeadStats</span><span class="operator">(</span><span class="operator">)</span><span class="operator">:</span></span><span class="text">
+</span><span class="notcovered">        <span class="string">'''
+        Removes stats that have no associated Page/User
+        '''</span></span><span class="text">
+</span><span class="notcovered">        <span class="keyword">pass</span><span class="text"></span></span>
+</pre></body>
+</html>
