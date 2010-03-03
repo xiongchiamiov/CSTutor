@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<django-objects version="1.0">
+   <object pk="100" model="courses.course">
+      <field type="SlugField" name="slug">HomeTestsCourse</field>
+      <field type="CharField" name="name">HomeTestsCourse</field>
+      <field type="BooleanField" name="private">False</field>
+   </object>
+   <object pk="100" model="auth.user">
+      <field type="CharField" name="username">HomeUser</field>
+      <field type="CharField" name="first_name">Home</field>
+      <field type="CharField" name="last_name">User</field>
+      <field type="CharField" name="email"></field>
+      <field type="CharField" name="password"></field>
+      <field type="BooleanField" name="is_staff">True</field>
+      <field type="BooleanField" name="is_active">True</field>
+      <field type="BooleanField" name="is_superuser">True</field>
+      <field type="DateTimeField" name="last_login">2010-01-22 13:14:05</field>
+      <field type="DateTimeField" name="date_joined">2010-01-22 13:14:05</field>
+      <field to="auth.group" name="groups" rel="ManyToManyRel"></field>
+      <field to="auth.permission" name="user_permissions" rel="ManyToManyRel"></field>
+   </object>
+</django-objects>

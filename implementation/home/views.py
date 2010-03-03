@@ -75,8 +75,11 @@ def show_homepage(request):
 			data['not_enrolled'] = True
 		else:#user enrolled in 1 or more classes
 			data['not_enrolled'] = False
-	else:#User is anonymous
-		data['not_enrolled'] = True
+	else: #User is anonymous
+		if not "anonCourses" in request.session:
+			data['not_enrolled'] = True
+		else:
+			data['numClasses'] = len(request.session['anonCourses'])
 	
 	return master_rtr(request, 'homepage.html', data)
 
