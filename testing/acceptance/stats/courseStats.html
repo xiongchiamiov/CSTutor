@@ -1,0 +1,175 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
+	<title> TITLESTRING </title>
+</head>
+<body>
+
+<table width="100%" border="1" cellpadding="4" cellspacing="3">
+	<!-- Defines the columns -->
+	<col align="center"/>
+	<col />
+	<col />
+	<col />
+	<col />
+
+	<!-- Header row -->
+	<thead>
+	<tr>
+		<th >
+			<p>
+			<strong>Case No</strong> 
+			</p>
+		</th>
+			<th >
+			<p>
+			<strong>User Inputs and Command</strong>
+			</p>
+		</th>
+		<th >
+			<p>
+			<strong>Expected Output</strong> 
+			</p>
+		</th>
+		<th >
+			<p>
+			<strong>Remarks</strong> 
+			</p>
+		</th>
+		<th >
+			<p>
+			<strong>Results</strong> 
+			</p>
+		</th>
+	</tr>
+	</thead>
+	<tr>
+	    <td>
+            1
+        </td>
+	    <td>
+            While logged in as a user, enroll in an empty couse.
+            Then, use an administrator account to grant premission 
+            to view stats.
+        </td>
+        <td>
+            You should see a page with places for per-person and per-coruse
+            stats. You should see no results.
+    
+        </td>
+        <td>
+        </td>
+        <td>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            2
+        </td>
+        <td>
+            Complete the input steps from test no 1, then take a quiz as the 
+            normal user. Then view the stats.
+        </td>
+        <td>
+            You should see some results in the stats display.
+        </td>
+        <td>
+            The values you see depend on what answers you put into the quiz.
+        </td>
+        <td>
+            
+        </td>
+    </tr>
+    <tr>
+        <td>
+            3
+        </td>
+        <td>
+            Complete the input steps in test no 1. and test no 2, then
+            take a quiz as a normal user again with different answers.
+            Then view the stats.
+        </td>
+        <td>
+            If your score on the quiz is higher than than the previous
+            result, you will see different stats results. Otherwise,
+            you will see no difference.
+        </td>
+        <td>
+            The exact values you see depend on what answers you put into the quiz.
+        </td>
+        <td>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            4
+        </td>
+        <td>
+            Complete the input steps from test no 1, then create a new user and 
+            have them enroll in the course. Then, view the stats page.
+        </td>
+        <td>
+            There should be no change in the stats page.
+        </td>
+        <td>
+            The stats page only displays per-user stats for users that have
+            stats.
+        </td>
+        <td>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            5
+        </td>
+        <td>
+            Complete the input steps form test no 1, 2, 3 and 4, then take
+            the quiz as the second user. Then view the stats page.
+        </td>
+        <td>
+            The stats page should now display a per-user stats row for the
+            new user, and the per-quiz results should reflect the new user's
+            score
+        </td>
+        <td>
+            The exact values will depend on what the quiz results are.
+        </td>
+    </tr>
+	<!-- Footer row -->
+	<tfoot>
+	<tr>
+		<th >
+			<p>
+			<strong>Case No</strong> 
+			</p>
+		</th>
+			<th >
+			<p>
+			<strong>User Inputs and Command</strong>
+			</p>
+		</th>
+		<th >
+			<p>
+			<strong>Expected Output</strong> 
+			</p>
+		</th>
+		<th >
+			<p>
+			<strong>Remarks</strong> 
+			</p>
+		</th>
+		<th >
+			<p>
+			<strong>Results</strong> 
+			</p>
+		</th>
+	</tr>
+	</tfoot>
+	<tbody>
+	<!-- YOUR ROWS HERE -->
+	</tbody>
+</table>
+</body>
+</html>
