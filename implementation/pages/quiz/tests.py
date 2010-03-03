@@ -567,15 +567,15 @@ class QuizViewTests(TestCase):
 
 		# Case 2 - A bad course and a good quiz should display an error
 		response = self.client.get('/course/' + 'badClass' + '/page/' + self.quizSlug1 + '/edit/')
-		self.failUnlessEqual(response.status_code, 404) 
+		self.failUnlessEqual(response.status_code, 302) 
 
 		# Case 3 - A good course and a bad quiz should display an error
 		response = self.client.get('/course/' + self.courseSlug + '/page/' + 'badQuiz' + '/edit/')
-		self.failUnlessEqual(response.status_code, 404) 
+		self.failUnlessEqual(response.status_code, 302) 
 
 		# Case 4 - A bad course and a bad quiz should display an error
 		response = self.client.get('/course/' + 'badClass' + '/page/' + 'badQuiz' + '/edit/')
-		self.failUnlessEqual(response.status_code, 404)
+		self.failUnlessEqual(response.status_code, 302)
 
 	def testEditPrivateQuizUrl(self):
 		'''
