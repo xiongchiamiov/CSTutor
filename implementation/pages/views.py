@@ -80,6 +80,7 @@ def show_page(request, course_slug, page_slug):
 		except Quiz.DoesNotExist:
 			raise Http404
 
+@login_required
 def edit_page(request, course_slug, page_slug):
 	'''
 	This view verifies that a valid course/page pair is given, then verifies that the user has edit permissions,

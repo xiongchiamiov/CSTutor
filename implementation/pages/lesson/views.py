@@ -6,6 +6,7 @@ from pages.lesson.models import Lesson
 from home.views import master_rtr
 from pages.lesson.lesson import *
 from pages.page import getNextPage, getPrevPage
+from django.contrib.auth.decorators import login_required
 import urlparse
 import re
 
@@ -16,6 +17,7 @@ import re
 @author John Hartquist
 '''
 
+@login_required
 def create_lesson(request, course_slug, page_slug):
 	'''
 	@author Matthew Tytel
@@ -83,6 +85,7 @@ def show_lesson(request, course_slug, page_slug, lessonPage):
 			{'course_slug':course_slug, 'page_slug':page_slug, 
 			 'content':content, 'lesson_title':title, 'create_enabled':True})
 
+@login_required
 def edit_lesson(request, course_slug, page_slug):
 	'''
 	@author Russell Mezzetta
