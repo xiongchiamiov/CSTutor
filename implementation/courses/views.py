@@ -329,7 +329,7 @@ def join_course_request(request):
 				print(request.session['anonCourses'])
 		else:
 			request.session['anonCourses'] = [course]
-			message = "You have been temporarily added to %s"
+			message = "You have been temporarily added to %s" % str(course)
 		
 		user = "Anonymous user"
 		
