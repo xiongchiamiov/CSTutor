@@ -10,7 +10,8 @@
       <field type="CharField" name="first_name">Home</field>
       <field type="CharField" name="last_name">User</field>
       <field type="CharField" name="email"></field>
-      <field type="CharField" name="password"></field>
+		<!-- password is "password" -->
+      <field type="CharField" name="password">sha1$afeda$648e804b09a7bf98dbac6b7da13d6dbe0c7716f6</field>
       <field type="BooleanField" name="is_staff">True</field>
       <field type="BooleanField" name="is_active">True</field>
       <field type="BooleanField" name="is_superuser">True</field>
@@ -18,5 +19,28 @@
       <field type="DateTimeField" name="date_joined">2010-01-22 13:14:05</field>
       <field to="auth.group" name="groups" rel="ManyToManyRel"></field>
       <field to="auth.permission" name="user_permissions" rel="ManyToManyRel"></field>
+   </object>
+   <object pk="100" model="pages.page">
+      <field to="courses.course" name="course" rel="ManyToOneRel">100</field>
+      <field type="SlugField" name="slug">HomeTestsIndex</field>
+      <field type="TextField" name="name">HomeTestsIndex</field>
+      <field type="IntegerField" name="left">1</field>
+      <field type="IntegerField" name="right">4</field>
+   </object>
+   <object pk="100" model="lesson.lesson">
+      <field type="TextField" name="content">HomeTestsIndexPage</field>
+      <field type="TextField" name="workingCopy">BADBADBADBAD</field>
+   </object>
+   <object pk="101" model="pages.page">
+      <field to="courses.course" name="course" rel="ManyToOneRel">100</field>
+      <field type="SlugField" name="slug">HomeTestsQuiz</field>
+      <field type="TextField" name="name">HomeTestsQuiz</field>
+      <field type="IntegerField" name="left">2</field>
+      <field type="IntegerField" name="right">3</field>
+   </object>
+   <object pk="101" model="quiz.quiz">
+      <field type="TextField" name="text">HomeTestsQuizText</field>
+      <field type="BooleanField" name="hidden">False</field>
+      <field type="BooleanField" name="upToDate">True</field>
    </object>
 </django-objects>
