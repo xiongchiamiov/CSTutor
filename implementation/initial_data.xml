@@ -127,6 +127,11 @@
       <field type="CharField" name="name">Large Testing Course</field>
       <field type="BooleanField" name="private">False</field>
    </object>
+   <object pk="4" model="courses.course">
+      <field type="SlugField" name="slug">private-course</field>
+      <field type="CharField" name="name">Private Course</field>
+      <field type="BooleanField" name="private">True</field>
+   </object>
    <object pk="1" model="courses.enrollment">
       <field to="auth.user" name="user" rel="ManyToOneRel">1</field>
       <field to="courses.course" name="course" rel="ManyToOneRel">1</field>
@@ -161,6 +166,33 @@
       <field type="BooleanField" name="edit">True</field>
       <field type="BooleanField" name="stats">True</field>
       <field type="BooleanField" name="manage">True</field>
+      <field type="DateTimeField" name="lastAction">2010-03-01 15:10:28</field>
+   </object>
+	<object pk="5" model="courses.enrollment">
+      <field to="auth.user" name="user" rel="ManyToOneRel">1</field>
+      <field to="courses.course" name="course" rel="ManyToOneRel">4</field>
+      <field type="BooleanField" name="view">True</field>
+      <field type="BooleanField" name="edit">True</field>
+      <field type="BooleanField" name="stats">True</field>
+      <field type="BooleanField" name="manage">True</field>
+      <field type="DateTimeField" name="lastAction">2010-03-01 15:10:28</field>
+   </object>
+	<object pk="6" model="courses.enrollment">
+      <field to="auth.user" name="user" rel="ManyToOneRel">2</field>
+      <field to="courses.course" name="course" rel="ManyToOneRel">4</field>
+      <field type="BooleanField" name="view">False</field>
+      <field type="BooleanField" name="edit">False</field>
+      <field type="BooleanField" name="stats">False</field>
+      <field type="BooleanField" name="manage">False</field>
+      <field type="DateTimeField" name="lastAction">2010-03-01 15:10:28</field>
+   </object>
+	<object pk="7" model="courses.enrollment">
+      <field to="auth.user" name="user" rel="ManyToOneRel">4</field>
+      <field to="courses.course" name="course" rel="ManyToOneRel">4</field>
+      <field type="BooleanField" name="view">False</field>
+      <field type="BooleanField" name="edit">False</field>
+      <field type="BooleanField" name="stats">False</field>
+      <field type="BooleanField" name="manage">False</field>
       <field type="DateTimeField" name="lastAction">2010-03-01 15:10:28</field>
    </object>
    <object pk="1" model="pages.page">
@@ -282,6 +314,13 @@
       <field type="IntegerField" name="left">6</field>
       <field type="IntegerField" name="right">7</field>
    </object>
+  <object pk="18" model="pages.page">
+      <field to="courses.course" name="course" rel="ManyToOneRel">4</field>
+      <field type="SlugField" name="slug">private-course</field>
+      <field type="TextField" name="name">Private Course</field>
+      <field type="IntegerField" name="left">1</field>
+      <field type="IntegerField" name="right">2</field>
+   </object>
    <object pk="1" model="lesson.lesson">
       <field type="TextField" name="content">This is an index page for CPE102</field>
       <field type="TextField" name="workingCopy">This is an index page for CPE102</field>
@@ -341,6 +380,10 @@
    <object pk="16" model="lesson.lesson">
       <field type="TextField" name="content">&lt;p&gt;100&lt;/p&gt;</field>
       <field type="TextField" name="workingCopy">&lt;p&gt;100&lt;/p&gt;</field>
+   </object>
+	<object pk="18" model="lesson.lesson">
+      <field type="TextField" name="content">This is an index page for the private course</field>
+      <field type="TextField" name="workingCopy">This is an index page for the private course</field>
    </object>
    <object pk="4" model="quiz.quiz">
       <field type="TextField" name="text">Sample Quiz</field>
