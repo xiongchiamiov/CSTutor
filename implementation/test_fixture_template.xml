@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<django-objects version="1.0">
+   <object pk="100" model="auth.user">
+      <field type="CharField" name="username">testuser1</field>
+      <field type="CharField" name="first_name">testuser1</field>
+      <field type="CharField" name="last_name">testuser1</field>
+      <field type="CharField" name="email"></field>
+		<!-- password is "password" -->
+      <field type="CharField" name="password">sha1$afeda$648e804b09a7bf98dbac6b7da13d6dbe0c7716f6</field>
+      <field type="BooleanField" name="is_staff">True</field>
+      <field type="BooleanField" name="is_active">True</field>
+      <field type="BooleanField" name="is_superuser">True</field>
+      <field to="auth.group" name="groups" rel="ManyToManyRel"></field>
+      <field to="auth.permission" name="user_permissions" rel="ManyToManyRel"></field>
+   </object>
+   <object pk="101" model="auth.user">
+      <field type="CharField" name="username">testuser2</field>
+      <field type="CharField" name="first_name">testuser2</field>
+      <field type="CharField" name="last_name">testuser2</field>
+      <field type="CharField" name="email"></field>
+		<!-- password is "password" -->
+      <field type="CharField" name="password">sha1$afeda$648e804b09a7bf98dbac6b7da13d6dbe0c7716f6</field>
+      <field type="BooleanField" name="is_staff">True</field>
+      <field type="BooleanField" name="is_active">True</field>
+      <field type="BooleanField" name="is_superuser">True</field>
+      <field to="auth.group" name="groups" rel="ManyToManyRel"></field>
+      <field to="auth.permission" name="user_permissions" rel="ManyToManyRel"></field>
+   </object>
+   <object pk="100" model="courses.course">
+      <field type="SlugField" name="slug">testcoursepublic</field>
+      <field type="CharField" name="name">testcoursepublic</field>
+      <field type="BooleanField" name="private">False</field>
+   </object>
+   <object pk="101" model="courses.course">
+      <field type="SlugField" name="slug">testcourseprivate</field>
+      <field type="CharField" name="name">testcourseprivate</field>
+      <field type="BooleanField" name="private">True</field>
+   </object>
+   <object pk="100" model="courses.enrollment">
+      <field to="auth.user" name="user" rel="ManyToOneRel">100</field>
+      <field to="courses.course" name="course" rel="ManyToOneRel">100</field>
+      <field type="BooleanField" name="view">True</field>
+      <field type="BooleanField" name="edit">True</field>
+      <field type="BooleanField" name="stats">True</field>
+      <field type="BooleanField" name="manage">True</field>
+      <field type="DateTimeField" name="lastAction">2010-03-01 15:10:28</field>
+   </object>
+   <object pk="101" model="courses.enrollment">
+      <field to="auth.user" name="user" rel="ManyToOneRel">100</field>
+      <field to="courses.course" name="course" rel="ManyToOneRel">101</field>
+      <field type="BooleanField" name="view">True</field>
+      <field type="BooleanField" name="edit">True</field>
+      <field type="BooleanField" name="stats">True</field>
+      <field type="BooleanField" name="manage">True</field>
+      <field type="DateTimeField" name="lastAction">2010-03-01 15:10:28</field>
+   </object>
+   <object pk="100" model="pages.page">
+      <field to="courses.course" name="course" rel="ManyToOneRel">100</field>
+      <field type="SlugField" name="slug">testcoursepublic</field>
+      <field type="TextField" name="name">testcoursepublic</field>
+      <field type="IntegerField" name="left">1</field>
+      <field type="IntegerField" name="right">6</field>
+   </object>
+   <object pk="101" model="pages.page">
+      <field to="courses.course" name="course" rel="ManyToOneRel">100</field>
+      <field type="SlugField" name="slug">publiclesson</field>
+      <field type="TextField" name="name">publiclesson</field>
+      <field type="IntegerField" name="left">2</field>
+      <field type="IntegerField" name="right">3</field>
+   </object>
+   <object pk="102" model="pages.page">
+      <field to="courses.course" name="course" rel="ManyToOneRel">100</field>
+      <field type="SlugField" name="slug">publicquiz</field>
+      <field type="TextField" name="name">publicquiz</field>
+      <field type="IntegerField" name="left">4</field>
+      <field type="IntegerField" name="right">5</field>
+   </object>
+   <object pk="100" model="lesson.lesson">
+      <field type="TextField" name="content">public test course index</field>
+      <field type="TextField" name="workingCopy">public test course index</field>
+   </object>
+   <object pk="101" model="lesson.lesson">
+      <field type="TextField" name="content">public test course public lesson</field>
+      <field type="TextField" name="workingCopy">public test course public lesson</field>
+   </object>
+   <object pk="102" model="quiz.quiz">
+      <field type="TextField" name="text">public quiz</field>
+      <field type="BooleanField" name="hidden">False</field>
+      <field type="BooleanField" name="upToDate">True</field>
+   </object>
+</django-objects>
