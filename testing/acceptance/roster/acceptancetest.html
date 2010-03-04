@@ -1,0 +1,153 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
+	<title> Roster Acceptance Test by Jon Inloes
+ </title>
+</head>
+<body>
+
+<table width="100%" border="1" cellpadding="4" cellspacing="3">
+	<!-- Defines the columns -->
+	<col align="center"/>
+	<col />
+	<col />
+	<col />
+	<col />
+
+	<!-- Header row -->
+	<thead>
+	<tr>
+		<th >
+			<p>
+			<strong>Case No</strong> 
+			</p>
+		</th>
+			<th >
+			<p>
+			<strong>User Inputs and Command</strong>
+			</p>
+		</th>
+		<th >
+			<p>
+			<strong>Expected Output</strong> 
+			</p>
+		</th>
+		<th >
+			<p>
+			<strong>Remarks</strong> 
+			</p>
+		</th>
+		<th >
+			<p>
+			<strong>Results</strong> 
+			</p>
+		</th>
+	</tr>
+	</thead>
+	<!-- Footer row -->
+	<tfoot>
+	<tr>
+		<th >
+			<p>
+			<strong>Case No</strong> 
+			</p>
+		</th>
+			<th >
+			<p>
+			<strong>User Inputs and Command</strong>
+			</p>
+		</th>
+		<th >
+			<p>
+			<strong>Expected Output</strong> 
+			</p>
+		</th>
+		<th >
+			<p>
+			<strong>Remarks</strong> 
+			</p>
+		</th>
+		<th >
+			<p>
+			<strong>Results</strong> 
+			</p>
+		</th>
+	</tr>
+	</tfoot>
+	<tbody>
+<tr>
+<td align="center"><p>1</p></td>
+<td><p>Log into the CSTutor,<br/>Create a new course,<br/>Click the name of the course in the navigation bar,<br/>Click the Roster button for the course</p></td>
+<td><p>The roster page for the course is shown</p></td>
+<td><p>This verifies that showing the roster for a course works</p></td>
+<td><p>Pass</p></td>
+</tr>
+<tr>
+<td align="center"><p>2</p></td>
+<td><p>Navigate to the roster page as shown in case 1,<br/>Click the add user button,<br/>Enter in jinloes on the add user screen,<br/>Click the submit button</p></td>
+<td><p>User Jon Inloes, username jinloes shows up in the roster</p></td>
+<td><p>This test verifies that adding users to the roster works</p></td>
+<td><p>Pass</p></td>
+</tr>
+<tr>
+<td align="center"><p>3</p></td>
+<td><p>Navigate to the roster page as shown in case 1,<br/>Click manage checkbox for jinloes,<br/>Click the update roster button</p></td>
+<td><p>User jinloes now has manage permission</p></td>
+<td><p>This test verifies that changing a user's manage permission works</p></td>
+<td><p>Pass</p></td>
+</tr>
+<tr>
+<td align="center"><p>4</p></td>
+<td><p>Navigate to the roster page as shown in case 1,<br/>Click edit checkbox for jinloes,<br/>Click the Update Roster button</p></td>
+<td><p>User jinloes now has edit permission for the course</p></td>
+<td><p>This test verifies that changing a user's edit permission works</p></td>
+<td><p>Pass</p></td>
+</tr>
+<tr>
+<td align="center"><p>5</p></td>
+<td><p>Navigate to the roster page as shown in case 1,<br/>Click stats checking for jinloes,<br/>Click the Update Roster button</p></td>
+<td><p>User jinloes does not have stats permission for the course</p></td>
+<td><p>This test verifies that chaning a user's edit permission works</p></td>
+<td><p>Pass</p></td>
+</tr>
+<tr>
+<td align="center"><p>6</p></td>
+<td><p>Navigate to the roster add user screen as shown in case 2,<br/> Enter in Jon in the first name search text field,<br/>Enter in Inloes in the last name search text field,<br/>Click the search button</p></td>
+<td><p>Username jinloes shows up on the screen</p></td>
+<td><p>This test verfies that searching for a users works</p></td>
+<td><p>Pass</p></td>
+</tr>
+<tr>
+<td align="center"><p>7</p></td>
+<td><p>Navigate to the roster add user screen as shown in case 2,<br/>Open the file browser,<br/>Select testing/acceptance/roster/usernames.txt,<br/>Click the submit button</p></td>
+<td><p>pearson and mtytel show up in the roster</p></td>
+<td><p>This test verifies that adding users from a text file works</p></td>
+<td><p>Pass</p></td>
+</tr>
+<tr>
+<td align="center"><p>8</p></td>
+<td><p>Navigate to the roster page as shown in case 1,<br/>Check Jon Inloes's remove checkbox,<br/>Click the Update Roster button</p></td>
+<td><p>User Jon Inloes username jinloes is removed from the roster</p></td>
+<td><p>This test verifies that removing a user from the roster works</p></td>
+<td><p>Pass</p></td>
+</tr>
+<tr>
+<td align="center"><p>9</p></td>
+<td><p>Log in with username: mgius password: password,<br/> View Private Course's roster as shown in case 1,<br/>Click the accept checkbox for user rmezzetta,<br/>Click the Update Pending button</p></td>
+<td><p>User Russell Mezzetta username rmezzetta is removed from the pending request list and shows up in the roster</p></td>
+<td><p>This test verifies that accpeting a user into the roster works</p></td>
+<td><p>Pass</p></td>
+</tr>
+<tr>
+<td align="center"><p>10</p></td>
+<td><p>Log in with username: mgius password: password,<br/> View Private Course's roster as shown in case 1,<br/>Click the deny checkbox for user jinloes,<br/>Click the Update Pending button</p></td>
+<td><p>User Jon Inloes username jinloes should now be removed from the pending requests list and not show up in the roster</p></td>
+<td><p>This test verifies that denying a user from a course works</p></td>
+<td><p>Pass</p></td>
+</tr>
+	</tbody>
+</table>
+</body>
+</html>
