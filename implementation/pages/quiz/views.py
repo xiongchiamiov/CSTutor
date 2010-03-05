@@ -29,10 +29,11 @@ def create_quiz(request, course_slug, page_slug):
 		course = Course.objects.get(slug=course_slug)
 		name = request.POST['name']
 		newQuiz = Quiz(course=course, name=name, slug=slugify(name), text=name, upToDate=True)
-		newQuizWorkingCopy = Quiz(course=course, name=name, slug=(newQuiz.slug + "_workingCopy"), text=name)
+		#what the heck was this line here for?
+		#newQuizWorkingCopy = Quiz(course=course, name=name, slug=(newQuiz.slug + "_workingCopy"), text=name)
 		insertChildPage(newQuiz, Page.objects.get(slug=page_slug))
 		newQuiz = Quiz.objects.get(slug=newQuiz.slug)
-		workingCopy = Quiz(course=newQuiz.course, name=newQuiz.name, slug=(newQuiz.slug + "_workingCopy"), text=newQuiz.name, left=newQuiz.left, right=newQuiz.right)
+		workingCopy = Quiz(course=newQuiz.course, name=newQuiz.name, slug=(newQuiz.slug + "_workingCopy"), text=newQuiz.name, left=0, right=0)
 		workingCopy.save()
 		return HttpResponseRedirect('/course/' + course_slug + '/page/' + newQuiz.slug + '/edit/')
 	else:
@@ -52,7 +53,6 @@ def show_quiz(request, course, page_slug):
 	quiz = Quiz.objects.get(slug=page_slug)
 	quizTitle = quiz.text
 	questions = quiz.questions.all().order_by("order")
-
 	return master_rtr(request, 'page/quiz/viewQuiz.html', \
 			            {'course':course, 'course_slug':course, \
 							 'quizTitle':quizTitle, \

@@ -68,6 +68,8 @@ def insertPageAfterNum(self, course, insertAfterNum):
 	self.right = insertAfterNum + 2
 	self.course = course
 	coursePages = Page.objects.filter(course__exact=self.course)
+	#by our new convention pages with left <= 0 will be ignored
+	coursePages = coursePages.exclude(left__lte=0)
 	# These pages are later in the tree, both left and right need to be inc by 2
 	updateLeft = coursePages.filter(left__gt=insertAfterNum)
 	for page in updateLeft:
@@ -127,6 +129,8 @@ def removePage(self):
 		 1           page,page      ValidateTree == True
 	'''
 	coursePages = Page.objects.filter(course__exact=self.course)
+	#by our new convention pages with left <= 0 will be ignored
+	coursePages = coursePages.exclude(left__lte=0)
 	removeNumber = self.left
 
    # have to use list to force evaluation, otherwise the numbers won't work out
@@ -163,11 +167,11 @@ def movePage(self, insertAfter):
 	1           page,page      ValidateTree == True
 	'''
 
-	#print "debug1.0 "+Page.objects.get(slug=self.slug).lesson.content
-	deletedpage = removePage(self)
-	#print "debug1.1 "+Page.objects.get(slug=self.slug).lesson.content
+	#deletedpage = removePage(self)
+	#set left to 0 makes this page be ignored by the insert function
+	self.left = 0
+	self.save()
 	insertPage(self, insertAfter)
-	#print "debug1.2 "+Page.objects.get(slug=self.slug).lesson.content
 	return self
 
 def movePageToParent(self, newParent):
@@ -185,7 +189,10 @@ def movePageToParent(self, newParent):
 	1           page,page      ValidateTree == True
 	'''
 
-	deletedpage = removePage(self)
+	#deletedpage = removePage(self)
+	#set left to 0 makes this page be ignored by the insert function
+	self.left = 0
+	self.save()
 	insertChildPage(self, newParent)
 
 	return self

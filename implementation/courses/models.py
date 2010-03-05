@@ -49,7 +49,8 @@ class Course(models.Model):
 #				toc.append(curPage)
 #			elif (curPage.left == prevPage
 #
-		pages = [p for p in self.pages.order_by('left')]
+		#by new convention ignore pages with left <= 0
+		pages = [p for p in self.pages.exclude(left__lte=0).order_by('left')]
 		return self.tableOfContentsBuilder(pages)
 	
 	def tableOfContentsBuilder(self, pages):
