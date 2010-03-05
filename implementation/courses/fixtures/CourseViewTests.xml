@@ -24,7 +24,7 @@
       <field type="CharField" name="email"></field>
       <field type="CharField" name="password">sha1$afeda$648e804b09a7bf98dbac6b7da13d6dbe0c7716f6</field>
       <field type="BooleanField" name="is_staff">False</field>
-      <field type="BooleanField" name="is_active">False</field>
+      <field type="BooleanField" name="is_active">True</field>
       <field type="BooleanField" name="is_superuser">False</field>
       <field type="DateTimeField" name="last_login">2010-01-22 13:14:05</field>
       <field type="DateTimeField" name="date_joined">2010-01-22 13:14:05</field>
@@ -107,7 +107,7 @@
       <field to="auth.permission" name="user_permissions" rel="ManyToManyRel"></field>
    </object>
 	<!-- enrolls the admin user in the Public course -->
-   <object pk="101" model="courses.enrollment">
+   <object pk="201" model="courses.enrollment">
       <field to="auth.user" name="user" rel="ManyToOneRel">104</field>
       <field to="courses.course" name="course" rel="ManyToOneRel">101</field>
       <field type="BooleanField" name="view">True</field>

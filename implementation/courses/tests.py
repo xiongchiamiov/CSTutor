@@ -106,7 +106,7 @@ class CourseViewTests(TestCase):
 		statusCode = self.client.get('/course/not-a-class/').status_code
 		self.failUnlessEqual(statusCode, 404, "Oh my!  Our status code was %s." % statusCode)
 
-	def testRoster(self):
+	def testShowRoster(self):
 		'''
 		@author Jon Inloes
 		Tests that redirection to the roster page works
@@ -114,8 +114,14 @@ class CourseViewTests(TestCase):
 		Case no.        	Inputs                                       Expected Output    	Remark
 		1						slug = PageViewsPublicCourse						200                	200 is successful redirection
 								adminUsername = enrollmentTestAdmin	
-								password = password				
-		2               url = /course/badclass/roster/	                   500            		500 is an internal server error
+								password = password			
+	
+		2               	url = /course/badclass/roster/	            404            		404 is not found
+
+		3						slug = 'PageViewsPublicCourse'
+								adminUsername = 'PageViewsPublicUser'
+								password = 'password'
+								template = 'roster/invalid_permissions.html'		
 		'''
 
 		slug = 'PageViewsPublicCourse'
@@ -129,12 +135,73 @@ class CourseViewTests(TestCase):
 		response = self.client.get('/course/' + slug + '/roster/')
 		self.failUnlessEqual(response.status_code, 200, 'redirection to the roster page failed')
 
+
+	def testShowRosterCase2(self):
+		'''
+		Test show roster case 2
+		'''
+		slug = 'PageViewsPublicCourse'
+		adminUsername = 'enrollmentTestAdmin'
+		password = 'password'
+
+		#logs in and checks to make sure the login was successful
+		self.failUnlessEqual(self.client.login(username=adminUsername, password=password), True)
+
 		#Tries to display a roster that does not exist
 		slug = 'badclass'
 
 		response = self.client.get('/course/' + slug + '/roster/')
 		self.failUnlessEqual(response.status_code, 404, 'URL redirection is broken. This is a bad link and should 404')
 
+	def testShowRosterCase3(self):
+
+		slug = 'PageViewsPublicCourse'
+		adminUsername = 'PageViewsPublicUser'
+		password = 'password'
+		template = 'roster/invalid_permissions.html'
+
+		#logs in and checks to make sure the login was successful
+		self.failUnlessEqual(self.client.login(username=adminUsername, password=password), True)
+		
+
+		#Displays the roster and checks to make sure it was successful		
+		response = self.client.get('/course/' + slug + '/roster/')
+		self.failUnlessEqual(response.status_code, 200, 'redirection to the roster page failed')
+
+		#asserts that inval_permissions.html page was rendered because the logged in user did not have valid permission
+		self.assertTemplateUsed(response, template)
+
+	def testShowRosterCase4(self):
+		'''
+		show roster test case 4
+		'''
+		pass
+		#slug = 'PageViewsPublicCourse'
+		#adminUsername = 'enrollmentTestAdmin'
+		#password = 'password'
+		#template = 'roster/index.html'
+
+		#logs in and checks to make sure the login was successful
+		#self.failUnlessEqual(self.client.login(username=adminUsername, password=password), True)
+
+
+		#response = self.client.get('/course/'+ slug + '/roster/')
+
+		#self.client.request.FILES['badusers']='badusernames.txt'
+
+		#response = self.client.get('/course/'+ slug + '/roster/adduser/addFromFile/')
+
+		#self.client.post('/course/' + slug + '/roster/adduser/', {'username': username, 'command': 'add'})
+		#asserts that failed.html page was rendered because a the username did not exist
+		#self.assertTemplateUsed(response, template)
+		
+		#Displays the roster and checks to make sure it was successful		
+		#response = self.client.get('/course/' + slug + '/roster/')
+		#self.failUnlessEqual(response.status_code, 200, 'redirection to the roster page failed')
+
+		#Displays the roster and checks to make sure it was successful		
+		#response = self.client.get('/course/' + slug + '/roster/')
+		#self.failUnlessEqual(response.status_code, 200, 'redirection to the roster page failed')
 
 	def testEnrollUser(self):
 		'''
