@@ -6,12 +6,13 @@ This file contains tests for the users package.
 @author James Pearson
 """
 
-import unittest
+#import unittest
+from django.test import TestCase
 from django.test.client import Client
 from django.contrib.auth.models import User
 from users.user import registerNewUser, loginWrapper
 
-class UserTests(unittest.TestCase):
+class UserTests(TestCase):
 	'''
 	@author John Hartquist
 	@author Russell Mezzetta
@@ -20,12 +21,30 @@ class UserTests(unittest.TestCase):
 	for logging in and out, editing and viewing user profiles.
 	
 	CLASS TEST PLAN
-	Phase 0: Load test fixtures (initial-data.xml)
-	Phase 1: Unit test login, logout, register new user, show profile, updateEmail
+	Phase 0: Load test fixtures (UserTests.xml)
+		This fixture consists of two courses:
+		testcourseprivate has none.
+		testcoursepublic has a lesson and a quiz.
+		Two users:
+		Testuser1 has full permissions in both courses. 
+		Testuser2 has no enrollments. 
+	Phase 1: Test logging in, logging out, viewing profile, updating email, registering a new user
 	'''
+	
+	fixtures = ['UserTests']
+
+	user1 = "usertestuser1"
+	user1email = "testuser1email"
+	password = "password"
+	user2 = "usertestuser2"
+	user2email = "testuser2email"
+	private_course = "testcourseprivate"
+	public_course = "testcoursepublic"
+
+	
 	def setUp(self):
 		'''
-		Sets up the tests
+		Called before each test
 		'''
 		self.client = Client()
 		users = User.objects.all()
@@ -38,11 +57,9 @@ class UserTests(unittest.TestCase):
 		case#            input        expected         output    remark
 		-----            -----        --------         ------    ------
 		1                status_code  200              200       posts a login request
-		'''
-		username = 'jhartquist'
-		password = 'password'
-		response = self.client.post("/login/", {'username': username,
-		                                        'password': password})
+		'''		
+		response = self.client.post("/login/", {'username': self.user1, \
+		                                        'password': self.password})
 		self.failUnlessEqual(response.status_code, 302)
 
 	def testLogout(self):
@@ -54,8 +71,6 @@ class UserTests(unittest.TestCase):
 		-----            -----        --------         ------    ------
 		2                status_code  200              200       posts a logout request
 		'''
-		username = 'jhartquist'
-		password = 'password'
 		response = self.client.post("/logout/") 
 		self.failUnlessEqual(response.status_code, 200)
 
@@ -69,10 +84,8 @@ class UserTests(unittest.TestCase):
 		1                status_code  200              200       shows a users profile
 		
 		'''
-		username = 'jhartquist'
-		password = 'password'
-		self.client.post("/login/", {'username': username,
-		                             'password': password})
+		self.client.post("/login/", {'username': self.user1,
+		                             'password': self.password})
 		response = self.client.get("/profile/")
 		self.failUnlessEqual(response.status_code, 200)
 		
@@ -80,20 +93,18 @@ class UserTests(unittest.TestCase):
 		'''
 		Tests that a user can change their e-mail address
 		
-		case#            input                         expected      output   remark
-		-----            -----                         --------      ------   ------
-		1                email='anemail@nothing'       1             1        valid e-mail check
-		2                email='jhartqui@calpoly.edu'  0             0        success
+		case#            input             expected      output   remark
+		-----            -----             --------      ------   ------
+		1                email=badEmail    1             1        valid e-mail check
+		2                email=user1email  0             0        success
 		
 		'''
 		badEmail = "anemail@nothing"
-		goodEmail = "jhartqui@calpoly.edu"
-		username = 'jhartquist'
-		password = 'password'
 		
-		self.client.post("/login/", {'username': username,
-		                             'password': password})
-		
+		self.client.post("/login/", {'username': self.user1,
+		                             'password': self.password})
+	
+		#test changing to a bad malformed email	
 		response = self.client.post("/profile/", {'form': "Change E-mail", 'email': badEmail })
 		self.failIfEqual(response.content.find("Invalid E-mail Address"), -1)
 
@@ -181,28 +192,40 @@ class UserTests(unittest.TestCase):
 	def testLoginWrapper(self):
 		'''
 		@author Russell Mezzetta
-		Tests the login wrapper for valid functionality.
+		Tests the login view and wrapper for full functionality.
 
-		Couldn't figure out how to get the test suite to directly test the loginWrapper b/c
-		The loginWrapper takes a request object, which needs a valid session/sessionid for login
-		The solution: use less elegant testing method of searching the login response for text
+		case#    input                	expected output   remark
+		-----    -----                	---------------   ------
+		1			username = user1			status_code 302	successful login
+					password = password
+		
+		2			username = invalidUser 	status_code 200	invalid username
+					password = password
+		
+		3			username = user1 			status_code 200	invalid password
+					password = password+"x"
+		
+		4			username = "" 				status_code 200   empty username
+					password = password
+		
+		5			username = user1 			status_code 200   empty password
+					password = ""
 		'''
-		testUser = "testuserLW"
-		testPass = "password"
-		registerNewUser(testUser, testPass, testPass, "first", "last", "email")
-
+		
+		invalidUser = "nonexistantuser"
+		
 		#valid login
-		response = self.client.post('/login/', {'username': testUser, 'password': testPass})
+		response = self.client.post('/login/', {'username': self.user1, 'password': self.password})
 		self.failUnlessEqual(response.content.find("CSTutor Login"), -1)
 		self.failUnlessEqual(response.status_code, 302)
 		
 		#invalid username
-		response = self.client.post('/login/', {'username': "defnotauser", "password": "pass"})
+		response = self.client.post('/login/', {'username': invalidUser, "password": self.password})
 		self.failIfEqual(response.content.find("CSTutor Login"), -1)
 		self.failUnlessEqual(response.status_code, 200)
 		
 		#invalid password
-		response = self.client.post('/login/', {'username': testUser, "password": testPass+"x"})
+		response = self.client.post('/login/', {'username': self.user1, "password": self.password+"x"})
 		self.failIfEqual(response.content.find("CSTutor Login"), -1)
 		self.failUnlessEqual(response.status_code, 200)
 		
@@ -212,6 +235,6 @@ class UserTests(unittest.TestCase):
 		self.failUnlessEqual(response.status_code, 200)
 		
 		#empty password
-		response = self.client.post('/login/', {'username': testUser, "password": ""})
+		response = self.client.post('/login/', {'username': self.user1, "password": ""})
 		self.failIfEqual(response.content.find("CSTutor Login"), -1)
 		self.failUnlessEqual(response.status_code, 200)

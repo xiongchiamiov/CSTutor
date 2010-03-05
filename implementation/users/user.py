@@ -88,14 +88,6 @@ def changePassword(request):
     request.user.save()
     return 0
 
-def removeUser(username, userDB):
-   '''
-   Removes the given user from the user database
-	TODO
-   '''
-   pass
-
-
 def setInstructor(user, instructor):
    '''
    Grants a user permission to create a course
@@ -119,10 +111,6 @@ def registerNewUser(username, password, vpassword, firstName, lastName, email):
 	   password and vpassword match return 2
 		First or last name empty return 5
 	'''
-
-	#TODO do we need to do anything special with username/password characters or length?
-
-	#print "in users.user.registerNewUser"
 	#check that username isn't empty
 	if len(username) <= 0:
 		#print "username is empty"
