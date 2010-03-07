@@ -1,0 +1,195 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+  "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>code coverage of views.py</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+
+<style type="text/css">
+pre.code {
+    font-style: Lucida,"Courier New";
+}
+.number {
+    color: #0080C0;
+}
+.operator {
+    color: #000000;
+}
+.string {
+    color: #008000;
+}
+.comment {
+    color: #808080;
+}
+.name {
+    color: #000000;
+}
+.error {
+    color: #FF8080;
+    border: solid 1.5pt #FF0000;
+}
+.keyword {
+    color: #0000FF;
+    font-weight: bold;
+}
+.text {
+    color: #000000;
+}
+.notcovered {
+    background-color: #FFB2B2;
+}
+</style>
+
+</head>
+<body>
+<pre class="code">
+<span class="keyword">from</span> <span class="name">django</span><span class="operator">.</span><span class="name">http</span> <span class="keyword">import</span> <span class="name">HttpResponseRedirect</span><span class="text">
+</span><span class="keyword">from</span> <span class="name">django</span><span class="operator">.</span><span class="name">shortcuts</span> <span class="keyword">import</span> <span class="name">render_to_response</span><span class="text">
+</span><span class="keyword">from</span> <span class="name">django</span><span class="operator">.</span><span class="name">core</span><span class="operator">.</span><span class="name">urlresolvers</span> <span class="keyword">import</span> <span class="name">reverse</span><span class="text">
+</span><span class="keyword">from</span> <span class="name">courses</span><span class="operator">.</span><span class="name">models</span> <span class="keyword">import</span> <span class="name">Course</span><span class="text">
+</span><span class="keyword">from</span> <span class="name">pages</span><span class="operator">.</span><span class="name">lesson</span><span class="operator">.</span><span class="name">models</span> <span class="keyword">import</span> <span class="name">Lesson</span><span class="text">
+</span><span class="keyword">from</span> <span class="name">home</span><span class="operator">.</span><span class="name">views</span> <span class="keyword">import</span> <span class="name">master_rtr</span><span class="text">
+</span><span class="keyword">from</span> <span class="name">pages</span><span class="operator">.</span><span class="name">lesson</span><span class="operator">.</span><span class="name">lesson</span> <span class="keyword">import</span> <span class="operator">*</span><span class="text">
+</span><span class="keyword">from</span> <span class="name">pages</span><span class="operator">.</span><span class="name">page</span> <span class="keyword">import</span> <span class="name">getNextPage</span><span class="operator">,</span> <span class="name">getPrevPage</span><span class="text">
+</span><span class="keyword">from</span> <span class="name">django</span><span class="operator">.</span><span class="name">contrib</span><span class="operator">.</span><span class="name">auth</span><span class="operator">.</span><span class="name">decorators</span> <span class="keyword">import</span> <span class="name">login_required</span><span class="text">
+</span><span class="keyword">import</span> <span class="name">urlparse</span><span class="text">
+</span><span class="keyword">import</span> <span class="name">re</span><span class="text">
+</span><span class="text">
+</span><span class="string">'''
+@author Matthew Tytel
+@author Russell Mezzetta
+@author Evan Kleist
+@author John Hartquist
+'''</span><span class="text">
+</span><span class="text">
+</span><span class="operator">@</span><span class="name">login_required</span><span class="text">
+</span><span class="keyword">def</span> <span class="name">create_lesson</span><span class="operator">(</span><span class="name">request</span><span class="operator">,</span> <span class="name">course_slug</span><span class="operator">,</span> <span class="name">page_slug</span><span class="operator">)</span><span class="operator">:</span><span class="text">
+</span>        <span class="string">'''
+        @author Matthew Tytel
+
+        Creates a new lesson and shows the user the edit page but
+        does not save the lesson to the database
+        '''</span><span class="text">
+</span><span class="notcovered">        <span class="keyword">if</span> <span class="name">request</span><span class="operator">.</span><span class="name">method</span> <span class="operator">==</span> <span class="string">"POST"</span> <span class="keyword">and</span> <span class="string">"Save"</span> <span class="keyword">in</span> <span class="name">request</span><span class="operator">.</span><span class="name">POST</span><span class="operator">:</span></span><span class="text">
+</span><span class="notcovered">                <span class="name">name</span> <span class="operator">=</span> <span class="name">request</span><span class="operator">.</span><span class="name">POST</span><span class="operator">[</span><span class="string">"lessonname"</span><span class="operator">]</span><span class="operator">.</span><span class="name">strip</span><span class="operator">(</span><span class="operator">)</span></span><span class="text">
+</span><span class="notcovered">                <span class="name">lesson</span> <span class="operator">=</span> <span class="name">CreateLesson</span><span class="operator">(</span><span class="name">name</span><span class="operator">)</span></span><span class="text">
+</span><span class="notcovered">                <span class="name">lesson</span><span class="operator">.</span><span class="name">content</span> <span class="operator">=</span> <span class="name">request</span><span class="operator">.</span><span class="name">POST</span><span class="operator">[</span><span class="string">"content"</span><span class="operator">]</span></span><span class="text">
+</span><span class="notcovered"></span><span class="text">
+</span><span class="notcovered">                <span class="keyword">if</span> <span class="name">len</span><span class="operator">(</span><span class="name">name</span><span class="operator">)</span> <span class="operator">&lt;</span> <span class="number">1</span><span class="operator">:</span></span><span class="text">
+</span><span class="notcovered">                        <span class="keyword">return</span> <span class="name">master_rtr</span><span class="operator">(</span><span class="name">request</span><span class="operator">,</span> <span class="string">'page/lesson/edit_lesson.html'</span><span class="operator">,</span> \
+                                            <span class="operator">{</span><span class="string">'course_slug'</span><span class="operator">:</span><span class="name">course_slug</span><span class="operator">,</span></span><span class="text">
+</span><span class="notcovered">                                                                 <span class="string">'page_slug'</span><span class="operator">:</span> <span class="name">page_slug</span><span class="operator">,</span></span><span class="text">
+</span><span class="notcovered">                                                                 <span class="string">'course'</span><span class="operator">:</span><span class="name">course_slug</span><span class="operator">,</span></span><span class="text">
+</span><span class="notcovered">                                                                 <span class="string">'message'</span><span class="operator">:</span><span class="string">'Lesson names must be non-empty'</span><span class="operator">,</span></span><span class="text">
+</span><span class="notcovered">                                                                 <span class="string">'lesson'</span><span class="operator">:</span><span class="name">lesson</span><span class="operator">,</span> <span class="string">'new'</span><span class="operator">:</span><span class="name">True</span><span class="operator">}</span><span class="operator">)</span></span><span class="text">
+</span><span class="notcovered"></span>        <span class="text">
+</span><span class="notcovered">                <span class="keyword">if</span> <span class="name">saveNewLesson</span><span class="operator">(</span><span class="name">request</span><span class="operator">,</span> <span class="name">course_slug</span><span class="operator">,</span> <span class="name">page_slug</span><span class="operator">)</span> <span class="operator">==</span> <span class="number">0</span><span class="operator">:</span></span><span class="text">
+</span><span class="notcovered">                        <span class="keyword">return</span> <span class="name">HttpResponseRedirect</span><span class="operator">(</span><span class="name">reverse</span><span class="operator">(</span><span class="string">'pages.views.show_page'</span><span class="operator">,</span> <span class="name">args</span><span class="operator">=</span><span class="operator">[</span><span class="name">course_slug</span><span class="operator">,</span> <span class="name">lesson</span><span class="operator">.</span><span class="name">slug</span><span class="operator">]</span><span class="operator">)</span><span class="operator">)</span></span><span class="text">
+</span><span class="notcovered">                <span class="keyword">else</span><span class="operator">:</span></span><span class="text">
+</span><span class="notcovered">                        <span class="keyword">return</span> <span class="name">master_rtr</span><span class="operator">(</span><span class="name">request</span><span class="operator">,</span> <span class="string">'page/lesson/edit_lesson.html'</span><span class="operator">,</span> \
+                                            <span class="operator">{</span><span class="string">'course_slug'</span><span class="operator">:</span><span class="name">course_slug</span><span class="operator">,</span></span><span class="text">
+</span><span class="notcovered">                                                                 <span class="string">'page_slug'</span><span class="operator">:</span> <span class="name">page_slug</span><span class="operator">,</span></span><span class="text">
+</span><span class="notcovered">                                                                 <span class="string">'course'</span><span class="operator">:</span><span class="name">course_slug</span><span class="operator">,</span></span><span class="text">
+</span><span class="notcovered">                                                                 <span class="string">'message'</span><span class="operator">:</span><span class="string">'A lesson with that name already exists'</span><span class="operator">,</span></span><span class="text">
+</span><span class="notcovered">                                                                 <span class="string">'lesson'</span><span class="operator">:</span><span class="name">lesson</span><span class="operator">,</span> <span class="string">'new'</span><span class="operator">:</span><span class="name">True</span><span class="operator">}</span><span class="operator">)</span></span><span class="text">
+</span><span class="notcovered"></span>        <span class="text">
+</span><span class="notcovered">        <span class="name">lesson</span> <span class="operator">=</span> <span class="name">CreateLesson</span><span class="operator">(</span><span class="string">''</span><span class="operator">)</span></span><span class="text">
+</span><span class="notcovered">        <span class="keyword">return</span> <span class="name">master_rtr</span><span class="operator">(</span><span class="name">request</span><span class="operator">,</span> <span class="string">'page/lesson/edit_lesson.html'</span><span class="operator">,</span> \
+                        <span class="operator">{</span><span class="string">'course_slug'</span><span class="operator">:</span><span class="name">course_slug</span><span class="operator">,</span> \
+                         <span class="string">'course'</span><span class="operator">:</span><span class="name">course_slug</span><span class="operator">,</span> \
+                         <span class="string">'page_slug'</span><span class="operator">:</span><span class="name">page_slug</span><span class="operator">,</span> \
+                         <span class="string">'pid'</span><span class="operator">:</span><span class="name">lesson</span><span class="operator">.</span><span class="name">name</span><span class="operator">,</span> <span class="string">'new'</span><span class="operator">:</span><span class="name">True</span><span class="operator">}</span><span class="operator">)</span></span><span class="text">
+</span><span class="text">
+</span><span class="keyword">def</span> <span class="name">show_lesson</span><span class="operator">(</span><span class="name">request</span><span class="operator">,</span> <span class="name">course_slug</span><span class="operator">,</span> <span class="name">page_slug</span><span class="operator">,</span> <span class="name">lessonPage</span><span class="operator">)</span><span class="operator">:</span><span class="text">
+</span>        <span class="string">'''
+        @author Russell Mezzetta
+        This view displays a lesson to the user
+        '''</span><span class="text">
+</span>  <span class="comment"># To get lessonConent now, you need to retreieve the page from the database, cast it to a lesson, and get the "text" attribute
+</span>        <span class="comment">#shouldn't have to try/except because previous calls should guarentee the page exists   
+</span>        <span class="text">
+</span>        <span class="comment">#check request method for prev/next button
+</span>        <span class="keyword">if</span> <span class="name">request</span><span class="operator">.</span><span class="name">method</span> <span class="operator">==</span> <span class="string">"POST"</span><span class="operator">:</span><span class="text">
+</span><span class="notcovered">                <span class="keyword">if</span> <span class="string">"goToNextPage"</span> <span class="keyword">in</span> <span class="name">request</span><span class="operator">.</span><span class="name">POST</span><span class="operator">:</span></span><span class="text">
+</span><span class="notcovered">                        <span class="comment">#redirect to the next page
+</span>                        <span class="name">nextPage</span> <span class="operator">=</span> <span class="name">getNextPage</span><span class="operator">(</span><span class="name">lessonPage</span><span class="operator">)</span></span><span class="text">
+</span><span class="notcovered">                        <span class="keyword">if</span> <span class="name">nextPage</span> <span class="operator">!=</span> <span class="name">None</span><span class="operator">:</span></span><span class="text">
+</span><span class="notcovered">                                <span class="comment">#args = [course_slug, nextPage.slug]
+</span>                                <span class="keyword">return</span> <span class="name">HttpResponseRedirect</span><span class="operator">(</span><span class="name">reverse</span><span class="operator">(</span><span class="string">'pages.views.show_page'</span><span class="operator">,</span> <span class="name">args</span><span class="operator">=</span><span class="operator">[</span><span class="name">course_slug</span><span class="operator">,</span> <span class="name">nextPage</span><span class="operator">.</span><span class="name">slug</span><span class="operator">]</span><span class="operator">)</span><span class="operator">)</span></span><span class="text">
+</span><span class="notcovered">                <span class="keyword">if</span> <span class="string">"goToPrevPage"</span> <span class="keyword">in</span> <span class="name">request</span><span class="operator">.</span><span class="name">POST</span><span class="operator">:</span></span><span class="text">
+</span><span class="notcovered">                        <span class="comment">#redirect to the prev page
+</span>                        <span class="name">prevPage</span> <span class="operator">=</span> <span class="name">getPrevPage</span><span class="operator">(</span><span class="name">lessonPage</span><span class="operator">)</span></span><span class="text">
+</span><span class="notcovered">                        <span class="keyword">if</span> <span class="name">prevPage</span> <span class="operator">!=</span> <span class="name">None</span><span class="operator">:</span></span><span class="text">
+</span><span class="notcovered">                                <span class="comment">#args = [course_slug, prevPage.slug]
+</span>                                <span class="keyword">return</span> <span class="name">HttpResponseRedirect</span><span class="operator">(</span><span class="name">reverse</span><span class="operator">(</span><span class="string">'pages.views.show_page'</span><span class="operator">,</span> <span class="name">args</span><span class="operator">=</span><span class="operator">[</span><span class="name">course_slug</span><span class="operator">,</span> <span class="name">prevPage</span><span class="operator">.</span><span class="name">slug</span><span class="operator">]</span><span class="operator">)</span><span class="operator">)</span></span><span class="text">
+</span>        <span class="text">
+</span>        <span class="name">content</span> <span class="operator">=</span> <span class="name">lessonPage</span><span class="operator">.</span><span class="name">content</span><span class="text">
+</span>        <span class="name">title</span> <span class="operator">=</span> <span class="name">lessonPage</span><span class="operator">.</span><span class="name">name</span><span class="text">
+</span>        <span class="text">
+</span>        <span class="keyword">return</span> <span class="name">master_rtr</span><span class="operator">(</span><span class="name">request</span><span class="operator">,</span> <span class="string">'page/lesson/index.html'</span><span class="operator">,</span> \
+                        <span class="operator">{</span><span class="string">'course_slug'</span><span class="operator">:</span><span class="name">course_slug</span><span class="operator">,</span> <span class="string">'page_slug'</span><span class="operator">:</span><span class="name">page_slug</span><span class="operator">,</span> <span class="text">
+</span>                         <span class="string">'content'</span><span class="operator">:</span><span class="name">content</span><span class="operator">,</span> <span class="string">'lesson_title'</span><span class="operator">:</span><span class="name">title</span><span class="operator">,</span> <span class="string">'create_enabled'</span><span class="operator">:</span><span class="name">True</span><span class="operator">}</span><span class="operator">)</span><span class="text">
+</span><span class="text">
+</span><span class="operator">@</span><span class="name">login_required</span><span class="text">
+</span><span class="keyword">def</span> <span class="name">edit_lesson</span><span class="operator">(</span><span class="name">request</span><span class="operator">,</span> <span class="name">course_slug</span><span class="operator">,</span> <span class="name">page_slug</span><span class="operator">)</span><span class="operator">:</span><span class="text">
+</span>        <span class="string">'''
+        @author Russell Mezzetta
+        @author John Hartquist
+        This view displays the lesson editing page
+        '''</span><span class="text">
+</span>        <span class="text">
+</span>        <span class="comment">#common dictionary fields
+</span>        <span class="name">data</span><span class="operator">=</span><span class="operator">{</span><span class="string">'course_slug'</span><span class="operator">:</span><span class="name">course_slug</span><span class="operator">,</span> <span class="string">'page_slug'</span><span class="operator">:</span><span class="name">page_slug</span><span class="operator">}</span><span class="text">
+</span>        <span class="name">lesson</span> <span class="operator">=</span> <span class="name">Course</span><span class="operator">.</span><span class="name">objects</span><span class="operator">.</span><span class="name">get</span><span class="operator">(</span><span class="name">slug</span><span class="operator">=</span><span class="name">course_slug</span><span class="operator">)</span><span class="operator">.</span><span class="name">pages</span><span class="operator">.</span><span class="name">get</span><span class="operator">(</span><span class="name">slug</span><span class="operator">=</span><span class="name">page_slug</span><span class="operator">)</span><span class="text">
+</span>        <span class="keyword">try</span><span class="operator">:</span><span class="text">
+</span>                <span class="name">lesson</span> <span class="operator">=</span> <span class="name">lesson</span><span class="operator">.</span><span class="name">lesson</span><span class="text">
+</span><span class="notcovered">        <span class="keyword">except</span> <span class="name">Lesson</span><span class="operator">.</span><span class="name">DoesNotExist</span><span class="operator">:</span></span><span class="text">
+</span><span class="notcovered">                <span class="keyword">print</span> <span class="string">"OH MY! page is not a lesson???"</span></span><span class="text">
+</span>        <span class="name">data</span><span class="operator">[</span><span class="string">'lesson'</span><span class="operator">]</span> <span class="operator">=</span> <span class="name">lesson</span> <span class="text">
+</span><span class="text">
+</span>        <span class="keyword">if</span> <span class="name">request</span><span class="operator">.</span><span class="name">method</span> <span class="operator">==</span> <span class="string">"POST"</span><span class="operator">:</span><span class="text">
+</span>                <span class="comment">#Saves the working copy of the lesson
+</span><span class="notcovered">                <span class="keyword">if</span> <span class="string">"Save"</span> <span class="keyword">in</span> <span class="name">request</span><span class="operator">.</span><span class="name">POST</span><span class="operator">:</span></span><span class="text">
+</span><span class="notcovered">                        <span class="comment">#save the content of the lesson
+</span>                        <span class="name">data</span><span class="operator">[</span><span class="string">'lesson'</span><span class="operator">]</span> <span class="operator">=</span> <span class="name">saveLessonWorkingCopy</span><span class="operator">(</span><span class="name">lesson</span><span class="operator">,</span> <span class="name">request</span><span class="operator">.</span><span class="name">POST</span><span class="operator">[</span><span class="string">'content'</span><span class="operator">]</span><span class="operator">)</span></span><span class="text">
+</span><span class="notcovered"></span><span class="text">
+</span><span class="notcovered">                        <span class="comment">#check if the name changed
+</span>                        <span class="keyword">if</span> <span class="name">lesson</span><span class="operator">.</span><span class="name">name</span> <span class="operator">!=</span> <span class="name">request</span><span class="operator">.</span><span class="name">POST</span><span class="operator">[</span><span class="string">'lessonname'</span><span class="operator">]</span><span class="operator">:</span></span><span class="text">
+</span><span class="notcovered">                                <span class="name">r</span> <span class="operator">=</span> <span class="name">saveLessonName</span><span class="operator">(</span><span class="name">lesson</span><span class="operator">,</span> <span class="name">request</span><span class="operator">.</span><span class="name">POST</span><span class="operator">[</span><span class="string">'lessonname'</span><span class="operator">]</span><span class="operator">)</span></span><span class="text">
+</span><span class="notcovered">                                <span class="keyword">if</span> <span class="name">r</span> <span class="operator">==</span> <span class="number">1</span><span class="operator">:</span></span><span class="text">
+</span><span class="notcovered">                                        <span class="name">data</span><span class="operator">[</span><span class="string">'message'</span><span class="operator">]</span> <span class="operator">=</span> <span class="string">"Name change failed: name must be non-empty"</span></span><span class="text">
+</span><span class="notcovered">                                <span class="keyword">elif</span> <span class="name">r</span> <span class="operator">!=</span> <span class="name">None</span><span class="operator">:</span></span><span class="text">
+</span><span class="notcovered">                                        <span class="comment">#yes this is ugly but reverse wouldn't work for some reason
+</span>                                        <span class="keyword">return</span> <span class="name">HttpResponseRedirect</span><span class="operator">(</span><span class="name">reverse</span><span class="operator">(</span><span class="string">'pages.views.edit_page'</span><span class="operator">,</span> <span class="name">args</span><span class="operator">=</span><span class="operator">[</span><span class="name">course_slug</span><span class="operator">,</span> <span class="name">lesson</span><span class="operator">.</span><span class="name">slug</span><span class="operator">]</span><span class="operator">)</span><span class="operator">)</span></span><span class="text">
+</span><span class="notcovered">                                <span class="keyword">else</span><span class="operator">:</span><span class="comment">#name was not unique</span></span><span class="text">
+</span><span class="notcovered">                                        <span class="name">data</span><span class="operator">[</span><span class="string">'message'</span><span class="operator">]</span> <span class="operator">=</span> <span class="string">"Name change failed. A page with that name already exists in this course"</span></span><span class="text">
+</span><span class="notcovered"></span><span class="text">
+</span><span class="notcovered">                        <span class="keyword">return</span> <span class="name">master_rtr</span><span class="operator">(</span><span class="name">request</span><span class="operator">,</span> <span class="string">'page/lesson/edit_lesson.html'</span><span class="operator">,</span> <span class="name">data</span><span class="operator">)</span></span><span class="text">
+</span><span class="notcovered">                        <span class="comment">#return master_rtr(request, 'page/lesson/save_lesson.html', \
+</span>                        <span class="comment">#               {'course':course_slug, 'course_slug':course_slug, \
+</span>                        <span class="comment">#                'page_slug':page_slug, 'pid':page_slug})
+</span></span><span class="text">
+</span><span class="notcovered">                <span class="comment">#removes the lesson from the course
+</span>                <span class="keyword">elif</span> <span class="string">"Remove"</span> <span class="keyword">in</span> <span class="name">request</span><span class="operator">.</span><span class="name">POST</span><span class="operator">:</span></span><span class="text">
+</span><span class="notcovered">                        <span class="name">removeLesson</span><span class="operator">(</span><span class="name">request</span><span class="operator">,</span> <span class="name">course_slug</span><span class="operator">,</span> <span class="name">page_slug</span><span class="operator">)</span></span><span class="text">
+</span><span class="notcovered">                        <span class="keyword">return</span> <span class="name">master_rtr</span><span class="operator">(</span><span class="name">request</span><span class="operator">,</span> <span class="string">'page/lesson/remove_lesson.html'</span><span class="operator">,</span> \
+                                        <span class="operator">{</span><span class="string">'course'</span><span class="operator">:</span> <span class="name">course_slug</span><span class="operator">,</span> <span class="string">'course_slug'</span><span class="operator">:</span><span class="name">course_slug</span><span class="operator">,</span> \
+                                         <span class="string">'page_slug'</span><span class="operator">:</span><span class="name">page_slug</span><span class="operator">,</span> <span class="string">'pid'</span><span class="operator">:</span><span class="name">page_slug</span><span class="operator">}</span><span class="operator">)</span></span><span class="text">
+</span><span class="notcovered"></span>                <span class="text">
+</span><span class="notcovered">                <span class="comment">#redirects to the move_page view
+</span>                <span class="keyword">elif</span> <span class="string">"Move"</span> <span class="keyword">in</span> <span class="name">request</span><span class="operator">.</span><span class="name">POST</span><span class="operator">:</span></span><span class="text">
+</span><span class="notcovered">                        <span class="keyword">return</span> <span class="name">HttpResponseRedirect</span><span class="operator">(</span><span class="name">reverse</span><span class="operator">(</span><span class="string">'pages.views.move_page'</span><span class="operator">,</span> <span class="name">args</span><span class="operator">=</span><span class="operator">[</span><span class="name">course_slug</span><span class="operator">,</span> <span class="name">page_slug</span><span class="operator">]</span><span class="operator">)</span><span class="operator">)</span></span><span class="text">
+</span><span class="notcovered"></span>                <span class="text">
+</span><span class="notcovered">                <span class="comment">#Publishes the workingCopy
+</span>                <span class="keyword">elif</span> <span class="string">"Publish"</span> <span class="keyword">in</span> <span class="name">request</span><span class="operator">.</span><span class="name">POST</span><span class="operator">:</span></span><span class="text">
+</span><span class="notcovered">                        <span class="name">data</span><span class="operator">[</span><span class="string">'lesson'</span><span class="operator">]</span> <span class="operator">=</span> <span class="name">publishLessonChanges</span><span class="operator">(</span><span class="name">lesson</span><span class="operator">)</span></span><span class="text">
+</span><span class="notcovered">                        <span class="keyword">return</span> <span class="name">master_rtr</span><span class="operator">(</span><span class="name">request</span><span class="operator">,</span> <span class="string">'page/lesson/edit_lesson.html'</span><span class="operator">,</span> <span class="name">data</span><span class="operator">)</span></span><span class="text">
+</span><span class="notcovered"></span><span class="text">
+</span><span class="notcovered">                <span class="comment">#Revert the workingCopy to the published copy
+</span>                <span class="keyword">elif</span> <span class="string">"Revert"</span> <span class="keyword">in</span> <span class="name">request</span><span class="operator">.</span><span class="name">POST</span><span class="operator">:</span></span><span class="text">
+</span><span class="notcovered">                        <span class="name">data</span><span class="operator">[</span><span class="string">'lesson'</span><span class="operator">]</span> <span class="operator">=</span> <span class="name">revertLessonChanges</span><span class="operator">(</span><span class="name">lesson</span><span class="operator">)</span></span><span class="text">
+</span><span class="notcovered">                        <span class="keyword">return</span> <span class="name">master_rtr</span><span class="operator">(</span><span class="name">request</span><span class="operator">,</span> <span class="string">'page/lesson/edit_lesson.html'</span><span class="operator">,</span> <span class="name">data</span><span class="operator">)</span></span><span class="text">
+</span><span class="text">
+</span>        <span class="keyword">return</span> <span class="name">master_rtr</span><span class="operator">(</span><span class="name">request</span><span class="operator">,</span> <span class="string">'page/lesson/edit_lesson.html'</span><span class="operator">,</span> <span class="name">data</span><span class="operator">)</span><span class="text"></span>
+</pre></body>
+</html>
