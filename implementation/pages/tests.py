@@ -161,8 +161,10 @@ class PageTests(TestCase):
 	def test_movePage(self):
 		'''
 		Tests moving a page from one part of the tree to another
+		
+		case no.    inputs         expected output       remark
+		1           page,page      ValidateTree == True
 		'''
-		#RUSS
 		#test that a move doesn't break page->lesson linkage
 		#currently moving a page will disassociate it from its lesson or quiz
 		pageToMove = Lesson.objects.get(slug='PageTestsPage5')

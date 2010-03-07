@@ -2,6 +2,7 @@
 page.py file for page related operations.
 
 Contains operations for all pages
+The operations on page involve representing a linked structure (the page heirarchy) in a database. In order to accomplish this, we give each page a left and right integer value. These two numbers help us to create a sibling/child relationship between pages in order to construct the proper organization as seen in the navigation bar.
 
 @author Matthew Tytel
 @author Mark Gius
@@ -86,8 +87,6 @@ def insertPageAfterNum(self, course, insertAfterNum):
 
 	self.save()
 
-	#print "debug 2.0" + Page.objects.filter(course__exact=self.course).get(slug=self.slug).lesson.content	
-
 	return self
 
 def insertPage(self, insertAfter):
@@ -100,8 +99,6 @@ def insertPage(self, insertAfter):
 
 		 @post: ValidateTree(self.course) == True
 
-		 case no.    inputs         expected output       remark
-		 1           page,page      ValidateTree == True
 	'''
 	return insertPageAfterNum(self, insertAfter.course, insertAfter.right)
 
@@ -112,8 +109,6 @@ def insertChildPage(self, parentPage):
 		 @post: ValidateTree(self.course) == True
 		 @author Mark Gius
 
-		 case no.    inputs         expected output       remark
-		 1           page,page      ValidateTree == True
 	'''
 	return insertPageAfterNum(self, parentPage.course, parentPage.left)
 
@@ -125,8 +120,6 @@ def removePage(self):
 		 @post: ValidateTree(self.course) == True
 		 @author Mark Gius
 
-		 case no.    inputs         expected output       remark
-		 1           page,page      ValidateTree == True
 	'''
 	coursePages = Page.objects.filter(course__exact=self.course)
 	#by our new convention pages with left <= 0 will be ignored
@@ -163,11 +156,8 @@ def movePage(self, insertAfter):
 	@post: ValidateTree(self.course) == True
 	@author Mark Gius
 
-	case no.    inputs         expected output       remark
-	1           page,page      ValidateTree == True
 	'''
 
-	#deletedpage = removePage(self)
 	#set left to 0 makes this page be ignored by the insert function
 	self.left = 0
 	self.save()
@@ -185,11 +175,8 @@ def movePageToParent(self, newParent):
 	@post: ValidateTree(self.course) == True
 	@author Mark Gius
 
-	case no.    inputs         expected output       remark
-	1           page,page      ValidateTree == True
 	'''
 
-	#deletedpage = removePage(self)
 	#set left to 0 makes this page be ignored by the insert function
 	self.left = 0
 	self.save()

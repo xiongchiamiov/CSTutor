@@ -12,10 +12,17 @@ from lesson import *
 
 class LessonTests(TestCase):
 	'''
-	Unit tests on some lesson specific functions
+	Unit tests on some lesson specific functions.
+	These functions are tested by performing changes to lessons in the fixture
+	and verifying that expected behavior results.
+	
+	TODO FIXTURE!!!
 	'''
 
 	def setUp(self):
+		'''
+		Run before each test. Gets a fresh copy of the course.
+		'''
 		self.course = Course.objects.get(slug="large-testing-course")
 
 	def test_revertLessonChanges(self):

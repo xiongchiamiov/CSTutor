@@ -11,10 +11,11 @@ from pages.models import Page
 
 class HomeTests(TestCase):
 	'''
-	Tests the "home" screen.
+	This class tests the "home" screen.
+	This is accomplished by having an anonymous user and a logged in user view the homepage before and after viewing lesson and quizzes to fully test the functionality of the homepage.
 
-	Phase 1:  Anonymous User, with and without enrolled courses
-	Phase 2:  Logged in user, with and without enrolled courses
+	TODO DESCRIBE THE FIXTURE!!!	
+	
 	@author Mark Gius
 	'''
 

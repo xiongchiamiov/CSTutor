@@ -1,10 +1,12 @@
 '''
-lesson.py fil for lesson related operations.
+lesson.py file for lesson related operations.
 
-Contains operations for all lessons
+Contains helpful wrapper operations for all lessons such as saveLesson, or
+saveLessonName. These are used mainly by the views for convenience and processing of user input.
 
 @author Matthew Tytel
 @author John Hartquist
+@author Russell Mezzetta
 '''
 from django.template.defaultfilters import slugify
 from pages.page import insertChildPage
@@ -64,6 +66,8 @@ def revertLessonChanges(lesson):
 	'''
 	@author Russell Mezzetta
 	This reverts the working copy to the published copy
+	@pre lesson is a Lesson
+	@post lesson'.workingCopy = lesson.content
 	'''
 	lesson.workingCopy = lesson.content
 	lesson.save()
@@ -73,6 +77,8 @@ def publishLessonChanges(lesson):
 	'''
 	@author Russell Mezzetta
 	This saves the working copy to the published copy
+	@pre lesson is a Lesson
+	@post lesson'.content = lesson.workingCopy
 	'''
 	lesson.content = lesson.workingCopy
 	lesson.save()
@@ -83,6 +89,8 @@ def saveLessonName(lesson, newLessonName):
 	@author Russell Mezzetta
 	This saves the name of the lesson.
 	Returns none on failure, lesson on success, 1 on invalid name
+	@pre lesson is a Lesson, newLessonName is a string
+	@post if newLessonName is non empty and slugify(newLessonName) is not already taken by a page in this course then: lesson.name = newLessonName and lesson.slug = slugify(newLessonName)
 	'''
 	#check that newLessonName has 1 or more characters
 	if len(newLessonName) < 1:
