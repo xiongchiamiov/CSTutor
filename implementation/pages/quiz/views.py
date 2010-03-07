@@ -234,7 +234,10 @@ def edit_quiz(request, course_slug, page_slug):
 				return add_path(request, course_slug, page_slug, errors)
 
 		elif "EditPath" in request.POST:
-			return edit_path(request, course_slug, page_slug, errors)
+			if ("path" in request.POST):
+				return edit_path(request, course_slug, page_slug, errors)
+			else:
+				errors.append("You must select a path to edit")
 		elif "SubmitEditPath" in request.POST:
 			errors = editPath(workingCopy, request, course_slug)
 			if (len(errors) == 0):
@@ -243,9 +246,11 @@ def edit_quiz(request, course_slug, page_slug):
 				return edit_path(request, course_slug, page_slug, errors)
 
 		elif "RemovePath" in request.POST:
-			print "removing path"
-			removePath(workingCopy, request)
-			return HttpResponseRedirect(request.path)
+			if ("path" in request.POST):
+				removePath(workingCopy, request)
+				return HttpResponseRedirect(request.path)
+			else:
+				errors.append("You must select a path to remove")
 
 		for q in questions:
 			if ("removeQuestion%s" % q.order) in request.POST:

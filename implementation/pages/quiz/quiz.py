@@ -176,6 +176,7 @@ def editPath(self, request, course_slug):
 		path.toPage = course.pages.get(slug=request.POST["pathPage"])
 		path.text = request.POST["dialogue"]
 		path.passed = "passing" in request.POST
+		print request.POST
 		path.save()
 	
 	return errors
