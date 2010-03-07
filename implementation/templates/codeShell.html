@@ -1,0 +1,16 @@
+<html>
+<head>
+<title> You shouldn't be here</title>
+</head>
+<body>
+<form method="post" action="">
+Code: <textarea name="code" cols="80" rows="24">Your code here</textarea>
+{% if output %}
+Output: <textarea name="output" cols="80" rows="24" readonly="True">
+{{output}}
+</textarea>
+{% endif %}
+<input type="submit" value="submit"/>
+</form>
+</body>
+</html>
