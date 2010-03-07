@@ -107,7 +107,7 @@
 			<td rowspan="3" style="border-width: 1px; padding: 1px; border-style: dashed; border-color: black;">
 				Prerequisites
 				<br>
-				<select size="4" multiple="multiple" style="width: 10em;" name="prereqs">
+				<select size="4" multiple="multiple" style="width: 15em;" name="prereqs">
 				{% for page in pages %}
 					{% if page.quiz %}
 						{% if page.slug in prereqs %}
@@ -140,9 +140,9 @@
 					</tr>
 					<tr>
 						<td rowspan="3">
-							<select size="4">
+							<select size="4" name="path">
 							{% for p in paths %}
-								<option>{{p.lowscore}} <= x <= {{p.highscore}} --> {{p.toPage.name}}</option>
+								<option value="{{p.lowscore}}">{{p.lowscore}} <= x < {{p.highscore}} --> {{p.toPage.name}}</option>
 							{% endfor %}
 							</select>
 						</td>
@@ -152,12 +152,12 @@
 					</tr>
 					<tr>
 						<td>
-							<input type="submit" value="Remove" onclick="removePath()"/>
+							<input type="submit" value="Remove" name="RemovePath"/>
 						</td>
 					</tr>
 					<tr>
 						<td>
-							<input type="submit" value="Edit" onclick="editPath()"/>
+							<input type="submit" value="Edit" name="EditPath"/>
 						</td>
 					</tr>
 				</table>

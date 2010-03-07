@@ -3,31 +3,49 @@
 
 {% block content %}
 <form name="Path" method="post">
+<ul>
+	{% for e in errors %}
+		<li>{{e}}</li>
+	{% endfor %}
+</ul>
 <table>
 	<tr>
 		<th colspan="2">Quiz Path</th>
 	</tr>
 	<tr>
-		<td>Low Score:&nbsp;<input type="text" size="3" name="LowScore" /></td>
-		<td>High Score:&nbsp;<input type="text" size="3" name="HighScore" /></td>
+		<td>Low Score:&nbsp;<input type="text" size="3" name="LowScore" value="{{path.lowscore}}" /></td>
+		<td>High Score:&nbsp;<input type="text" size="3" name="HighScore" value="{{path.highscore}}" /></td>
 	</tr>
 	<tr>
 		<td colspan="2">Page<br><select name="pathPage">
 		{% for p in pages %}
-			<option value="{{p.slug}}">{{p.name}}</option>
+			{% if path %}
+				<option value="{{p.slug}}" selected="selected">{{p.name}}</option>
+			{% else %}
+				<option value="{{p.slug}}">{{p.name}}</option>
+			{% endif %}
 		{% endfor %}
 		</select>
 		</td>
 	</tr>
 	<tr>
-		<td colspan="2">Dialogue<br><textarea name="dialogue"></textarea>
+		<td colspan="2">Dialogue<br><textarea name="dialogue">{{path.text}}</textarea>
 	</tr>
 	<tr>
-		<td colspan="2">Passing:&nbsp;<input type="checkbox" value="passing" /></td>
+		{% if path.passed %}
+			<td colspan="2">Passing:&nbsp;<input type="checkbox" value="passing" checked="checked"/></td>
+		{% else %}
+			<td colspan="2">Passing:&nbsp;<input type="checkbox" value="passing"/></td>
+		{% endif %}
 	</tr>
 	<tr>
-		<td><input type="submit" value="Submit Path" name="SubmitPath"/></td>
-		<td><input type="submit" value="Cancel Path" name="CancelPath"/></td>
+		{% if path %}
+			<td><input type="submit" value="Submit" name="SubmitEditPath"/></td>
+			<input type="hidden" value="{{path.lowscore}}" name="path" /> 
+		{% else %}
+			<td><input type="submit" value="Submit" name="SubmitAddPath" /></td>
+		{% endif %}
+			<td><input type="submit" value="Cancel" name="CancelAddPath"/></td>
 	</tr>
 </table>
 </form>

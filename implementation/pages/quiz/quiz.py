@@ -37,18 +37,53 @@ def addPath(self, request, course_slug):
 		Takes a working copy of a quiz, a request containing post data, and a course_slug
 		and adds a path to the quiz
 	'''
-	lowScore = request.POST["LowScore"]
-	highScore = request.POST["HighScore"]
+	errors = []
+	try:
+		lowScore = int(request.POST["LowScore"])
+		if (lowScore < 0 or lowScore > 100):
+			errors.append("Low Score must be between 0 and 100")
+
+		try:
+			matchingPath = matchPath(self, lowScore)
+			errors.append("Conflicting path ranges. Please change the range")
+		except NoMatchingPath:
+			pass			
+	except ValueError:
+		errors.append("Low Score must be an integer")
+
+	try:
+		highScore = int(request.POST["HighScore"])
+		if (highScore < 0 or highScore > 100):
+			errors.append("High Score must be between 0 and 100")
+		if (highScore < lowScore):
+			errors.append("High Score must be less than Low Score")
+	except ValueError:
+		errors.append("High Score must be an integer")
+
 	course = Course.objects.get(slug=course_slug)
 	page = course.pages.get(slug=request.POST["pathPage"])
-	passing = False
+	passing = "passing" in request.POST
 	dialogue = request.POST["dialogue"]
 
-	if "passing" in request.POST:
-		passing = True
+	if (len(errors) == 0):
+		newPath = Path(quiz = self, highscore = highScore, lowscore = lowScore, toPage = page, passed = passing, text = dialogue)
+		newPath.save()
 
-	newPath = Path(quiz = self, highscore = highScore, lowscore = lowScore, toPage = page, passed = passing, text = dialogue)
-	newPath.save()
+	return errors
+
+def matchPath(self, score):
+	'''
+		This function takes a quiz and a "score" on the quiz, represented as a percentage,
+		and returns the quiz path that the score matches. If no matching path
+		is found, it raises the NoMatchingPath exception.
+	'''
+	paths = self.paths.all()
+
+	for p in paths:
+		if (score >= p.lowscore and score < p.highscore):
+			return p
+
+	raise NoMatchingPath
 
 def copyQuiz(quiz1, quiz2):
 	'''
@@ -57,6 +92,7 @@ def copyQuiz(quiz1, quiz2):
 
 	# Copy Title
 	quiz2.text = quiz1.text
+	quiz2.name = quiz1.name
 
 	# Copy Hidden
 	quiz2.hidden = quiz1.hidden
@@ -69,6 +105,15 @@ def copyQuiz(quiz1, quiz2):
 	for p in curPrereqs:
 		newPrereq = Prerequisite(containingQuiz = quiz2, requiredQuiz = p.requiredQuiz)
 		newPrereq.save()
+
+	# Copy Paths
+	curPaths = quiz2.paths.all()
+	for p in curPaths:
+		p.delete()
+	curPrereqs = quiz1.paths.all()
+	for p in curPaths:
+		newPath = Path(quiz = quiz2, lowscore = p.lowscore, highscore = p.highscore, text = p.text, passed = p.passed, toPage = p.toPage)
+		newPath.save()
 
 	# Copy Questions
 	curQuestions = quiz2.questions.all()
@@ -92,6 +137,57 @@ def copyQuiz(quiz1, quiz2):
 
 		quiz2.save()
 
+def editPath(self, request, course_slug):
+	'''
+		Takes a working copy of a quiz, a request containing post data, and a course_slug
+		and edits the matching path of the quiz
+	'''
+	errors = []
+	path = int(request.POST["path"])
+	path = self.paths.get(lowscore=request.POST["path"])
+
+	try:
+		lowScore = int(request.POST["LowScore"])
+		if (lowScore < 0 or lowScore > 100):
+			errors.append("Low Score must be between 0 and 100")
+
+		try:
+			matchingPath = matchPath(self, lowScore)
+			if (matchingPath != path):
+				errors.append("Conflicting path ranges. Please change the range")
+		except NoMatchingPath:
+			pass			
+	except ValueError:
+		errors.append("Low Score must be an integer")
+
+	try:
+		highScore = int(request.POST["HighScore"])
+		if (highScore < 0 or highScore > 100):
+			errors.append("High Score must be between 0 and 100")
+		if (highScore < lowScore):
+			errors.append("High Score must be less than Low Score")
+	except ValueError:
+		errors.append("High Score must be an integer")
+
+	course = Course.objects.get(slug=course_slug)
+	if (len(errors) == 0):
+		path.lowscore = lowScore
+		path.highscore = highScore
+		path.toPage = course.pages.get(slug=request.POST["pathPage"])
+		path.text = request.POST["dialogue"]
+		path.passed = "passing" in request.POST
+		path.save()
+	
+	return errors
+
+def removePath(self, request):
+	'''
+		Takes a working copy of a quiz and a request containing post data and
+		removes the path from the quiz
+	'''
+	path = self.paths.get(lowscore = request.POST["path"])
+	path.delete()
+
 def publishQuiz(self):
 	''' 
 		Takes a working copy of a quiz and copies it over to the published copy
@@ -112,9 +208,11 @@ def removeQuiz(self):
 	'''
 	questions = self.questions.all()
 	prerequisites = self.prerequisites.all()
+	paths = self.paths.all()
 	workingQuiz = Quiz.objects.get(slug=(self.slug + "_workingCopy"))
 	workingQuestions = workingQuiz.questions.all()
 	workingPrerequisites = workingQuiz.prerequisites.all()
+	workingPaths = workingQuiz.paths.all()
 
 	# Remove Questions
 	for q in questions:
@@ -126,6 +224,12 @@ def removeQuiz(self):
 	for p in prerequisites:
 		p.delete()
 	for p in workingPrerequisites:
+		p.delete()
+
+	# Remove Paths
+	for p in paths:
+		p.delete()
+	for p in workingPaths:
 		p.delete()
 
 	# Remove Pages
@@ -287,6 +391,14 @@ def validateQuizFromPost(self, request):
 	# Title - Make sure its not blank
 	if (len(request.POST["quizTitle"]) == 0):
 		errors.append("Quiz Title can not be blank")
+
+	# Title - Make sure its not a duplicate in the course
+	try:
+		quiz = Quiz.objects.get(slug=slugify(request.POST["quizTitle"]) + "_workingCopy")
+		if (quiz.pk != self.pk):
+			errors.append("Quiz Title already exists!")
+	except Quiz.DoesNotExist:
+		pass
 
 	# Hidden - There can be no errors in this
 

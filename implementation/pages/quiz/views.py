@@ -29,8 +29,6 @@ def create_quiz(request, course_slug, page_slug):
 		course = Course.objects.get(slug=course_slug)
 		name = request.POST['name']
 		newQuiz = Quiz(course=course, name=name, slug=slugify(name), text=name, upToDate=True)
-		#what the heck was this line here for?
-		#newQuizWorkingCopy = Quiz(course=course, name=name, slug=(newQuiz.slug + "_workingCopy"), text=name)
 		insertChildPage(newQuiz, Page.objects.get(slug=page_slug))
 		newQuiz = Quiz.objects.get(slug=newQuiz.slug)
 		workingCopy = Quiz(course=newQuiz.course, name=newQuiz.name, slug=(newQuiz.slug + "_workingCopy"), text=newQuiz.name, left=0, right=0)
@@ -69,7 +67,7 @@ def delete_quiz(request, course_slug, page_slug):
 	return master_rtr(request, 'page/quiz/delete_quiz.html', \
 			            {'course':course_slug, 'course_slug':course_slug, 'page_slug':page_slug, 'quiz':quiz})
 
-def add_path(request, course_slug, page_slug):
+def add_path(request, course_slug, page_slug, errors):
 	''' add_path View
 		This view allows you to add a path to the quiz. The user can then choose
 		 to save the path or cancel
@@ -84,7 +82,27 @@ def add_path(request, course_slug, page_slug):
 			pages.append(p)
 
 	return master_rtr(request, 'page/quiz/path.html', \
-			            {'course_slug':course_slug, 'page_slug':page_slug, 'pages':pages})
+			            {'course_slug':course_slug, 'page_slug':page_slug, 'pages':pages, 'errors':errors})
+
+def edit_path(request, course_slug, page_slug, errors):
+	''' edit_path View
+		This view allows you to edit an existing path for the quiz. The user can then choose
+		 to save the path or cancel
+	'''
+	page_slug = safeSlug(page_slug)
+	quiz = Quiz.objects.get(slug=page_slug + "_workingCopy")
+	course = Course.objects.get(slug=course_slug)
+	allPages = course.pages.all()
+	pages = []
+	for p in allPages:
+		if (p.slug == safeSlug(p.slug)):
+			pages.append(p)
+
+	path = quiz.paths.get(lowscore=request.POST["path"])
+
+	return master_rtr(request, 'page/quiz/path.html', \
+			            {'course_slug':course_slug, 'page_slug':page_slug, 'pages':pages, 'path':path, 'errors':errors})
+
 
 
 def remove_question(request, course_slug, page_slug, qNum):
@@ -207,9 +225,26 @@ def edit_quiz(request, course_slug, page_slug):
 			return HttpResponseRedirect(reverse('pages.views.show_page', args=[course_slug, page_slug]))
 
 		elif "AddPath" in request.POST:
-			return add_path(request, course_slug, page_slug)
-		elif "SubmitPath" in request.POST:
-			addPath(workingCopy, request, course_slug)
+			return add_path(request, course_slug, page_slug, errors)
+		elif "SubmitAddPath" in request.POST:
+			errors = addPath(workingCopy, request, course_slug)
+			if (len(errors) == 0):
+				return HttpResponseRedirect(request.path)
+			else:
+				return add_path(request, course_slug, page_slug, errors)
+
+		elif "EditPath" in request.POST:
+			return edit_path(request, course_slug, page_slug, errors)
+		elif "SubmitEditPath" in request.POST:
+			errors = editPath(workingCopy, request, course_slug)
+			if (len(errors) == 0):
+				return HttpResponseRedirect(request.path)
+			else:
+				return edit_path(request, course_slug, page_slug, errors)
+
+		elif "RemovePath" in request.POST:
+			print "removing path"
+			removePath(workingCopy, request)
 			return HttpResponseRedirect(request.path)
 
 		for q in questions:

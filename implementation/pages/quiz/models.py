@@ -58,6 +58,10 @@ class Path(models.Model):
 	def __unicode__(self):
 		return u'Path on Quiz ' + unicode(quiz)
 
+class NoMatchingPath(Exception):
+	def __str__(self):
+		return repr(self.value)
+
 class Prerequisite(models.Model):
 	'''
 	Model for a Prerequisite.
