@@ -65,4 +65,49 @@
 	<object pk="106" model="lesson.lesson">
 		<field type="TextField" name="content">PageTestsPage5</field>
 	</object>
+	<object pk="107" model="auth.user">
+      <field type="CharField" name="username">testuser1</field>
+      <field type="CharField" name="first_name">first</field>
+      <field type="CharField" name="last_name">last</field>
+      <field type="CharField" name="email">testuser1email</field>
+      <!-- password is "password" -->
+      <field type="CharField" name="password">sha1$afeda$648e804b09a7bf98dbac6b7da13d6dbe0c7716f6</field>
+      <field type="BooleanField" name="is_staff">True</field>
+      <field type="BooleanField" name="is_active">True</field>
+      <field type="BooleanField" name="is_superuser">True</field>
+      <field to="auth.group" name="groups" rel="ManyToManyRel"></field>
+      <field to="auth.permission" name="user_permissions" rel="ManyToManyRel"></field>
+   </object>
+   <object pk="108" model="courses.enrollment">
+      <field to="auth.user" name="user" rel="ManyToOneRel">107</field>
+      <field to="courses.course" name="course" rel="ManyToOneRel">100</field>
+      <field type="BooleanField" name="view">True</field>
+      <field type="BooleanField" name="edit">True</field>
+      <field type="BooleanField" name="stats">True</field>
+      <field type="BooleanField" name="manage">True</field>
+      <field type="DateTimeField" name="lastAction">2010-03-01 15:10:28</field>
+   </object>
+	<object pk="109" model="auth.user">
+      <field type="CharField" name="username">testuser2</field>
+      <field type="CharField" name="first_name">first</field>
+      <field type="CharField" name="last_name">last</field>
+      <field type="CharField" name="email">testuser2email</field>
+      <!-- password is "password" -->
+      <field type="CharField" name="password">sha1$afeda$648e804b09a7bf98dbac6b7da13d6dbe0c7716f6</field>
+      <field type="BooleanField" name="is_staff">True</field>
+      <field type="BooleanField" name="is_active">True</field>
+      <field type="BooleanField" name="is_superuser">True</field>
+      <field to="auth.group" name="groups" rel="ManyToManyRel"></field>
+      <field to="auth.permission" name="user_permissions" rel="ManyToManyRel"></field>
+   </object>
+   <object pk="110" model="courses.enrollment">
+      <field to="auth.user" name="user" rel="ManyToOneRel">109</field>
+      <field to="courses.course" name="course" rel="ManyToOneRel">100</field>
+      <field type="BooleanField" name="view">True</field>
+      <field type="BooleanField" name="edit">False</field>
+      <field type="BooleanField" name="stats">True</field>
+      <field type="BooleanField" name="manage">True</field>
+      <field type="DateTimeField" name="lastAction">2010-03-01 15:10:28</field>
+   </object>
+
 </django-objects>

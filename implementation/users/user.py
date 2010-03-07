@@ -149,8 +149,8 @@ def loginWrapper(request, username, password):
 			username is a string
 			password is a string
 
-	post: username and password match a username/password in the system
-	      username denotes an active account
+	post: if username and password match a username/password in the system
+	      and username denotes an active account then user is "logged in"
 	returns 0 on success, 1 invalid login, 2 inactive account
 	'''
 	user = authenticate(username=username, password=password)

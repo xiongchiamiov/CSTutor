@@ -26,6 +26,9 @@ class PageTests(TestCase):
                   4, and attempting add/remove operations from it
 
          --------------------------------------------------------
+			FIXTURE:
+			Contains 1 course.
+			Contains 2 users: testuser1 has full permission, testuser2 has everything but edit.
 
          Page structure for these Phases 1-3 (from PageTests Fixture):
 
@@ -42,6 +45,9 @@ class PageTests(TestCase):
 	'''
 	fixtures = ['PageTests']
 	courseName = 'PageTestsCourse'
+	user1 = "testuser1"
+	password = "password"
+	user2 = "testuser2"
 
 	def validateTree(self):
 		'''
@@ -186,3 +192,42 @@ class PageTests(TestCase):
 			self.assertTrue(False)#any exception should indicate failure
 		
 		self.assertTrue(True)
+
+	def test_move_page_view(self):
+		'''
+		Tests the basic functionality of the move_page view
+		@author Russell Mezzetta
+
+		case    input                                                                expected output
+		1       try to view move with anonymous user                                 user redirected to login
+		2       try to view move with user2(no edit perm)                            page forbidden
+		3       User1(has edit perm) move PageTestPage5 to sibling of PageTestPage2  Successful Move
+		4       User1(has edit perm) move PageTestPage5 to be child of PageTestPage2 Successful Move
+		'''
+		c = Client()
+		page2 = "PageTestsPage2"
+		page5 = "PageTestsPage5"
+		
+		#check that anonymous user is redirected login
+		response = c.get("/course/" + self.courseName + "/page/" + page2 + "/move/")
+		self.assertRedirects(response, "/login/?next=/course/" + self.courseName + "/page/" + page2 + "/move/")
+		#login as user without edit permissions
+		c.post("/login/", {'username': self.user2, 'password': self.password})
+		#check that user cannot view move
+		response = c.get("/course/" + self.courseName + "/page/" + page2 + "/move/")
+		self.assertContains(response, "User does not have edit permissions on the course", status_code = 403)
+		#log this user out, then log in with user who has edit permissions
+		c.post("/logout/")
+		c.post("/login/", {'username': self.user1, 'password': self.password})
+		#check that user can view move
+		response = c.get("/course/" + self.courseName + "/page/" + page5 + "/move/")
+		self.assertTemplateUsed(response, "page/move_page.html")
+		
+		#move testpage5 to sibling of testpage2
+		response = c.post("/course/" + self.courseName + "/page/" + page5 + "/move/", {'siblingOrChild': 'sibling', 'referencePageID': page2})
+		self.assertRedirects(response, "/course/" + self.courseName + "/page/" + page5 + "/edit/")
+
+		#move testpage5 to child of testpage2
+		response = c.post("/course/" + self.courseName + "/page/" + page5 + "/move/", {'siblingOrChild': 'child', 'referencePageID': page2})
+		self.assertRedirects(response, "/course/" + self.courseName + "/page/" + page5 + "/edit/")
+

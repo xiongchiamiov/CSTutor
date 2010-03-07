@@ -131,6 +131,7 @@ def move_page(request, course_slug, page_slug):
 	'''
 	@author Russell Mezzetta
 	This view allows instructors to move pages around	in a course.
+	@pre request is a Request object, other two args are strings, request.user.is_authenticated()
 	'''
 	#check to make sure that we are not trying to move a course-page
 	if course_slug == page_slug:
@@ -149,7 +150,6 @@ def move_page(request, course_slug, page_slug):
 	try:
 		e = request.user.enrollments.get(course = data['course'])
 		if not e.edit:
-			#return ("ERROR: User does not have edit permissions on the course")
 			return custom_403(request, "User does not have edit permissions on the course")
 	except ObjectDoesNotExist:
 		return custom_403(request, "User is not enrolled in the course")
@@ -159,7 +159,6 @@ def move_page(request, course_slug, page_slug):
 		data['page'] = Page.objects.get(slug=page_slug)
 	except Page.DoesNotExist:
 		return custom_404(request, "ERROR: BAD URL: The course: %s does not contain the page: %s." % (course_slug, page_slug))
-	#TODO CHECK USER FOR EDIT PERMISSIONS, redirect to error page if invalid user
 
 	#save a list of all pages in the course EXCEPT the given page
 	data['pagelist'] = data['course'].pages.all().exclude(slug=page_slug).order_by('left')
@@ -197,17 +196,12 @@ def move_page(request, course_slug, page_slug):
 					print "warning -- move_page view, page neither quiz nor lesson"
 
 			if request.POST['siblingOrChild'] == "sibling":
-				#from pdb import set_trace; set_trace()
 				#move page to be the first sibling of refPage
 				movePage(p1, p2)
 			else:
 				#move the page to be the first child of refPage
 				movePageToParent(p1, p2)
 
-			data['redirectUrl'] = "/"
-			data['redirectText'] = "the home page"
 			return HttpResponseRedirect(reverse('pages.views.edit_page', args=[p1.course.slug, p1.slug]))
-			#return master_rtr(request, 'redirect.html', data)
-			#return master_rtr(request, 'page/move_page_success.html')
 
 	return master_rtr(request, 'page/move_page.html', data)

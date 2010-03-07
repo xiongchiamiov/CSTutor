@@ -192,7 +192,7 @@ class UserTests(TestCase):
 	def testLoginWrapper(self):
 		'''
 		@author Russell Mezzetta
-		Tests the login view and wrapper for full functionality.
+		Tests the login view and implicitly the wrapper for full functionality.
 
 		case#    input                	expected output   remark
 		-----    -----                	---------------   ------
