@@ -42,7 +42,7 @@ def show_profile(request):
 				elif status == 2:
 					return master_rtr(request, 'user/profile.html', 
 		                                       {'user': request.user,
-											    'passError': "Password do not match"})	
+											    'passError': "Passwords do not match"})	
 			if (request.POST["form"] == "Delete Account"):
 				return master_rtr(request, 'user/confirmDelete.html')
 			
