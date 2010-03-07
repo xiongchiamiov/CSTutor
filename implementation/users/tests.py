@@ -91,6 +91,7 @@ class UserTests(TestCase):
 		
 	def testUpdateEmail(self):
 		'''
+		@author John Hartquist
 		Tests that a user can change their e-mail address
 		
 		case#            input             expected      output   remark
@@ -100,6 +101,7 @@ class UserTests(TestCase):
 		
 		'''
 		badEmail = "anemail@nothing"
+		user1email = "john@abc.com"
 		
 		self.client.post("/login/", {'username': self.user1,
 		                             'password': self.password})
@@ -108,6 +110,91 @@ class UserTests(TestCase):
 		response = self.client.post("/profile/", {'form': "Change E-mail", 'email': badEmail })
 		self.failIfEqual(response.content.find("Invalid E-mail Address"), -1)
 
+        #test changing to a valid email 	
+		response = self.client.post("/profile/", {'form': "Change E-mail", 'email': user1email })
+		self.failIfEqual(response.content.find("E-mail : " + user1email), -1)
+		
+
+	def testChangePassword(self):
+		'''
+		@author John Hartquist
+		Tests that a user can change their password
+		
+		case#    input                  expected                     output                     remark
+		-----    -----                  --------                     ------                     ------
+		1        user='jhartqui'        invalid current password     invalid current password   user must provide valid password
+		         currentpw='x'
+		         newpass1='a'
+		         newpass2='a'
+		         
+		2        user='jhartqui'		password don't match         password don't match       user must provide matching passwords
+		         currentpw='password'
+		         newpass1='a'
+		         newpass2='b'
+		      
+		3        user='jhartqui'		succcess                     success                    user successfully changes password
+		         currentpw='password'
+		         newpass1='new111'
+		         newpass2='new111'
+		'''
+		
+		
+		self.client.post("/login/", {'username': self.user1,
+		                             'password': self.password})
+	
+		#test providing invalid current password
+		response = self.client.post("/profile/", {'form': "Change Password", 'oldpass': "x", 'newpass1':"a", 'newpass2':"a" })
+		self.failIfEqual(response.content.find("Incorrect current password"), -1)
+
+        #test mismatching passwords	
+		response = self.client.post("/profile/", {'form': "Change Password", 'oldpass': self.password, 'newpass1':"a", 'newpass2':"b" })
+		self.failIfEqual(response.content.find("Passwords do not match"), -1)
+		
+		#test a valid password change
+		response = self.client.post("/profile/", {'form': "Change Password", 'oldpass': self.password, 'newpass1':"a", 'newpass2':"a" })
+		self.failUnlessEqual(response.status_code, 200)
+
+	def testChangeName(self):
+		'''
+		@author John Hartquist
+		Tests that the user can update their name
+		
+		case#    input                  expected                     output                     remark
+		-----    -----                  --------                     ------                     ------
+		1        first_name=""          status_code=200              200                         name does not change
+		         last_name=""           
+		
+		2        first_name=""          status_code=200              200                         name does not change
+		         last_name="Last" 
+		        
+		3        first_name="First"     status_code=200              200                         name does not change
+		         last_name="" 
+		         
+		4        first_name="First"     response contains            response contains           name changes
+		         last_name="Last"       "First" and "Last"           "First" and "Last"
+		
+		'''
+		
+		self.client.post("/login/", {'username': self.user1,
+		                             'password': self.password})
+	
+		#test providing blank name
+		response = self.client.post("/profile/", {'form': "Change Name", 'first_name': "", 'last_name':"" })
+		self.failUnlessEqual(response.status_code, 200)
+		
+		#test providing blank first name
+		response = self.client.post("/profile/", {'form': "Change Name", 'first_name': "", 'last_name':"Last" })
+		self.failUnlessEqual(response.status_code, 200)
+		
+		#test providing blank last name
+		response = self.client.post("/profile/", {'form': "Change Name", 'first_name': "First", 'last_name':"" })
+		self.failUnlessEqual(response.status_code, 200)
+		
+		#test that password changes
+		response = self.client.post("/profile/", {'form': "Change Name", 'first_name': "First", 'last_name':"Last" })
+		self.failIfEqual(response.content.find("First"), -1)
+		self.failIfEqual(response.content.find("Last"), -1)
+		
 	def testRegisterNewUser(self):
 		'''
 		@author Russell Mezzetta
