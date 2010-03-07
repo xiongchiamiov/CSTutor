@@ -10,6 +10,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from home.views import index, master_rtr
 from user import registerNewUser, loginWrapper, updateEmail, changePassword, updateName, deleteUser
+from courses.course import addUser
 
 def show_profile(request):
 	'''
@@ -193,6 +194,11 @@ def show_register_new_user(request):
 			#successful registration
 			#return render_to_response('user/login.html', {'message': "User Registration Successful"})
 			#TODO create a response like "success!"
+			# attempt to enroll the user in their temporary courses, if possible
+			if "anonCourses" in request.session:
+				user = User.objects.get(username=username)
+				for c in request.session['anonCourses']:
+					addUser(c, user, True)
 			return HttpResponseRedirect(reverse('users.views.show_login'))
 		elif ret == 1:
 			errorMsg = "That username is already taken"
