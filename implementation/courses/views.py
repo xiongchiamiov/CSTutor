@@ -210,14 +210,7 @@ def update_roster(request, course_slug):
 			try:
 				removeList.index(enrollment.user.username)
 				#if the remove checkbox was checked attempt to remove the user
-				try:
-					# You've already got the course and user objects through the 
-					# enrollment object. -mgius
-					#user = User.objects.get(username=enrollment.user.username)
-					#course = Course.objects.get(slug=course_slug)
-					removeUser(enrollment.course,enrollment.user)
-				except User.DoesNotExist:
-					pass
+				removeUser(enrollment.course,enrollment.user)
 			except ValueError:
 				pass
 		return HttpResponseRedirect(reverse('courses.views.show_roster', \
@@ -229,6 +222,8 @@ def update_roster(request, course_slug):
 def cancel_add(request, course_slug):
 	'''
 	Redirects to the roster screen when viewing the add user page
+	pre: courses.views.show_roster.exists() == true
+	post: roster/index.html.isRendered() == true
 	'''
 	return HttpResponseRedirect(reverse('courses.views.show_roster', \
 	                                    args=[course_slug]))

@@ -111,15 +111,15 @@ class CourseViewTests(TestCase):
 		@author Jon Inloes
 		Tests that redirection to the roster page works
 
-		Case no.        	Inputs                                       Expected Output    	Remark
-		1						slug = PageViewsPublicCourse						200                	200 is successful redirection
+		Case no.        	Inputs                                       Expected Output    		Remark
+		1						slug = PageViewsPublicCourse						200                		200 is successful redirection
 								adminUsername = enrollmentTestAdmin	
 								password = password			
 	
-		2               	url = /course/badclass/roster/	            404            		404 is not found
+		2               	url = /course/badclass/roster/	            404            			404 is not found
 
-		3						slug = 'PageViewsPublicCourse'
-								adminUsername = 'PageViewsPublicUser'
+		3						slug = 'PageViewsPublicCourse'					roster/invalid_permissions.html 
+								adminUsername = 'PageViewsPublicUser'			is rendered
 								password = 'password'
 								template = 'roster/invalid_permissions.html'		
 		'''
@@ -208,17 +208,28 @@ class CourseViewTests(TestCase):
 		@author Jon Inloes
 		Tests enrolling a user in a course through the view
 
-		Case no.        	Inputs                                     	Expected Output	Remark
-		1               	adminUserName = enrollmentTestAdmin				true					true as in the user
-								password = password															exists in enrollment list
+		Case no.        	Inputs                                     	Expected Output		Remark
+		1               	adminUserName = enrollmentTestAdmin				true						true as in the user
+								password = password																exists in enrollment list
 								username = 'enrollmentTest'
 								slug = 'PageViewsPublicCourse'
 		
-		2						adminUserName = enrollmentTestAdmin
-								password	= password
+		2						adminUserName = enrollmentTestAdmin				adduser/failed.html 
+								password	= password									is rendered
 								username = 'fakeUser'
 								slug = 'PageViewsPublicCourse'
-								template = 'adduser/failed.html'			                           
+								template = 'adduser/failed.html'
+
+		3						adminUserName = enrollmentTestAdmin				adduser/index.html	adduser redirects to 
+								password	= password									is rendered				the adduser index when
+								username = 'fakeUser'															the request method
+								slug = 'PageViewsPublicCourse'												is not a POST 
+								template = adduser/index.html
+
+		4						slug = 'PageViewsPublicCourse'
+								adminUsername = 'PageViewsPublicUser'
+								password = 'password'
+								template = 'roster/invalid_permissions.html'							                          
 		'''
 		pass
 	
@@ -299,6 +310,44 @@ class CourseViewTests(TestCase):
 		'''
 		pass
 
+	def testEnrollUserCase3(self):
+		'''
+		testEnrollUser Case 3
+		'''
+
+		adminUsername = 'enrollmentTestAdmin'
+		password = 'password'
+		username = 'fakeUser'
+		template = 'adduser/index.html'
+		slug = 'PageViewsPublicCourse'
+
+		#logs in and checks to make sure the login was successful
+		self.failUnlessEqual(self.client.login(username=adminUsername, password=password), True, 'logging in failed in enrollment test')
+
+		#tries to add a user that does not exist with a get
+		response = self.client.get('/course/' + slug + '/roster/adduser/', {'username': username, 'command': 'add'})
+	
+		self.assertTemplateUsed(response, template)
+
+	def testEnrollUserCase4(self):
+
+		slug = 'PageViewsPublicCourse'
+		adminUsername = 'PageViewsPublicUser'
+		username = 'temp'
+		password = 'password'
+		template = 'roster/invalid_permissions.html'
+
+		#logs in and checks to make sure the login was successful
+		self.failUnlessEqual(self.client.login(username=adminUsername, password=password), True)
+		
+
+		#tries to add a user		
+		response = self.client.post('/course/' + slug + '/roster/adduser/', {'username': username, 'command': 'add'})
+		self.failUnlessEqual(response.status_code, 200, 'redirection to the roster page failed')
+
+		#asserts that invalid_permissions.html page was rendered because the logged in user did not have valid permission to add a user
+		self.assertTemplateUsed(response, template)
+
 	def testUpdateRoster(self):
 		'''
 		@author Jon Inloes
@@ -319,6 +368,11 @@ class CourseViewTests(TestCase):
 							password = password
 							slug = PageViewsPublicCourse
 							username = updateTestUser
+
+		3					slug = 'PageViewsPublicCourse'
+							adminUsername = 'PageViewsPublicUser'
+							password = 'password'
+							template = 'roster/invalid_permissions.html'		
 		'''
 		pass
 		
@@ -367,15 +421,41 @@ class CourseViewTests(TestCase):
 		self.failUnlessEqual(enrollment.manage, False, 'manage should be false but was ' + str(enrollment.manage))
 		self.failUnlessEqual(enrollment.edit, False, 'edit should be false but was ' + str(enrollment.edit))
 
+	def testUpdateRosterCase3(self):
+		'''
+		testUpdateRoster Case 3
+		'''
+	
+		slug = 'PageViewsPublicCourse'
+		adminUsername = 'PageViewsPublicUser'
+		username = 'temp'
+		password = 'password'
+		template = 'roster/invalid_permissions.html'
+
+		#logs in and checks to make sure the login was successful
+		self.failUnlessEqual(self.client.login(username=adminUsername, password=password), True)
+		
+
+		#tries to edit a user	but the loggin in user does not have permission 	
+		response = self.client.post('/course/' + slug + '/roster/updateRoster/', {'edit': [adminUsername], 'manage':[adminUsername], 'stats': [adminUsername]})
+
+		#asserts that invalid_permissions.html page was rendered because the logged in user did not have valid permission to edit a user's permission
+		self.assertTemplateUsed(response, template)
+
 	def testAcceptUser(self):
 		'''
 		@author Jon Inloes
 		Tests that a user who is enrolled can access a private course, and a 
 		student who is not enrolled cannot access a private course
 
-		Case no. 		Inputs											Expected Output 			Remarks
-		1. 				adminUsername = 'enrollmentTestAdmin'	enrollment.view = true	enrollment is the enrollment of username
-							username = 'PrivateUserNotEnrolled'
+		Case no. 		Inputs											Expected Output 				Remarks
+		1. 				adminUsername = 'enrollmentTestAdmin'	enrollment.view = true		enrollment is the enrollment 
+							username = 'PrivateUserNotEnrolled'											of username
+							slug = 'PageViewsPrivateCourse'
+							password = 'password'
+
+		2.					adminUsername = 'enrollmentTestAdmin'	roster/invalid_permissions
+							username = 'PrivateUserNotEnrolled'		.html is rendered
 							slug = 'PageViewsPrivateCourse'
 							password = 'password'
 		'''
@@ -403,6 +483,24 @@ class CourseViewTests(TestCase):
 		#verify that the user has been accepted
 		enrollment = Enrollment.objects.get(user__username__exact=username, course__slug__exact=slug)
 		self.failUnlessEqual(enrollment.view, True, 'View for user should be true but was' + str(enrollment.view))
+
+	def testAccpetUserCase2(self):
+		
+		slug = 'PageViewsPublicCourse'
+		adminUsername = 'PageViewsPublicUser'
+		username = 'temp'
+		password = 'password'
+		template = 'roster/invalid_permissions.html'
+
+		#logs in and checks to make sure the login was successful
+		self.failUnlessEqual(self.client.login(username=adminUsername, password=password), True)
+		
+
+		#accept the user
+		response = self.client.post('/course/' + slug + '/roster/addPendingRequests/', {'accept':[username, 'baduser']})
+
+		#asserts that invalid_permissions.html page was rendered because the logged in user did not have valid permission to accept a user
+		self.assertTemplateUsed(response, template)
 
 	def testDenyUser(self):
 		'''
@@ -613,6 +711,32 @@ class CourseViewTests(TestCase):
 		#Displays the roster and checks to make sure it was successful		
 		response = self.client.get('/course/' + slug + '/chat/')
 		self.failUnlessEqual(response.status_code, 404, 'redirection to the chat page failed')
+
+	def testCancelAdd(self):
+		'''
+		@author Jon Inloes
+		Test that the cancel_add fucntion redirects to the roster page
+
+		Case #		Inputs											Outputs								Remark
+
+		1				adminUsername = 'enrollmentTestAdmin'	response.status_code = 302		302 is a successful http
+						password = 'password'																response redirect
+						slug = 'PageViewsPublicCourse'
+						template = 'roster/index.html'
+		
+		'''
+
+		adminUsername = 'enrollmentTestAdmin'
+		password = 'password'
+		slug = 'PageViewsPublicCourse'
+		template = 'roster/index.html'
+
+		#logs in and checks to make sure the login was successful
+		self.failUnlessEqual(self.client.login(username=adminUsername, password=password), True, 'logging in failed in enrollment test')
+
+		#Displays the roster and checks to make sure it was successful		
+		response = self.client.get('/course/' + slug + '/roster/adduser/cancel/')
+		self.failUnlessEqual(response.status_code, 302, 'redirection to the roster page failed')
 
 # I don't know why, but for some reason join_course_request is returning a 
 # 302.  Why?
