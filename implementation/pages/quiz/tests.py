@@ -502,9 +502,10 @@ class QuizViewTests(TestCase):
 			            user not logged in                                           denied.html
 			2           url = /course/courseSlug/page/quizSlug1/submitQuiz/          200                     User logged in, not enrolled, course private
 			            user logged in, not enrolled                                 denied.html
-			3           url = /course/courseSlug/page/quizSlug1/submitQuiz/          viewQUiz.html           User logged in, enrolled, course private, no POST
+			3           url = /course/courseSlug/page/quizSlug1/submitQuiz/          submitQuiz.html         User logged in, enrolled, course private, no POST
+			                                                                         score = 0
 			4           url = /course/courseSlug/page/quizSlug1/submitQuiz/                                  User logged in, enrolled, course private, with POST
-			            user logged in, enrolled                                     viewQuiz.html
+			            user logged in, enrolled                                     submitQuiz.html
 		'''
 		courseSlug = "QuizViewTests_Course2"
 		quizSlug = "QuizViewTests_Quiz3"
@@ -526,7 +527,7 @@ class QuizViewTests(TestCase):
 		self.client.logout()
 		self.failUnlessEqual(self.client.login(username=enrolledUser, password=enrolledUserPwd), True)
 		response = self.client.get('/course/' + courseSlug + '/page/' + quizSlug + '/submitQuiz/')
-		self.assertTemplateUsed(response, "page/denied.html")
+		self.assertTemplateUsed(response, "page/quiz/submitQuiz.html")
 
 
 	def testSubmitHiddenQuizUrl(self):

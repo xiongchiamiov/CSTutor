@@ -58,7 +58,6 @@ def show_page(request, course_slug, page_slug):
 			# user is not enrolled in this course
 			return master_rtr(request, 'page/denied.html', {'course':course, 'enrolled':False, 'edit':False, 'loggedIn':True})
 
-
 	#cast the page to a lesson or quiz then call show on it
 	try:
 		page = page.lesson

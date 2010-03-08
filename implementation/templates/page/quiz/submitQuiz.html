@@ -2,7 +2,30 @@
 {% load smart_if %}
 
 {% block content %}
-	Your Score: {{score}}<br />
-	Max Score : {{maxScore}}<br />
-	Percentage: {{percentage}}%<br />
+{% if path %}
+	{{path.text}}<br/><br/>
+{% endif %}
+<table>
+	<tr>
+		<td>Your Score</td>
+		<td>{{score}}</td>
+	</tr>
+	<tr>
+		<td>Max Score</td>
+		<td>{{maxScore}}</td>
+	</tr>
+	<tr>
+		<td>Percentage</td>
+		<td>{{percentage}}</td>
+	</tr>
+	{% if path %}
+		<tr>
+			<td>Result</td>
+			<td>{% if path.passed %} Pass {% else %} Fail {% endif %}</td>
+		</tr>
+	{% endif %}
+</table>
+{% if path %}
+Next Page:&nbsp;<a href="{% url pages.views.show_page course_slug path.toPage.slug %}">{{path.toPage.name}}</a>
+{% endif %}
 {% endblock %}

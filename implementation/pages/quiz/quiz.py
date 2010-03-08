@@ -96,18 +96,20 @@ def checkPrerequisites(self, user):
 		have been met and false if not.
 	'''
 	prereqs = self.prerequisites.all()
-
-	enrollment = user.enrollments.get(course=self.course)
-	if (not enrollment.edit):
-		for p in prereqs:
-			print "Prereq: " + p.requiredQuiz.slug + "\n"
-			requiredQuiz = p.requiredQuiz
-			#score = getUserBestQuizScore(requiredQuiz, user)
-			score = 100
-			path = matchPath(requiredQuiz, score)
-			print "User Score on Prereq: " + str(path.passed) + "\n"
-			if (path.passed == False):
-				return False
+	if (len(prereqs) > 0):
+		if (user.isAnonymous()):
+			return False
+		enrollment = user.enrollments.get(course=self.course)
+		if (not enrollment.edit):
+			for p in prereqs:
+				print "Prereq: " + p.requiredQuiz.slug + "\n"
+				requiredQuiz = p.requiredQuiz
+				#score = getUserBestQuizScore(requiredQuiz, user)
+				score = 100
+				path = matchPath(requiredQuiz, score)
+				print "User Score on Prereq: " + str(path.passed) + "\n"
+				if (path.passed == False):
+					return False
 
 	return True
 
@@ -195,6 +197,31 @@ def editPath(self, request, course_slug):
 	except ValueError:
 		errors.append("High Score must be an integer")
 
+	if (path.passed == True and not "passing" in request.POST):
+		# Trying to change a path to go from passing to not passing
+		# If other quizzes require this quiz as a prerequisite,
+		# make sure an alternate passing path is available
+		paths = self.paths.all()
+		otherPassing = False
+		for p in paths:
+			if (p.passed and p.lowscore != path.lowscore):
+				otherPassing = True
+		if (otherPassing == False):
+			# No passing path so make sure no quizzes require it as a prerequisite
+			course = self.course
+			for quiz in course.pages.all():
+				try:
+					quiz = quiz.quiz
+					if (quiz.slug == safeSlug(quiz.slug)):
+						prereqs = quiz.prerequisites.all()
+						for p in prereqs:
+							if (p.requiredQuiz.slug == safeSlug(self.slug)):
+								# A quiz requires this quiz as a prerequisite
+								# and no pathing pass exists, error
+								errors.append(quiz.name + " requires this quiz as a prerequisite and no other passing path exists")
+				except Quiz.DoesNotExist:
+					pass
+
 	course = Course.objects.get(slug=course_slug)
 	if (len(errors) == 0):
 		path.lowscore = lowScore
@@ -212,8 +239,35 @@ def removePath(self, request):
 		Takes a working copy of a quiz and a request containing post data and
 		removes the path from the quiz
 	'''
+	errors = []
+	course = self.course
 	path = self.paths.get(lowscore = request.POST["path"])
-	path.delete()
+	# See if there is still a passing path
+	paths = self.prerequisites.all()
+	passingPath = False
+	for p in paths:
+		if (p.passed == True and not p.lowscore == path.lowscore ):
+			passingPath = True
+	
+	if (passingPath == False):
+		# No passing path so make sure no quizzes require it as a prerequisite
+		for quiz in course.pages.all():
+			try:
+				quiz = quiz.quiz
+				if (quiz.slug == safeSlug(quiz.slug)):
+					prereqs = quiz.prerequisites.all()
+					for p in prereqs:
+						if (p.requiredQuiz.slug == safeSlug(self.slug)):
+							# A quiz requires this quiz as a prerequisite
+							# and no pathing pass exists, error
+							errors.append(quiz.name + " requires this quiz as a prerequisite and no other passing path exists")
+			except Quiz.DoesNotExist:
+				pass
+
+	if (len(errors) == 0):
+		path.delete()
+
+	return errors
 
 def publishQuiz(self):
 	''' 
@@ -378,9 +432,10 @@ def scoreQuiz(self, request, course_slug, quiz_slug):
 	for q in questions:
 		if (isMultipleChoiceQuestion(q)):
 			q = q.multiplechoicequestion
-			theirAnswer = request.POST['mcq%s' % q.order]
-			if (q.answers.get(order=theirAnswer).correct):
-				score = score + 1
+			if ('mcq%s' % q.order) in request.POST:
+				theirAnswer = request.POST['mcq%s' % q.order]
+				if (q.answers.get(order=theirAnswer).correct):
+					score = score + 1
 		else:
 			q = q.codequestion
 			print "Grade code question\n"
@@ -429,7 +484,15 @@ def validateQuizFromPost(self, request):
 
 	# Hidden - There can be no errors in this
 
-	# Prerequisites - There can be no errors in this
+	# Prerequisites - Make sure the required quiz(s) have a "passing" path
+	for prereq in request.POST.getlist("prereqs"):
+		requiredQuiz = Quiz.objects.get(slug = prereq)
+		foundPath = False
+		for path in requiredQuiz.paths.all():
+			if (path.passed == True):
+				foundPath = True
+		if (foundPath == False):
+			errors.append(requiredQuiz.name + " does not have a passing path")
 
 	for q in questions:
 		if (isMultipleChoiceQuestion(q)):

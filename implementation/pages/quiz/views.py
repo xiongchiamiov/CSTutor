@@ -18,6 +18,7 @@ from question.models import CodeQuestion
 from question.question import *
 from home.views import master_rtr
 from pages.page import insertChildPage
+from django.core.exceptions import ObjectDoesNotExist
 
 def create_quiz(request, course_slug, page_slug):
 	''' create_Quiz View
@@ -140,21 +141,40 @@ def submitQuiz(request, course_slug, page_slug):
 	except Quiz.DoesNotExist:
 		raise Http404
 
+	# Make sure prerequisites are satisfied
+	if (not checkPrerequisites(quiz, request.user)):
+		return master_rtr(request, 'page/denied.html', {'course':course_slug, 'course_slug':course_slug, 'prereqs':True})
+
+	#if the course is private then check that the user is enrolled and has view permissions
+	if course.private:
+		if not request.user.is_authenticated():
+			return master_rtr(request, 'page/denied.html', {'course':course_slug, 'enrolled':False, 'edit':False, 'loggedIn':False})
+		try:#try to get the enrollment for this user and check view permission
+			e = quiz.course.roster.get(user=request.user)
+			if not e.view:
+				return master_rtr(request, 'page/denied.html', {'course':course_slug, 'enrolled':True, 'edit':False, 'loggedIn':True})
+		except ObjectDoesNotExist:
+			# user is not enrolled in this course
+			return master_rtr(request, 'page/denied.html', {'course':course_slug, 'enrolled':False, 'edit':False, 'loggedIn':True})
+
 	maxScore = len(quiz.questions.all())
 	score = 0
 	percentage = 100
 
 	if (request.method == "POST"):
 		score = scoreQuiz(quiz, request, course_slug, page_slug)
-	else:
-		return master_rtr(request, 'page/denied.html', {'course':course_slug, 'loggedIn':False})
 
 	if (not (maxScore == 0)):
 		percentage = round(float(score) / float(maxScore), 2) * 100
+
+	try:
+		path = matchPath(quiz, percentage)
+	except NoMatchingPath:
+		path = False
 			
 	return master_rtr(request, 'page/quiz/submitQuiz.html', \
 			{'course':course_slug, 'course_slug':course_slug, \
-			 'page_slug':page_slug, 'pid':page_slug, 'score':score, 'maxScore':maxScore, 'percentage':percentage})
+			 'page_slug':page_slug, 'pid':page_slug, 'score':score, 'maxScore':maxScore, 'percentage':percentage, 'path':path})
 
 def edit_quiz(request, course_slug, page_slug):
 	''' edit_quiz View
@@ -178,12 +198,18 @@ def edit_quiz(request, course_slug, page_slug):
 	except Quiz.DoesNotExist:
 		raise Http404
 
-	pages = Course.objects.get(slug=course_slug).pages.all()
+	allPages = Course.objects.get(slug=course_slug).pages.all()
 	questions = workingCopy.questions.all().order_by("order")
 	prerequisites = workingCopy.prerequisites.all()
 	paths = workingCopy.paths.all()
 	prereqs = []
 	errors = []
+	pages = []
+
+	for p in allPages:
+		if (p.slug == safeSlug(p.slug)):
+			pages.append(p)
+
 
 	for p in prerequisites:
 		prereqs.append(p.requiredQuiz.slug)
@@ -252,8 +278,9 @@ def edit_quiz(request, course_slug, page_slug):
 
 		elif "RemovePath" in request.POST:
 			if ("path" in request.POST):
-				removePath(workingCopy, request)
-				return HttpResponseRedirect(request.path)
+				errors = removePath(workingCopy, request)
+				if (len(errors) == 0):
+					return HttpResponseRedirect(request.path)
 			else:
 				errors.append("You must select a path to remove")
 
