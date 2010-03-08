@@ -15,21 +15,21 @@ urlpatterns = patterns('',
 	(r'^create-lesson', 'pages.lesson.views.create_lesson'),
 
    # redirect to stats
-	(r'stats/.*', include ('stats.urls')),
+	(r'^stats/.*', include ('stats.urls')),
    # redirect to lesson or quiz
-	(r'page/(?P<page_slug>[\w-]+)/', include('pages.urls')),
+	(r'^page/(?P<page_slug>[\w-]+)/', include('pages.urls')),
 )
 
 urlpatterns += patterns('courses.views',
 	# roster requests
-	(r'roster/addPendingRequests/$', 'manage_pending_requests'),
-	(r'roster/updateRoster/$', 'update_roster'),
-	(r'roster/adduser/$', 'add_user'),
-	(r'roster/adduser/addFromFile/', 'add_from_file'),
-	(r'roster/adduser/cancel', 'cancel_add'),
-	(r'roster/$', 'show_roster'),
+	(r'^roster/addPendingRequests/$', 'manage_pending_requests'),
+	(r'^roster/updateRoster/$', 'update_roster'),
+	(r'^roster/adduser/$', 'add_user'),
+	(r'^roster/adduser/addFromFile/', 'add_from_file'),
+	(r'^roster/adduser/cancel', 'cancel_add'),
+	(r'^roster/$', 'show_roster'),
 	#redirect to the chat page
-	(r'chat/$', 'show_chat'),
+	(r'^chat/$', 'show_chat'),
 
 	# Catch just the course and render the course index anyway
 	(r'^$', 'show_course'),
