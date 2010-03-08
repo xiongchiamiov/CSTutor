@@ -9,18 +9,16 @@
       <field type="BooleanField" name="is_staff">True</field>
       <field type="BooleanField" name="is_active">True</field>
       <field type="BooleanField" name="is_superuser">True</field>
-      <field type="DateTimeField" name="last_login">2010-03-08 16:27:30</field>
+      <field type="DateTimeField" name="last_login">2010-03-08 17:18:00</field>
       <field type="DateTimeField" name="date_joined">2010-01-22 13:14:05</field>
       <field to="auth.group" name="groups" rel="ManyToManyRel"></field>
       <field to="auth.permission" name="user_permissions" rel="ManyToManyRel"></field>
    </object>
-
    <object pk="100" model="courses.course">
       <field type="SlugField" name="slug">cstutor-demo</field>
       <field type="CharField" name="name">CSTutor Demo</field>
       <field type="BooleanField" name="private">False</field>
    </object>
-
    <object pk="100" model="courses.enrollment">
       <field to="auth.user" name="user" rel="ManyToOneRel">100</field>
       <field to="courses.course" name="course" rel="ManyToOneRel">100</field>
@@ -30,20 +28,13 @@
       <field type="BooleanField" name="manage">True</field>
       <field type="DateTimeField" name="lastAction">2010-03-01 15:10:28</field>
    </object>
-
-
    <object pk="100" model="pages.page">
       <field to="courses.course" name="course" rel="ManyToOneRel">100</field>
       <field type="SlugField" name="slug">cstutor-demo</field>
       <field type="TextField" name="name">CSTutor Demo</field>
       <field type="IntegerField" name="left">1</field>
-      <field type="IntegerField" name="right">18</field>
+      <field type="IntegerField" name="right">28</field>
    </object>
-   <object pk="100" model="lesson.lesson">
-      <field type="TextField" name="content">&lt;p&gt;This is a sample course that demonstrates the features of CSTutor.&lt;/p&gt;</field>
-      <field type="TextField" name="workingCopy">&lt;p&gt;This is a sample course that demonstrates the features of CSTutor.&lt;/p&gt;</field>
-   </object>
-
    <object pk="101" model="pages.page">
       <field to="courses.course" name="course" rel="ManyToOneRel">100</field>
       <field type="SlugField" name="slug">logging-in</field>
@@ -51,7 +42,80 @@
       <field type="IntegerField" name="left">2</field>
       <field type="IntegerField" name="right">5</field>
    </object>
-
+   <object pk="102" model="pages.page">
+      <field to="courses.course" name="course" rel="ManyToOneRel">100</field>
+      <field type="SlugField" name="slug">profile-page</field>
+      <field type="TextField" name="name">Profile Page</field>
+      <field type="IntegerField" name="left">3</field>
+      <field type="IntegerField" name="right">4</field>
+   </object>
+   <object pk="103" model="pages.page">
+      <field to="courses.course" name="course" rel="ManyToOneRel">100</field>
+      <field type="SlugField" name="slug">creating-a-course</field>
+      <field type="TextField" name="name">Creating a Course</field>
+      <field type="IntegerField" name="left">6</field>
+      <field type="IntegerField" name="right">11</field>
+   </object>
+   <object pk="104" model="pages.page">
+      <field to="courses.course" name="course" rel="ManyToOneRel">100</field>
+      <field type="SlugField" name="slug">create-lesson</field>
+      <field type="TextField" name="name">Create Lesson</field>
+      <field type="IntegerField" name="left">7</field>
+      <field type="IntegerField" name="right">8</field>
+   </object>
+   <object pk="105" model="pages.page">
+      <field to="courses.course" name="course" rel="ManyToOneRel">100</field>
+      <field type="SlugField" name="slug">create-quiz</field>
+      <field type="TextField" name="name">Create Quiz</field>
+      <field type="IntegerField" name="left">9</field>
+      <field type="IntegerField" name="right">10</field>
+   </object>
+   <object pk="106" model="pages.page">
+      <field to="courses.course" name="course" rel="ManyToOneRel">100</field>
+      <field type="SlugField" name="slug">roster</field>
+      <field type="TextField" name="name">Roster</field>
+      <field type="IntegerField" name="left">11</field>
+      <field type="IntegerField" name="right">12</field>
+   </object>
+   <object pk="107" model="pages.page">
+      <field to="courses.course" name="course" rel="ManyToOneRel">100</field>
+      <field type="SlugField" name="slug">viewing-stats</field>
+      <field type="TextField" name="name">Viewing Stats</field>
+      <field type="IntegerField" name="left">13</field>
+      <field type="IntegerField" name="right">14</field>
+   </object>
+   <object pk="108" model="pages.page">
+      <field to="courses.course" name="course" rel="ManyToOneRel">100</field>
+      <field type="SlugField" name="slug">chat</field>
+      <field type="TextField" name="name">Chat</field>
+      <field type="IntegerField" name="left">15</field>
+      <field type="IntegerField" name="right">16</field>
+   </object>
+   <object pk="109" model="pages.page">
+      <field to="courses.course" name="course" rel="ManyToOneRel">100</field>
+      <field type="SlugField" name="slug">join-course</field>
+      <field type="TextField" name="name">Join Course</field>
+      <field type="IntegerField" name="left">17</field>
+      <field type="IntegerField" name="right">18</field>
+   </object>
+   <object pk="110" model="pages.page">
+      <field to="courses.course" name="course" rel="ManyToOneRel">100</field>
+      <field type="SlugField" name="slug">editing-quizzes-and-lessons</field>
+      <field type="TextField" name="name">Editing Quizzes and Lessons</field>
+      <field type="IntegerField" name="left">21</field>
+      <field type="IntegerField" name="right">22</field>
+   </object>
+   <object pk="111" model="pages.page">
+      <field to="courses.course" name="course" rel="ManyToOneRel">100</field>
+      <field type="SlugField" name="slug">viewing-lesson</field>
+      <field type="TextField" name="name">Viewing lesson</field>
+      <field type="IntegerField" name="left">19</field>
+      <field type="IntegerField" name="right">20</field>
+   </object>
+   <object pk="100" model="lesson.lesson">
+      <field type="TextField" name="content">&lt;p&gt;This is a sample course that demonstrates the features of CSTutor.&lt;/p&gt;</field>
+      <field type="TextField" name="workingCopy">&lt;p&gt;This is a sample course that demonstrates the features of CSTutor.&lt;/p&gt;</field>
+   </object>
    <object pk="101" model="lesson.lesson">
       <field type="TextField" name="content">&lt;p&gt;To log in, select the login button on the upper right hand side.&lt;/p&gt;
 &lt;p&gt;You'll need to register before you can login.&amp;nbsp; Don't worry, we'll remember that you've joined this course after you register.&lt;/p&gt;
@@ -70,52 +134,19 @@
 &lt;li&gt;Autologin: Stores your username for two weeks, and keeps you logged in even if you leave and come back.&lt;/li&gt;
 &lt;/ul&gt;</field>
    </object>
-
-   <object pk="102" model="pages.page">
-      <field to="courses.course" name="course" rel="ManyToOneRel">100</field>
-      <field type="SlugField" name="slug">profile-page</field>
-      <field type="TextField" name="name">Profile Page</field>
-      <field type="IntegerField" name="left">3</field>
-      <field type="IntegerField" name="right">4</field>
-   </object>
    <object pk="102" model="lesson.lesson">
       <field type="TextField" name="content">&lt;p&gt;You can edit your personal information in the profile page.&amp;nbsp; These are things like email, password, first/last name, etc.&amp;nbsp; You can also purge your account and information from our system by deleting your account.&amp;nbsp; Be careful!&amp;nbsp; That operation is irreversible.&lt;/p&gt;</field>
       <field type="TextField" name="workingCopy">&lt;p&gt;You can edit your personal information in the profile page.&amp;nbsp; These are things like email, password, first/last name, etc.&amp;nbsp; You can also purge your account and information from our system by deleting your account.&amp;nbsp; Be careful!&amp;nbsp; That operation is irreversible.&lt;/p&gt;</field>
    </object>
-
-   <object pk="103" model="pages.page">
-      <field to="courses.course" name="course" rel="ManyToOneRel">100</field>
-      <field type="SlugField" name="slug">creating-a-course</field>
-      <field type="TextField" name="name">Creating a Course</field>
-      <field type="IntegerField" name="left">6</field>
-      <field type="IntegerField" name="right">11</field>
-   </object>
    <object pk="103" model="lesson.lesson">
-      <field type="TextField" name="content">FIXME</field>
-      <field type="TextField" name="workingCopy">FIXME</field>
-   </object>
-
-   <object pk="104" model="pages.page">
-      <field to="courses.course" name="course" rel="ManyToOneRel">100</field>
-      <field type="SlugField" name="slug">create-lesson</field>
-      <field type="TextField" name="name">Create Lesson</field>
-      <field type="IntegerField" name="left">7</field>
-      <field type="IntegerField" name="right">8</field>
+      <field type="TextField" name="content">&lt;p&gt;Now that we've logged in, we might as well make a course.  Go ahead and push the "create course" button on the left, name your course, and fill in the index page for it.&lt;/p&gt;</field>
+      <field type="TextField" name="workingCopy">&lt;p&gt;Now that we've logged in, we might as well make a course.  Go ahead and push the "create course" button on the left, name your course, and fill in the index page for it.&lt;/p&gt;</field>
    </object>
    <object pk="104" model="lesson.lesson">
       <field type="TextField" name="content">&lt;p&gt;Now that we've created a course, we should create a lesson on it.&amp;nbsp; While viewing the course landing page, select "Create lesson" from the left hand menu.&amp;nbsp; You'll be presented with the lesson creation screen (notice how it is very similar to the Course Creation screen).&amp;nbsp;&lt;/p&gt;
 &lt;p&gt;Go ahead and fill in some sample text, then go on to the next lesson.&amp;nbsp; Try creating text that is &lt;strong&gt;bold&lt;/strong&gt; or &lt;span style="text-decoration: underline;"&gt;underlined&lt;/span&gt; or &lt;sup&gt;superscript&lt;/sup&gt;&lt;/p&gt;</field>
       <field type="TextField" name="workingCopy">&lt;p&gt;Now that we've created a course, we should create a lesson on it.&amp;nbsp; While viewing the course landing page, select "Create lesson" from the left hand menu.&amp;nbsp; You'll be presented with the lesson creation screen (notice how it is very similar to the Course Creation screen).&amp;nbsp;&lt;/p&gt;
 &lt;p&gt;Go ahead and fill in some sample text, then go on to the next lesson.&amp;nbsp; Try creating text that is &lt;strong&gt;bold&lt;/strong&gt; or &lt;span style="text-decoration: underline;"&gt;underlined&lt;/span&gt; or &lt;sup&gt;superscript&lt;/sup&gt;&lt;/p&gt;</field>
-   </object>
-
-
-   <object pk="105" model="pages.page">
-      <field to="courses.course" name="course" rel="ManyToOneRel">100</field>
-      <field type="SlugField" name="slug">create-quiz</field>
-      <field type="TextField" name="name">Create Quiz</field>
-      <field type="IntegerField" name="left">9</field>
-      <field type="IntegerField" name="right">10</field>
    </object>
    <object pk="105" model="lesson.lesson">
       <field type="TextField" name="content">&lt;p&gt;Quizzes are significantly more complicated, so we won't provide a full description here.&amp;nbsp; The basic things you'll want to try:&lt;/p&gt;
@@ -145,15 +176,6 @@
 &lt;/li&gt;
 &lt;/ul&gt;</field>
    </object>
-
-   <object pk="106" model="pages.page">
-      <field to="courses.course" name="course" rel="ManyToOneRel">100</field>
-      <field type="SlugField" name="slug">roster</field>
-      <field type="TextField" name="name">Roster</field>
-      <field type="IntegerField" name="left">12</field>
-      <field type="IntegerField" name="right">13</field>
-   </object>
-
    <object pk="106" model="lesson.lesson">
       <field type="TextField" name="content">&lt;p&gt;Every course has a roster.&amp;nbsp; In order to view a course, you must be added to that roster.&amp;nbsp; If your course is public, join requests are added automatically.&amp;nbsp; Otherwise, the join requests are placed into a request queue, which a course manager must approve.&lt;/p&gt;
 &lt;p&gt;There are three permissions levels:&lt;/p&gt;
@@ -172,35 +194,9 @@
 &lt;/ul&gt;
 &lt;p&gt;You can also add users to your course.&amp;nbsp; You'll need to know their registered username or name to&amp;nbsp; add them to your course.&lt;/p&gt;</field>
    </object>
-
-
-
-
-
-
-   <object pk="107" model="pages.page">
-      <field to="courses.course" name="course" rel="ManyToOneRel">100</field>
-      <field type="SlugField" name="slug">viewing-stats</field>
-      <field type="TextField" name="name">Viewing Stats</field>
-      <field type="IntegerField" name="left">14</field>
-      <field type="IntegerField" name="right">15</field>
-   </object>
    <object pk="107" model="lesson.lesson">
       <field type="TextField" name="content">&lt;p&gt;You can view course stats by clicking the stats button.&amp;nbsp; Until somebody completes a quiz on your course, you won't have any stats to view.&amp;nbsp; Too bad.&lt;/p&gt;</field>
       <field type="TextField" name="workingCopy">&lt;p&gt;You can view course stats by clicking the stats button.&amp;nbsp; Until somebody completes a quiz on your course, you won't have any stats to view.&amp;nbsp; Too bad.&lt;/p&gt;</field>
-   </object>
-
-
-
-
-
-
-   <object pk="108" model="pages.page">
-      <field to="courses.course" name="course" rel="ManyToOneRel">100</field>
-      <field type="SlugField" name="slug">chat</field>
-      <field type="TextField" name="name">Chat</field>
-      <field type="IntegerField" name="left">16</field>
-      <field type="IntegerField" name="right">17</field>
    </object>
    <object pk="108" model="lesson.lesson">
       <field type="TextField" name="content">&lt;p&gt;Every course has a chat room, where you can converse with other users.&amp;nbsp; Click the "chat" button while viewing any course and you'll be connected to the course chat room.&lt;/p&gt;
@@ -208,5 +204,39 @@
       <field type="TextField" name="workingCopy">&lt;p&gt;Every course has a chat room, where you can converse with other users.&amp;nbsp; Click the "chat" button while viewing any course and you'll be connected to the course chat room.&lt;/p&gt;
 &lt;p&gt;NOTE: Chat rooms are unmoderated, and externally hosted.&amp;nbsp; We sincerely apologize for any abuse you receive, but we cannot control it and we are not responsible for any emotional scarring you may receive.&lt;/p&gt;</field>
    </object>
+   <object pk="109" model="lesson.lesson">
+      <field type="TextField" name="content">&lt;p&gt; Joining a course is easy.  Just click "join course" on the left, and select a course from the list. &lt;/p&gt;
 
+&lt;p&gt; But beware, you definitely don't want to join every course available and then try to join another course.  God forbid you do such a horrible thing.  Who knows, the world might even end. &lt;/p&gt;
+</field>
+      <field type="TextField" name="workingCopy">&lt;p&gt; Joining a course is easy.  Just click "join course" on the left, and select a course from the list. &lt;/p&gt;
+
+&lt;p&gt; But beware, you definitely don't want to join every course available and then try to join another course.  God forbid you do such a horrible thing.  Who knows, the world might even end. &lt;/p&gt;
+</field>
+   </object>
+   <object pk="110" model="lesson.lesson">
+      <field type="TextField" name="content">
+&lt;p&gt;From the quiz or lesson screen, click the big "edit" button on the top menu bar to edit the current course.&lt;/p&gt;  
+
+&lt;p&gt;Of course, you have to have permission to do this sort of thing.  &lt;/p&gt;
+
+&lt;p&gt; All Lessons have a "working copy."  When you click edit, the working copy is loaded, and you can edit it and save it without affecting the public copy.  "save" the working copy with save, and "publish" the working copy with the "publish" button.  Due to a bug, you currently need to "save" before you "publish."</field>
+      <field type="TextField" name="workingCopy">
+&lt;p&gt;From the quiz or lesson screen, click the big "edit" button on the top menu bar to edit the current course.&lt;/p&gt;  
+
+&lt;p&gt;Of course, you have to have permission to do this sort of thing.  &lt;/p&gt;
+
+&lt;p&gt; All Lessons have a "working copy."  When you click edit, the working copy is loaded, and you can edit it and save it without affecting the public copy.  "save" the working copy with save, and "publish" the working copy with the "publish" button.  Due to a bug, you currently need to "save" before you "publish."
+</field>
+   </object>
+   <object pk="111" model="lesson.lesson">
+      <field type="TextField" name="content">
+&lt;p&gt;Select any lesson from the table of contents to the left to view that lesson.  You know, kind of like what you've been doing for the last dozen pages&lt;/p&gt;
+
+&lt;p&gt; You can navigate forward/backward using the "next/previous" buttons on each page.  They're quite handy &lt;/p&gt;</field>
+      <field type="TextField" name="workingCopy">
+&lt;p&gt;Select any lesson from the table of contents to the left to view that lesson.  You know, kind of like what you've been doing for the last dozen pages&lt;/p&gt;
+
+&lt;p&gt; You can navigate forward/backward using the "next/previous" buttons on each page.  They're quite handy &lt;/p&gt;</field>
+   </object>
 </django-objects>
