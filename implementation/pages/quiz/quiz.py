@@ -82,8 +82,34 @@ def matchPath(self, score):
 	for p in paths:
 		if (score >= p.lowscore and score < p.highscore):
 			return p
+		if (score == p.highscore and score == 100):
+			return p
 
 	raise NoMatchingPath
+
+def checkPrerequisites(self, user):
+	'''
+		This function takes a quiz and a user. It then loooks the user's
+		statistics up and makes sure all of the quizzes prerequisites
+		have been met. If the user has edit permissions on the course,
+		then it returns true. Otherwise, it returns true if all prereqs
+		have been met and false if not.
+	'''
+	prereqs = self.prerequisites.all()
+
+	enrollment = user.enrollments.get(course=self.course)
+	if (not enrollment.edit):
+		for p in prereqs:
+			print "Prereq: " + p.requiredQuiz.slug + "\n"
+			requiredQuiz = p.requiredQuiz
+			#score = getUserBestQuizScore(requiredQuiz, user)
+			score = 100
+			path = matchPath(requiredQuiz, score)
+			print "User Score on Prereq: " + str(path.passed) + "\n"
+			if (path.passed == False):
+				return False
+
+	return True
 
 def copyQuiz(quiz1, quiz2):
 	'''
@@ -110,7 +136,7 @@ def copyQuiz(quiz1, quiz2):
 	curPaths = quiz2.paths.all()
 	for p in curPaths:
 		p.delete()
-	curPrereqs = quiz1.paths.all()
+	curPaths = quiz1.paths.all()
 	for p in curPaths:
 		newPath = Path(quiz = quiz2, lowscore = p.lowscore, highscore = p.highscore, text = p.text, passed = p.passed, toPage = p.toPage)
 		newPath.save()

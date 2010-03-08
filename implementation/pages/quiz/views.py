@@ -47,8 +47,12 @@ def show_quiz(request, course, page_slug):
 		at unpublished quizzes
 	'''
 	page_slug = safeSlug(page_slug)
-
 	quiz = Quiz.objects.get(slug=page_slug)
+
+	# If the quiz is hidden, make sure prerequisites have been met
+	if (quiz.hidden and not checkPrerequisites(quiz, request.user)):
+		return master_rtr(request, 'page/denied.html', {'course':course, 'course_slug':course, 'prereqs':True})
+	
 	quizTitle = quiz.text
 	questions = quiz.questions.all().order_by("order")
 	return master_rtr(request, 'page/quiz/viewQuiz.html', \
@@ -214,6 +218,7 @@ def edit_quiz(request, course_slug, page_slug):
 
 		elif "Publish" in request.POST:
 			r = saveQuiz(request, course_slug, page_slug)
+			page_slug = safeSlug(r["quiz_slug"])
 			errors = r["errors"]
 			if (len(errors) == 0):
 				workingCopy = Quiz.objects.get(slug=(page_slug + "_workingCopy"))
