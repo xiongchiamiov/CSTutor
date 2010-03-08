@@ -62,7 +62,7 @@ def show_lesson(request, course_slug, page_slug, lessonPage):
 	@author Russell Mezzetta
 	This view displays a lesson to the user
 	'''
-  # To get lessonConent now, you need to retreieve the page from the database, cast it to a lesson, and get the "text" attribute
+	# To get lessonConent now, you need to retreieve the page from the database, cast it to a lesson, and get the "text" attribute
 	#shouldn't have to try/except because previous calls should guarentee the page exists	
 	
 	#check request method for prev/next button
