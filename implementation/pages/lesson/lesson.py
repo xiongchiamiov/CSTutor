@@ -94,7 +94,7 @@ def saveLessonName(lesson, newLessonName):
 	'''
 	#check that newLessonName has 1 or more characters
 	if len(newLessonName) < 1:
-		return 1
+		return {'message':"Name change failed: name must be non-empty"}
 
 	#check that the newLessonName doesn't already exist in this course
 	newSlug = slugify(newLessonName)
@@ -102,12 +102,12 @@ def saveLessonName(lesson, newLessonName):
 	#search the pages in the course to see if the slug is unique
 	notUnique = Page.objects.filter(course=lesson.course).filter(slug=newSlug).count()
 	if notUnique:
-		return None
+		return {'message':"Name change failed. A page with that name already exists in this course"}
 
 	lesson.name = newLessonName
 	lesson.slug = newSlug
 	lesson.save()
-	return lesson
+	return {'lesson':lesson}
 
 def saveLessonWorkingCopy(lesson, workingCopy):
 	'''

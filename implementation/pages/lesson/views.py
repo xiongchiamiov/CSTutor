@@ -2,6 +2,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.core.urlresolvers import reverse
 from courses.models import Course
+from courses.course import renameCourse
 from pages.lesson.models import Lesson
 from home.views import master_rtr
 from pages.lesson.lesson import *
@@ -96,6 +97,7 @@ def edit_lesson(request, course_slug, page_slug):
 	#common dictionary fields
 	data={'course_slug':course_slug, 'page_slug':page_slug}
 	lesson = Course.objects.get(slug=course_slug).pages.get(slug=page_slug)
+	
 	try:
 		lesson = lesson.lesson
 	except Lesson.DoesNotExist:
@@ -110,14 +112,20 @@ def edit_lesson(request, course_slug, page_slug):
 
 			#check if the name changed
 			if lesson.name != request.POST['lessonname']:
-				r = saveLessonName(lesson, request.POST['lessonname'])
-				if r == 1:
-					data['message'] = "Name change failed: name must be non-empty"
-				elif r != None:
-					#yes this is ugly but reverse wouldn't work for some reason
+				ret = {}
+
+				if page_slug == course_slug:
+					ret = renameCourse(Course.objects.get(slug=course_slug), request.POST['lessonname'])
+					if 'course' in ret:
+						course_slug = ret['course'].slug
+						saveLessonName(lesson, request.POST['lessonname'])
+				else:
+					ret = saveLessonName(lesson, request.POST['lessonname'])
+				
+				if 'message' in ret:
+					data['message'] = ret['message']
+				else:
 					return HttpResponseRedirect(reverse('pages.views.edit_page', args=[course_slug, lesson.slug]))
-				else:#name was not unique
-					data['message'] = "Name change failed. A page with that name already exists in this course"
 
 			return master_rtr(request, 'page/lesson/edit_lesson.html', data)
 			#return master_rtr(request, 'page/lesson/save_lesson.html', \

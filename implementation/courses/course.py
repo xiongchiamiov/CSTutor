@@ -8,6 +8,7 @@ Contains operations for Courses
 from courses.models import *
 from courses.enrollment import *
 from pages.lesson.models import Lesson
+from pages.models import Page
 
 def CreateCourse(name, user, private, slug=None):
 	''' Creates a new course
@@ -16,8 +17,6 @@ def CreateCourse(name, user, private, slug=None):
 		 slug string. Creates a new course, enrolls the user in the course and 
 		 assigns all permissions to them.  Returns the course after saving it
 		 it.  Have to save it so that enrollment gets an id to link to
-
-		 TODO: Also needs to create a "default" landing page
 	'''
 	# check for empty string (or default value)
 	if not slug:
@@ -36,7 +35,30 @@ def CreateCourse(name, user, private, slug=None):
 	newpage.save()
 
 	return newcourse
-		
+
+def renameCourse(course, newName):
+	''' Renames a course
+	'''
+	if len(newName.strip()) < 1:
+		return {'message':"Name change failed: name must be non-empty"}
+
+	#check that the newLessonName doesn't already exist in this course
+	newSlug = slugify(newName)
+
+	#search the pages in the course to see if the slug is unique
+	courseExists = Course.objects.filter(slug=newSlug).count()
+	if courseExists:
+		return {'message':"Name change failed. A course with that name already exists"}
+
+	pageExists = Page.objects.filter(course=course).filter(slug=newSlug).count()
+	if pageExists:
+		return {'message':"Name change failed. A page with that name already exists in this course"}
+	
+	course.name = newName
+	course.slug = newSlug
+	course.save()
+	return {'course':course}
+
 def addUser(self, user, view = True, edit=False, stats=False, manage=False):
 	''' Adds a User to a course 
 	
