@@ -33,7 +33,7 @@
       <field type="SlugField" name="slug">cstutor-demo</field>
       <field type="TextField" name="name">CSTutor Demo</field>
       <field type="IntegerField" name="left">1</field>
-      <field type="IntegerField" name="right">28</field>
+      <field type="IntegerField" name="right">23</field>
    </object>
    <object pk="101" model="pages.page">
       <field to="courses.course" name="course" rel="ManyToOneRel">100</field>
