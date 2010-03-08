@@ -1,0 +1,16 @@
+$('code').each(function()){
+	$(this).html('<div...'
+					+ $(this).html()
+					+ '</div><button....');
+});
+
+$('runbutton').click(function(){
+	$(this).prev().prev().html(...);
+});
+
+<code>
+<div class="codebox"></div>
+<div class="outputbox"></div>
+<button name="reset">
+<button name="run">
+</code>
