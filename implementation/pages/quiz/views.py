@@ -34,7 +34,7 @@ def create_quiz(request, course_slug, page_slug):
 		newQuiz = Quiz.objects.get(slug=newQuiz.slug)
 		workingCopy = Quiz(course=newQuiz.course, name=newQuiz.name, slug=(newQuiz.slug + "_workingCopy"), text=newQuiz.name, left=0, right=0)
 		workingCopy.save()
-		return HttpResponseRedirect('/course/' + course_slug + '/page/' + newQuiz.slug + '/edit/')
+		return HttpResponseRedirect(reverse('pages.views.edit_page', args=[course_slug, newQuiz.slug]))
 	else:
 		return master_rtr(request, 'page/quiz/create-quiz.html')
 
