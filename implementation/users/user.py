@@ -10,20 +10,6 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.forms.fields import email_re
 
-# commented out by mgius on 2/16/10
-#def editProfile(oldUser, newUser):
-#   '''
-#   This operation takes a users profile and any modifications and 
-#   merges them together, returning an updated profile
-#   '''
-#   pass
-#
-#def logout(request):
-#   '''
-#   Logs a user out.
-#   '''
-#   
-#   pass
 
 def updateEmail(request):
 	'''
@@ -32,7 +18,7 @@ def updateEmail(request):
 	@pre request.POST["form"] == "Change E-mail"
 	@post request.user.email = email
 	'''
-        email = request.POST["email"]
+	email = request.POST["email"]
 	if (email_re.match(email)):
 		request.user.email = email
 		request.user.save()
@@ -88,12 +74,6 @@ def changePassword(request):
     request.user.save()
     return 0
 
-def setInstructor(user, instructor):
-   '''
-   Grants a user permission to create a course
-	TODO:
-   '''
-   pass
 
 def registerNewUser(username, password, vpassword, firstName, lastName, email):
 	'''

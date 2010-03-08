@@ -28,7 +28,8 @@ class UserTests(TestCase):
 		Two users:
 		Testuser1 has full permissions in both courses. 
 		Testuser2 has no enrollments. 
-	Phase 1: Test logging in, logging out, viewing profile, updating email, registering a new user
+	Phase 1: Test logging in, logging out, viewing profile, updating email, updating name,
+	         deleting account, registering a new user
 	'''
 	
 	fixtures = ['UserTests']
@@ -79,13 +80,24 @@ class UserTests(TestCase):
 		@author John Hartquist
 		Tests that a user can view their profile
 		
-		case#            input        expected         output    remark
-		-----            -----        --------         ------    ------
-		1                status_code  200              200       shows a users profile
+		case#            input           expected             output              remark
+		-----            -----           --------             ------              ------
+		1                not logged in   "not logged in"      "not logged in"     anon user not logged in
+		
+		2                logged in       shows the profile    shows the profile   
 		
 		'''
+		
+		#try viewing profile while not logged in
+		response = self.client.get("/profile/")
+		self.failIfEqual(response.content.find("You are not currently logged in"), -1)
+		
+		
+		#log in
 		self.client.post("/login/", {'username': self.user1,
 		                             'password': self.password})
+		
+		#try to view profile again
 		response = self.client.get("/profile/")
 		self.failUnlessEqual(response.status_code, 200)
 		
@@ -179,21 +191,45 @@ class UserTests(TestCase):
 		                             'password': self.password})
 	
 		#test providing blank name
-		response = self.client.post("/profile/", {'form': "Change Name", 'first_name': "", 'last_name':"" })
+		response = self.client.post("/profile/", {'form': "Update Name", 'first_name': "", 'last_name':"" })
 		self.failUnlessEqual(response.status_code, 200)
 		
 		#test providing blank first name
-		response = self.client.post("/profile/", {'form': "Change Name", 'first_name': "", 'last_name':"Last" })
+		response = self.client.post("/profile/", {'form': "Update Name", 'first_name': "", 'last_name':"Last" })
 		self.failUnlessEqual(response.status_code, 200)
 		
 		#test providing blank last name
-		response = self.client.post("/profile/", {'form': "Change Name", 'first_name': "First", 'last_name':"" })
+		response = self.client.post("/profile/", {'form': "Update Name", 'first_name': "First", 'last_name':"" })
 		self.failUnlessEqual(response.status_code, 200)
 		
 		#test that password changes
-		response = self.client.post("/profile/", {'form': "Change Name", 'first_name': "First", 'last_name':"Last" })
+		response = self.client.post("/profile/", {'form': "Update Name", 'first_name': "First", 'last_name':"Last" })
 		self.failIfEqual(response.content.find("First"), -1)
 		self.failIfEqual(response.content.find("Last"), -1)
+		
+		
+	def testDeleteUser(self):
+		'''
+		@author John Hartquist
+		Tests that a user can delete himself
+		
+		case#            input                      expected                output                   remark
+		-----            -----                      --------                ------                   ------
+		1                user clicks delete         user account exists     user account exists      user must confirm delete account
+		                 selects 'No' at confirm
+		   
+		2                user clicks delete         user account deleted    user account deleted     user confirms delete account
+		                 selects 'Yes' at confirm
+		'''
+		
+		#test user clicking yes
+		registerNewUser("NewUser", "password", "password", "first", "last", "newuser@email.com")
+		self.client.post("/login/", {'username': "NewUser",
+		                             'password': "password"})
+		
+		response = self.client.post("/profile/", {'form': "Delete Account"})
+		response = self.client.post("/profile/", {'form': "Yes"})
+		self.failUnlessEqual(response.status_code, 302)
 		
 	def testRegisterNewUser(self):
 		'''
