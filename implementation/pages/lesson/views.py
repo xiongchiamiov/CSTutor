@@ -28,8 +28,6 @@ def create_lesson(request, course_slug, page_slug):
 	'''
 	if request.method == "POST" and "Save" in request.POST:
 		name = request.POST["lessonname"].strip()
-		lesson = CreateLesson(name)
-		lesson.content = request.POST["content"]
 
 		if len(name) < 1:
 			return master_rtr(request, 'page/lesson/edit_lesson.html', \
@@ -38,6 +36,9 @@ def create_lesson(request, course_slug, page_slug):
 								 'course':course_slug,
 								 'message':'Lesson names must be non-empty',
 								 'lesson':lesson, 'new':True})
+
+		lesson = CreateLesson(name)
+		lesson.workingCopy = lesson.content = request.POST["content"]
 	
 		if saveNewLesson(request, course_slug, page_slug) == 0:
 			return HttpResponseRedirect(reverse('pages.views.show_page', args=[course_slug, lesson.slug]))

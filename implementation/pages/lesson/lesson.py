@@ -50,6 +50,7 @@ def saveNewLesson(request, course, parent_slug):
 		except Lesson.DoesNotExist:
 			lesson = CreateLesson(request.POST["lessonname"])
 			lesson.content = request.POST["content"]
+			lesson.workingCopy = lesson.content
 			insertChildPage(lesson, Lesson.objects.get(slug=parent_slug))
 			return 0
 	
