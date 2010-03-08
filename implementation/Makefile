@@ -24,7 +24,9 @@ runserver:
 	python manage.py runserver
 
 syncdb: database
+
 database:
+	@echo "foo"
 	python ./manage.py syncdb --noinput
 	@echo "################################################"
 	@echo "Note: this does not clear the database or update changed objects"
