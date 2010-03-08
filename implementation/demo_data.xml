@@ -88,7 +88,7 @@
       <field type="SlugField" name="slug">creating-a-course</field>
       <field type="TextField" name="name">Creating a Course</field>
       <field type="IntegerField" name="left">6</field>
-      <field type="IntegerField" name="right">11field>
+      <field type="IntegerField" name="right">11</field>
    </object>
    <object pk="103" model="lesson.lesson">
       <field type="TextField" name="content">FIXME</field>
