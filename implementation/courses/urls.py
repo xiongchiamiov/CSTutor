@@ -11,8 +11,8 @@ from django.views.generic.simple import direct_to_template
 	
 urlpatterns = patterns('',
    # create a quiz in these pages
-	(r'create-quiz', 'pages.quiz.views.create_quiz'),
-	(r'create-lesson', 'pages.lesson.views.create_lesson'),
+	(r'^create-quiz', 'pages.quiz.views.create_quiz'),
+	(r'^create-lesson', 'pages.lesson.views.create_lesson'),
 
    # redirect to stats
 	(r'stats/.*', include ('stats.urls')),
