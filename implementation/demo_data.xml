@@ -21,6 +21,16 @@
       <field type="BooleanField" name="private">False</field>
    </object>
 
+   <object pk="100" model="courses.enrollment">
+      <field to="auth.user" name="user" rel="ManyToOneRel">100</field>
+      <field to="courses.course" name="course" rel="ManyToOneRel">100</field>
+      <field type="BooleanField" name="view">True</field>
+      <field type="BooleanField" name="edit">True</field>
+      <field type="BooleanField" name="stats">True</field>
+      <field type="BooleanField" name="manage">True</field>
+      <field type="DateTimeField" name="lastAction">2010-03-01 15:10:28</field>
+   </object>
+
 
    <object pk="100" model="pages.page">
       <field to="courses.course" name="course" rel="ManyToOneRel">100</field>
