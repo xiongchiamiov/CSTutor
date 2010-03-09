@@ -39,8 +39,9 @@ def getPrevPage(self):
 	try:
   		p = Page.objects.filter(course__exact=self.course)\
 	                   .filter(left__lt=self.left).order_by('-left')[0]
-	except KeyError:
-		p = None
+	# how could this happen?
+	#except KeyError:
+	#	p = None
 	except IndexError:
 		#happens if filter returns no objects which happens when called on the
 		#top-most page of a course
@@ -126,7 +127,7 @@ def removePage(self, actuallyDelete=True):
 	coursePages = coursePages.exclude(left__lte=0).exclude(right__lte=0)
 	removeNumber = self.left
 
-   # have to use list to force evaluation, otherwise the numbers won't work out
+	# have to use list to force evaluation, otherwise the numbers won't work out
 	children = list(coursePages.filter(left__gt=self.left).filter(right__lt=self.right))
 	updateLeft = list(coursePages.filter(left__gt=removeNumber).exclude(right__lt=self.right))
 	updateRight = list(coursePages.filter(right__gt=removeNumber)\

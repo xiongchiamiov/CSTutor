@@ -72,6 +72,13 @@ class PageTests(TestCase):
 		self.assertEquals(min(usedNumbers), 1)
 		self.assertEquals(max(usedNumbers), len(pages) * 2)
 
+	def test_noPrevPage(self):
+		'''
+		Tests trying to get the "previous" page of a page that has no previous
+		'''
+		indexPage = Page.objects.get(slug='PageTestsIndexPage')
+		self.assertEquals(getPrevPage(indexPage), None)
+
 	def test_insertPage(self):
 		'''
 		Tests adding a new page to the tree as a sibling of an existing
