@@ -33,7 +33,7 @@
       <field type="SlugField" name="slug">cstutor-demo</field>
       <field type="TextField" name="name">CSTutor Demo</field>
       <field type="IntegerField" name="left">1</field>
-      <field type="IntegerField" name="right">23</field>
+      <field type="IntegerField" name="right">24</field>
    </object>
    <object pk="101" model="pages.page">
       <field to="courses.course" name="course" rel="ManyToOneRel">100</field>
@@ -74,43 +74,43 @@
       <field to="courses.course" name="course" rel="ManyToOneRel">100</field>
       <field type="SlugField" name="slug">roster</field>
       <field type="TextField" name="name">Roster</field>
-      <field type="IntegerField" name="left">11</field>
-      <field type="IntegerField" name="right">12</field>
+      <field type="IntegerField" name="left">12</field>
+      <field type="IntegerField" name="right">13</field>
    </object>
    <object pk="107" model="pages.page">
       <field to="courses.course" name="course" rel="ManyToOneRel">100</field>
       <field type="SlugField" name="slug">viewing-stats</field>
       <field type="TextField" name="name">Viewing Stats</field>
-      <field type="IntegerField" name="left">13</field>
-      <field type="IntegerField" name="right">14</field>
+      <field type="IntegerField" name="left">14</field>
+      <field type="IntegerField" name="right">15</field>
    </object>
    <object pk="108" model="pages.page">
       <field to="courses.course" name="course" rel="ManyToOneRel">100</field>
       <field type="SlugField" name="slug">chat</field>
       <field type="TextField" name="name">Chat</field>
-      <field type="IntegerField" name="left">15</field>
-      <field type="IntegerField" name="right">16</field>
+      <field type="IntegerField" name="left">16</field>
+      <field type="IntegerField" name="right">17</field>
    </object>
    <object pk="109" model="pages.page">
       <field to="courses.course" name="course" rel="ManyToOneRel">100</field>
       <field type="SlugField" name="slug">join-course</field>
       <field type="TextField" name="name">Join Course</field>
-      <field type="IntegerField" name="left">17</field>
-      <field type="IntegerField" name="right">18</field>
+      <field type="IntegerField" name="left">18</field>
+      <field type="IntegerField" name="right">19</field>
    </object>
    <object pk="110" model="pages.page">
       <field to="courses.course" name="course" rel="ManyToOneRel">100</field>
       <field type="SlugField" name="slug">editing-quizzes-and-lessons</field>
       <field type="TextField" name="name">Editing Quizzes and Lessons</field>
-      <field type="IntegerField" name="left">21</field>
-      <field type="IntegerField" name="right">22</field>
+      <field type="IntegerField" name="left">22</field>
+      <field type="IntegerField" name="right">23</field>
    </object>
    <object pk="111" model="pages.page">
       <field to="courses.course" name="course" rel="ManyToOneRel">100</field>
       <field type="SlugField" name="slug">viewing-lesson</field>
       <field type="TextField" name="name">Viewing lesson</field>
-      <field type="IntegerField" name="left">19</field>
-      <field type="IntegerField" name="right">20</field>
+      <field type="IntegerField" name="left">20</field>
+      <field type="IntegerField" name="right">21</field>
    </object>
    <object pk="100" model="lesson.lesson">
       <field type="TextField" name="content">&lt;p&gt;This is a sample course that demonstrates the features of CSTutor.&lt;/p&gt;</field>

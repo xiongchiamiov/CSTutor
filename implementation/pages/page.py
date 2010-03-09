@@ -70,7 +70,7 @@ def insertPageAfterNum(self, course, insertAfterNum):
 	self.course = course
 	coursePages = Page.objects.filter(course__exact=self.course)
 	#by our new convention pages with left <= 0 will be ignored
-	coursePages = coursePages.exclude(left__lte=0)
+	coursePages = coursePages.exclude(left__lte=0).exclude(right__lte=0)
 	# These pages are later in the tree, both left and right need to be inc by 2
 	updateLeft = coursePages.filter(left__gt=insertAfterNum)
 	for page in updateLeft:
@@ -112,7 +112,7 @@ def insertChildPage(self, parentPage):
 	'''
 	return insertPageAfterNum(self, parentPage.course, parentPage.left)
 
-def removePage(self):
+def removePage(self, actuallyDelete=True):
 	''' Removes the given page from its course
 
 		 Returns the page deleted
@@ -123,7 +123,7 @@ def removePage(self):
 	'''
 	coursePages = Page.objects.filter(course__exact=self.course)
 	#by our new convention pages with left <= 0 will be ignored
-	coursePages = coursePages.exclude(left__lte=0)
+	coursePages = coursePages.exclude(left__lte=0).exclude(right__lte=0)
 	removeNumber = self.left
 
    # have to use list to force evaluation, otherwise the numbers won't work out
@@ -142,7 +142,8 @@ def removePage(self):
 		page.right -= 2
 		page.save()
 	
-	self.delete()
+	if actuallyDelete == True:
+		self.delete()
 	return self
 
 def movePage(self, insertAfter):
@@ -158,9 +159,13 @@ def movePage(self, insertAfter):
 
 	'''
 
+	removePage(self, actuallyDelete=False)
 	#set left to 0 makes this page be ignored by the insert function
 	self.left = 0
+	self.right = 0
 	self.save()
+	# force a reload of insertAfter, because it's changed in the database
+	insertAfter = Page.objects.get(id=insertAfter.id)
 	insertPage(self, insertAfter)
 	return self
 
@@ -177,9 +182,13 @@ def movePageToParent(self, newParent):
 
 	'''
 
+	removePage(self, actuallyDelete=False)
 	#set left to 0 makes this page be ignored by the insert function
 	self.left = 0
+	self.right = 0
 	self.save()
+	# force a reload of insertAfter, because it's changed in the database
+	newParent = Page.objects.get(id=newParent.id)
 	insertChildPage(self, newParent)
 
 	return self
