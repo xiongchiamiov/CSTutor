@@ -13,6 +13,14 @@ from question.question import removeQuestion
 from pages.page import removePage
 from stats.models import Stat
 
+def addCodeQuestion(self):
+	'''
+		Takes a quiz and adds a blank code question to it
+	'''
+	questions = self.questions.all()
+	newQuestion = CodeQuestion(order=(len(questions)+1), quiz=self)
+	newQuestion.save()
+	return newQuestion
 
 def addMultipleChoiceQuestion(self):
 	'''
@@ -23,19 +31,12 @@ def addMultipleChoiceQuestion(self):
 	newQuestion.save()
 	return newQuestion
 
-def addCodeQuestion(self):
-	'''
-		Takes a quiz and adds a blank code question to it
-	'''
-	questions = self.questions.all()
-	newQuestion = CodeQuestion(order=(len(questions)+1), quiz=self)
-	newQuestion.save()
-	return newQuestion
-
 def addPath(self, request, course_slug):
 	'''
 		Takes a working copy of a quiz, a request containing post data, and a course_slug
 		and adds a path to the quiz
+
+		pre: must be a POST and contain the post data
 	'''
 	errors = []
 	try:
@@ -45,10 +46,11 @@ def addPath(self, request, course_slug):
 
 		try:
 			matchingPath = matchPath(self, lowScore)
-			errors.append("Conflicting path ranges. Please change the range")
+			errors.append("A path that matches this range exists already")
 		except NoMatchingPath:
 			pass			
 	except ValueError:
+		lowScore = 0
 		errors.append("Low Score must be an integer")
 
 	try:
@@ -56,7 +58,7 @@ def addPath(self, request, course_slug):
 		if (highScore < 0 or highScore > 100):
 			errors.append("High Score must be between 0 and 100")
 		if (highScore < lowScore):
-			errors.append("High Score must be less than Low Score")
+			errors.append("Low Score must be less than or equal too High Score")
 	except ValueError:
 		errors.append("High Score must be an integer")
 
@@ -68,24 +70,11 @@ def addPath(self, request, course_slug):
 	if (len(errors) == 0):
 		newPath = Path(quiz = self, highscore = highScore, lowscore = lowScore, toPage = page, passed = passing, text = dialogue)
 		newPath.save()
+		publishedCopy = Quiz.objects.get(slug = safeSlug(self.slug))
+		publishedCopy.upToDate = False
+		publishedCopy.save()
 
 	return errors
-
-def matchPath(self, score):
-	'''
-		This function takes a quiz and a "score" on the quiz, represented as a percentage,
-		and returns the quiz path that the score matches. If no matching path
-		is found, it raises the NoMatchingPath exception.
-	'''
-	paths = self.paths.all()
-
-	for p in paths:
-		if (score >= p.lowscore and score < p.highscore):
-			return p
-		if (score == p.highscore and score == 100):
-			return p
-
-	raise NoMatchingPath
 
 def checkPrerequisites(self, user):
 	'''
@@ -165,6 +154,22 @@ def copyQuiz(quiz1, quiz2):
 
 		quiz2.save()
 
+def matchPath(self, score):
+	'''
+		This function takes a quiz and a "score" on the quiz, represented as a percentage,
+		and returns the quiz path that the score matches. If no matching path
+		is found, it raises the NoMatchingPath exception.
+	'''
+	paths = self.paths.all()
+
+	for p in paths:
+		if (score >= p.lowscore and score < p.highscore):
+			return p
+		if (score == p.highscore and score == 100):
+			return p
+
+	raise NoMatchingPath
+
 def editPath(self, request, course_slug):
 	'''
 		Takes a working copy of a quiz, a request containing post data, and a course_slug
@@ -229,10 +234,23 @@ def editPath(self, request, course_slug):
 		path.toPage = course.pages.get(slug=request.POST["pathPage"])
 		path.text = request.POST["dialogue"]
 		path.passed = "passing" in request.POST
-		print request.POST
 		path.save()
+		publishedCopy = Quiz.objects.get(slug = safeSlug(self.slug))
+		publishedCopy.upToDate = False
+		publishedCopy.save()
 	
 	return errors
+
+def publishQuiz(self):
+	''' 
+		Takes a working copy of a quiz and copies it over to the published copy
+	'''
+	publishedSlug = safeSlug(self.slug)
+	publishedQuiz = Quiz.objects.get(slug=publishedSlug)
+	
+	copyQuiz(self, publishedQuiz)
+	publishedQuiz.upToDate = True
+	publishedQuiz.save()
 
 def removePath(self, request):
 	'''
@@ -266,21 +284,11 @@ def removePath(self, request):
 
 	if (len(errors) == 0):
 		path.delete()
+		publishedCopy = Quiz.objects.get(slug = safeSlug(self.slug))
+		publishedCopy.upToDate = False
+		publishedCopy.save()
 
 	return errors
-
-def publishQuiz(self):
-	''' 
-		Takes a working copy of a quiz and copies it over to the published copy
-	'''
-	publishedSlug = safeSlug(self.slug)
-	publishedQuiz = Quiz.objects.get(slug=publishedSlug)
-	
-	copyQuiz(self, publishedQuiz)
-	publishedQuiz.upToDate = True
-	publishedQuiz.save()
-
-			
 
 def removeQuiz(self):
 	'''

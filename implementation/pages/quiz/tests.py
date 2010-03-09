@@ -10,6 +10,7 @@ from django.contrib.auth.models import User
 from pages.quiz.models import *
 from pages.quiz.quiz import *
 from pages.quiz.question.models import *
+from django.core.handlers.wsgi import WSGIRequest
 
 class QuizUnitTests(TestCase):
 	'''
@@ -25,6 +26,31 @@ class QuizUnitTests(TestCase):
 		self.courseSlug = 'QuizUnitTests_Course'
 		self.quizSlug1 = 'QuizUnitTests_Quiz1'
 		self.quizSlug2 = 'QuizUnitTests_Quiz2'
+
+	def test_addCodeQuestion(self):
+		'''
+			Test that adding a code question to a quiz works as expected
+
+			Case no.    Input                                     Expected Output                           Remark
+			1           questionCount, newQuestionCount           questionCount + 1 == questionCount        Ensure that 1 new question has been added
+			2           newQuestion.order, newQuestionCount       newQuestion.order == newQuestionCount     Ensure that the new question is the last question
+			3           newQuestion.text                          newQuestion.text == "Blank Question"      Ensure that the new question is indeed a new question               
+		'''
+		quiz = Quiz.objects.get(slug=self.quizSlug1)
+		questionCount = len(quiz.questions.all())
+
+		# Add a question to the quiz
+		newQuestion = addCodeQuestion(quiz)
+
+		# Case 1
+		newQuestionCount = len(quiz.questions.all())
+		self.failUnlessEqual(questionCount + 1, newQuestionCount)
+
+		# Case 2
+		self.failUnlessEqual(newQuestion.order, newQuestionCount)
+
+		# Case 3
+		self.failUnlessEqual(newQuestion.text, "")
 
 	def test_addMultipleChoiceQuestion(self):
 		'''
@@ -55,36 +81,98 @@ class QuizUnitTests(TestCase):
 		'''
 			Test that adding a path works as expected
 
-			Case no.    Input                                     Expected Output                           Remark
-			1 
-			2
-		'''
-		pass
+			Case no.    Input                       Expected Output                                     Remark
+			1           lowscore = -1               errors = ["Low Score must be between 0 and 100"]    Negative low score
+			            highscore = 100
 
-	def test_addCodeQuestion(self):
-		'''
-			Test that adding a code question to a quiz works as expected
+			2           lowscore = 101              errors = ["Low Score must be between 0 and 100",    >100 low score, highscore < lowscore
+			            highscore = 100             "Low Score must be less than or equal too High 
+			                                         Score"]
 
-			Case no.    Input                                     Expected Output                           Remark
-			1           questionCount, newQuestionCount           questionCount + 1 == questionCount        Ensure that 1 new question has been added
-			2           newQuestion.order, newQuestionCount       newQuestion.order == newQuestionCount     Ensure that the new question is the last question
-			3           newQuestion.text                          newQuestion.text == "Blank Question"      Ensure that the new question is indeed a new question               
-		'''
-		quiz = Quiz.objects.get(slug=self.quizSlug1)
-		questionCount = len(quiz.questions.all())
+         3           lowscore = 0                errors = ["A path that matches this range           Duplicate path
+			            highscore = 100              exists already "]
 
-		# Add a question to the quiz
-		newQuestion = addCodeQuestion(quiz)
+			4           lowscore = "abc"            errors = ["Low Score must be an integer"]           String for lowscore
+			            highscore = 100
+
+			5           lowscore = ""               errors = ["Low Score must be an integer"]           Low Score not specified
+			            highscore = 100
+
+			6           highscore = -1              errors = ["High Score must be between 0 and 100",   High Score negative, highscore < lowscore
+			            lowscore = 70               "Low Score must be less than or equal too 
+			                                         High Score"]
+
+			7           highscore = 101             errors = ["High Score must be between 0 and 100"]   High Score > 100
+			            lowscore = 70
+
+			8           highscore = "abc"           errors = ["High Score must be an integer"]          High Score is a string
+			            lowscore = 70
+
+			9           highscore = ""              errors = ["High Score must be an integer"]          High Score not specified
+			            lowscore = 70
+
+			10          lowscore = 70               errors = [], paths.count == 2                       Successfully added path to quiz
+			            highscore = 100
+		'''
+		quiz = Quiz.objects.get(slug = self.quizSlug1)
+		numPaths = quiz.paths.all().count()
 
 		# Case 1
-		newQuestionCount = len(quiz.questions.all())
-		self.failUnlessEqual(questionCount + 1, newQuestionCount)
+		request = WSGIRequest
+		request.POST = {'LowScore':-1, 'HighScore':100, 'pathPage':quiz.slug, 'dialogue':""}
+		errors = addPath(quiz, request, self.courseSlug)
+		self.failUnlessEqual(errors, ["Low Score must be between 0 and 100"])
 
 		# Case 2
-		self.failUnlessEqual(newQuestion.order, newQuestionCount)
+		request = WSGIRequest
+		request.POST = {'LowScore':101, 'HighScore':100, 'pathPage':quiz.slug, 'dialogue':""}
+		errors = addPath(quiz, request, self.courseSlug)
+		self.failUnlessEqual(errors, ["Low Score must be between 0 and 100", "Low Score must be less than or equal too High Score"])
 
 		# Case 3
-		self.failUnlessEqual(newQuestion.text, "")
+		request = WSGIRequest
+		request.POST = {'LowScore':0, 'HighScore':100, 'pathPage':quiz.slug, 'dialogue':""}
+		errors = addPath(quiz, request, self.courseSlug)
+		self.failUnlessEqual(errors, ["A path that matches this range exists already"])
+
+		# Case 4
+		request = WSGIRequest
+		request.POST = {'LowScore':"abc", 'HighScore':100, 'pathPage':quiz.slug, 'dialogue':""}
+		errors = addPath(quiz, request, self.courseSlug)
+		self.failUnlessEqual(errors, ["Low Score must be an integer"])
+
+		# Case 5
+		request = WSGIRequest
+		request.POST = {'LowScore':"", 'HighScore':100, 'pathPage':quiz.slug, 'dialogue':""}
+		errors = addPath(quiz, request, self.courseSlug)
+		self.failUnlessEqual(errors, ["Low Score must be an integer"])
+
+		# Case 6
+		request = WSGIRequest
+		request.POST = {'LowScore':70, 'HighScore':-1, 'pathPage':quiz.slug, 'dialogue':""}
+		errors = addPath(quiz, request, self.courseSlug)
+		self.failUnlessEqual(errors, ["High Score must be between 0 and 100", "Low Score must be less than or equal too High Score"])
+
+		# Case 7
+		request = WSGIRequest
+		request.POST = {'LowScore':70, 'HighScore':101, 'pathPage':quiz.slug, 'dialogue':""}
+		errors = addPath(quiz, request, self.courseSlug)
+		self.failUnlessEqual(errors, ["High Score must be between 0 and 100"])
+
+		# Case 8
+		request = WSGIRequest
+		request.POST = {'LowScore':70, 'HighScore':"abc", 'pathPage':quiz.slug, 'dialogue':""}
+		errors = addPath(quiz, request, self.courseSlug)
+		self.failUnlessEqual(errors, ["High Score must be an integer"])
+
+		# Case 9
+		request = WSGIRequest
+		request.POST = {'LowScore':70, 'HighScore':100, 'pathPage':quiz.slug, 'dialogue':"", 'passing':'on'}
+		errors = addPath(quiz, request, self.courseSlug)
+		self.failUnlessEqual(numPaths + 1, quiz.paths.all().count())
+		
+
+
 
 	def test_copyQuiz(self):
 		'''
@@ -92,22 +180,98 @@ class QuizUnitTests(TestCase):
 			quizzes contents to the published version and doesnt
 			leave any fragments in database
 
-			Case no.    Input          Expected Output          Remark
-			1           
-			2           
+			Case no.    Input          Expected Output   Remark
+			1           quiz1, quiz3   quiz1 == quiz3    Copy the contents of quiz1 to quiz3  
 		'''
+		quiz1 = Quiz.objects.get(slug=self.quizSlug1)
+		quiz3 = Quiz.objects.get(slug="QuizUnitTests_Quiz3")
+
+		# Case 1
+		copyQuiz(quiz1, quiz3)
+		self.failUnlessEqual(quiz1.text, quiz3.text)
+		self.failUnlessEqual(quiz1.name, quiz3.name)
+		self.failUnlessEqual(quiz1.hidden, quiz3.hidden)
+		self.failUnlessEqual(list(quiz1.prerequisites.all()), list(quiz3.prerequisites.all()))
+		self.failUnlessEqual(quiz1.paths.all().count(), quiz3.paths.all().count())
+		paths2 = iter(quiz3.paths.all())
+		for path in quiz1.paths.all():
+			path2 = paths2.next()
+			self.failUnlessEqual(path.lowscore, path2.lowscore)
+			self.failUnlessEqual(path.highscore, path2.highscore)
+			self.failUnlessEqual(path.text, path2.text)
+			self.failUnlessEqual(path.passed, path2.passed)
+			self.failUnlessEqual(path.toPage, path2.toPage)
+		self.failUnlessEqual(quiz1.questions.all().count(), quiz3.questions.all().count())
+		questions2 = iter(quiz3.questions.all())
+		for question in quiz1.questions.all():
+			question2 = questions2.next()
+			self.failUnlessEqual(question.text, question2.text)
+			self.failUnlessEqual(question.order, question2.order)
+			if (isMultipleChoiceQuestion(question)):
+				question = question.multiplechoicequestion
+				question2 = question2.multiplechoicequestion
+				self.failUnlessEqual(question.answers.all().count(), question2.answers.all().count())
+				answers2 = iter(question2.answers.all())
+				for answer in question.answers.all():
+					answer2 = answers2.next()
+					self.failUnlessEqual(answer.text, answer2.text)
+					self.failUnlessEqual(answer.correct, answer2.correct)
+					self.failUnlessEqual(answer.order, answer2.order)
+			else:
+				question = question.codequestion
+				question2 = question2.codequestion
+				self.failUnlessEqual(question.beforeCode, question2.beforeCode)
+				self.failUnlessEqual(question.showBeforeCode, question2.showBeforeCode)
+				self.failUnlessEqual(question.editableCode, question2.editableCode)
+				self.failUnlessEqual(question.afterCode, question2.afterCode)
+				self.failUnlessEqual(question.showAfterCode, question2.showAfterCode)
+				self.failUnlessEqual(question.expectedOutput, question2.expectedOutput)
+
+	def test_matchPath(self):
+		'''
+			Test that matchPath returns the matching path
+			or raises NoMatchingPath if no path is found
+
+			Case no.    Input          Expected Output   Remark
+			1           quiz, 50       path              A score that falls within a specified path
+			2           quiz, 75      NoMatchingPath    A score that doesnt fall on a path 
+		'''
+		quiz = Quiz.objects.get(slug=self.quizSlug1)
+
+		# Case 1
+		try:
+			path = matchPath(quiz, 50)
+		except NoMatchingPath:
+			self.failUnlessEqual(0,1, "A matching path should have been found")
+
+		# Case 2
+		try:
+			path = matchPath(quiz, 75)
+			self.failUnlessEqual(0,1, "No mathching path should have been found")
+		except NoMatchingPath:
+			pass
 
 	def test_publishQuiz(self):
 		'''
 			Test that publishQuiz actually copies over all the 
 			quizzes contents to the published version and doesnt
 			leave any fragments in database
-
-			Case no.    Input          Expected Output          Remark
-			1           
-			2           
 		'''
+		workingQuiz = Quiz.objects.get(slug=self.quizSlug1 + "_workingCopy")
 
+		# Make a change to the working copy of the quiz
+		workingQuiz.name = "modifiedName"
+		workingQuiz.hidden = True
+		workingQuiz.save()
+
+		# Publish the changes
+		publishQuiz(workingQuiz)
+
+		# Make sure the changes are now in the live quiz
+		quiz = Quiz.objects.get(slug = self.quizSlug1)
+		self.failUnlessEqual(quiz.name, "modifiedName")
+		self.failUnlessEqual(quiz.hidden, True)
+		self.failUnlessEqual(quiz.upToDate, True)
 
 	def test_removeQuiz(self):
 		'''
@@ -122,6 +286,8 @@ class QuizUnitTests(TestCase):
 			6           answers        Answer.DoesNotExist        Make sure all of the working_copy answers were also deleted
 			7           prerequisites  Prerequisite.DoesNotExist  Make sure all of the prerequisites were also deleted
 			8           prerequisites  Prerequisite.DoesNotExist  Make sure all of the working_copy prereqs were also deleted
+			9           paths          Path.DoesNotExist          Make sure all of the paths were also deleted
+			10          paths          Path.DoesNotExist          Make sure all of the working_copy paths were also deleted
 		'''
 		quiz = Quiz.objects.get(slug=self.quizSlug2)
 		quiz2 = Quiz.objects.get(slug=(self.quizSlug2 + "_workingCopy"))
@@ -131,6 +297,8 @@ class QuizUnitTests(TestCase):
 		answers2 = []
 		prereqs = []
 		prereqs2 = []
+		paths = []
+		paths2 = []
 
 		# Get all the questions
 		for q in quiz.questions.all():
@@ -155,7 +323,12 @@ class QuizUnitTests(TestCase):
 		for p in quiz.prerequisites.all():
 			prereqs.append(p)
 		for p in quiz2.prerequisites.all():
-			prereqs2.append(p)		
+			prereqs2.append(p)
+		# Get all the paths
+		for p in quiz.paths.all():
+			paths.append(p)
+		for p in quiz2.paths.all():
+			paths2.append(p)
 
 		# Delete the quiz
 		removeQuiz(quiz)
@@ -223,10 +396,28 @@ class QuizUnitTests(TestCase):
 				self.failUnlessEqual(0, 1, "A prerequisite still exists in the database")
 			except Answer.DoesNotExist:
 				self.failUnlessEqual(1, 1)
+
+		# Case 8
 		for p in prereqs2:
 			try:
 				quiz2.prerequisites.get(containingQuiz = p.containingQuiz, requiredQuiz = p.requiredQuiz)
 				self.failUnlessEqual(0, 1, "A prerequisite still exists in the database")
+			except Answer.DoesNotExist:
+				self.failUnlessEqual(1, 1)
+
+		# Case 9
+		for p in paths:
+			try:
+				quiz.paths.get(lowscore = p.lowscore)
+				self.failUnlessEqual(0, 1, "A path still exists in the database")
+			except Answer.DoesNotExist:
+				self.failUnlessEqual(1, 1)
+
+		# Case 10
+		for p in paths2:
+			try:
+				quiz2.paths.get(lowscore = p.lowscore)
+				self.failUnlessEqual(0, 1, "A path still exists in the database")
 			except Answer.DoesNotExist:
 				self.failUnlessEqual(1, 1)
 

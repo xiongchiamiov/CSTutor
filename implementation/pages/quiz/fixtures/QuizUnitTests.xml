@@ -10,7 +10,7 @@
       <field type="SlugField" name="slug">QuizUnitTests_Course</field>
       <field type="TextField" name="name">testIndexPage</field>
       <field type="IntegerField" name="left">1</field>
-      <field type="IntegerField" name="right">6</field>
+      <field type="IntegerField" name="right">8</field>
    </object>
 	<object pk="10001" model="lesson.lesson">
 		<field type="TextField" name="content">QuizUnitTests_IndexPage</field>
@@ -59,6 +59,28 @@
 	      <field type="TextField" name="text">QuizUnitTests Quiz 2</field>
 	      <field type="BooleanField" name="hidden">False</field>
 	   </object>
+   <object pk="10010" model="pages.page">
+      <field to="courses.course" name="course" rel="ManyToOneRel">10000</field>
+      <field type="SlugField" name="slug">QuizUnitTests_Quiz3</field>
+      <field type="TextField" name="name">QuizUnitTests Quiz 3</field>
+      <field type="IntegerField" name="left">6</field>
+      <field type="IntegerField" name="right">7</field>
+   </object>
+	   <object pk="10010" model="quiz.quiz">
+	      <field type="TextField" name="text">QuizUnitTests Quiz 2</field>
+	      <field type="BooleanField" name="hidden">False</field>
+	   </object>
+   <object pk="10011" model="pages.page">
+      <field to="courses.course" name="course" rel="ManyToOneRel">10000</field>
+      <field type="SlugField" name="slug">QuizUnitTests_Quiz3_workingCopy</field>
+      <field type="TextField" name="name">QuizUnitTests Quiz 3</field>
+      <field type="IntegerField" name="left">6</field>
+      <field type="IntegerField" name="right">7</field>
+   </object>
+	   <object pk="10011" model="quiz.quiz">
+	      <field type="TextField" name="text">QuizUnitTests Quiz 3</field>
+	      <field type="BooleanField" name="hidden">False</field>
+	   </object>
    <object pk="10004" model="question.question">
       <field type="TextField" name="text">Test question 1</field>
       <field type="IntegerField" name="order">1</field>
@@ -80,6 +102,14 @@
    </object>
    <object pk="10006" model="question.multiplechoicequestion">
    </object>
+	<object pk="10009" model="quiz.path">
+		<field to="quiz.quiz" name="quiz" rel="ManyToOneRel">10002</field>
+		<field type="IntegerField" name="highscore">70</field>
+		<field type="IntegerField" name="lowscore">0</field>
+		<field type="TextField" name="text">Sample Path 1</field>
+		<field to="pages.page" name="toPage" rel="ManyToOneRel">10002</field>
+      <field type="BooleanField" name="passed">False</field>
+	</object>
    <object pk="10007" model="question.question">
       <field type="TextField" name="text">Test question 1</field>
       <field type="IntegerField" name="order">1</field>

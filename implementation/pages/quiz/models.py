@@ -56,7 +56,7 @@ class Path(models.Model):
 	passed = models.BooleanField()
 
 	def __unicode__(self):
-		return u'Path on Quiz ' + unicode(quiz)
+		return u'Path on Quiz ' + unicode(self.quiz)
 
 class NoMatchingPath(Exception):
 	def __str__(self):
