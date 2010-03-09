@@ -23,7 +23,7 @@ $(document).ready(function() {
 		// we have this "clever" hack to tag the outputbox we want
 		// this has the effect of overwriting any id it had previously!
 		$(this).prev().prev().prev().attr('id', 'iswearthisistemporary');
-		$.getJSON('/api/execute/', {'code': $(this).prev().prev().prev().prev().val()}, function(data) {
+		$.getJSON('{% url codeshell.views.execute %}', {'code': $(this).prev().prev().prev().prev().val()}, function(data) {
 			//console.log("result: "+data['result']);
 			$('#iswearthisistemporary').html(data['result'])
 			$('#iswearthisistemporary').attr('id', '');
