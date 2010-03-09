@@ -116,64 +116,65 @@ class QuizUnitTests(TestCase):
 		'''
 		quiz = Quiz.objects.get(slug = self.quizSlug1)
 		numPaths = quiz.paths.all().count()
+		environ = {
+            'HTTP_COOKIE': self.client.cookies,
+            'PATH_INFO': '/',
+            'QUERY_STRING': '',
+            'REQUEST_METHOD': 'GET',
+            'SCRIPT_NAME': '',
+            'SERVER_NAME': 'testserver',
+            'SERVER_PORT': 80,
+            'SERVER_PROTOCOL': 'HTTP/1.1',
+        }
+		environ.update(self.client.defaults)
+
+		customRequest = WSGIRequest(environ)
 
 		# Case 1
-		request = WSGIRequest
-		request.POST = {'LowScore':-1, 'HighScore':100, 'pathPage':quiz.slug, 'dialogue':""}
-		errors = addPath(quiz, request, self.courseSlug)
+		customRequest.POST = {'LowScore':-1, 'HighScore':100, 'pathPage':quiz.slug, 'dialogue':""}
+		errors = addPath(quiz, customRequest, self.courseSlug)
 		self.failUnlessEqual(errors, ["Low Score must be between 0 and 100"])
 
 		# Case 2
-		request = WSGIRequest
-		request.POST = {'LowScore':101, 'HighScore':100, 'pathPage':quiz.slug, 'dialogue':""}
-		errors = addPath(quiz, request, self.courseSlug)
+		customRequest.POST = {'LowScore':101, 'HighScore':100, 'pathPage':quiz.slug, 'dialogue':""}
+		errors = addPath(quiz, customRequest, self.courseSlug)
 		self.failUnlessEqual(errors, ["Low Score must be between 0 and 100", "Low Score must be less than or equal too High Score"])
 
 		# Case 3
-		request = WSGIRequest
-		request.POST = {'LowScore':0, 'HighScore':100, 'pathPage':quiz.slug, 'dialogue':""}
-		errors = addPath(quiz, request, self.courseSlug)
+		customRequest.POST = {'LowScore':0, 'HighScore':100, 'pathPage':quiz.slug, 'dialogue':""}
+		errors = addPath(quiz, customRequest, self.courseSlug)
 		self.failUnlessEqual(errors, ["A path that matches this range exists already"])
 
 		# Case 4
-		request = WSGIRequest
-		request.POST = {'LowScore':"abc", 'HighScore':100, 'pathPage':quiz.slug, 'dialogue':""}
-		errors = addPath(quiz, request, self.courseSlug)
+		customRequest.POST = {'LowScore':"abc", 'HighScore':100, 'pathPage':quiz.slug, 'dialogue':""}
+		errors = addPath(quiz, customRequest, self.courseSlug)
 		self.failUnlessEqual(errors, ["Low Score must be an integer"])
 
 		# Case 5
-		request = WSGIRequest
-		request.POST = {'LowScore':"", 'HighScore':100, 'pathPage':quiz.slug, 'dialogue':""}
-		errors = addPath(quiz, request, self.courseSlug)
+		customRequest.POST = {'LowScore':"", 'HighScore':100, 'pathPage':quiz.slug, 'dialogue':""}
+		errors = addPath(quiz, customRequest, self.courseSlug)
 		self.failUnlessEqual(errors, ["Low Score must be an integer"])
 
 		# Case 6
-		request = WSGIRequest
-		request.POST = {'LowScore':70, 'HighScore':-1, 'pathPage':quiz.slug, 'dialogue':""}
-		errors = addPath(quiz, request, self.courseSlug)
+		customRequest.POST = {'LowScore':70, 'HighScore':-1, 'pathPage':quiz.slug, 'dialogue':""}
+		errors = addPath(quiz, customRequest, self.courseSlug)
 		self.failUnlessEqual(errors, ["High Score must be between 0 and 100", "Low Score must be less than or equal too High Score"])
 
 		# Case 7
-		request = WSGIRequest
-		request.POST = {'LowScore':70, 'HighScore':101, 'pathPage':quiz.slug, 'dialogue':""}
-		errors = addPath(quiz, request, self.courseSlug)
+		customRequest.POST = {'LowScore':70, 'HighScore':101, 'pathPage':quiz.slug, 'dialogue':""}
+		errors = addPath(quiz, customRequest, self.courseSlug)
 		self.failUnlessEqual(errors, ["High Score must be between 0 and 100"])
 
 		# Case 8
-		request = WSGIRequest
-		request.POST = {'LowScore':70, 'HighScore':"abc", 'pathPage':quiz.slug, 'dialogue':""}
-		errors = addPath(quiz, request, self.courseSlug)
+		customRequest.POST = {'LowScore':70, 'HighScore':"abc", 'pathPage':quiz.slug, 'dialogue':""}
+		errors = addPath(quiz, customRequest, self.courseSlug)
 		self.failUnlessEqual(errors, ["High Score must be an integer"])
 
 		# Case 9
-		request = WSGIRequest
-		request.POST = {'LowScore':70, 'HighScore':100, 'pathPage':quiz.slug, 'dialogue':"", 'passing':'on'}
-		errors = addPath(quiz, request, self.courseSlug)
+		customRequest.POST = {'LowScore':70, 'HighScore':100, 'pathPage':quiz.slug, 'dialogue':"", 'passing':'on'}
+		errors = addPath(quiz, customRequest, self.courseSlug)
 		self.failUnlessEqual(numPaths + 1, quiz.paths.all().count())
 		
-
-
-
 	def test_copyQuiz(self):
 		'''
 			Test that copyQuiz actually copies over all the 
