@@ -60,7 +60,7 @@ def create_lesson(request, course_slug, page_slug):
 			 'page_slug':page_slug, \
 			 'pid':lesson.name, 'new':True})
 
-def show_lesson(request, course_slug, page_slug, lessonPage):
+def show_lesson(request, course_slug, page_slug, lessonPage, preview=False):
 	'''
 	@author Russell Mezzetta
 	This view displays a lesson to the user
@@ -83,7 +83,11 @@ def show_lesson(request, course_slug, page_slug, lessonPage):
 				#args = [course_slug, prevPage.slug]
 				return HttpResponseRedirect(reverse('pages.views.show_page', args=[course_slug, prevPage.slug]))
 	
-	content = lessonPage.content
+	if preview == False:
+		content = lessonPage.content
+	else:
+		content = lessonPage.workingCopy
+
 	title = lessonPage.name
 	
 	return master_rtr(request, 'page/lesson/index.html', \
@@ -125,16 +129,24 @@ def edit_lesson(request, course_slug, page_slug):
 						saveLessonName(lesson, request.POST['lessonname'])
 				else:
 					ret = saveLessonName(lesson, request.POST['lessonname'])
-				
+				#check if saveLessonName returned error message
 				if 'message' in ret:
 					data['message'] = ret['message']
-				else:
-					return HttpResponseRedirect(reverse('pages.views.edit_page', args=[course_slug, lesson.slug]))
-
-			return master_rtr(request, 'page/lesson/edit_lesson.html', data)
-			#return master_rtr(request, 'page/lesson/save_lesson.html', \
-			#		{'course':course_slug, 'course_slug':course_slug, \
-			#		 'page_slug':page_slug, 'pid':page_slug})
+				#else:
+				#	return HttpResponseRedirect(reverse('pages.views.edit_page', args=[course_slug, lesson.slug]))
+			
+			if request.POST['Save'] == "Save":
+				#redirect to this page(redirect b/c name may have changed)
+				return HttpResponseRedirect(reverse('pages.views.edit_page', args=[course_slug, lesson.slug]))
+			elif request.POST['Save'] == "Save/Preview":
+				#redirect to the '/preview' view of this page 
+				#(note lesson slug may have changed)
+				return HttpResponseRedirect(reverse('pages.views.show_page_preview', args=[course_slug, lesson.slug]))
+			else: #request.POST['Save'] == "Save/Publish":
+				#data['lesson'] = 
+				publishLessonChanges(lesson)
+				return HttpResponseRedirect(reverse('pages.views.show_page', args=[course_slug, lesson.slug]))
+			#return master_rtr(request, 'page/lesson/edit_lesson.html', data)
 
 		#display confirmation to remove the lesson from the course
 		elif "Remove" in request.POST:
@@ -155,6 +167,9 @@ def edit_lesson(request, course_slug, page_slug):
 		
 		#Publishes the workingCopy
 		elif "Publish" in request.POST:
+			#save any changes made to working copy before saving the same changes 
+			#to the published copy.
+			lesson.workingCopy = request.POST['content']
 			data['lesson'] = publishLessonChanges(lesson)
 			return master_rtr(request, 'page/lesson/edit_lesson.html', data)
 

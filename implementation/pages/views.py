@@ -13,6 +13,7 @@ from quiz.models import Quiz
 from lesson.models import Lesson
 from models import Course
 from django.core.exceptions import ObjectDoesNotExist
+from django.contrib.auth.decorators import login_required
 from home.views import master_rtr, custom_403, custom_404
 from pages.page import movePage, movePageToParent
 
@@ -26,7 +27,17 @@ Contains the show_page function
 @author James Pearson
 '''
 
-def show_page(request, course_slug, page_slug):
+@login_required
+def show_page_preview(request, course_slug, page_slug):
+	'''
+	This view allows the instructor to view the working copy as a student would 
+	view the published copy.
+	NOTE: only used by lesson currently, quiz could me modified to work like 
+	this as well
+	'''
+	return show_page(request, course_slug, page_slug, preview=True)
+
+def show_page(request, course_slug, page_slug, preview=False):
 	'''
 	This "view" does error checking to verify that the input course/page exist
 	Then it checks that the user has view permissions if they are required
@@ -58,6 +69,17 @@ def show_page(request, course_slug, page_slug):
 			# user is not enrolled in this course
 			return master_rtr(request, 'page/denied.html', {'course':course, 'enrolled':False, 'edit':False, 'loggedIn':True})
 
+	#if preview is set to true then the user MUST have edit permissions to view
+	#b/c this is viewing the working copy, also user must be logged in
+	if preview == True:
+		try:
+			e = course.roster.get(user=request.user)
+		except ObjectDoesNotExist:
+			return master_rtr(request, 'page/denied.html', {'course':course_slug, 'enrolled':False, 'edit':False, 'loggedIn':True})
+		#make sure user has view and edit permissions
+		if not e.view or not e.edit:
+			return master_rtr(request, 'page/denied.html', {'course':course_slug, 'enrolled':True, 'edit':False, 'loggedIn':True})
+
 	#cast the page to a lesson or quiz then call show on it
 	try:
 		page = page.lesson
@@ -66,7 +88,7 @@ def show_page(request, course_slug, page_slug):
 			request.session['lastCourseSlug'] = course_slug
 			request.session['lastPageSlug'] = page_slug
 			request.session['lastPageEdit'] = False
-		return show_lesson(request, course_slug, page_slug, page)
+		return show_lesson(request, course_slug, page_slug, page, preview)
 	except Lesson.DoesNotExist:
 		try:
 			page = page.quiz
@@ -159,8 +181,9 @@ def move_page(request, course_slug, page_slug):
 	except Page.DoesNotExist:
 		return custom_404(request, "ERROR: BAD URL: The course: %s does not contain the page: %s." % (course_slug, page_slug))
 
-	#save a list of all pages in the course EXCEPT the given page
-	data['pagelist'] = data['course'].pages.all().exclude(slug=page_slug).order_by('left')
+	#save a list of all pages in the course EXCEPT the given page and exclude 
+	#ignored page values (left<=0 or right<=0)
+	data['pagelist'] = data['course'].pages.all().exclude(slug=page_slug).exclude(left__lte=0).exclude(right__lte=0).order_by('left')
 
 	if request.method == "POST":
 		if "referencePageID" in request.POST and "siblingOrChild" in request.POST:
@@ -200,7 +223,7 @@ def move_page(request, course_slug, page_slug):
 			else:
 				#move the page to be the first child of refPage
 				movePageToParent(p1, p2)
-
+			#after moving the page, redirect them to the edit view of the page
 			return HttpResponseRedirect(reverse('pages.views.edit_page', args=[p1.course.slug, p1.slug]))
 
 	return master_rtr(request, 'page/move_page.html', data)
