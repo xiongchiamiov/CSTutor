@@ -8,7 +8,7 @@ def execute(request):
 	'''
 	try:
 		result = evalPythonString(request.GET['code'])[0]
-	except SyntaxError as e:
+	except SyntaxError, e:
 		result = str(e)
 	# so... there are some things that we currently aren't dealing with,
 	# as far as handlers for things in RestrictedPython
