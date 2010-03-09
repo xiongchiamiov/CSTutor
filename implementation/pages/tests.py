@@ -14,7 +14,7 @@ from lesson.models import Lesson
 class PageTests(TestCase):
 	''' Unit tests and other tests on the Page class and it's related functions
 
-		   Phase 0: Load test fixtures
+	 Phase 0: Load test fixtures
 
          Phase 1: Unit test adding pages to a course
 
@@ -36,7 +36,7 @@ class PageTests(TestCase):
                                /       |       \   \ 
                               /        |        \   \ 
               2 PageTestsPage1 3       |         \  10 PageTestPage5 11
-                                       |          \ 
+                                       |          \  
                            4 PageTestsPage2 5      \ 
                                                     \ 
                                               6 PageTestPage3 9
@@ -114,9 +114,18 @@ class PageTests(TestCase):
 
 	def test_removeParent(self):
 		'''
-		Tests removing a parent page from the tree (all child pages also deleted)
+		Tests removing a parent page from the tree (child pages inherited by grandparent)
 		'''
-		pass
+		toRemovePage = Page.objects.get(slug='PageTestsPage3')
+		removePage(toRemovePage)
+
+		self.validateTree()
+
+		orphanedPage = Page.objects.get(slug='PageTestsPage4')
+		
+		self.assertEquals(orphanedPage.left, 6)
+		self.assertEquals(orphanedPage.right, 7)
+		
 	
 	def test_removeFirstChild(self):
 		'''

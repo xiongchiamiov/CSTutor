@@ -127,9 +127,16 @@ def removePage(self, actuallyDelete=True):
 	removeNumber = self.left
 
    # have to use list to force evaluation, otherwise the numbers won't work out
-	updateLeft = list(coursePages.filter(left__gt=removeNumber))
+	children = list(coursePages.filter(left__gt=self.left).filter(right__lt=self.right))
+	updateLeft = list(coursePages.filter(left__gt=removeNumber).exclude(right__lt=self.right))
 	updateRight = list(coursePages.filter(right__gt=removeNumber)\
 	                         .exclude(left__gt=removeNumber))
+
+	# These are the children.  They need left and right decremented by 1
+	for page in children:
+		page.left -= 1
+		page.right -= 1
+		page.save()
 
 	# These pages are later in the tree, both left and right need to be dec by 2
 	for page in updateLeft:
