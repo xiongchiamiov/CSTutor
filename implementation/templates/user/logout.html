@@ -1,2 +1,6 @@
+{% extends "base.html" %}
+
+{% block content %}
 Successfully logged out.<br><br>
 <a href="{% url users.views.show_login %}">Log back in</a>
+{% endblock %}

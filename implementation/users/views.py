@@ -90,7 +90,7 @@ def show_logout(request):
 		request.session['lastPageSlug'] = lastPageSlug
 		request.session['lastPageEdit'] = lastPageEdit
 
-	return render_to_response('user/logout.html')
+	return master_rtr(request, 'user/logout.html')
 
 def show_login(request):
 	'''
@@ -160,18 +160,18 @@ def show_login(request):
 		elif ret == 1:
 			# Return an 'invalid login' error message.
 			#print "invalid login"
-			return render_to_response('user/login.html', {'message': "Please try again, Invalid Username/Password"})
+			return master_rtr(request, 'user/login.html', {'message': "Please try again, Invalid Username/Password"})
 		else:#ret == 2:
 			# Return a 'disabled account' error message
 			#print "account marked as inactive"
-			return render_to_response('user/login.html', {'message': "Account marked as inactive, contact System Admins"})
+			return master_rtr(request, 'user/login.html', {'message': "Account marked as inactive, contact System Admins"})
 	else:
 		#form has not yet been submitted (first time visiting login page)
 		#check if username is in the session so we can prefill the username field
 		if 'username' in request.session:
-			return render_to_response('user/login.html', {'loginusername':request.session['username']})
+			return master_rtr(request, 'user/login.html', {'loginusername':request.session['username']})
 		else:
-			return render_to_response('user/login.html')
+			return master_rtr(request, 'user/login.html')
 
 def show_register_new_user(request):
 	'''
@@ -210,7 +210,7 @@ def show_register_new_user(request):
 			errorMsg = "The password field is empty"
 		else: #ret == 5
 			errorMsg = "Either first name or last name field is empty"
-		return render_to_response('user/register-new-user.html', {'message': errorMsg})
+		return master_rtr(request, 'user/register-new-user.html', {'message': errorMsg})
 	else:
-		return render_to_response('user/register-new-user.html')
+		return master_rtr(request, 'user/register-new-user.html')
 
