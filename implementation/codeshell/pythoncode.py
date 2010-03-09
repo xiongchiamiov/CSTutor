@@ -22,7 +22,7 @@ def evalPythonString(string):
 	Returns a tuple of the print output and a dictionary of the variables as
 	they existed at the end of the code execution
 	'''
-	string += "codeShellOutput_ = printed\n"
+	string += "\ncodeShellOutput_ = printed\n"
 
 	code = compile_restricted(string, '<string>', 'exec')
 
@@ -32,7 +32,7 @@ def evalPythonString(string):
 	codeOutput = restrictedScope['codeShellOutput_']
 	del restrictedScope['codeShellOutput_']
 	del restrictedScope['_print_']
-   # These are apparently created by exec or something
+	# These are apparently created by exec or something
 	del restrictedScope['__builtins__']
 	del restrictedScope['_print']
 

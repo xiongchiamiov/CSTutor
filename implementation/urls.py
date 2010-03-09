@@ -36,6 +36,7 @@ urlpatterns += patterns('',
 	(r'^join-course', 'courses.views.join_course_form'),
 	#displays the help page
 	(r'help', 'home.views.show_help'),
+	(r'api/execute', 'codeshell.views.execute'),
 
    # courses should be handled by course urls
 	(r'^course/(?P<course_slug>[\w-]+)/', include('courses.urls')),

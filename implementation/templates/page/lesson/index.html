@@ -1,4 +1,41 @@
-{% extends "base.html" %} 
+{% extends "base.html" %}
+
+{% block meta %}
+<script type="text/javascript">
+$(document).ready(function() {
+	// take all of the <code> tags and make 'em code/output/run-button box-thingies
+	// hacky? very.
+	// oh, and you think that all of those .prev().prev().prev().prev() calls
+	// make it fragile?
+	// nah.
+	$('code').each(function() {
+		$(this).html('<textarea class="codebox">'
+		            +$(this).html()
+		            +'</textarea>'
+		            // don't give this an id!  see the .click function below
+		            +'<div class="outputbox"></div>'
+		            +'<br />'
+		            +'<button class="reset">reset</button>'
+		            +'<button class="run">run</button>');
+	});
+	$('.run').click(function() {
+		// since we can't access variables here inside the callback,
+		// we have this "clever" hack to tag the outputbox we want
+		// this has the effect of overwriting any id it had previously!
+		$(this).prev().prev().prev().attr('id', 'iswearthisistemporary');
+		$.getJSON('/api/execute/', {'code': $(this).prev().prev().prev().prev().val()}, function(data) {
+			//console.log("result: "+data['result']);
+			$('#iswearthisistemporary').html(data['result'])
+			$('#iswearthisistemporary').attr('id', '');
+		});
+		return false;
+	});
+	$('.reset').click(function() {
+		$(this).prev().prev().prev().val('');
+	})
+});
+</script>
+{% endblock meta %}
 
 {% block content %} 
 

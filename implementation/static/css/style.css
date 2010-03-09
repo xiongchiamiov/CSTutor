@@ -71,12 +71,32 @@ code {
    border: 3px black double;
 }
 
+/* I have a feeling these two rules are old,
+ * but who the hell knows? */
 .code-output {
    border: 3px red double;
 }
 
 .code-button {
    float: right;
+}
+
+.codebox {
+	width: 450px;
+	height: 200px;
+	float: left;
+}
+
+.outputbox {
+	width: 210px;
+	height: 210px;
+	padding-top: 12px;
+	margin-left: 465px;
+	padding-left: 5px;
+	/* awesome, but not totally supported */
+	word-wrap: break-word;
+	/* not so awesome */
+	overflow: auto;
 }
 
 .nav-button-back {
