@@ -1,8 +1,10 @@
 {% extends "base.html" %} 
 
 {% block content %} 
-Lesson removed.<br><br>
-<a href="#">Back to Course</a><br>
-
+Are you sure you wish to remove lesson:<font color='red'> {{lesson.name}}</font> from course: {{lesson.course.name}}?<br/><br/>
+<form method="post" action="">
+<input type="submit" name="confirmRemove" value="yes">
+<input type="submit" name="confirmRemove" value="no">
+</form>
 
 {% endblock %} 

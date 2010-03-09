@@ -59,7 +59,7 @@ def saveNewLesson(request, course, parent_slug):
 def removeLesson(request, course, pid):
 	if (request.method != "POST"):
 		return -1
-	if "Remove" in request.POST:
+	if "confirmRemove" in request.POST:
 	    Lesson.objects.get(slug=pid).delete()
 	    return 0
 

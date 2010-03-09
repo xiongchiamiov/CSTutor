@@ -28,7 +28,13 @@ def create_lesson(request, course_slug, page_slug):
 	'''
 	if request.method == "POST" and "Save" in request.POST:
 		name = request.POST["lessonname"].strip()
-
+		
+		#create a lesson (don't save) this will allow the len < 1 case to
+		#save the content that the user entered, and display course name
+		lesson = CreateLesson(name)
+		lesson.workingCopy = lesson.content = request.POST["content"]
+		lesson.course = Course.objects.get(slug=course_slug)
+		
 		if len(name) < 1:
 			return master_rtr(request, 'page/lesson/edit_lesson.html', \
 				            {'course_slug':course_slug,
@@ -37,9 +43,6 @@ def create_lesson(request, course_slug, page_slug):
 								 'message':'Lesson names must be non-empty',
 								 'lesson':lesson, 'new':True})
 
-		lesson = CreateLesson(name)
-		lesson.workingCopy = lesson.content = request.POST["content"]
-	
 		if saveNewLesson(request, course_slug, page_slug) == 0:
 			return HttpResponseRedirect(reverse('pages.views.show_page', args=[course_slug, lesson.slug]))
 		else:
@@ -133,12 +136,18 @@ def edit_lesson(request, course_slug, page_slug):
 			#		{'course':course_slug, 'course_slug':course_slug, \
 			#		 'page_slug':page_slug, 'pid':page_slug})
 
-		#removes the lesson from the course
+		#display confirmation to remove the lesson from the course
 		elif "Remove" in request.POST:
-			removeLesson(request, course_slug, page_slug)
-			return master_rtr(request, 'page/lesson/remove_lesson.html', \
-					{'course': course_slug, 'course_slug':course_slug, \
-					 'page_slug':page_slug, 'pid':page_slug})
+			return master_rtr(request, 'page/lesson/remove_lesson.html', data)
+
+		#this gets called after the above "remove" button is clicked and the user
+		#is asked to confirm
+		elif "confirmRemove" in request.POST:
+			if request.POST['confirmRemove'] == 'yes':
+				removeLesson(request, course_slug, page_slug)
+				return HttpResponseRedirect("/")
+			else:
+				return master_rtr(request, 'page/lesson/edit_lesson.html', data)
 		
 		#redirects to the move_page view
 		elif "Move" in request.POST:
