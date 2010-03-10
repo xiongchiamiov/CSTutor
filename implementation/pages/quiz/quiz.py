@@ -496,7 +496,8 @@ def validateQuizFromPost(self, request):
 		or an emtpy array if no errors were found
 	'''
 	errors = []
-	questions = self.questions.all();
+	questions = self.questions.all()
+	origOrders = []
 	
 	# Title - Make sure its not blank
 	if (len(request.POST["quizTitle"]) == 0):
@@ -523,6 +524,7 @@ def validateQuizFromPost(self, request):
 			errors.append(requiredQuiz.name + " does not have a passing path")
 
 	for q in questions:
+		origOrders.append(q.order)
 		if (isMultipleChoiceQuestion(q)):
 			# Multiple Choice Question - Make sure its not blank
 			q = q.multiplechoicequestion
@@ -543,6 +545,13 @@ def validateQuizFromPost(self, request):
 			# Question must have a correct answer
 			if (not ("mcq%sac" % q.order) in request.POST):
 				errors.append("Question must have a correct answer")
+
+			# Order must not be blank
+			if (len(request.POST["mcq%sorder" % q.order]) == 0):
+				errors.append("Order must not be blannk")
+			else:
+				q.order = request.POST["mcq%sorder" % q.order]
+				q.save()
 		else:
 			q = q.codequestion
 			
@@ -553,10 +562,25 @@ def validateQuizFromPost(self, request):
 			# Expected output must not be blank
 			if (len(request.POST["cq%seo" % q.order]) == 0):
 				errors.append("Code Question expected output must not be blank")
+			
+			# Order must not be blank
+			if (len(request.POST["cq%sorder" % q.order]) == 0):
+				errors.append("Order must not be blannk")
+			else:
+				q.order = request.POST["cq%sorder" % q.order]
+				q.save()
 
 	# Question Ordering - Must be valid
 	if (not validateQuestionOrder(self)):
 		errors.append("Questions must have a valid ordering")
+
+	# Revert question ordering
+	if (len(errors) > 0):
+		origOrders = iter(origOrders)
+		for q in questions:
+			order = origOrders.next()
+			q.order = order
+			q.save()
 
 	return errors
 	
