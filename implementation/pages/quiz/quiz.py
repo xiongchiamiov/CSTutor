@@ -456,7 +456,7 @@ def scoreQuiz(self, request, course_slug, quiz_slug):
 			try:
 				(theirResult, scope) = evalPythonString(theirCode)
 				(expectedResult, scope) = evalPythonString(expectedCode)
-			except SyntaxError, e
+			except SyntaxError, e:
 				# Need to do something helpful, doing nothing for now
 			  	pass
 
