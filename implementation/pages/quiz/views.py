@@ -17,7 +17,7 @@ from question.models import MultipleChoiceQuestion
 from question.models import CodeQuestion
 from question.question import *
 from home.views import master_rtr
-from pages.page import insertChildPage
+from pages.page import insertLastChildPage
 from django.core.exceptions import ObjectDoesNotExist
 
 def create_quiz(request, course_slug, page_slug):
@@ -30,7 +30,7 @@ def create_quiz(request, course_slug, page_slug):
 		course = Course.objects.get(slug=course_slug)
 		name = request.POST['name']
 		newQuiz = Quiz(course=course, name=name, slug=slugify(name), text=name, upToDate=True)
-		insertChildPage(newQuiz, Page.objects.get(slug=page_slug))
+		insertLastChildPage(newQuiz, Page.objects.get(slug=page_slug))
 		newQuiz = Quiz.objects.get(slug=newQuiz.slug)
 		workingCopy = Quiz(course=newQuiz.course, name=newQuiz.name, slug=(newQuiz.slug + "_workingCopy"), text=newQuiz.name, left=0, right=0)
 		workingCopy.save()
