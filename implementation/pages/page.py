@@ -60,8 +60,11 @@ def insertPageAfterNum(self, course, insertAfterNum):
 	Inserting a page after a pages "right" makes this page the next sibling
 	of the insertAfterNum page.
 
+	Inserting a page one before a pages "right" make this page the last child of the
+	insertAfterNum page
+
 	Those who don't want to deal with the structure of the pages should use
-	insertPage instead of this
+	insertPage and it's ilk instead of this
 
 	@post: ValidateTree(self.course) == True
 	@author Mark Gius
@@ -112,6 +115,14 @@ def insertChildPage(self, parentPage):
 
 	'''
 	return insertPageAfterNum(self, parentPage.course, parentPage.left)
+
+def insertLastChildPage(self, parentPage):
+	''' Inserts the page self as the last child of the parentPage
+		Returns the inserted page after committing it
+		@post: ValidateTree(self.course) == True
+		@author Mark Gius
+	'''
+	return insertPageAfterNum(self, parentPage.course, parentPage.right - 1)
 
 def removePage(self, actuallyDelete=True):
 	''' Removes the given page from its course

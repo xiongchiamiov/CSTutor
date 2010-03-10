@@ -119,6 +119,22 @@ class PageTests(TestCase):
 		self.assertEquals(getNextPage(newPage), youngerUncle)
 		self.assertEquals(getPrevPage(youngerUncle), newPage)
 
+	def test_insertLastChildPage(self):
+		''' 
+		Tests adding a new page to the tree as the last child of an existing page
+		'''
+		parent = Page.objects.get(slug="PageTestsIndexPage")
+		newPage = Page(slug="testAddPageAsYoungestChild", name="testAddPageAsYoungestChild")
+		insertLastChildPage(newPage, parent)
+		self.validateTree()
+
+		parent = Page.objects.get(id=parent.id)
+		olderBrother = Page.objects.get(slug="PageTestsPage5")
+		
+		self.assertEquals(getPrevPage(newPage), olderBrother)
+		self.assertEquals(getNextPage(olderBrother), newPage)
+		
+		
 	def test_removeParent(self):
 		'''
 		Tests removing a parent page from the tree (child pages inherited by grandparent)
