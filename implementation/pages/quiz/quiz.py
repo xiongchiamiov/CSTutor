@@ -8,10 +8,10 @@ Contains operations for all lessons
 from django.template.defaultfilters import slugify
 from models import *
 from question.models import *
-from question.question import isMultipleChoiceQuestion
-from question.question import removeQuestion
+from question.question import *
 from pages.page import removePage
 from stats.models import Stat
+from codeshell.pythoncode import *
 
 def addCodeQuestion(self):
 	'''
@@ -24,11 +24,13 @@ def addCodeQuestion(self):
 
 def addMultipleChoiceQuestion(self):
 	'''
-		Takes a quiz and adds a blank multiple choice question to it
+		Takes a quiz and adds a blank multiple choice question to it, as well as 2 blank answers
 	'''
 	questions = self.questions.all()
 	newQuestion = MultipleChoiceQuestion(order=(len(questions)+1), quiz=self)
 	newQuestion.save()
+	addAnswer(newQuestion)
+	addAnswer(newQuestion)
 	return newQuestion
 
 def addPath(self, request, course_slug):
@@ -446,7 +448,12 @@ def scoreQuiz(self, request, course_slug, quiz_slug):
 					score = score + 1
 		else:
 			q = q.codequestion
-			print "Grade code question\n"
+			theirCode = request.POST['cq%s' % q.order]
+			expectedCode = q.expectedOutput
+			(theirResult, scope) = evalPythonString(theirCode)
+			(expectedResult, scope) = evalPythonString(expectedCode)
+			if (theirResult == expectedResult):
+				score = score + 1
 
 	if (not request.user.is_anonymous()):
 		Stat.CreateStat(course, self, request.user, score)
@@ -491,9 +498,9 @@ def validateQuizFromPost(self, request):
 		pass
 
 	# Hidden - There can be no errors in this
-
 	# Prerequisites - Make sure the required quiz(s) have a "passing" path
 	for prereq in request.POST.getlist("prereqs"):
+		print prereq + "\n"
 		requiredQuiz = Quiz.objects.get(slug = prereq)
 		foundPath = False
 		for path in requiredQuiz.paths.all():

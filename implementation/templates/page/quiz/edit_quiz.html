@@ -93,7 +93,7 @@
 	        </tr>
 		<tr>
 			<td></td>
-			<td colspan="2">Expected Output<br /><textarea name="cq{{q.codequestion.order}}eo" style="height: 5em; width: 40em;">{{q.codequestion.expectedOutput}}</textarea></td>
+			<td colspan="2">Correct Program<br /><textarea name="cq{{q.codequestion.order}}eo" style="height: 5em; width: 40em;">{{q.codequestion.expectedOutput}}</textarea></td>
 			<td></td>
 		</tr>
 	{% endif %}
@@ -111,10 +111,10 @@
 				{% for page in pages %}
 					{% if page.quiz %}
 						{% if page.slug in prereqs %}
-							<option name="{{page.slug}}" selected="selected">{{page.name}}</option>
+							<option value="{{page.slug}}" selected="selected">{{page.name}}</option>
 						{% else %}
 							{% if page.slug != page_slug %}
-								<option name="{{page.slug}}">{{page.name}}</option>
+								<option value="{{page.slug}}">{{page.name}}</option>
 							{% endif %}
 						{% endif %}
 					{% endif %}

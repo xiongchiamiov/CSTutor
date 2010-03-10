@@ -201,7 +201,7 @@ def edit_quiz(request, course_slug, page_slug):
 	allPages = Course.objects.get(slug=course_slug).pages.all()
 	questions = workingCopy.questions.all().order_by("order")
 	prerequisites = workingCopy.prerequisites.all()
-	paths = workingCopy.paths.all()
+	paths = workingCopy.paths.all().order_by("lowscore")
 	prereqs = []
 	errors = []
 	pages = []
