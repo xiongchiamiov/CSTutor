@@ -189,10 +189,11 @@ def editPath(self, request, course_slug):
 		try:
 			matchingPath = matchPath(self, lowScore)
 			if (matchingPath != path):
-				errors.append("Conflicting path ranges. Please change the range")
+				errors.append("A path that matches this range exists already")
 		except NoMatchingPath:
 			pass			
 	except ValueError:
+		lowScore = 0
 		errors.append("Low Score must be an integer")
 
 	try:
@@ -200,7 +201,7 @@ def editPath(self, request, course_slug):
 		if (highScore < 0 or highScore > 100):
 			errors.append("High Score must be between 0 and 100")
 		if (highScore < lowScore):
-			errors.append("High Score must be less than Low Score")
+			errors.append("Low Score must be less than or equal too High Score")
 	except ValueError:
 		errors.append("High Score must be an integer")
 
@@ -363,7 +364,7 @@ def safeSlug(page_slug):
 		the working copy. If so, it returns the slug to the published copy
 	'''
 
-	if (page_slug.endswith("_workingCopy") != False and page_slug.find("_workingCopy") == len(page_slug) - 12):
+	if (page_slug.endswith("_workingCopy") != False and page_slug.find("_workingCopy") <= len(page_slug) - 12 and page_slug != "_workingCopy"):
 		return page_slug[:-12]
 
 	return page_slug
