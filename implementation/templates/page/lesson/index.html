@@ -48,7 +48,13 @@ $(document).ready(function() {
 </div>
 
 <div id="lesson_navigation">
+<br/>
 <form name="lesson_view" method="POST">
+{% ifequal course_slug page_slug %}
+You may unenroll from the course by clicking "Leave Course"<br/>
+<input type="submit" name="quitCourse" value="Leave Course"
+<br/><br/>
+{% endifequal %}
 <input type="submit" name="goToPrevPage" value="Previous"/>
 <input type="submit" name="goToNextPage" value="Next"/>
 <form/>

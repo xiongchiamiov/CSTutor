@@ -1,7 +1,13 @@
 {% extends "base.html" %} 
 
 {% block content %} 
+
+{% ifequal lesson.slug lesson.course.slug %}
+Are you sure you wish to remove the ENTIRE COURSE ({{lesson.course.name}})?
+<br/><br/>
+{% else %}
 Are you sure you wish to remove lesson:<font color='red'> {{lesson.name}}</font> from course: {{lesson.course.name}}?<br/><br/>
+{% endifequal %}
 <form method="post" action="">
 <input type="submit" name="confirmRemove" value="yes">
 <input type="submit" name="confirmRemove" value="no">

@@ -1,8 +1,9 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.core.urlresolvers import reverse
-from courses.models import Course
-from courses.course import renameCourse
+from courses.models import Course, Enrollment
+from stats.models import Stat
+from courses.course import renameCourse, removeCourse
 from pages.lesson.models import Lesson
 from home.views import master_rtr
 from pages.lesson.lesson import *
@@ -82,7 +83,28 @@ def show_lesson(request, course_slug, page_slug, lessonPage, preview=False):
 			if prevPage != None:
 				#args = [course_slug, prevPage.slug]
 				return HttpResponseRedirect(reverse('pages.views.show_page', args=[course_slug, prevPage.slug]))
-	
+		if "quitCourse" in request.POST:
+			course = Course.objects.get(slug=course_slug)
+			return master_rtr(request, 'courses/remove_course.html', {'course':course})
+		if "confirmQuitCourse" in request.POST:
+			course = Course.objects.get(slug=course_slug)
+			if request.POST['confirmQuitCourse'] == "yes":
+				#remove user enrollment for course
+				if request.user.is_authenticated():
+					e = Enrollment.objects.get(user = request.user, course = course)
+					e.delete()
+					#remove all stats for user in course
+					s = Stat.objects.filter(user = request.user, course = course)
+					s.delete()
+				else:
+					if course in request.session['anonCourses']:
+						#this may look like extra work but it is necessary to get the
+						#lazy session to actually save the data
+						anon = request.session['anonCourses']
+						anon.remove(course)
+						request.session['anonCourses'] = anon
+				return HttpResponseRedirect('/')
+
 	if preview == False:
 		content = lessonPage.content
 	else:
@@ -156,7 +178,10 @@ def edit_lesson(request, course_slug, page_slug):
 		#is asked to confirm
 		elif "confirmRemove" in request.POST:
 			if request.POST['confirmRemove'] == 'yes':
-				removeLesson(request, course_slug, page_slug)
+				if course_slug == page_slug:#remove the course
+					removeCourse(course_slug)
+				else:
+					removeLesson(request, course_slug, page_slug)
 				return HttpResponseRedirect("/")
 			else:
 				return master_rtr(request, 'page/lesson/edit_lesson.html', data)

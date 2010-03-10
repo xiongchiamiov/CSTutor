@@ -88,7 +88,9 @@ def show_homepage(request):
 		if not "anonCourses" in request.session:
 			data['not_enrolled'] = True
 		else:
-			data['numClasses'] = len(request.session['anonCourses'])
+			#added this in case someone clobbers request.session
+			if request.session['anonCourses'] != None:
+				data['numClasses'] = len(request.session['anonCourses'])
 	
 	return master_rtr(request, 'homepage.html', data)
 

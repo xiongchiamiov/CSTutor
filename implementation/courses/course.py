@@ -95,12 +95,20 @@ def removeUser(self, user):
 		print 'remove failed'	
 	return None
 
-def remove(self):
+def removeCourse(course_slug):
 	'''
-		Removes this course and all of its pages, statistics, and enrollments
-		from the database (TODO: or doesn't remove them from the database?)
+	@author Russell Mezzetta
+	Removes this course and all of its pages, statistics, and enrollments
+	from the database
+	@pre course_slug is a string
+	@post if course_slug points to a valid course, it will be removed from the database along with all related objects.
 	'''
-	pass
+	try:
+		c = Course.objects.get(slug=course_slug)
+		c.delete()
+		return c
+	except Course.DoesNotExist:
+		return None
 
 def setPrivate(self):
 	self.private = True
