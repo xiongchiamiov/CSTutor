@@ -12,6 +12,7 @@ from question.question import *
 from pages.page import removePage
 from stats.models import Stat
 from codeshell.pythoncode import *
+from stats.models import Stat
 
 def addCodeQuestion(self):
 	'''
@@ -88,17 +89,18 @@ def checkPrerequisites(self, user):
 	'''
 	prereqs = self.prerequisites.all()
 	if (len(prereqs) > 0):
-		if (user.isAnonymous()):
+		if (user.is_anonymous()):
 			return False
 		enrollment = user.enrollments.get(course=self.course)
 		if (not enrollment.edit):
 			for p in prereqs:
-				print "Prereq: " + p.requiredQuiz.slug + "\n"
 				requiredQuiz = p.requiredQuiz
-				#score = getUserBestQuizScore(requiredQuiz, user)
-				score = 100
+				try:
+					stat = Stat.objects.filter(course=self.course, page=requiredQuiz, user=user).order_by("-score")[0]
+				except IndexError:
+					return False
+				score = stat.score / stat.maxscore * 100
 				path = matchPath(requiredQuiz, score)
-				print "User Score on Prereq: " + str(path.passed) + "\n"
 				if (path.passed == False):
 					return False
 

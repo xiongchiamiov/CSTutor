@@ -149,7 +149,7 @@
     <field to="quiz.quiz" name="quiz" rel="ManyToOneRel">10014</field>
   </object>
   <object pk="10011" model="question.question">
-    <field type="TextField" name="text">Test question 2</field>
+    <field type="TextField" name="text">&lt;p&gt;Test question 2&lt;/p&gt;</field>
     <field type="IntegerField" name="order">2</field>
     <field to="quiz.quiz" name="quiz" rel="ManyToOneRel">10014</field>
   </object>

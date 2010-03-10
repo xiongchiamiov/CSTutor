@@ -141,10 +141,6 @@ def submitQuiz(request, course_slug, page_slug):
 	except Quiz.DoesNotExist:
 		raise Http404
 
-	# Make sure prerequisites are satisfied
-	if (not checkPrerequisites(quiz, request.user)):
-		return master_rtr(request, 'page/denied.html', {'course':course_slug, 'course_slug':course_slug, 'prereqs':True})
-
 	#if the course is private then check that the user is enrolled and has view permissions
 	if course.private:
 		if not request.user.is_authenticated():
@@ -156,6 +152,10 @@ def submitQuiz(request, course_slug, page_slug):
 		except ObjectDoesNotExist:
 			# user is not enrolled in this course
 			return master_rtr(request, 'page/denied.html', {'course':course_slug, 'enrolled':False, 'edit':False, 'loggedIn':True})
+
+	# Make sure prerequisites are satisfied
+	if (not checkPrerequisites(quiz, request.user)):
+		return master_rtr(request, 'page/denied.html', {'course':course_slug, 'course_slug':course_slug, 'prereqs':True})
 
 	maxScore = len(quiz.questions.all())
 	score = 0

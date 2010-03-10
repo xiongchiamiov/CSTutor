@@ -397,14 +397,14 @@
 	<object pk="1" model="quiz.path">
 		<field to="quiz.quiz" name="quiz" rel="ManyToOneRel">17</field>
 		<field type="IntegerField" name="highscore">100</field>
-		<field type="IntegerField" name="lowscore">70</field>
+		<field type="IntegerField" name="lowscore">50</field>
 		<field type="TextField" name="text">Congratulations, you have passed this quiz.</field>
 		<field to="pages.page" name="toPage" rel="ManyToOneRel">4</field>
 		<field type="BooleanField" name="passed">True</field>
 	 </object>
 	 <object pk="2" model="quiz.path">
 		<field to="quiz.quiz" name="quiz" rel="ManyToOneRel">17</field>
-		<field type="IntegerField" name="highscore">70</field>
+		<field type="IntegerField" name="highscore">50</field>
 		<field type="IntegerField" name="lowscore">0</field>
 		<field type="TextField" name="text">I'm sorry, you did not score high enough to pass this quiz. Please try again</field>
 		<field to="pages.page" name="toPage" rel="ManyToOneRel">4</field>
@@ -413,14 +413,14 @@
 	 <object pk="3" model="quiz.path">
 		<field to="quiz.quiz" name="quiz" rel="ManyToOneRel">4</field>
 		<field type="IntegerField" name="highscore">100</field>
-		<field type="IntegerField" name="lowscore">70</field>
+		<field type="IntegerField" name="lowscore">50</field>
 		<field type="TextField" name="text">Congratulations, you have passed this quiz.</field>
 		<field to="pages.page" name="toPage" rel="ManyToOneRel">4</field>
 		<field type="BooleanField" name="passed">True</field>
 	 </object>
 	 <object pk="4" model="quiz.path">
 		<field to="quiz.quiz" name="quiz" rel="ManyToOneRel">4</field>
-		<field type="IntegerField" name="highscore">70</field>
+		<field type="IntegerField" name="highscore">50</field>
 		<field type="IntegerField" name="lowscore">0</field>
 		<field type="TextField" name="text">I'm sorry, you did not score high enough to pass this quiz. Please try again</field>
 		<field to="pages.page" name="toPage" rel="ManyToOneRel">4</field>
@@ -456,7 +456,7 @@
   <field type="TextField" name="editableCode">test3</field>
   <field type="TextField" name="afterCode">test2</field>
   <field type="BooleanField" name="showAfterCode">True</field>
-  <field type="TextField" name="expectedOutput">Hello World</field>
+  <field type="TextField" name="expectedOutput">print "Hello World"</field>
  </object>
  <object pk="8" model="question.codequestion">
   <field type="TextField" name="beforeCode">test1</field>
@@ -464,7 +464,7 @@
   <field type="TextField" name="editableCode">test3</field>
   <field type="TextField" name="afterCode">test2</field>
   <field type="BooleanField" name="showAfterCode">True</field>
-  <field type="TextField" name="expectedOutput">Hello World</field>
+  <field type="TextField" name="expectedOutput">print "Hello World"</field>
  </object>
  <object pk="5" model="question.answer">
   <field to="question.multiplechoicequestion" name="question" rel="ManyToOneRel">4</field>
