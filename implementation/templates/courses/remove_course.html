@@ -1,0 +1,12 @@
+{% extends "base.html" %} 
+
+{% block content %} 
+
+Are you sure you wish to leave the course ({{course.name}})?
+<br/><br/>
+<form method="post" action="">
+<input type="submit" name="confirmQuitCourse" value="yes">
+<input type="submit" name="confirmQuitCourse" value="no">
+</form>
+
+{% endblock %} 
