@@ -12,6 +12,16 @@ You are currently not enrolled in any courses. Click the <a href="{% url courses
 You are currently enrolled in {{numClasses}} classes.<br/>
 {% endif %}
 
+{% if pending %}
+<br/>
+	You have {{pending|length}} pending request(s) to enter private course(s):
+	<div style="font-size:120%">
+	{% for c in pending %}
+		{{c.name}}<br/>
+	{% endfor %}
+	</div>
+{% endif %}
+
 {% if user.is_authenticated %}
 <br/>You last logged in {{loginDate}} at {{loginTime}}
 	{% if lastCourse %}

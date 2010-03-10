@@ -79,6 +79,14 @@ def show_homepage(request):
 				data['lastPageNoLongerExists'] = True
 
 		#get the number of courses the user is enrolled in
+		enrolled = request.user.enrollments.all()
+		pending = []
+		for e in enrolled:
+			if e.view == False:
+				pending.append(e.course)
+		if len(pending):
+			data['pending'] = pending
+
 		data['numClasses'] = request.user.enrollments.count()
 		if data['numClasses'] <= 0:
 			data['not_enrolled'] = True
