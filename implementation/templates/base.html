@@ -10,7 +10,36 @@
 	<link rel="stylesheet" href="/media/css/style.css" type="text/css" />
 	<link rel="stylesheet" href="/media/css/themes/{{THEME}}.css" type="text/css" />
 	<script type="text/javascript" src="/media/js/jquery.min.js"></script>
-
+	<script type="text/javascript">
+		$(document).ready(function() {
+			// no collapsibles at the end of the line
+			$('#page-list li').each(function() {
+				// apparently, an empty array evals to true in javascript
+				if ($(this).children('ul').length == 0) {
+					$(this).children('img').remove();
+				}
+			});
+			
+			// show plus/minus pseudo-bullets
+			$('#page-list li img').show();
+			
+			// set them to toggle lower menu items
+			$('#page-list li img').click(function() {
+				$(this).next().next().toggle();
+				return false;
+			});
+			
+			// oh, and we want the image to change, so it acts like
+			// every other tree-toggling navigation system out there
+			$('#page-list li img').toggle(
+				function(){ $(this).attr("src", "/media/images/minus.png"); },
+				function(){ $(this).attr("src", "/media/images/plus.png"); }
+			);
+			
+			// now collapse everything to begin with
+			$('#page-list li ul').hide();
+		});
+	</script>
    {% block meta %}
    {% endblock meta %}
 </head>
@@ -76,23 +105,20 @@ It looks like you have javascript disabled.  Some site features may not work, bu
 					<ul id="page-list">
 						{% for course in courses %}
 							{% for page in course.tableOfContents %}
-							{% ifequal page "in" %}
-							<li style="list-style: none;">
-							<ul>
-							{% else %} {% ifequal page "out" %}
-							</ul>
-							</li>
-							{% else %} {% if forloop.first %}
-								<li><a href="{% url courses.views.show_course course.slug %}">{{page}}</a>
-								</li>
-							{% else %} {% if page.quiz and not page.quiz.upToDate %}
-								<li><a href="{% url pages.views.show_page course.slug page.slug %}"><i>{{page}}</i></a>
-								</li>
-
-							{% else %}
-								<li><a href="{% url pages.views.show_page course.slug page.slug %}">{{page}}</a>
-								</li>
-							{% endif %} {% endif %} {% endifequal %} {% endifequal %} 
+								{% ifequal page "in" %}
+									<ul>
+								{% else %}
+									{% ifequal page "out" %}
+										</li>
+										</ul>
+									{% else %}
+										{% if not forloop.first %}
+											</li>
+										{% endif %}
+										{% comment %} The negative left margin on the image is to offset it being there, so things line up. {% endcomment %}
+										<li><img src="/media/images/plus.png" style="display: none; margin-left: -8px;" /><a href="{% url pages.views.show_page course.slug page.slug %}">{{page}}</a>
+									{% endifequal %}
+								{% endifequal %}
 							{% endfor %}
 						{% endfor %}
 					</ul><!-- #page-list -->

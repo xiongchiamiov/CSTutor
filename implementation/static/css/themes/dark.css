@@ -68,7 +68,7 @@ body {
 }
 
 #page-list li {
-	list-style: katakana-iroha;
+	/*list-style: katakana-iroha;*/
 	color: #180A36;
 }
 

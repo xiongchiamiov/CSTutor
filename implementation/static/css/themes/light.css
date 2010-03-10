@@ -90,7 +90,7 @@ body {
 }
 
 #page-list li {
-	list-style: url('/media/images/light/bullet.png');
+	/*list-style: url('/media/images/light/bullet.png');*/
 }
 
 #page-list a {
