@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+Dummy data that can be used to quickly create test fixtures.
+-->
 <django-objects version="1.0">
    <object pk="100" model="auth.user">
       <field type="CharField" name="username">testuser1</field>

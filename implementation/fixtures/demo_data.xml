@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+This file contains a CSTutor course that informs about the features of CSTutor.
+It is useful for demonstration purposes.
+
+The demoEditor's password is "password"
+-->
 <django-objects version="1.0">
    <object pk="100" model="auth.user">
       <field type="CharField" name="username">demoEditor</field>
