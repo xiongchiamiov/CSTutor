@@ -456,6 +456,9 @@ def scoreQuiz(self, request, course_slug, quiz_slug):
 			try:
 				(theirResult, scope) = evalPythonString(theirCode)
 				(expectedResult, scope) = evalPythonString(expectedCode)
+				if (theirResult == expectedResult):
+					score = score + 1
+
 			except SyntaxError, e:
 				# Need to do something helpful, doing nothing for now
 			  	pass
@@ -464,8 +467,6 @@ def scoreQuiz(self, request, course_slug, quiz_slug):
 				# Need to do something helpful as well, doing nothing for now
 				pass
 			
-			if (theirResult == expectedResult):
-				score = score + 1
 
 	if (not request.user.is_anonymous()):
 		Stat.CreateStat(course, self, request.user, score)
