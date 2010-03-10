@@ -325,7 +325,7 @@ def removeQuiz(self):
 
 	# Remove Pages
 	removePage(self)
-	removePage(workingQuiz)
+	workingQuiz.delete()
 	# should also remove all associated quiz objects such as stats, questions, answers, paths
 	return 0
 

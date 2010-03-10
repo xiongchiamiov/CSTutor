@@ -61,15 +61,15 @@
 {% for q in questions %}
 	{% if q.multiplechoicequestion %}
 		<tr>
-	                <td><input type="text" name="mcq{{q.multiplechoicequestion.order}}order" value="{{q.multiplechoicequestion.order}}" size="3" /></td>
-	                <td colspan="2"><textarea name="mcq{{q.multiplechoicequestion.order}}text" style="height: 5em; width: 40em;" class="mceEditor">{{q.multiplechoicequestion.text}}</textarea><input type="submit" name="removeQuestion{{q.multiplechoicequestion.order}}" value="X" /></td>
+	                <td><input type="text" name="mcq{{q.multiplechoicequestion.order}}order" value="{{q.multiplechoicequestion.order}}" size="2" /><input type="submit" name="removeQuestion{{q.multiplechoicequestion.order}}" value="X" style="color: red;"/></td>
+	                <td colspan="2"><textarea name="mcq{{q.multiplechoicequestion.order}}text" style="height: 5em; width: 40em;" class="mceEditor">{{q.multiplechoicequestion.text}}</textarea></td>
 			<td>Correct</td>
 	        </tr>
 	        {% for a in q.multiplechoicequestion.answers.all %}
 	        <tr>
 	            <td></td>
 	            <td><input type="radio" name="mcq{{q.multiplechoicequestion.order}}a" disabled="disabled" /></td>
-	        	<td><input type="text" name="mcq{{q.multiplechoicequestion.order}}a{{a.order}}" value="{{a.text}}" /><input type="submit" name="removeAnswerQ{{q.multiplechoicequestion.order}}A{{a.order}}" value="X" /></td>
+	        	<td><input type="text" name="mcq{{q.multiplechoicequestion.order}}a{{a.order}}" value="{{a.text}}" /><input type="submit" name="removeAnswerQ{{q.multiplechoicequestion.order}}A{{a.order}}" value="X" style="color: red;"/></td>
 				<td>
 					{% if a.correct %}
 					<input type="radio" name="mcq{{q.multiplechoicequestion.order}}ac" value="{{a.order}}" checked="checked"/>
@@ -87,8 +87,8 @@
 	{% endif %}
 	{% if q.codequestion %}
 	        <tr>
-	                <td><input type="text" name="cq{{q.codequestion.order}}order" value="{{q.codequestion.order}}" size="3" /></td>
-	                <td colspan="2">Prompt<br /><textarea name="cq{{q.codequestion.order}}text" style="height: 5em; width: 40em;" class="mceEditor">{{q.codequestion.text}}</textarea><input type="submit" name="removeQuestion{{q.codequestion.order}}" value="X" /></td>
+	                <td><input type="text" name="cq{{q.codequestion.order}}order" value="{{q.codequestion.order}}" size="2" /><input type="submit" name="removeQuestion{{q.codequestion.order}}" value="X" style="color: red;"/></td>
+	                <td colspan="2">Prompt<br /><textarea name="cq{{q.codequestion.order}}text" style="height: 5em; width: 40em;" class="mceEditor">{{q.codequestion.text}}</textarea></td>
 			<td></td>
 	        </tr>
 		<tr>
