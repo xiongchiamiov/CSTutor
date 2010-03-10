@@ -103,7 +103,7 @@ def show_lesson(request, course_slug, page_slug, lessonPage, preview=False):
 						anon = request.session['anonCourses']
 						anon.remove(course)
 						request.session['anonCourses'] = anon
-				return HttpResponseRedirect('/')
+				return HttpResponseRedirect(reverse('home.views.show_homepage'))
 
 	if preview == False:
 		content = lessonPage.content
@@ -182,7 +182,7 @@ def edit_lesson(request, course_slug, page_slug):
 					removeCourse(course_slug)
 				else:
 					removeLesson(request, course_slug, page_slug)
-				return HttpResponseRedirect("/")
+				return HttpResponseRedirect(reverse('home.views.show_homepage'))
 			else:
 				return master_rtr(request, 'page/lesson/edit_lesson.html', data)
 		
