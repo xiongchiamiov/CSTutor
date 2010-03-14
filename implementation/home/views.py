@@ -112,6 +112,10 @@ def custom_404(request, message=''):
 	response.status_code = 404
 	return response
 
+def custom_500(request, message=''):
+	response = master_rtr(request, '500.html', {'message':message})
+	response.status_code = 500
+	return response
 
 def custom_403(request, message=''):
 	'''
