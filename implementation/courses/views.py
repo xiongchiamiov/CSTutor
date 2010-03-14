@@ -9,7 +9,7 @@ from django.http import HttpResponseRedirect
 from courses.models import Course
 from pages.models import Page
 from courses.course import *
-from django.db import IntegrityError
+from django.db import IntegrityError, transaction
 from django.template.defaultfilters import slugify
 from home.views import master_rtr
 from django.contrib.auth.decorators import login_required
@@ -41,9 +41,12 @@ def create_course(request):
 			data['message'] = 'A Course name must be at least 1 characters.'
 		else:
 			try:
+				sid = transaction.savepoint()
 				c = CreateCourse(name, User.objects.get(username=request.user.username), private)
+				transaction.savepoint_commit(sid)
 				return HttpResponseRedirect(reverse('pages.views.edit_page', args=[c.slug, c.slug]))
 			except IntegrityError:
+				transaction.savepoint_rollback(sid)
 				data['message'] = 'A Course with that name already exists.'
 
 	return master_rtr(request, 'courses/create_course.html', data)
