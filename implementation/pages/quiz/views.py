@@ -22,6 +22,7 @@ from django.core.exceptions import ObjectDoesNotExist
 
 def create_quiz(request, course_slug, page_slug):
 	''' create_Quiz View
+		@author John Hartquist
 		This view will create a quiz and take the user to the quiz editor screen.
 	'''
 	#enforcing permissions
@@ -37,12 +38,19 @@ def create_quiz(request, course_slug, page_slug):
 	if request.method == "POST" and "Create Quiz" in request.POST:
 		course = Course.objects.get(slug=course_slug)
 		name = request.POST['name']
-		newQuiz = Quiz(course=course, name=name, slug=slugify(name), text=name, upToDate=True)
-		insertLastChildPage(newQuiz, Page.objects.get(slug=page_slug))
-		newQuiz = Quiz.objects.get(slug=newQuiz.slug)
-		workingCopy = Quiz(course=newQuiz.course, name=newQuiz.name, slug=(newQuiz.slug + "_workingCopy"), text=newQuiz.name, left=0, right=0)
-		workingCopy.save()
-		return HttpResponseRedirect(reverse('pages.views.edit_page', args=[course_slug, newQuiz.slug]))
+		
+		if name == "":
+			return master_rtr(request, 'page/quiz/create-quiz.html', {'message': "You may not enter a blank quiz name"})
+		
+		try:
+			newQuiz = Quiz(course=course, name=name, slug=slugify(name), text=name, upToDate=True)
+			insertLastChildPage(newQuiz, Page.objects.get(slug=page_slug))
+			newQuiz = Quiz.objects.get(slug=newQuiz.slug)		
+			workingCopy = Quiz(course=newQuiz.course, name=newQuiz.name, slug=(newQuiz.slug + "_workingCopy"), text=newQuiz.name, left=0, right=0)
+			workingCopy.save()
+			return HttpResponseRedirect(reverse('pages.views.edit_page', args=[course_slug, newQuiz.slug]))
+		except:
+			return master_rtr(request, 'page/quiz/create-quiz.html', {'message': "Quiz with this name already exists"})
 	else:
 		return master_rtr(request, 'page/quiz/create-quiz.html')
 
