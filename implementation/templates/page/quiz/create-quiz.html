@@ -2,8 +2,9 @@
 
 {% block content %}
 <form method="POST" action="">
-Enter the name of the new quiz: <input type="text" name="name">
+Enter the name of the new quiz: <input type="text" name="name"><br>
 <input type="submit" name="Create Quiz" value="Create Quiz">
+<font color="red">{{ message }}</font>
 </form>
 
 {% endblock %}
