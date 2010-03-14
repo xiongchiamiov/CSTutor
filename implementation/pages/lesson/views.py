@@ -153,8 +153,9 @@ def edit_lesson(request, course_slug, page_slug):
 		lesson = lesson.lesson
 	except Lesson.DoesNotExist:
 		print "OH MY! page is not a lesson???"
-	data['lesson'] = lesson	
-
+	data['lesson'] = lesson
+	data['unpublished'] = lesson.content != lesson.workingCopy
+	
 	if request.method == "POST":
 		#Saves the working copy of the lesson
 		if "Save" in request.POST:
@@ -175,6 +176,7 @@ def edit_lesson(request, course_slug, page_slug):
 				#check if saveLessonName returned error message
 				if 'message' in ret:
 					data['message'] = ret['message']
+					return master_rtr(request, 'page/lesson/edit_lesson.html', data)
 				#else:
 				#	return HttpResponseRedirect(reverse('pages.views.edit_page', args=[course_slug, lesson.slug]))
 			
@@ -217,11 +219,13 @@ def edit_lesson(request, course_slug, page_slug):
 			#to the published copy.
 			lesson.workingCopy = request.POST['content']
 			data['lesson'] = publishLessonChanges(lesson)
+			data['unpublished'] = False
 			return master_rtr(request, 'page/lesson/edit_lesson.html', data)
 
 		#Revert the workingCopy to the published copy
 		elif "Revert" in request.POST:
 			data['lesson'] = revertLessonChanges(lesson)
+			data['unpublished'] = False
 			return master_rtr(request, 'page/lesson/edit_lesson.html', data)
 
 	return master_rtr(request, 'page/lesson/edit_lesson.html', data)
