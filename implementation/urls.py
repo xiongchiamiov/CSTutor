@@ -43,3 +43,4 @@ urlpatterns += patterns('',
 )
 
 handler404 = 'home.views.custom_404'
+handler500 = 'home.views.custom_500'
