@@ -173,8 +173,8 @@ def getUserBestScore(user, quiz):
     the page where a quiz is located. Returns the percentage of the best
     score.
 	'''
-    Stat stat = Stats.objects.filter(page=quiz, user=user).sort("-score")[0]
-    return (stat.score/stat.maxScore)
+	stat = Stats.objects.filter(page=quiz, user=user).sort("-score")[0]
+	return (stat.score/stat.maxScore)
 
 
 
