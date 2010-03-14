@@ -96,14 +96,37 @@ class CourseViewTests(TestCase):
 		Sets up the tests
 		'''
 		self.client = Client()
-		self.slug = 'gene-fishers-cpe102-fall-08'
 	
 	def testCourse(self):
-		statusCode = self.client.get('/course/%s/page/%s/' % (self.slug,self.slug)).status_code
+		'''
+		@author James Pearson, Jon Inloes
+
+		Tests that showing a course page works.
+
+		Case no.		Inputs								Expected Output		Remark
+		1.				slug = PageViewsPublicCourse	200						
+
+		2.				slug = not-a-class				404
+		'''
+		pass
+
+	def testCourseCase1(self):
+		'''
+		Test case 1 for test course
+		'''
+
+		slug = 'PageViewsPublicCourse'
+		statusCode = self.client.get('/course/%s/page/%s/' % (slug,slug)).status_code
 		self.failUnlessEqual(statusCode, 200, "Oopsie!  We got a status code of %s. :/" % statusCode)
 		
-	def testBadCourse(self):
-		statusCode = self.client.get('/course/not-a-class/').status_code
+	def testCourseCase2(self):
+		'''
+		Test case 2 for test course
+		'''
+
+		slug = 'not-a-class'
+
+		statusCode = self.client.get('/course/' + slug + '/').status_code
 		self.failUnlessEqual(statusCode, 404, "Oh my!  Our status code was %s." % statusCode)
 
 	def testShowRoster(self):
