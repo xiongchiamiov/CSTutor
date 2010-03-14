@@ -1,9 +1,9 @@
+# vim: set noet:
 '''
 Unit tests for functions in the Stats module
 
 @author Andrew J. Musselman
 '''
-
 
 from django.test import TestCase
 from django.test.client import Client
@@ -24,7 +24,10 @@ class StatsTests(TestCase):
 	quizzes ind addation to the initalData.xml It also includes some
 	statistics objects that are organized in such a way to produce easily
 	known average, min and max values. 
-
+	
+	Due to the interpreted nature of Python, every function that is used in
+	the code has at least one test. This is to ensure that the user will
+	never see an embarrassing syntax error.
 	'''
 	fixtures = ['StatTest']
 
@@ -81,7 +84,6 @@ class StatsTests(TestCase):
 		except Stat.DoesNotExist:
 			self.assertTrue(True)
 
-		#self.assertRaises(Stat.DoesNotExist,Stat.objects.get(user=user))
 
 	def test_getBestCourseStats(self):
 		'''
@@ -148,3 +150,4 @@ class StatsTests(TestCase):
 		#There are two users with stats results in this course.
 		self.assertEquals(len(aggregatesList),2)
 		
+

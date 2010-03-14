@@ -1,3 +1,4 @@
+# vim: set noet:
 '''
 stats.py
 
@@ -129,7 +130,7 @@ def getUserBestAggregates(course):
 
 	cursor = connection.cursor()
 	cursor.execute('''SELECT user_id, username,
-						count(*),
+						count(),
 	                    max(Cast(score as FLOAT)/cast(maxscore as Float)),
 	                    min(Cast(score as FLOAT)/cast(maxscore as Float)),
 	                    avg(Cast(score as FLOAT)/cast(maxscore as Float))
@@ -165,80 +166,15 @@ def getUserBestAggregates(course):
 		aggrigateList.append(aggrigateDict)
 	return aggrigateList; 
 
-def getUserAggregate(user, course):
-	'''
-	Calculates aggregate stats for a single user in a particular
-	course
-	'''
-	pass
-
-def getUserLatestWeightedAverage(user, couse):
-	'''
-	Calculates the weighted average of the users latest scores that the
-	user has posted for each quiz. This does not count quizzes the user 
-	hasn't taken yet.
-	'''
-	pass
-
-def getUserBestWeightedAverage(user, course):
-	'''
-	Calculates the weighted average of the best scores that the user has posted
-	for each quiz. This does not count quizzes the user hasn't taken yet
-	'''
-	pass
 
 def getUserBestScore(user, quiz):
 	'''
-	Gets the best score for a given user on a given quiz
+	Gets the best score for a given user on a given quiz. Takes a user and 
+    the page where a quiz is located. Returns the percentage of the best
+    score.
 	'''
-	pass
-
-def getUserLatestScore(user,quiz):
-	'''
-	Gets the latest score for a given user on a given quiz.
-	'''
-	pass
-
-def getUserAverageScore(user,quiz):
-	'''
-	Gets the average score for a given user on a given quiz.
-	Note that weighting makes no sense for this use case, as the max score for a
-	quiz should be the same each time you take it.
-	'''
-	pass
-
-def getCourseLatestAverage(course, quiz):
-	'''
-	Gets the average score for the the latest quiz results for a given quiz.
-	Note that weighting makes no sense for this use case, as the max score for a
-	quiz should be the same each time you take it.
-	'''
-	pass
-
-def getCourseBestAverage(course, quiz):
-	'''
-	Gets the average score of the best quiz results for a given quiz.
-	Note that weighting makes no sense for this use case, as the max score for a
-	quiz should be the same each time you take it.
-	'''
-	pass
-
-def getCourseAggregates(course):
-	'''
-	Calculate aggragte stats for all users in a particular course
-	'''
-	pass
+    Stat stat = Stats.objects.filter(page=quiz, user=user).sort("-score")[0]
+    return (stat.score/stat.maxScore)
 
 
-def removeStat(stat, user):
-	'''
-	Removes a stat from a user
-	'''
-	pass
-
-def purgeDeadStats():
-	'''
-	Removes stats that have no associated Page/User
-	'''
-	pass 
 
