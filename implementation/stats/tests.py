@@ -40,10 +40,11 @@ class StatsTests(TestCase):
 	def test_addStat(self):
 		'''
 		Tests the add stat function.
-		@precondition The user and quiz must exist, 
-		and the user must be enrolled in the course that has the quiz
-		@precondition.
-		@postcondition A new stat is added for the given data
+		Inputs: The user 'fakeuser' as grabbed from the database
+		        The quiz 'samplequiz' as grabbed from the database
+				The course 'gene-fishers-cpe102-fall-08' from the database
+				And the score of 0
+		Expected output: A properly created stat object that is in the database
 		'''
 		user = User.objects.get(username = 'fakeuser')
 		quiz = Page.objects.get(pk = '4') #sample quiz 
@@ -60,11 +61,26 @@ class StatsTests(TestCase):
 		#And test the that it's in the database
 		dbTestStat = Stat.objects.get(id=testStat.id)
 		self.assertEquals(dbTestStat,testStat)
+
+		#Test to see if the stat object from the DB is correct		
+		self.assertEquals(dbTestStat.course, course)
+		self.assertEquals(dbTestStat.page , quiz)
+		self.assertEquals(dbTestStat.user , user)
+		self.assertEquals(dbTestStat.score , score)
+		self.assertEquals(dbTestStat.maxscore , 3)
 	
 	def test_removeUserStats(self):
 		'''This test tests the return User stats function.
 		It enters in a stat, gets it back, then removes it.
-		Then the test confirms the test is gone'''
+		Then the test confirms the test is gone
+		Inputs: The user 'fakeuser' as grabbed from the database
+		        The quiz 'samplequiz' as grabbed from the database
+				The course 'gene-fishers-cpe102-fall-08' from the database
+				And the score of 0 
+				 - Thse create a stat, which we attempt to delete.
+		Expected Output: None... This function tests the effect on
+		the database.
+		'''
 		user = User.objects.get(username = 'fakeuser')
 		#First we insert it into the database.
 		quiz = Page.objects.get(pk = '4') #sample quiz 
@@ -93,11 +109,9 @@ class StatsTests(TestCase):
 		be a grand total of 6 stats in the DB (2 users * 3 tries).
 		This should get the BEST score, not the latest from each try. So, it
 		should return a total of 2 results.
-		@precondition The course must exist. There may or may not be any stats
-		in it. (I'll test that functionality in another test).
-		@postcondition The function returns a list of the best stat each user
-		has posted in each quiz.
-		'''
+		Input: The course 'testcourse1' from the database
+		Expected Output: A list of stat objects that only contains
+		the best results from each students for each quiz'''
 		course = Course.objects.get(pk = '4')
 		statsList = getBestCourseStats(course)
 		#First, the list should give me only two results
@@ -111,6 +125,11 @@ class StatsTests(TestCase):
 		calculate the aggregates of the best results of each user on each
 		quiz. It returns a list of dictionaries, one for each quiz, that 
 		describes various aggrigates of the best user scores.
+		Inputs: The course 'testcourseno1' from the database
+		        (Also note that the fixture has a pair of  quizes and some 
+				stats results in it)
+		Expected output: Aggrigate stats for 2 quizes. (This test only tests
+		                 number of aggrigate stats, not their correctness)
 		'''
 		course = Course.objects.get(pk = '4')
 		aggregatesList = getQuizBestAggregates(course);
@@ -123,6 +142,11 @@ class StatsTests(TestCase):
 		'''
 		Tests the getQuizBestAggregates function. This particular
 		test checks the value of the returned average for each quiz. 
+		Inputs: The course 'testcourseno1' from the database
+		        (Also note that the fixture has a pair of  quizes and some 
+				stats results in it)
+		Expected output: Aggrigate stats for 2 quizes. (This test tests
+			the average results)
 		'''
 		course = Course.objects.get(pk = '4')
 		aggregatesList = getQuizBestAggregates(course)
@@ -143,6 +167,11 @@ class StatsTests(TestCase):
 		'''
 		Tests the per-user aggregates function. This particular test
 		checks that the proper number of results is returned
+		Inputs: The course 'testcourseno1' from the database
+		        (Also note that the fixture has a pair of  quizes and some 
+				stats results in it. The course has 2 users)
+		Expected output: Aggrigate stats for 2 users. (This test only tests
+		                 number of aggrigate stats, not their correctness)
 		'''
 		course = Course.objects.get(pk = '4')
 		aggregatesList = getUserBestAggregates(course) 
