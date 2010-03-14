@@ -1,5 +1,9 @@
-''' Statistics Module.  
+''' 
+Stats (Statistics) Module  
 
-	 Classes and methods to tracking the scores of users who take quizzes, 
-	 and presenting those statistics to the course/lesson owner and the user
+This module contains classes and methods to track users' scores on quizzes, 
+and present those statistics. Users may view their own statistics. Furthermore, a user with stats permission may view stats for all users in the Course.
+
+@author Jon Inloes
+@author Russell Mezzetta
 '''

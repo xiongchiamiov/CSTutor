@@ -4,5 +4,7 @@ documentation for third-party products that we have incorporated
 into our project.
 
 Currently, this is the tinymce WYSIWYG HTML editor, and a small amount of 
-documentation about the django generated databases
+documentation about the django generated databases.
+
+@author Mark Gius
 '''

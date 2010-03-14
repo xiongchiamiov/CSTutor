@@ -1,13 +1,14 @@
 '''
-Top level lesson organizational structure module.
+Courses Module
 
-Contains classes and operations related to a course. This includes the courses, their rosters, and any operations done explicitly to a course. 
-A course is the top level organizational structure in the CSTutor.  
+Contains classes and operations related to a course. This includes the courses, their rosters aka enrollments, and any operations done explicitly to a course. 
+A course is the top level organizational structure in CSTutor.  
 
-It is composed of a number of Pages (Lessons and Quizzes).   
+A Course is composed of a number of Pages (Lessons and Quizzes).   
+In addition, a Course can be private.  If so, users must first enroll in the Course in order to view that Course.
 
-A course can be private.  If so, users must enroll in the class. 
-The Enrollment class handles tying users to courses.
+The Enrollment model links a User to Course, implicitly forming a Roster.
 
 @author Jon Inloes
+@author Mark Gius
 '''
