@@ -250,12 +250,15 @@ def publishQuiz(self):
 	''' 
 		Takes a working copy of a quiz and copies it over to the published copy
 	'''
-	publishedSlug = safeSlug(self.slug)
-	publishedQuiz = Quiz.objects.get(slug=publishedSlug)
+	errors = validateQuiz(self)
+	if (len(errors) == 0):
+		publishedSlug = safeSlug(self.slug)
+		publishedQuiz = Quiz.objects.get(slug=publishedSlug)
 	
-	copyQuiz(self, publishedQuiz)
-	publishedQuiz.upToDate = True
-	publishedQuiz.save()
+		copyQuiz(self, publishedQuiz)
+		publishedQuiz.upToDate = True
+		publishedQuiz.save()
+	return errors
 
 def removePath(self, request):
 	'''
@@ -386,8 +389,19 @@ def saveQuiz(request, course, pid):
 	if (request.method != "POST"):
 		errors.append("Trying to save quiz from a non POST request")
 
-	elif "Save" in request.POST or "Publish" in request.POST:
-		errors = validateQuizFromPost(quiz, request)
+	else:
+		# Title - Make sure its not a duplicate in the course
+		try:
+			quiz2 = Quiz.objects.get(slug=slugify(request.POST["quizTitle"] + "_workingCopy"))
+			if (quiz2.pk != quiz.pk):
+				errors.append("Quiz Title already exists!")
+		except Quiz.DoesNotExist:
+			pass
+
+		# Title - Make sure its not blank
+		if (len(request.POST["quizTitle"]) == 0):
+			errors.append("Quiz Title cannot be blank!")
+
 		if (len(errors) == 0):
 			quiz.text = request.POST["quizTitle"]
 			quiz.name = request.POST["quizTitle"]
@@ -413,7 +427,7 @@ def saveQuiz(request, course, pid):
 					q = q.multiplechoicequestion
 					for a in q.answers.all():
 						a.text = request.POST['mcq%sa%s' % (q.order, a.order)]
-						a.correct = (request.POST['mcq%sac' % q.order] == str(a.order))
+						a.correct = (("mcq%sac" % q.order) in request.POST and request.POST["mcq%sac" % q.order] == str(a.order))
 						a.save()
 					q.text = request.POST['mcq%stext' % q.order]
 					q.order = request.POST['mcq%sorder' % q.order]
@@ -480,6 +494,7 @@ def validateQuestionOrder(self):
 
 		Returns True if the above constraints are met, False otherwise
 	'''
+	
 	questions = self.questions.all()
 	usedNumbers = set([question.order for question in questions])
 	if (len(questions) == 0):
@@ -489,33 +504,25 @@ def validateQuestionOrder(self):
 			return False
 	return True
 
-def validateQuizFromPost(self, request):
+def validateQuiz(self):
 	'''
-		Takes a request containing POST data for a quiz and makes sure
-		any changed elements are valid. It returns and array array of
-		or an emtpy array if no errors were found
+		Takes a working copy of a quiz and makes sure all of the data
+		is valid. It returns an array containg the errors or an emtpy
+		array if no errors were found
 	'''
 	errors = []
 	questions = self.questions.all()
-	origOrders = []
 	
 	# Title - Make sure its not blank
-	if (len(request.POST["quizTitle"]) == 0):
+	if (len(self.text) == 0):
 		errors.append("Quiz Title can not be blank")
 
-	# Title - Make sure its not a duplicate in the course
-	try:
-		quiz = Quiz.objects.get(slug=slugify(request.POST["quizTitle"]) + "_workingCopy")
-		if (quiz.pk != self.pk):
-			errors.append("Quiz Title already exists!")
-	except Quiz.DoesNotExist:
-		pass
-
 	# Hidden - There can be no errors in this
+
 	# Prerequisites - Make sure the required quiz(s) have a "passing" path
-	for prereq in request.POST.getlist("prereqs"):
+	for prereq in self.prerequisites.all():
 		print prereq + "\n"
-		requiredQuiz = Quiz.objects.get(slug = prereq)
+		requiredQuiz = prereq.requiredQuiz
 		foundPath = False
 		for path in requiredQuiz.paths.all():
 			if (path.passed == True):
@@ -524,11 +531,10 @@ def validateQuizFromPost(self, request):
 			errors.append(requiredQuiz.name + " does not have a passing path")
 
 	for q in questions:
-		origOrders.append(q.order)
 		if (isMultipleChoiceQuestion(q)):
 			# Multiple Choice Question - Make sure its not blank
 			q = q.multiplechoicequestion
-			if (len(request.POST["mcq%stext" % q.order]) == 0):
+			if (len(q.text) == 0):
 				errors.append("Question cannot have a blank prompt")
 
 			answers = q.answers.all()
@@ -538,49 +544,30 @@ def validateQuizFromPost(self, request):
 				errors.append("Answer must have at least two possible answers")
 
 			for a in answers:
+				foundCorrect = False
 				# Answer must not be blank
-				if (len(request.POST["mcq%sa%s" % (q.order, a.order)]) == 0):
+				if (len(a.text) == 0):
 					errors.append("Answer must not be blank")
+				if (a.correct):
+					foundCorrect = True
 
 			# Question must have a correct answer
-			if (not ("mcq%sac" % q.order) in request.POST):
+			if (not foundCorrect):
 				errors.append("Question must have a correct answer")
-
-			# Order must not be blank
-			if (len(request.POST["mcq%sorder" % q.order]) == 0):
-				errors.append("Order must not be blannk")
-			else:
-				q.order = request.POST["mcq%sorder" % q.order]
-				q.save()
 		else:
 			q = q.codequestion
 			
 			# Prompt must not be blank
-			if (len(request.POST["cq%stext" % q.order]) == 0):
+			if (len(q.text) == 0):
 				errors.append("Code Question prompt must not be blank")
 
 			# Expected output must not be blank
-			if (len(request.POST["cq%seo" % q.order]) == 0):
+			if (len(q.expectedOutput) == 0):
 				errors.append("Code Question expected output must not be blank")
-			
-			# Order must not be blank
-			if (len(request.POST["cq%sorder" % q.order]) == 0):
-				errors.append("Order must not be blannk")
-			else:
-				q.order = request.POST["cq%sorder" % q.order]
-				q.save()
 
 	# Question Ordering - Must be valid
 	if (not validateQuestionOrder(self)):
 		errors.append("Questions must have a valid ordering")
-
-	# Revert question ordering
-	if (len(errors) > 0):
-		origOrders = iter(origOrders)
-		for q in questions:
-			order = origOrders.next()
-			q.order = order
-			q.save()
 
 	return errors
 	

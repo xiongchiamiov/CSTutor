@@ -132,7 +132,7 @@ def remove_question(request, course_slug, page_slug, qNum):
 		 to delete the question or cancel
 	'''
 	page_slug = safeSlug(page_slug)
-	quiz = Quiz.objects.get(slug=page_slug)
+	quiz = Quiz.objects.get(slug=page_slug + "_workingCopy")
 	question = quiz.questions.get(order=qNum)
 
 	return master_rtr(request, 'page/quiz/remove_question.html', \
@@ -251,12 +251,20 @@ def edit_quiz(request, course_slug, page_slug):
 			return HttpResponseRedirect(reverse('pages.views.move_page', args=[course_slug, page_slug]))
 
 		elif "NewMultQuestion" in request.POST:
-			addMultipleChoiceQuestion(workingCopy)
-			return HttpResponseRedirect(request.path)
+			r = saveQuiz(request, course_slug, page_slug)
+			page_slug = safeSlug(r["quiz_slug"])
+			errors = r["errors"]
+			if (len(errors) == 0):
+				addMultipleChoiceQuestion(workingCopy)
+				return HttpResponseRedirect(request.path)
 
 		elif "NewCodeQuestion" in request.POST:
-			addCodeQuestion(workingCopy)
-			return HttpResponseRedirect(request.path)
+			r = saveQuiz(request, course_slug, page_slug)
+			page_slug = safeSlug(r["quiz_slug"])
+			errors = r["errors"]
+			if (len(errors) == 0):
+				addCodeQuestion(workingCopy)
+				return HttpResponseRedirect(request.path)
 
 		elif "Publish" in request.POST:
 			r = saveQuiz(request, course_slug, page_slug)
@@ -264,15 +272,20 @@ def edit_quiz(request, course_slug, page_slug):
 			errors = r["errors"]
 			if (len(errors) == 0):
 				workingCopy = Quiz.objects.get(slug=(page_slug + "_workingCopy"))
-				publishQuiz(workingCopy)
-				return HttpResponseRedirect(reverse('pages.views.show_page', args=[course_slug, page_slug]))
+				errors = publishQuiz(workingCopy)
+				if (len(errors) == 0):
+					return HttpResponseRedirect(reverse('pages.views.show_page', args=[course_slug, page_slug]))
 
 		elif "Revert" in request.POST:
 			revertQuiz(workingCopy)
 			return HttpResponseRedirect(reverse('pages.views.show_page', args=[course_slug, page_slug]))
 
 		elif "AddPath" in request.POST:
-			return add_path(request, course_slug, page_slug, errors)
+			r = saveQuiz(request, course_slug, page_slug)
+			page_slug = safeSlug(r["quiz_slug"])
+			errors = r["errors"]
+			if (len(errors) == 0):
+				return add_path(request, course_slug, page_slug, errors)
 		elif "SubmitAddPath" in request.POST:
 			errors = addPath(workingCopy, request, course_slug)
 			if (len(errors) == 0):
@@ -281,10 +294,14 @@ def edit_quiz(request, course_slug, page_slug):
 				return add_path(request, course_slug, page_slug, errors)
 
 		elif "EditPath" in request.POST:
-			if ("path" in request.POST):
-				return edit_path(request, course_slug, page_slug, errors)
-			else:
-				errors.append("You must select a path to edit")
+			r = saveQuiz(request, course_slug, page_slug)
+			page_slug = safeSlug(r["quiz_slug"])
+			errors = r["errors"]
+			if (len(errors) == 0):
+				if ("path" in request.POST):
+					return edit_path(request, course_slug, page_slug, errors)
+				else:
+					errors.append("You must select a path to edit")
 		elif "SubmitEditPath" in request.POST:
 			errors = editPath(workingCopy, request, course_slug)
 			if (len(errors) == 0):
@@ -293,16 +310,24 @@ def edit_quiz(request, course_slug, page_slug):
 				return edit_path(request, course_slug, page_slug, errors)
 
 		elif "RemovePath" in request.POST:
-			if ("path" in request.POST):
-				errors = removePath(workingCopy, request)
-				if (len(errors) == 0):
-					return HttpResponseRedirect(request.path)
-			else:
-				errors.append("You must select a path to remove")
+			r = saveQuiz(request, course_slug, page_slug)
+			page_slug = safeSlug(r["quiz_slug"])
+			errors = r["errors"]
+			if (len(errors) == 0):
+				if ("path" in request.POST):
+					errors = removePath(workingCopy, request)
+					if (len(errors) == 0):
+						return HttpResponseRedirect(request.path)
+				else:
+					errors.append("You must select a path to remove")
 
 		for q in questions:
 			if ("removeQuestion%s" % q.order) in request.POST:
-				return remove_question(request, course_slug, page_slug, q.order)
+				r = saveQuiz(request, course_slug, page_slug)
+				page_slug = safeSlug(r["quiz_slug"])
+				errors = r["errors"]
+				if (len(errors) == 0):
+					return remove_question(request, course_slug, page_slug, q.order)
 			if ("confirmRemoveQuestion%s" % q.order) in request.POST:
 				removeQuestion(q)
 				reorderQuestions(workingCopy)
@@ -310,11 +335,21 @@ def edit_quiz(request, course_slug, page_slug):
 			if (isMultipleChoiceQuestion(q)):
 				q = q.multiplechoicequestion
 				if ("addAnswer%s" % q.order) in request.POST:
-					addAnswer(q)
-					return HttpResponseRedirect(request.path)
+					print "In edit_view, slug " + page_slug + "\n"
+					r = saveQuiz(request, course_slug, page_slug)
+					page_slug = safeSlug(r["quiz_slug"])
+					errors = r["errors"]
+					print str(len(errors)) + " errors \n"
+					if (len(errors) == 0):
+						addAnswer(q)
+						return HttpResponseRedirect(request.path)
 				for a in q.answers.all():
 					if ("removeAnswerQ%sA%s" % (q.order, a.order)) in request.POST:
-						removeAnswer(q, a)
-						return HttpResponseRedirect(request.path)
+						r = saveQuiz(request, course_slug, page_slug)
+						page_slug = safeSlug(r["quiz_slug"])
+						errors = r["errors"]
+						if (len(errors) == 0):
+							removeAnswer(q, a)
+							return HttpResponseRedirect(request.path)
 
 	return master_rtr(request, 'page/quiz/edit_quiz.html', {'course_slug':course_slug, 'page_slug':page_slug, 'pages':pages, 'quiz':workingCopy, 'questions':questions, 'prereqs':prereqs, 'errors':errors, 'paths':paths})
