@@ -9,14 +9,14 @@ This file contains methods for creating a quiz and showing a quiz. More methods 
 from django.core.urlresolvers import reverse
 from django.shortcuts import render_to_response
 from django.http import HttpResponseRedirect, Http404
-from courses.models import Course
+from courses.models import Course, Enrollment
 from models import Page
 from models import Quiz
 from quiz import *
 from question.models import MultipleChoiceQuestion
 from question.models import CodeQuestion
 from question.question import *
-from home.views import master_rtr
+from home.views import master_rtr, custom_403
 from pages.page import insertLastChildPage
 from django.core.exceptions import ObjectDoesNotExist
 
@@ -24,6 +24,14 @@ def create_quiz(request, course_slug, page_slug):
 	''' create_Quiz View
 		This view will create a quiz and take the user to the quiz editor screen.
 	'''
+	#enforcing permissions
+	try:
+		e = Enrollment.objects.get(course__slug = course_slug, user = request.user)
+	except Enrollment.DoesNotExist:
+		return custom_403(request, "User cannot create a quiz in the course because the user is not enrolled in this course")
+	if not e.edit:
+		return custom_403(request, "User cannot create a quiz in the course because the user does not have edit permissions on the course")
+
 	page_slug = safeSlug(page_slug)
 	
 	if request.method == "POST" and "Create Quiz" in request.POST:

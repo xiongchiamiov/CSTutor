@@ -5,7 +5,7 @@ from courses.models import Course, Enrollment
 from stats.models import Stat
 from courses.course import renameCourse, removeCourse
 from pages.lesson.models import Lesson
-from home.views import master_rtr
+from home.views import master_rtr, custom_403
 from pages.lesson.lesson import *
 from pages.page import getNextPage, getPrevPage
 from django.contrib.auth.decorators import login_required
@@ -27,6 +27,14 @@ def create_lesson(request, course_slug, page_slug):
 	Creates a new lesson and shows the user the edit page but
 	does not save the lesson to the database
 	'''
+	#enforcing permissions
+	try:
+		e = Enrollment.objects.get(course__slug = course_slug, user = request.user)
+	except Enrollment.DoesNotExist:
+		return custom_403(request, "User cannot create a lesson in the course because the user is not enrolled in this course")
+	if not e.edit:
+		return custom_403(request, "User cannot create a lesson in the course because the user does not have edit permissions on the course")
+
 	if request.method == "POST" and "Save" in request.POST:
 		name = request.POST["lessonname"].strip()
 		
@@ -112,9 +120,21 @@ def show_lesson(request, course_slug, page_slug, lessonPage, preview=False):
 
 	title = lessonPage.name
 	
+	if request.user.is_authenticated():
+		try:
+			e = Enrollment.objects.get(course__slug=course_slug, user = request.user)
+			if e.edit:
+				create_enabled = True
+			else:
+				create_enabled = False
+		except Enrollment.DoesNotExist:
+			create_enabled = False
+	else:
+		create_enabled = False
+
 	return master_rtr(request, 'page/lesson/index.html', \
 			{'course_slug':course_slug, 'page_slug':page_slug, 
-			 'content':content, 'lesson_title':title, 'create_enabled':True})
+			 'content':content, 'lesson_title':title, 'create_enabled':create_enabled})
 
 @login_required
 def edit_lesson(request, course_slug, page_slug):
@@ -122,6 +142,7 @@ def edit_lesson(request, course_slug, page_slug):
 	@author Russell Mezzetta
 	@author John Hartquist
 	This view displays the lesson editing page
+	This view is only accessed through edit_page. Therefore permission have already been checked.
 	'''
 	
 	#common dictionary fields
