@@ -37,8 +37,8 @@ def create_course(request):
 			private = True;
 
 		# some basic validation
-		if len(name) < 3:
-			data['message'] = 'A Course name must be at least 3 characters.'
+		if len(name) < 1:
+			data['message'] = 'A Course name must be at least 1 characters.'
 		else:
 			try:
 				c = CreateCourse(name, User.objects.get(username=request.user.username), private)
