@@ -8,7 +8,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
-from home.views import index, master_rtr
+from home.views import master_rtr
 from user import registerNewUser, loginWrapper, updateEmail, changePassword, updateName, deleteUser
 from courses.course import addUser
 

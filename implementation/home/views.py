@@ -28,9 +28,8 @@ def master_rtr(request, template, data = {}):
 
 	return render_to_response(template, data, context_instance=RequestContext(request))
 
-def index(request):
-	request.session.set_test_cookie()
-	return master_rtr(request, 'index.html')
+#def index(request):
+#	return master_rtr(request, 'index.html')
 
 def show_homepage(request):
 	'''

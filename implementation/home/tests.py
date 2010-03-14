@@ -14,8 +14,9 @@ class HomeTests(TestCase):
 	This class tests the "home" screen.
 	This is accomplished by having an anonymous user and a logged in user view the homepage before and after viewing lesson and quizzes to fully test the functionality of the homepage.
 
-	TODO DESCRIBE THE FIXTURE!!!	
-	
+	Test data includes a public course with a lesson and page, a private course,
+	and a single user.
+
 	@author Mark Gius
 	'''
 
@@ -25,6 +26,7 @@ class HomeTests(TestCase):
    # magic strings and numbers
 	course_slug = "HomeTestsCourse"
 	course_id = 100
+	privateCourse_id = 101
 	username = "HomeUser"
 	password = "password"
 	lesson_slug = "HomeTestsIndex"
@@ -160,3 +162,49 @@ class HomeTests(TestCase):
 		self.assertNotContains(response, "/course/%s/page/%s" % \
 				(self.course_slug, self.lesson_slug))
 	
+	def test_pending_course(self):
+		'''
+		Verifies that the homepage displays the pending courses
+		@author Mark Gius
+
+		Case no.    Inputs                    Expected
+		1           url=/
+		            requested entry to        private course listed as 
+						 private course           enrollment pending
+		'''
+		# log in
+		self.assertTrue(self.client.login(username=self.username, \
+					                         password=self.password))
+
+		# enroll in a private course
+		self.client.post('/submit_join_course_request', \
+							  {'courseid':self.privateCourse_id})
+
+		# visit the homepage
+		response = self.client.get("/")
+		self.assertContains(response, "pending")
+
+	def test_custom404(self):
+		'''
+		Verifies that our custom 404 handler is being called
+		@author Mark Gius
+
+		Case no.    Inputs                    Expected
+		1           url=/invalidurl/          custom 404 page
+		'''
+
+		response = self.client.get("/invalidurl/")
+		self.assertContains(response, "can't seem to find", status_code=404)
+	
+	def test_show_help(self):
+		'''
+		Simple test to verify that help page is loaded
+		@author Mark Gius
+
+		Case no.    Inputs                    Expected
+		1           url=/help                 Help page displayed
+		'''
+		# visit the help page
+		response = self.client.get("/help/")
+
+		self.assertContains(response, "Help page")
