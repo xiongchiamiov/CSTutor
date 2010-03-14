@@ -197,4 +197,14 @@
       <field type="BooleanField" name="manage">False</field>
       <field type="DateTimeField" name="lastAction">2010-03-01 15:10:28</field>
    </object>
+	   <object pk="100" model="pages.page">
+      <field to="courses.course" name="course" rel="ManyToOneRel">101</field>
+      <field type="SlugField" name="slug">PageViewsPublicCourse</field>
+      <field type="TextField" name="name">PageViewsPublicCourse</field>
+      <field type="IntegerField" name="left">1</field>
+      <field type="IntegerField" name="right">2</field>
+   </object>
+	<object pk="100" model="lesson.lesson">
+		<field type="TextField" name="content">Initial page for PageViewsPublicCourse</field>
+	</object>
 </django-objects>
