@@ -39,11 +39,11 @@ class Quiz(Page):
 		return q
 
 	def __unicode__(self):
-	'''
-	Like toString in java
+		'''
+		Like toString in java
 		
-	@author Evan Kleist
-	'''
+		@author Evan Kleist
+		'''
 		return self.text
 
 	@models.permalink
@@ -69,11 +69,11 @@ class Path(models.Model):
 	passed = models.BooleanField()
 
 	def __unicode__(self):
-	'''
-	Like toString in java
+		'''
+		Like toString in java
 
-	@author Evan Kleist
-	'''
+		@author Evan Kleist
+		'''
 		return u'Path on Quiz ' + unicode(self.quiz)
 
 class NoMatchingPath(Exception):
@@ -92,9 +92,9 @@ class Prerequisite(models.Model):
 	requiredQuiz = models.ForeignKey(Quiz)
 
 	def __unicode__(self):
-	'''
-	Link toString in java
+		'''
+		Link toString in java
 
-	@author Evan Kleist
-	'''
+		@author Evan Kleist
+		'''
 		return u'Prerequsite on Quiz ' + unicode(self.containingQuiz)

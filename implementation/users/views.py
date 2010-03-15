@@ -15,9 +15,11 @@ from courses.course import addUser
 def show_profile(request):
 	'''
 	Displays the profile of the user that is currently logged in
-	@author John Hartquist
+
 	@pre user.is_authenticated() == True
-	@post 
+	@post
+
+	@author John Hartquist 
 	'''
 	#print 'in show_profile'
 
@@ -64,10 +66,12 @@ def show_profile(request):
 def show_logout(request):
 	'''
 	Logs out the current user
-	@author John Hartquist
-	@author Russell Mezzetta
+
 	@pre
 	@post request.user.is_authenticated() == false
+
+	@author John Hartquist
+	@author Russell Mezzetta
 	'''
 	#russ--making logout not really log people out in certain cases
 	username = None
@@ -94,10 +98,11 @@ def show_logout(request):
 
 def show_login(request):
 	'''
-	@author Russell Mezzetta
 	This shows the login page and displays any errors.
 	@pre request is a requestobject
 	@post
+
+	@author Russell Mezzetta
 	'''
 	#print 'in show_login'
 	
@@ -175,9 +180,10 @@ def show_login(request):
 
 def show_register_new_user(request):
 	'''
-	@author Russell Mezzetta
 	This def shows the register new user page
 	@pre request is a requestobject
+	
+	@author Russell Mezzetta
 	'''
 	print "in show_register_new_user"
 	if request.method == 'POST':

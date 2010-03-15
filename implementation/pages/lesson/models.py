@@ -24,20 +24,20 @@ class Lesson(Page):
 	workingCopy = models.TextField()
 
 	def __unicode__(self):
-	'''
-	Like toString in java
+		'''
+		Like toString in java
 	
-	@author Mark Gius
-	'''
+		@author Mark Gius
+		'''
 		return self.content
 	
 	def get_absolute_url(self):
-	'''
-	Constructs a url based on an in memory object.
+		'''
+		Constructs a url based on an in memory object.
 
-	deprecated	
+		deprecated	
 
-	@author Mark Gius
-	'''
+		@author Mark Gius
+		'''
 		return ('pages.lesson.views.show_page', \
 				  [str(self.course.slug), self.slug])

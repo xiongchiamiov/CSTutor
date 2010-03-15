@@ -1,10 +1,10 @@
-"""
+'''
 This file contains tests for the users package. 
 
 @author John Hartquist
 @author Russell Mezzetta
 @author James Pearson
-"""
+'''
 
 #import unittest
 from django.test import TestCase
@@ -14,8 +14,6 @@ from users.user import registerNewUser, loginWrapper
 
 class UserTests(TestCase):
 	'''
-	@author John Hartquist
-	@author Russell Mezzetta
 	This class deals with all of the test cases regarding 'users'
 	We will be using 'Client()' objects to simulate client requests
 	for logging in and out, editing and viewing user profiles.
@@ -30,6 +28,9 @@ class UserTests(TestCase):
 		Testuser2 has no enrollments. 
 	Phase 1: Test logging in, logging out, viewing profile, updating email, updating name,
 	         deleting account, registering a new user
+
+	@author John Hartquist
+	@author Russell Mezzetta
 	'''
 	
 	fixtures = ['UserTests']
@@ -46,18 +47,21 @@ class UserTests(TestCase):
 	def setUp(self):
 		'''
 		Called before each test
+
+		@author Russell Mezzetta
 		'''
 		self.client = Client()
 		users = User.objects.all()
 
 	def testLogin(self):
 		'''
-		@author John Hartquist
 		Tests that a user can login successfully
 		
 		case#            input        expected         output    remark
 		-----            -----        --------         ------    ------
 		1                status_code  200              200       posts a login request
+
+		@author John Hartquist
 		'''		
 		response = self.client.post("/login/", {'username': self.user1, \
 		                                        'password': self.password})
@@ -65,19 +69,19 @@ class UserTests(TestCase):
 
 	def testLogout(self):
 		'''
-		@author John Hartquist
 		Tests that a user can logout successfully
 		
 		case#            input        expected         output    remark
 		-----            -----        --------         ------    ------
 		2                status_code  200              200       posts a logout request
+
+		@author John Hartquist
 		'''
 		response = self.client.post("/logout/") 
 		self.failUnlessEqual(response.status_code, 200)
 
 	def testShowProfile(self):
 		'''
-		@author John Hartquist
 		Tests that a user can view their profile
 		
 		case#            input           expected             output              remark
@@ -86,6 +90,7 @@ class UserTests(TestCase):
 		
 		2                logged in       shows the profile    shows the profile   
 		
+		@author John Hartquist
 		'''
 		
 		#try viewing profile while not logged in
@@ -103,7 +108,6 @@ class UserTests(TestCase):
 		
 	def testUpdateEmail(self):
 		'''
-		@author John Hartquist
 		Tests that a user can change their e-mail address
 		
 		case#            input             expected      output   remark
@@ -111,6 +115,7 @@ class UserTests(TestCase):
 		1                email=badEmail    1             1        valid e-mail check
 		2                email=user1email  0             0        success
 		
+		@author John Hartquist
 		'''
 		badEmail = "anemail@nothing"
 		user1email = "john@abc.com"
@@ -129,7 +134,6 @@ class UserTests(TestCase):
 
 	def testChangePassword(self):
 		'''
-		@author John Hartquist
 		Tests that a user can change their password
 		
 		case#    input                  expected                     output                     remark
@@ -148,6 +152,8 @@ class UserTests(TestCase):
 		         currentpw='password'
 		         newpass1='new111'
 		         newpass2='new111'
+
+		@author John Hartquist
 		'''
 		
 		
@@ -168,7 +174,6 @@ class UserTests(TestCase):
 
 	def testChangeName(self):
 		'''
-		@author John Hartquist
 		Tests that the user can update their name
 		
 		case#    input                  expected                     output                     remark
@@ -185,6 +190,7 @@ class UserTests(TestCase):
 		4        first_name="First"     response contains            response contains           name changes
 		         last_name="Last"       "First" and "Last"           "First" and "Last"
 		
+		@author John Hartquist
 		'''
 		
 		self.client.post("/login/", {'username': self.user1,
@@ -210,7 +216,6 @@ class UserTests(TestCase):
 		
 	def testDeleteUser(self):
 		'''
-		@author John Hartquist
 		Tests that a user can delete himself
 		
 		case#            input                      expected                output                   remark
@@ -220,6 +225,8 @@ class UserTests(TestCase):
 		   
 		2                user clicks delete         user account deleted    user account deleted     user confirms delete account
 		                 selects 'Yes' at confirm
+
+		@author John Hartquist
 		'''
 		
 		#test user clicking yes
@@ -233,7 +240,6 @@ class UserTests(TestCase):
 		
 	def testRegisterNewUser(self):
 		'''
-		@author Russell Mezzetta
 		Tests the registerNewUser helper function
 		
 		case#    input                 expected output     remark
@@ -287,6 +293,7 @@ class UserTests(TestCase):
 		         last="smithy"
 		         email="other@email.com"
 		
+		@author Russell Mezzetta
 		'''
 		#pass in all empty strings
 		r = registerNewUser("","","","","","")
@@ -314,7 +321,6 @@ class UserTests(TestCase):
 
 	def testLoginWrapper(self):
 		'''
-		@author Russell Mezzetta
 		Tests the login view and implicitly the wrapper for full functionality.
 
 		case#    input                	expected output   remark
@@ -333,6 +339,8 @@ class UserTests(TestCase):
 		
 		5			username = user1 			status_code 200   empty password
 					password = ""
+
+		@author Russell Mezzetta
 		'''
 		
 		invalidUser = "nonexistantuser"

@@ -14,9 +14,11 @@ from django.forms.fields import email_re
 def updateEmail(request):
 	'''
 	Updates a users e-mail address
-	@author John Hartquist
+
 	@pre request.POST["form"] == "Change E-mail"
 	@post request.user.email = email
+
+	@author John Hartquist
 	'''
 	email = request.POST["email"]
 	if (email_re.match(email)):
@@ -31,10 +33,12 @@ def updateEmail(request):
 def updateName(request):
 	'''
 	Updates a users name
-	@author John Hartquist
+
 	@pre request.POST["form"] == "Change Name"
 	@post request.user.first_name = request.POST["first_name"]
 	@post request.user.last_name = request.POST["last_name"]
+
+	@author John Hartquist
  	'''
  	user = request.user
  	if (request.POST["first_name"] == ""):
@@ -50,34 +54,40 @@ def updateName(request):
 def deleteUser(request):
 	'''
 	Deletes a user account
-	@author John Hartquist
+
 	@pre request.POST["form"] == "Yes"
 	@post user not in User.objects.all()
+
+	@author John Hartquist
 	'''
 	request.user.delete()
 	return 0
 
 
 def changePassword(request):
-    oldpass = request.POST["oldpass"]
-    newpass1 = request.POST["newpass1"]
-    newpass2 = request.POST["newpass2"]
-    if (request.user.check_password(oldpass) == False):
-        #invalid password
-        return 1
-                                                       
-    if (newpass1 != newpass2):
-        #passwords don't match
-        return 2
+	'''
+	Changes a user's password
 
-    request.user.set_password(newpass1)
-    request.user.save()
-    return 0
+	@author John Hartquist
+	'''
+	oldpass = request.POST["oldpass"]
+	newpass1 = request.POST["newpass1"]
+	newpass2 = request.POST["newpass2"]
+	if (request.user.check_password(oldpass) == False):
+	  #invalid password
+	  return 1
+		                                              
+	if (newpass1 != newpass2):
+	  #passwords don't match
+	  return 2
+
+	request.user.set_password(newpass1)
+	request.user.save()
+	return 0
 
 
 def registerNewUser(username, password, vpassword, firstName, lastName, email):
 	'''
-	@author Russell Mezzetta
 	Registers a new user. 
 
 	@pre: all inputs are strings
@@ -90,6 +100,8 @@ def registerNewUser(username, password, vpassword, firstName, lastName, email):
 	   password not empty return 4
 	   password and vpassword match return 2
 		First or last name empty return 5
+
+	@author Russell Mezzetta
 	'''
 	#check that username isn't empty
 	if len(username) <= 0:
@@ -123,7 +135,6 @@ def registerNewUser(username, password, vpassword, firstName, lastName, email):
 
 def loginWrapper(request, username, password):
 	'''
-	@author Russell Mezzetta
 	This login wrapper logs the user in.
 	pre: 	request is a request object
 			username is a string
@@ -132,6 +143,8 @@ def loginWrapper(request, username, password):
 	post: if username and password match a username/password in the system
 	      and username denotes an active account then user is "logged in"
 	returns 0 on success, 1 invalid login, 2 inactive account
+
+	@author Russell Mezzetta
 	'''
 	user = authenticate(username=username, password=password)
 	if user is not None:

@@ -34,22 +34,22 @@ class Page(models.Model):
 	right = models.IntegerField(db_index=True)
 
 	def __unicode__(self):
-	'''
-	Like toString in java
+		'''
+		Like toString in java
 
-	@author Russell Mezzetta
-	@author Mark Gius
-	@author James Pearson
-	'''
+		@author Russell Mezzetta
+		@author Mark Gius
+		@author James Pearson
+		'''
 		return self.name
 
 	@models.permalink
 	def get_absolute_url(self):
-	'''
-	Constructs a url based on an in memory object.
+		'''
+		Constructs a url based on an in memory object.
 
-	deprecated	
+		deprecated	
 
-	@author Mark Gius
-	'''
+		@author Mark Gius
+		'''
 		return ('page.views.show_page', [self.course.slug, self.slug])

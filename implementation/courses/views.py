@@ -25,12 +25,12 @@ import StringIO
 @login_required
 def create_course(request):
 	'''
-	@author John Hartquist
-	@author Matthew Tytel
-	
 	Creates a new course if course name is long enough
 	and the coursename is unique.  If not gives an error.
 	Also sets a course to private if the checkbox was checked.
+
+	@author John Hartquist
+	@author Matthew Tytel
 	'''
 	data = {}
 	
@@ -62,6 +62,8 @@ def show_roster(request, course_slug):
 	Displays the roster
 	pre: user.isLoggedIn == true
 	post: if user.manage then show(roster/index.html) else show(roster/invalid_permissions.html)
+
+	@author Jon Inloes
 	'''
 	# It is better to get the enrollment by this method, because in this case
 	# the database searches using Primary Keys, which are indexed, instead of 
@@ -95,7 +97,11 @@ def show_roster(request, course_slug):
 		                   'course_slug': course.slug })
 
 def show_course(request, course_slug):
-	''' Shows the main page of a course. '''
+	''' 
+	Shows the main page of a course. 
+	
+	@author Mark Gius
+	'''
 	return show_page(request, course_slug, course_slug)
 
 @login_required
@@ -105,6 +111,8 @@ def add_user(request, course_slug):
 
 	pre: none
 	post: db'.contains(user) == true and db'.length == db.length + 1 if !db.contains(user)
+	
+	@author Jon Inloes
 	'''
 	course = Course.objects.get(slug=course_slug)	
 	enrollment = request.user.enrollments.get(course=course)
@@ -161,6 +169,8 @@ def update_roster(request, course_slug):
 		pre:none
 		post: for all enrollments in db changed(enrollment) in db' 
 		      if not removing then db.length = db'.length
+
+		@author Jon Inloes
 	'''
 
 	course = Course.objects.get(slug=course_slug)
@@ -232,6 +242,8 @@ def cancel_add(request, course_slug):
 	Redirects to the roster screen when viewing the add user page
 	pre: courses.views.show_roster.exists() == true
 	post: roster/index.html.isRendered() == true
+		
+	@author Jon Inloes
 	'''
 	return HttpResponseRedirect(reverse('courses.views.show_roster', \
 	                                    args=[course_slug]))
@@ -249,6 +261,8 @@ def manage_pending_requests(request, course_slug):
 	         course.enrollments.remove(username)
 	      and
 	      course.enrollments.length' = course.enrollments.length - denyList.length)
+
+	@author Jon Inloes
 	'''
 	
 	course = Course.objects.get(slug=course_slug)
@@ -284,6 +298,8 @@ def manage_pending_requests(request, course_slug):
 def join_course_form(request):
 	'''
 		Displays a list of unenrolled courses for a user to request to join.
+
+		@author Mark Gius
 	'''
 	if request.user.is_authenticated():
 		enrollmentIds = [e.course.id for e in request.user.enrollments.all()]
@@ -301,7 +317,11 @@ def join_course_form(request):
 
 #@login_required //login is not required to join a course
 def join_course_request(request):
-	'''Displays the classes a user can join'''
+	'''
+	Displays the classes a user can join
+
+	@author Mark Gius
+	'''
 	courseid = request.POST['courseid']
 	course = Course.objects.get(id=courseid)
 
@@ -343,6 +363,8 @@ def join_course_request(request):
 def show_chat(request, course_slug):
 	''' 
 	Shows the chat for the course
+
+	@author Jon Inloes
 	'''
 
 	try:	
@@ -359,6 +381,8 @@ def add_from_file(request, course_slug):
 	pre: none
 	post: for each username in request.FILES
 				enrollment.username.view = true
+
+	@author Jon Inloes
 	'''
 	course = Course.objects.get(slug=course_slug)
 	enrollment = request.user.enrollments.get(course=course)
