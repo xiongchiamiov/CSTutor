@@ -79,7 +79,7 @@ def addPath(self, request, course_slug):
 	if (len(errors) == 0):
 		newPath = Path(quiz = self, highscore = highScore, lowscore = lowScore, toPage = page, passed = passing, text = dialogue)
 		newPath.save()
-		publishedCopy = Quiz.objects.get(slug = safeSlug(self.slug))
+		publishedCopy = Quiz.objects.get(slug = safeSlug(self.slug), course=course)
 		publishedCopy.upToDate = False
 		publishedCopy.save()
 
@@ -103,11 +103,12 @@ def checkPrerequisites(self, user):
 		if (not enrollment.edit):
 			for p in prereqs:
 				requiredQuiz = p.requiredQuiz
-				try:
+				"""try:
 					stat = Stat.objects.filter(course=self.course, page=requiredQuiz, user=user).order_by("-score")[0]
 				except IndexError:
 					return False
-				score = stat.score / stat.maxscore * 100
+				score = stat.score / stat.maxscore * 100"""
+				score = getUserBestScore(user, requiredQuiz)
 				path = matchPath(requiredQuiz, score)
 				if (path.passed == False):
 					return False
@@ -254,7 +255,7 @@ def editPath(self, request, course_slug):
 		path.text = request.POST["dialogue"]
 		path.passed = "passing" in request.POST
 		path.save()
-		publishedCopy = Quiz.objects.get(slug = safeSlug(self.slug))
+		publishedCopy = Quiz.objects.get(slug = safeSlug(self.slug), course=course)
 		publishedCopy.upToDate = False
 		publishedCopy.save()
 	
@@ -269,7 +270,7 @@ def publishQuiz(self):
 	errors = validateQuiz(self)
 	if (len(errors) == 0):
 		publishedSlug = safeSlug(self.slug)
-		publishedQuiz = Quiz.objects.get(slug=publishedSlug)
+		publishedQuiz = Quiz.objects.get(slug=publishedSlug, course=self.course)
 	
 		copyQuiz(self, publishedQuiz)
 		publishedQuiz.upToDate = True
@@ -310,7 +311,7 @@ def removePath(self, request):
 
 	if (len(errors) == 0):
 		path.delete()
-		publishedCopy = Quiz.objects.get(slug = safeSlug(self.slug))
+		publishedCopy = Quiz.objects.get(slug = safeSlug(self.slug), course=course)
 		publishedCopy.upToDate = False
 		publishedCopy.save()
 
@@ -326,7 +327,7 @@ def removeQuiz(self):
 	questions = self.questions.all()
 	prerequisites = self.prerequisites.all()
 	paths = self.paths.all()
-	workingQuiz = Quiz.objects.get(slug=(self.slug + "_workingCopy"))
+	workingQuiz = Quiz.objects.get(slug=(self.slug + "_workingCopy"), course=self.course)
 	workingQuestions = workingQuiz.questions.all()
 	workingPrerequisites = workingQuiz.prerequisites.all()
 	workingPaths = workingQuiz.paths.all()
@@ -380,7 +381,7 @@ def revertQuiz(self):
 		@author Evan Kleist
 	'''
 	publishedSlug = safeSlug(self.slug)
-	publishedQuiz = Quiz.objects.get(slug=publishedSlug)
+	publishedQuiz = Quiz.objects.get(slug=publishedSlug, course=self.course)
 	
 	copyQuiz(publishedQuiz, self)
 	publishedQuiz.upToDate = True
@@ -401,7 +402,7 @@ def safeSlug(page_slug):
 	return page_slug
 		
 
-def saveQuiz(request, course, pid):
+def saveQuiz(request, course_slug, pid):
 	'''
 		Takes a request, a course, and a page id. It then pulls the 
 		quiz from the post data and updates the elements in the 
@@ -411,8 +412,9 @@ def saveQuiz(request, course, pid):
 	'''
 	data = {}
 	errors = []
-	quiz = Page.objects.get(slug=(pid + "_workingCopy")).quiz
-	publishedQuiz = Page.objects.get(slug=pid).quiz
+	course = Course.objects.get(slug = course_slug)
+	quiz = Page.objects.get(slug=(pid + "_workingCopy"), course=course).quiz
+	publishedQuiz = Page.objects.get(slug=pid, course=course).quiz
 
 	if (request.method != "POST"):
 		errors.append("Trying to save quiz from a non POST request")
@@ -420,7 +422,7 @@ def saveQuiz(request, course, pid):
 	else:
 		# Title - Make sure its not a duplicate in the course
 		try:
-			quiz2 = Quiz.objects.get(slug=slugify(request.POST["quizTitle"] + "_workingCopy"))
+			quiz2 = Quiz.objects.get(slug=slugify(request.POST["quizTitle"] + "_workingCopy"), course=course)
 			if (quiz2.pk != quiz.pk):
 				errors.append("Quiz Title already exists!")
 		except Quiz.DoesNotExist:
@@ -445,7 +447,7 @@ def saveQuiz(request, course, pid):
 			if "prereqs" in request.POST:
 				# Create prerequisites
 				for p in request.POST.getlist("prereqs"):
-					reqQuiz = Course.objects.get(slug=course).pages.get(slug=p).quiz
+					reqQuiz = Course.objects.get(slug=course_slug).pages.get(slug=p).quiz
 					newPrereq = Prerequisite(containingQuiz=quiz, requiredQuiz=reqQuiz)
 					newPrereq.save()
 				

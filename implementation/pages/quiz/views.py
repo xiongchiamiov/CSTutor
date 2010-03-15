@@ -47,7 +47,7 @@ def create_quiz(request, course_slug, page_slug):
 		
 		try:
 			newQuiz = Quiz(course=course, name=name, slug=slugify(name), text=name, upToDate=True)
-			insertLastChildPage(newQuiz, Page.objects.get(slug=page_slug))
+			insertLastChildPage(newQuiz, Page.objects.get(slug=page_slug, course=course))
 			newQuiz = Quiz.objects.get(slug=newQuiz.slug)		
 			workingCopy = Quiz(course=newQuiz.course, name=newQuiz.name, slug=(newQuiz.slug + "_workingCopy"), text=newQuiz.name, left=0, right=0)
 			workingCopy.save()
@@ -57,7 +57,7 @@ def create_quiz(request, course_slug, page_slug):
 	else:
 		return master_rtr(request, 'page/quiz/create-quiz.html')
 
-def show_quiz(request, course, page_slug):
+def show_quiz(request, course_slug, page_slug):
 	''' show_Quiz View
 		This view displays a quiz on the screen. The user can then answer the
 		questions and submit the result
@@ -69,16 +69,17 @@ def show_quiz(request, course, page_slug):
 		@author Evan Kleist
 	'''
 	page_slug = safeSlug(page_slug)
-	quiz = Quiz.objects.get(slug=page_slug)
+	course = Course.objects.get(slug=course_slug)
+	quiz = Quiz.objects.get(slug=page_slug, course=course)
 
 	# If the quiz is hidden, make sure prerequisites have been met
 	if (quiz.hidden and not checkPrerequisites(quiz, request.user)):
-		return master_rtr(request, 'page/denied.html', {'course':course, 'course_slug':course, 'prereqs':True})
+		return master_rtr(request, 'page/denied.html', {'course_slug':course_slug, 'prereqs':True})
 	
 	quizTitle = quiz.text
 	questions = quiz.questions.all().order_by("order")
 	return master_rtr(request, 'page/quiz/viewQuiz.html', \
-			            {'course':course, 'course_slug':course, \
+			            {'course_slug':course_slug, \
 							 'quizTitle':quizTitle, \
 							 'page_slug':page_slug, 'questions':questions})
 
@@ -90,10 +91,11 @@ def delete_quiz(request, course_slug, page_slug):
 		@author Evan Kleist
 	'''
 	page_slug = safeSlug(page_slug)
-	quiz = Quiz.objects.get(slug=page_slug)
+	course = Course.objects.get(slug=course_slug)
+	quiz = Quiz.objects.get(slug=page_slug, course = course)
 
 	return master_rtr(request, 'page/quiz/delete_quiz.html', \
-			            {'course':course_slug, 'course_slug':course_slug, 'page_slug':page_slug, 'quiz':quiz})
+			            {'course_slug':course_slug, 'page_slug':page_slug, 'quiz':quiz})
 
 def add_path(request, course_slug, page_slug, errors):
 	''' add_path View
@@ -103,8 +105,8 @@ def add_path(request, course_slug, page_slug, errors):
 		@author Evan Kleist
 	'''
 	page_slug = safeSlug(page_slug)
-	quiz = Quiz.objects.get(slug=page_slug)
 	course = Course.objects.get(slug=course_slug)
+	quiz = Quiz.objects.get(slug=page_slug, course = course)
 	allPages = course.pages.all()
 	pages = []
 	for p in allPages:
@@ -122,8 +124,8 @@ def edit_path(request, course_slug, page_slug, errors):
 		@author Evan Kleist
 	'''
 	page_slug = safeSlug(page_slug)
-	quiz = Quiz.objects.get(slug=page_slug + "_workingCopy")
 	course = Course.objects.get(slug=course_slug)
+	quiz = Quiz.objects.get(slug=page_slug + "_workingCopy", course=course)
 	allPages = course.pages.all()
 	pages = []
 	for p in allPages:
@@ -145,11 +147,12 @@ def remove_question(request, course_slug, page_slug, qNum):
 		@author Evan Kleist
 	'''
 	page_slug = safeSlug(page_slug)
-	quiz = Quiz.objects.get(slug=page_slug + "_workingCopy")
+	course = Course.objects.get(slug=course_slug)
+	quiz = Quiz.objects.get(slug=page_slug + "_workingCopy", course=course)
 	question = quiz.questions.get(order=qNum)
 
 	return master_rtr(request, 'page/quiz/remove_question.html', \
-			            {'course':course_slug, 'course_slug':course_slug, 'page_slug':page_slug, 'question':question})
+			            {'course_slug':course_slug, 'page_slug':page_slug, 'question':question})
 
 def submitQuiz(request, course_slug, page_slug):
 	''' submitQuiz View
@@ -168,25 +171,25 @@ def submitQuiz(request, course_slug, page_slug):
 
 	# Make sure the quiz actually exists in the database
 	try:
-		quiz = Quiz.objects.get(slug=page_slug)
+		quiz = Quiz.objects.get(slug=page_slug, course=course)
 	except Quiz.DoesNotExist:
 		raise Http404
 
 	#if the course is private then check that the user is enrolled and has view permissions
 	if course.private:
 		if not request.user.is_authenticated():
-			return master_rtr(request, 'page/denied.html', {'course':course_slug, 'enrolled':False, 'edit':False, 'loggedIn':False})
+			return master_rtr(request, 'page/denied.html', {'course_slug':course_slug, 'enrolled':False, 'edit':False, 'loggedIn':False})
 		try:#try to get the enrollment for this user and check view permission
 			e = quiz.course.roster.get(user=request.user)
 			if not e.view:
-				return master_rtr(request, 'page/denied.html', {'course':course_slug, 'enrolled':True, 'edit':False, 'loggedIn':True})
+				return master_rtr(request, 'page/denied.html', {'course_slug':course_slug, 'enrolled':True, 'edit':False, 'loggedIn':True})
 		except ObjectDoesNotExist:
 			# user is not enrolled in this course
-			return master_rtr(request, 'page/denied.html', {'course':course_slug, 'enrolled':False, 'edit':False, 'loggedIn':True})
+			return master_rtr(request, 'page/denied.html', {'course_slug':course_slug, 'enrolled':False, 'edit':False, 'loggedIn':True})
 
 	# Make sure prerequisites are satisfied
 	if (not checkPrerequisites(quiz, request.user)):
-		return master_rtr(request, 'page/denied.html', {'course':course_slug, 'course_slug':course_slug, 'prereqs':True})
+		return master_rtr(request, 'page/denied.html', {'course_slug':course_slug, 'course_slug':course_slug, 'prereqs':True})
 
 	maxScore = len(quiz.questions.all())
 	score = 0
@@ -204,7 +207,7 @@ def submitQuiz(request, course_slug, page_slug):
 		path = False
 			
 	return master_rtr(request, 'page/quiz/submitQuiz.html', \
-			{'course':course_slug, 'course_slug':course_slug, \
+			{'course_slug':course_slug, \
 			 'page_slug':page_slug, 'pid':page_slug, 'score':score, 'maxScore':maxScore, 'percentage':percentage, 'path':path})
 
 def edit_quiz(request, course_slug, page_slug):
@@ -226,8 +229,8 @@ def edit_quiz(request, course_slug, page_slug):
 
 	# Make sure the quiz actually exists in the database
 	try:
-		quiz = Quiz.objects.get(slug=(page_slug))
-		workingCopy = Quiz.objects.get(slug=(page_slug + "_workingCopy"))
+		quiz = Quiz.objects.get(slug=(page_slug), course=course)
+		workingCopy = Quiz.objects.get(slug=(page_slug + "_workingCopy"), course=course)
 	except Quiz.DoesNotExist:
 		raise Http404
 
@@ -288,7 +291,7 @@ def edit_quiz(request, course_slug, page_slug):
 			page_slug = safeSlug(r["quiz_slug"])
 			errors = r["errors"]
 			if (len(errors) == 0):
-				workingCopy = Quiz.objects.get(slug=(page_slug + "_workingCopy"))
+				workingCopy = Quiz.objects.get(slug=(page_slug + "_workingCopy"), course = course)
 				errors = publishQuiz(workingCopy)
 				if (len(errors) == 0):
 					return HttpResponseRedirect(reverse('pages.views.show_page', args=[course_slug, page_slug]))

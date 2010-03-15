@@ -57,7 +57,7 @@ def show_page(request, course_slug, page_slug, preview=False):
 	
 	#check if the page is a real page in the database
 	try:
-		page = Page.objects.get(slug=page_slug)
+		page = Page.objects.get(slug=page_slug, course=course)
 	except Page.DoesNotExist:
 		#return HttpResponse("ERROR: BAD URL: The course: %s does not contain the page: %s." % (course_slug, page_slug))
 		raise Http404
