@@ -104,15 +104,11 @@ def show_login(request):
 
 	@author Russell Mezzetta
 	'''
-	#print 'in show_login'
-	
-	#before processing check if user's session has autologin/rememberme set
-	#based on assumption that if we don't log the user out then they will stay authenticated
+	#if the user is still logged in, redirect them to homepage, don't show login
 	if request.user.is_authenticated():
-		#print "user authenticated"
-		if 'autologin' in request.session:
-			if request.session['autologin'] == True:
-				return HttpResponseRedirect(reverse('home.views.show_homepage'))
+		#if 'autologin' in request.session and request.session['autologin'] == True:
+		#		return HttpResponseRedirect(reverse('home.views.show_homepage'))
+		return HttpResponseRedirect(reverse('home.views.show_homepage'))
 
 	if request.method == 'POST':
 		#form was submitted
@@ -129,18 +125,19 @@ def show_login(request):
 		if "anonymous" in checkboxList:
 			#bypass login
 			#if the session has data in it, set it to false, set cookie to expire when browser closes
-			if 'autologin' in request.session:
-				request.session['autologin'] = False
-			if 'rememberme' in request.session:
-				request.session['rememberme'] = False
+			#if 'autologin' in request.session:
+			#	request.session['autologin'] = False
+			#if 'rememberme' in request.session:
+			#	request.session['rememberme'] = False
+			#clear the session
+			request.session.flush()
 			return HttpResponseRedirect(reverse('home.views.show_homepage'))
 
 		#all autologin will do is make sure the cookie doesn't expire on browser close
 		if "autologin" in checkboxList:
 			#set cookie/session to expire in 2 weeks (1209600 is # of seconds in 2 weeks)
 			request.session.set_expiry(1209600)
-			#request.session['autologin'] = True
-			#request.session['password'] = password
+			request.session['autologin'] = True
 		#else:
 		#	request.session['autologin'] = False
 
