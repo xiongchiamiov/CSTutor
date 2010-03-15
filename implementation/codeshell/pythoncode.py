@@ -5,8 +5,7 @@ This could be as simple as an "eval," but it is sometimes handy to do something
 like sanitize code or capture output, etc, so we have a special execute
 function that will abstract all that garbage out
 
-POTENTIAL SECURITY RISK: These functions do not currently protect against 
-importing python modules.
+Currently no checks on long-running code.
 
 @author Mark Gius
 @author James Pearson
@@ -15,6 +14,7 @@ importing python modules.
 
 from RestrictedPython import compile_restricted
 from RestrictedPython.PrintCollector import PrintCollector
+from RestrictedPython.Guards import safe_builtins
 
 def evalPythonString(string):
 	'''
@@ -29,14 +29,23 @@ def evalPythonString(string):
 
 	code = compile_restricted(string, '<string>', 'exec')
 
-	restrictedScope = {'_print_':PrintCollector, 'codeShellOutput_':''}
-	exec(code, restrictedScope)
+	restrictedScope = {'_print_':PrintCollector, '__builtins__':safe_builtins, \
+		                'codeShellOutput_':''}
+	restrictedScope['_getiter_'] = iter
+	restrictedScope['__name__'] = '<string>'
+	restrictedScope['_getattr_'] = getattr
+	restrictedScope['_write_'] = lambda obj: obj
+	codeOutput = ""
+	try:
+		exec(code, restrictedScope)
 	
-	codeOutput = restrictedScope['codeShellOutput_']
-	del restrictedScope['codeShellOutput_']
-	del restrictedScope['_print_']
-	# These are apparently created by exec or something
-	del restrictedScope['__builtins__']
-	del restrictedScope['_print']
+		codeOutput = restrictedScope['codeShellOutput_']
+		del restrictedScope['codeShellOutput_']
+		del restrictedScope['_print_']
+		# These are apparently created by exec or something
+		del restrictedScope['__builtins__']
+		del restrictedScope['_print']
+	except ImportError:
+		codeOutput = "ImportError.  Importing is disallowed"
 
 	return (codeOutput, restrictedScope)
