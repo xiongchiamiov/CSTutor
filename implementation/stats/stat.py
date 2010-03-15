@@ -1,6 +1,5 @@
-# vim: set noet:
 '''
-stats.py
+This file contains operations associated with statistics.
 
 Contains a number of functions that manage and calculate user statistics. 
 @author Andrew J. Musselman
@@ -17,6 +16,8 @@ def dropAllUserStats(user):
 	@precondition User.models.get(user.id) = user
 	@postcondition There should be no stats assoicated with the user in the DB
 	@postcondition Stat.models.filter(user=user) = null set
+
+	@author Andrew J. Musselman
 	'''
 	Stat.objects.filter(user=user).delete();
 
@@ -26,6 +27,8 @@ def getAllCourseStats(course):
 	Get the a list of all user statistics in from a given course. A user 
 	may have many stats for each quiz, since a user may take a quiz
 	many times
+
+	@author Andrew J. Musselman
 	'''
 	statsList = Stats.object.get(course=course)
 	return statsList
@@ -34,6 +37,8 @@ def getBestCourseStats(course):
 	'''
 	Get the list of the best statistics for every quiz in a given course.
 	There will be at most ONE stat per quiz per user.  
+
+	@author Andrew J. Musselman
 	'''
 	cursor = connection.cursor()
 	cursor.execute('''SELECT id, course_id, user_id, page_id, score, 
@@ -71,6 +76,8 @@ def getQuizBestAggregates(course):
 	                    aggrigateDict['result_max'] =  max(best scores)
 	                    aggrigateDict['result_min'] =  min(best scores)
 	                    aggrigateDict['result_count'] = count(best scores)
+
+	@author Andrew J. Musselman
 	'''
 	cursor = connection.cursor()
 	cursor.execute('''SELECT pages_page.slug,
@@ -126,6 +133,8 @@ def getUserBestAggregates(course):
 	                    aggrigateDict['result_max'] =  max(best scores)
 	                    aggrigateDict['result_min'] =  min(best scores)
 	                    aggrigateDict['result_count'] = count(best scores)
+
+	@author Andrew J. Musselman
 	'''
 
 	cursor = connection.cursor()
@@ -172,9 +181,72 @@ def getUserBestScore(user, quiz):
 	Gets the best score for a given user on a given quiz. Takes a user and 
     the page where a quiz is located. Returns the percentage of the best
     score.
+
+	@author Andrew J. Musselman
 	'''
 	stat = Stats.objects.filter(page=quiz, user=user).sort("-score")[0]
 	return (stat.score/stat.maxScore)
 
+def getUserLatestScore(user,quiz):
+	'''
+	Gets the latest score for a given user on a given quiz.
 
+	@author Andrew J. Musselman
+	'''
+	pass
+
+def getUserAverageScore(user,quiz):
+	'''
+	Gets the average score for a given user on a given quiz.
+	Note that weighting makes no sense for this use case, as the max score for a
+	quiz should be the same each time you take it.
+
+	@author Andrew J. Musselman
+	'''
+	pass
+
+def getCourseLatestAverage(course, quiz):
+	'''
+	Gets the average score for the the latest quiz results for a given quiz.
+	Note that weighting makes no sense for this use case, as the max score for a
+	quiz should be the same each time you take it.
+
+	@author Andrew J. Musselman
+	'''
+	pass
+
+def getCourseBestAverage(course, quiz):
+	'''
+	Gets the average score of the best quiz results for a given quiz.
+	Note that weighting makes no sense for this use case, as the max score for a
+	quiz should be the same each time you take it.
+
+	@author Andrew J. Musselman
+	'''
+	pass
+
+def getCourseAggregates(course):
+	'''
+	Calculate aggragte stats for all users in a particular course
+
+	@author Andrew J. Musselman
+	'''
+	pass
+
+
+def removeStat(stat, user):
+	'''
+	Removes a stat from a user
+
+	@author Andrew J. Musselman
+	'''
+	pass
+
+def purgeDeadStats():
+	'''
+	Removes stats that have no associated Page/User
+
+	@author Andrew J. Musselman
+	'''
+	pass 
 

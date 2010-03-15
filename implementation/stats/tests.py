@@ -28,6 +28,7 @@ class StatsTests(TestCase):
 	Due to the interpreted nature of Python, every function that is used in
 	the code has at least one test. This is to ensure that the user will
 	never see an embarrassing syntax error.
+	@author Andrew J. Musselman
 	'''
 	fixtures = ['StatTest']
 
@@ -45,6 +46,8 @@ class StatsTests(TestCase):
 				The course 'gene-fishers-cpe102-fall-08' from the database
 				And the score of 0
 		Expected output: A properly created stat object that is in the database
+
+		@author Andrew J. Musselman
 		'''
 		user = User.objects.get(username = 'fakeuser')
 		quiz = Page.objects.get(pk = '4') #sample quiz 
@@ -72,6 +75,12 @@ class StatsTests(TestCase):
 	def test_removeUserStats(self):
 		'''This test tests the return User stats function.
 		It enters in a stat, gets it back, then removes it.
+<<<<<<< .mine
+		Then the test confirms the test is gone
+
+		@author Andrew J. Musselman
+		'''
+=======
 		Then the test confirms the test is gone
 		Inputs: The user 'fakeuser' as grabbed from the database
 		        The quiz 'samplequiz' as grabbed from the database
@@ -81,6 +90,7 @@ class StatsTests(TestCase):
 		Expected Output: None... This function tests the effect on
 		the database.
 		'''
+>>>>>>> .r1339
 		user = User.objects.get(username = 'fakeuser')
 		#First we insert it into the database.
 		quiz = Page.objects.get(pk = '4') #sample quiz 
@@ -109,9 +119,19 @@ class StatsTests(TestCase):
 		be a grand total of 6 stats in the DB (2 users * 3 tries).
 		This should get the BEST score, not the latest from each try. So, it
 		should return a total of 2 results.
+<<<<<<< .mine
+		@precondition The course must exist. There may or may not be any stats
+		in it. (I'll test that functionality in another test).
+		@postcondition The function returns a list of the best stat each user
+		has posted in each quiz.
+
+		@author Andrew J. Musselman
+		'''
+=======
 		Input: The course 'testcourse1' from the database
 		Expected Output: A list of stat objects that only contains
 		the best results from each students for each quiz'''
+>>>>>>> .r1339
 		course = Course.objects.get(pk = '4')
 		statsList = getBestCourseStats(course)
 		#First, the list should give me only two results
@@ -125,11 +145,16 @@ class StatsTests(TestCase):
 		calculate the aggregates of the best results of each user on each
 		quiz. It returns a list of dictionaries, one for each quiz, that 
 		describes various aggrigates of the best user scores.
+<<<<<<< .mine
+
+		@author Andrew J. Musselman
+=======
 		Inputs: The course 'testcourseno1' from the database
 		        (Also note that the fixture has a pair of  quizes and some 
 				stats results in it)
 		Expected output: Aggrigate stats for 2 quizes. (This test only tests
 		                 number of aggrigate stats, not their correctness)
+>>>>>>> .r1339
 		'''
 		course = Course.objects.get(pk = '4')
 		aggregatesList = getQuizBestAggregates(course);
@@ -142,11 +167,16 @@ class StatsTests(TestCase):
 		'''
 		Tests the getQuizBestAggregates function. This particular
 		test checks the value of the returned average for each quiz. 
+<<<<<<< .mine
+
+		@author Andrew J. Musselman
+=======
 		Inputs: The course 'testcourseno1' from the database
 		        (Also note that the fixture has a pair of  quizes and some 
 				stats results in it)
 		Expected output: Aggrigate stats for 2 quizes. (This test tests
 			the average results)
+>>>>>>> .r1339
 		'''
 		course = Course.objects.get(pk = '4')
 		aggregatesList = getQuizBestAggregates(course)
@@ -167,11 +197,16 @@ class StatsTests(TestCase):
 		'''
 		Tests the per-user aggregates function. This particular test
 		checks that the proper number of results is returned
+<<<<<<< .mine
+
+		@author Andrew J. Musselman
+=======
 		Inputs: The course 'testcourseno1' from the database
 		        (Also note that the fixture has a pair of  quizes and some 
 				stats results in it. The course has 2 users)
 		Expected output: Aggrigate stats for 2 users. (This test only tests
 		                 number of aggrigate stats, not their correctness)
+>>>>>>> .r1339
 		'''
 		course = Course.objects.get(pk = '4')
 		aggregatesList = getUserBestAggregates(course) 

@@ -1,4 +1,11 @@
-''' @author James Pearson, Matt Tytel, John Hartquist, Jon Inloes '''
+''' 
+Contains the views for the home package. 
+
+@author James Pearson
+@author Matt Tytel
+@author John Hartquist
+@author Jon Inloes 
+'''
 
 from django.conf import settings
 from django.shortcuts import render_to_response
@@ -104,6 +111,8 @@ def show_homepage(request):
 def show_help(request):
 	'''
 	Displays the help page
+
+	@author Jon Inloes
 	'''
 	return master_rtr(request, 'help/index.html')
 

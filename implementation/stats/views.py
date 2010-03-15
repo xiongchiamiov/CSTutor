@@ -18,7 +18,11 @@ from home.views import master_rtr
 # Create your views here.
 @login_required
 def display_course_stats(request, course_slug):
-	'''Displays stats for a given course'''
+	'''
+	Displays stats for a given course
+
+	@author Andrew J. Musselman
+	'''
 	#Make sure the course is a real course in the DBMS
 	try:
 		course = Course.objects.get(slug=course_slug)   

@@ -1,3 +1,8 @@
+'''
+
+@author Mark Gius
+@author James Pearson
+'''
 from django.utils import simplejson
 from django.http import HttpResponse
 from codeshell.pythoncode import evalPythonString

@@ -23,6 +23,8 @@ class CourseTests(TestCase):
 	def setUp(self):
 		'''
 			Sets up environment for CourseTests
+
+			@author Mark Gius
 		'''
 		pass
 
@@ -32,6 +34,8 @@ class CourseTests(TestCase):
 
 			Verifies that course is created, and the specified user is
 			enrolled in the course, and the course landing page is created
+
+			@author Mark Gius
 		'''
 		pass
 	
@@ -42,6 +46,8 @@ class CourseTests(TestCase):
 			Verifies that the course is removed from the database
 			and all sub pages, enrollments and roster are removed
 			as well
+
+			@author Mark Gius
 		'''
 		pass
 
@@ -50,6 +56,8 @@ class CourseTests(TestCase):
 			Tests addPage function
 
 			Verifies that the page is successfully added to the course
+
+			@author Mark Gius
 		'''
 		pass
 
@@ -57,12 +65,16 @@ class CourseTests(TestCase):
 		''' Tests for addUser function
 
 			 Tests adding a user of various levels of permission levels
+
+			@author Mark Gius
 		'''
 		pass
 	
 	def test_removeUser(self):
 		''' 
 			Tests ability to remove users from a course
+
+			@author Mark Gius
 		'''
 		pass
 	
@@ -70,6 +82,8 @@ class CourseTests(TestCase):
 		'''
 			Tests function to remove a course and it's associated pages,
 			enrollments, and stats from the database
+
+			@author Mark Gius
 		'''
 		pass
 
@@ -99,20 +113,23 @@ class CourseViewTests(TestCase):
 	
 	def testCourse(self):
 		'''
-		@author James Pearson, Jon Inloes
-
 		Tests that showing a course page works.
 
 		Case no.		Inputs								Expected Output		Remark
 		1.				slug = PageViewsPublicCourse	200						
 
 		2.				slug = not-a-class				404
+
+		@author James Pearson
+		@author Jon Inloes
 		'''
 		pass
 
 	def testCourseCase1(self):
 		'''
 		Test case 1 for test course
+
+		@author Jon Inloes
 		'''
 
 		slug = 'PageViewsPublicCourse'
@@ -122,6 +139,8 @@ class CourseViewTests(TestCase):
 	def testCourseCase2(self):
 		'''
 		Test case 2 for test course
+
+		@author Jon Inloes
 		'''
 
 		slug = 'not-a-class'
@@ -131,7 +150,6 @@ class CourseViewTests(TestCase):
 
 	def testShowRoster(self):
 		'''
-		@author Jon Inloes
 		Tests that redirection to the roster page works
 
 		Case no.        	Inputs                                       Expected Output    		Remark
@@ -144,7 +162,8 @@ class CourseViewTests(TestCase):
 		3						slug = 'PageViewsPublicCourse'					roster/invalid_permissions.html 
 								adminUsername = 'PageViewsPublicUser'			is rendered
 								password = 'password'
-								template = 'roster/invalid_permissions.html'		
+								template = 'roster/invalid_permissions.html'
+		@author Jon Inloes		
 		'''
 
 		slug = 'PageViewsPublicCourse'
@@ -162,6 +181,8 @@ class CourseViewTests(TestCase):
 	def testShowRosterCase2(self):
 		'''
 		Test show roster case 2
+
+		@author Jon Inloes
 		'''
 		slug = 'PageViewsPublicCourse'
 		adminUsername = 'enrollmentTestAdmin'
@@ -177,7 +198,11 @@ class CourseViewTests(TestCase):
 		self.failUnlessEqual(response.status_code, 404, 'URL redirection is broken. This is a bad link and should 404')
 
 	def testShowRosterCase3(self):
+		'''
+		Test show roster case 3
 
+		@author Jon Inloes
+		'''
 		slug = 'PageViewsPublicCourse'
 		adminUsername = 'PageViewsPublicUser'
 		password = 'password'
@@ -197,6 +222,8 @@ class CourseViewTests(TestCase):
 	def testShowRosterCase4(self):
 		'''
 		show roster test case 4
+
+		@author Jon Inloes
 		'''
 		pass
 		#slug = 'PageViewsPublicCourse'
@@ -228,7 +255,6 @@ class CourseViewTests(TestCase):
 
 	def testEnrollUser(self):
 		'''
-		@author Jon Inloes
 		Tests enrolling a user in a course through the view
 
 		Case no.        	Inputs                                     	Expected Output		Remark
@@ -252,13 +278,17 @@ class CourseViewTests(TestCase):
 		4						slug = 'PageViewsPublicCourse'
 								adminUsername = 'PageViewsPublicUser'
 								password = 'password'
-								template = 'roster/invalid_permissions.html'							                          
+								template = 'roster/invalid_permissions.html'		
+
+		@author Jon Inloes					                          
 		'''
 		pass
 	
 	def testEnrollUserCase1(self):
 		'''
 		testEnrollUser Case 1
+
+		@author Jon Inloes
 		'''
 
 		adminUsername = 'enrollmentTestAdmin'
@@ -297,6 +327,8 @@ class CourseViewTests(TestCase):
 	def testEnrollUserCase2(self):
 		'''
 		testEnrollUser Case 2
+
+		@author Jon Inloes
 		'''
 
 		adminUsername = 'enrollmentTestAdmin'
@@ -327,15 +359,11 @@ class CourseViewTests(TestCase):
 		#asserts that failed.html page was rendered because a the username did not exist
 		self.assertTemplateUsed(response, template)
 
-	def testUpdateCourse(self):
-		'''
-		Tests changes to course data
-		'''
-		pass
-
 	def testEnrollUserCase3(self):
 		'''
 		testEnrollUser Case 3
+
+		@author Jon Inloes
 		'''
 
 		adminUsername = 'enrollmentTestAdmin'
@@ -353,7 +381,11 @@ class CourseViewTests(TestCase):
 		self.assertTemplateUsed(response, template)
 
 	def testEnrollUserCase4(self):
-
+		'''
+		Test enroll user case 4
+		
+		@author Jon Inloes	
+		'''
 		slug = 'PageViewsPublicCourse'
 		adminUsername = 'PageViewsPublicUser'
 		username = 'temp'
@@ -371,9 +403,16 @@ class CourseViewTests(TestCase):
 		#asserts that invalid_permissions.html page was rendered because the logged in user did not have valid permission to add a user
 		self.assertTemplateUsed(response, template)
 
+
+	def testUpdateCourse(self):
+		'''
+		Tests changes to course data
+
+		'''
+		pass
+
 	def testUpdateRoster(self):
 		'''
-		@author Jon Inloes
 		Tests the updating the roster
 		Case no.       Inputs                  					Expected Output             	Remark
 		1.             edit = {username, adminUsername}     	enrollment.edit = True			enrollment is the enrollment of username	
@@ -395,13 +434,17 @@ class CourseViewTests(TestCase):
 		3					slug = 'PageViewsPublicCourse'
 							adminUsername = 'PageViewsPublicUser'
 							password = 'password'
-							template = 'roster/invalid_permissions.html'		
+							template = 'roster/invalid_permissions.html'
+
+		@author Jon Inloes		
 		'''
 		pass
 		
 	def testUpdateRosterCase1(self):
 		'''
 		testUpdateRoster Case 1
+
+		@author Jon Inloes
 		'''
 
 		adminUsername = 'enrollmentTestAdmin'
@@ -425,6 +468,8 @@ class CourseViewTests(TestCase):
 	def testUpdateRosterCase2(self):	
 		'''
 		testUpdateRoster Case 2
+
+		@author Jon Inloes
 		'''
 
 		adminUsername = 'enrollmentTestAdmin'
@@ -447,6 +492,8 @@ class CourseViewTests(TestCase):
 	def testUpdateRosterCase3(self):
 		'''
 		testUpdateRoster Case 3
+
+		@author Jon Inloes
 		'''
 	
 		slug = 'PageViewsPublicCourse'
@@ -467,7 +514,6 @@ class CourseViewTests(TestCase):
 
 	def testAcceptUser(self):
 		'''
-		@author Jon Inloes
 		Tests that a user who is enrolled can access a private course, and a 
 		student who is not enrolled cannot access a private course
 
@@ -481,10 +527,17 @@ class CourseViewTests(TestCase):
 							username = 'PrivateUserNotEnrolled'		.html is rendered
 							slug = 'PageViewsPrivateCourse'
 							password = 'password'
+
+		@author Jon Inloes
 		'''
 		pass
 
 	def testAccpetUserCase1(self):
+		'''
+		Test accept user case 1
+		
+		@author Jon Inloes
+		'''
 
 		adminUsername = 'enrollmentTestAdmin'
 		username = 'PrivateUserNotEnrolled'
@@ -508,7 +561,12 @@ class CourseViewTests(TestCase):
 		self.failUnlessEqual(enrollment.view, True, 'View for user should be true but was' + str(enrollment.view))
 
 	def testAccpetUserCase2(self):
-		
+		'''
+		Test accept user case 2
+			
+		@author Jon Inloes
+		'''
+
 		slug = 'PageViewsPublicCourse'
 		adminUsername = 'PageViewsPublicUser'
 		username = 'temp'
@@ -527,7 +585,6 @@ class CourseViewTests(TestCase):
 
 	def testDenyUser(self):
 		'''
-		@author Jon Inloes
 		Tests whether or not denying a user from a pending request works.
 	
 		Case no. 	Inputs											Expected Output	Remarks
@@ -536,6 +593,9 @@ class CourseViewTests(TestCase):
 						slug = 'PageViewsPrivateCourse'
 						password = 'password'
 						denied = False
+
+
+		@author Jon Inloes
 		'''
 		
 		adminUsername = 'enrollmentTestAdmin'
@@ -569,7 +629,6 @@ class CourseViewTests(TestCase):
 
 	def testSearchUser(self):
 		'''
-		@author Jon Inloes
 		Tests the search user function
 
 		Case no.		Inputs											Expected Output 							Remarks
@@ -586,10 +645,18 @@ class CourseViewTests(TestCase):
 						lastname = 'badLastname'
 						slug = 'PageViewsPrivateCourse'
 						password = 'password'
+
+		@author Jon Inloes
 		'''
 		pass
 	
 	def testSearchUserCase1(self):
+		'''
+		Test search user case 1
+
+		@author Jon Inloes
+		'''
+
 		adminUsername = 'enrollmentTestAdmin'
 		username = 'enrollmentTestAdmin'
 		firstname = 'Test'
@@ -606,7 +673,12 @@ class CourseViewTests(TestCase):
 		self.assertContains(response, username)
 
 	def testSearchUserCase2(self):
-		
+		'''
+		Test search user case 2
+
+		@author Jon Inloes
+		'''
+
 		adminUsername = 'enrollmentTestAdmin'
 		username = 'badUsername'
 		firstname = 'badFirstname'
@@ -626,14 +698,15 @@ class CourseViewTests(TestCase):
 
 	def testRemoveUser(self):
 		'''
-		Tests the reumove user function
-		@author Jon Inloes
+		Tests the remove user function
 
 		Case no.		Inputs											Outputs		Remarks
 		1				adminUsername = 'enrollmentTestAdmin'
 						password = 'password'
 						username = 'PrivateUserNotEnrolled'
 						slug = 'PageViewsPublicCourse'
+		
+		@author Jon Inloes
 		'''
 		adminUsername = 'enrollmentTestAdmin'
 		password = 'password'
@@ -666,7 +739,6 @@ class CourseViewTests(TestCase):
 
 	def testAddAnonUser(self):
 		'''
-		@author John Hartquist
 		Tests that an anonymous user can join a public course
 		
 		case#      inputs                                ouputs                            
@@ -680,7 +752,8 @@ class CourseViewTests(TestCase):
 		            not logged in                        "You are already enrolled in.."
 		            session['anonCourses'] includes      no changes are made to session
 		            course 101
-		            
+
+		@author John Hartquist	            
 		'''
 		courseslug = "PageViewsPublicCourse" #100 = private, #101 = public
 		response = self.client.post('/submit_join_course_request/', {'courseid': 101 })
@@ -692,7 +765,6 @@ class CourseViewTests(TestCase):
 
 	def testChat(self):
 		'''
-		@author Jon Inloes
 		Tests that the chat page displays properly
 
 		Case #		Inputs											Outputs							Remark
@@ -704,12 +776,16 @@ class CourseViewTests(TestCase):
 		2				adminUsername = 'enrollmentTestAdmin'	response.status_code = 404
 						password = 'password'
 						slug = 'badcourse'
+
+		@author Jon Inloes
 		'''
 		pass
 	
 	def testChatCase1(self):
 		'''
-		Case 1
+		Test chat case 1
+
+		@author Jon Inloes
 		'''
 
 		adminUsername = 'enrollmentTestAdmin'
@@ -725,7 +801,9 @@ class CourseViewTests(TestCase):
 
 	def testChatCase2(self):
 		'''
-		Case 2
+		Test chat case 2
+			
+		@author Jon Inloes
 		'''
 		adminUsername = 'enrollmentTestAdmin'
 		password = 'password'
@@ -737,7 +815,6 @@ class CourseViewTests(TestCase):
 
 	def testCancelAdd(self):
 		'''
-		@author Jon Inloes
 		Test that the cancel_add fucntion redirects to the roster page
 
 		Case #		Inputs											Outputs								Remark
@@ -746,7 +823,8 @@ class CourseViewTests(TestCase):
 						password = 'password'																response redirect
 						slug = 'PageViewsPublicCourse'
 						template = 'roster/index.html'
-		
+
+		@author Jon Inloes		
 		'''
 
 		adminUsername = 'enrollmentTestAdmin'

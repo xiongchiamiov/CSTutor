@@ -22,6 +22,10 @@ class Stat(models.Model):
     This stores an individual users result from a single quiz taken a sigle 
     single time. If a single user takes a quiz mutple times, it will generate
     mutple stats. 
+
+	@author Mark Gius
+	@author Russell Mezzetta
+	@author Andrew J. Musselman
 	'''
 	course = models.ForeignKey(Course, related_name='stats')
 	user = models.ForeignKey(User, related_name='stats')
@@ -43,6 +47,8 @@ class Stat(models.Model):
 		We assume you the page you are calling this function with is a quiz.
 		It is an error to call this function with a page that isn't a quiz.
 		Don't do that.
+
+		@author Andrew J. Musselman
 		'''
 		maxscore = page.quiz.questions.count() 
 		s = Stat(course=course, page=page, user=user, score=score, 
@@ -51,6 +57,10 @@ class Stat(models.Model):
 		return s
 
 	def __unicode__(self):
-		''' Returns the string representation of a stat for debugging. '''  
+		''' 
+		Returns the string representation of a stat for debugging.
+
+		@author Andrew J. Musselman
+		'''  
 		return u'Stat for User ' + unicode(self.user) + u' and Lesson ' \
 			+ unicode(self.page)

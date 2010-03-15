@@ -1,5 +1,5 @@
 '''
-lesson.py file for lesson related operations.
+This file contains lesson related operations.
 
 Contains helpful wrapper operations for all lessons such as saveLesson, or
 saveLessonName. These are used mainly by the views for convenience and processing of user input.

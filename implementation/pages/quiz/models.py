@@ -1,7 +1,3 @@
-from django.db import models
-from pages.models import Page
-from courses.models import Course
-
 '''
 Models file for Quiz related classes
 
@@ -11,12 +7,18 @@ contained within a Quiz, such as Path.
 @author Evan Kleist
 '''
 
+from django.db import models
+from pages.models import Page
+from courses.models import Course
+
 class Quiz(Page):
 	'''
 	Model for a Quiz.
 
 	A quiz is a specific type of Page.  It contains a number of questions of
 	various types.
+
+	@author Evan Kleist
 	'''
 	text = models.TextField()
 	# paths implied from Path
@@ -28,11 +30,20 @@ class Quiz(Page):
 
 	@staticmethod
 	def createQuiz(text_, hidden_, course_, parent_, ):
-		''' Creates a new Quiz object, and returns it unsaved '''
+		'''
+		Creates a new Quiz object, and returns it unsaved
+
+		@author Evan Kleist
+		'''
 		q = Quiz(text=text_, hidden = hidden_)
 		return q
 
 	def __unicode__(self):
+	'''
+	Like toString in java
+		
+	@author Evan Kleist
+	'''
 		return self.text
 
 	@models.permalink
@@ -47,6 +58,8 @@ class Path(models.Model):
 	A path determines where a student is sent after taking a quiz.  It contains
 	a high and low score (path matches low <= score < high)
 	and an optional message to display to a student.
+
+	@author Evan Kleist
 	'''
 	quiz = models.ForeignKey(Quiz, related_name='paths')
 	highscore = models.IntegerField()
@@ -56,6 +69,11 @@ class Path(models.Model):
 	passed = models.BooleanField()
 
 	def __unicode__(self):
+	'''
+	Like toString in java
+
+	@author Evan Kleist
+	'''
 		return u'Path on Quiz ' + unicode(self.quiz)
 
 class NoMatchingPath(Exception):
@@ -67,9 +85,16 @@ class Prerequisite(models.Model):
 	Model for a Prerequisite.
 
 	A prerequsite is a quiz that must be "passed" before being able to submit the quiz. If a quiz is hidden, the prerequisites must also be met before being able to view the quiz. It contains the page being required, and a link to the quiz it belongs to
+
+	@author Evan Kleist
 	'''
 	containingQuiz = models.ForeignKey(Quiz, related_name='prerequisites')
 	requiredQuiz = models.ForeignKey(Quiz)
 
 	def __unicode__(self):
+	'''
+	Link toString in java
+
+	@author Evan Kleist
+	'''
 		return u'Prerequsite on Quiz ' + unicode(self.containingQuiz)

@@ -7,8 +7,6 @@ contained within a Course, such as Page, Quiz, Lesson, and Roster.
 @author Andrew Mussellman
 @author Jon Inloes
 @author Mark Gius
-SVN Commit Info:
-$Id$
 '''
 from django.db import models
 from django.contrib.auth.models import User
@@ -23,6 +21,8 @@ class Course(models.Model):
 	A course is a set of zero or more pages.  A course is either public or
 	private, and contains a roster of authorized users.  Every course has a
 	landing page. 
+
+	@author Mark Gius
 	'''
 	slug = models.SlugField(unique = True)
 	name = models.CharField(max_length = 255)
@@ -35,6 +35,8 @@ class Course(models.Model):
 	
 		Violates code standard because template tags can only call arg-less
 		functions
+
+		@author Mark Gius
 		'''
 #		toc = []
 #		pages = [p for p in self.pages.order_by('left')]
@@ -64,6 +66,8 @@ class Course(models.Model):
 
 		Violates code standard because template tags can only call arg-less
 		functions
+
+		@author Mark Gius
 		'''
 		toc =	[]
 	
@@ -102,6 +106,8 @@ class Enrollment(models.Model):
 
 		 In the case of a Private course, an enrollment relationship is necessary
 		 to allow the user to view the course.
+
+		@author Mark Gius
 	'''
 	user = models.ForeignKey(User, related_name='enrollments')
 	course = models.ForeignKey(Course, related_name='roster')

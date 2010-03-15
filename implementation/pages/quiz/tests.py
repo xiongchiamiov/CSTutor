@@ -16,12 +16,15 @@ class QuizUnitTests(TestCase):
 	'''
 		Unit Tests on backend quiz operations.
 
+		@author Evan Kleist
 	'''
 	fixtures = ['QuizUnitTests']
 
 	def setUp(self):
 		'''
 			Set up the tests
+	
+			@author Evan Kleist
 		'''
 		self.courseSlug = 'quizunittest_course'
 		self.quizSlug1 = 'quizunittests_quiz1'
@@ -34,7 +37,8 @@ class QuizUnitTests(TestCase):
 			Case no.    Input                                     Expected Output                           Remark
 			1           questionCount, newQuestionCount           questionCount + 1 == questionCount        Ensure that 1 new question has been added
 			2           newQuestion.order, newQuestionCount       newQuestion.order == newQuestionCount     Ensure that the new question is the last question
-			3           newQuestion.text                          newQuestion.text == "Blank Question"      Ensure that the new question is indeed a new question               
+			3           newQuestion.text                          newQuestion.text == "Blank Question"      Ensure that the new question is indeed a new question       
+			@author Evan Kleist        
 		'''
 		quiz = Quiz.objects.get(slug=self.quizSlug1)
 		questionCount = len(quiz.questions.all())
@@ -59,7 +63,9 @@ class QuizUnitTests(TestCase):
 			Case no.    Input                                     Expected Output                           Remark
 			1           questionCount, newQuestionCount           questionCount + 1 == questionCount        Ensure that 1 new question has been added
 			2           newQuestion.order, newQuestionCount       newQuestion.order == newQuestionCount     Ensure that the new question is the last question
-			3           newQuestion.text                          newQuestion.text == "Blank Question"      Ensure that the new question is indeed a new question               
+			3           newQuestion.text                          newQuestion.text == "Blank Question"      Ensure that the new question is indeed a new question  
+
+			@author Evan Kleist             
 		'''
 		quiz = Quiz.objects.get(slug=self.quizSlug1)
 		questionCount = len(quiz.questions.all())
@@ -85,6 +91,8 @@ class QuizUnitTests(TestCase):
 
 			Case no.    Input          Expected Output   Remark
 			1           quiz1, quiz3   quiz1 == quiz3    Copy the contents of quiz1 to quiz3  
+
+			@author Evan Kleist
 		'''
 		quiz1 = Quiz.objects.get(slug=self.quizSlug1)
 		quiz3 = Quiz.objects.get(slug="quizunittests_quiz3")
@@ -139,6 +147,8 @@ class QuizUnitTests(TestCase):
 			1           quiz, 49       path              A score that falls within a specified path
 			2           quiz, 75       NoMatchingPath    A score that doesnt fall on a path
 			3           quiz, 100      path              A score that falls within a specified path, with special case 100 
+
+			@author Evan Kleist
 		'''
 		quiz = Quiz.objects.get(slug=self.quizSlug1)
 
@@ -199,6 +209,8 @@ class QuizUnitTests(TestCase):
 			            highscore = 49              path.highscore = 49
 			            dialogue = "test"           path.dialogue = "test"
 			            passing = False             path.passed = False
+
+			@author Evan Kleist
 		'''
 		quiz = Quiz.objects.get(slug = self.quizSlug1)
 		numPaths = quiz.paths.all().count()
@@ -274,6 +286,8 @@ class QuizUnitTests(TestCase):
 			Test that publishQuiz actually copies over all the 
 			quizzes contents to the published version and doesnt
 			leave any fragments in database
+
+			@author Evan Kleist
 		'''
 		workingQuiz = Quiz.objects.get(slug=self.quizSlug1 + "_workingCopy")
 
@@ -300,6 +314,8 @@ class QuizUnitTests(TestCase):
 			Case no.    Input          Expected Output                   Remark
 			1           path0          errors = [], Path.DoesNotExist    Path no longer exists
 			2           path100        error
+
+			@author Evan Kleist
 		'''
 		quiz = Quiz.objects.get(slug = self.quizSlug1)
 		environ = {
@@ -342,6 +358,8 @@ class QuizUnitTests(TestCase):
 			8           prerequisites  Prerequisite.DoesNotExist  Make sure all of the working_copy prereqs were also deleted
 			9           paths          Path.DoesNotExist          Make sure all of the paths were also deleted
 			10          paths          Path.DoesNotExist          Make sure all of the working_copy paths were also deleted
+
+			@author Evan Kleist
 		'''
 		quiz = Quiz.objects.get(slug=self.quizSlug2)
 		quiz2 = Quiz.objects.get(slug=(self.quizSlug2 + "_workingCopy"))
@@ -483,6 +501,8 @@ class QuizUnitTests(TestCase):
 			Case no.    Input          Expected Output          Remark
 			1           quiz           false                    Make sure the questions are not in order
 			2           quiz           true                     Check to make sure that the questions are in a valid state
+
+			@author Evan Kleist
 		'''
 		quiz = Quiz.objects.get(slug=self.quizSlug1)
 		questions = quiz.questions.all()
@@ -505,7 +525,9 @@ class QuizUnitTests(TestCase):
 		'''
 			Test that revertQuiz actually reverts all the 
 			working copies contents to the published version and doesnt
-			leave any fragments in database       
+			leave any fragments in database  
+			
+			@author Evan Kleist     
 		'''
 		workingQuiz = Quiz.objects.get(slug=self.quizSlug1 + "_workingCopy")
 
@@ -534,6 +556,8 @@ class QuizUnitTests(TestCase):
 			2           quizSlug1_workingCopy               quizSlug1                An "unsafe" slug
 			3           quizSlug1_workingCopy_workingCopy   quizSlug1_workingCopy    Special case if a quiz happened to have a name of _workingCopy
 			4           _workingCopy                        _workingCopy             Special case name _workingCopy
+
+			@author Evan Kleist
 		'''
 		# Case 1
 		slug = safeSlug(self.quizSlug1)
@@ -582,7 +606,9 @@ class QuizUnitTests(TestCase):
 
 			Case no.    Input          Expected Output          Remark
 			1           
-			2           
+			2
+	
+			@author Evan Kleist           
 		'''
 		pass
 
@@ -592,7 +618,9 @@ class QuizUnitTests(TestCase):
 
 			Case no.    Input          Expected Output          Remark
 			1           
-			2           
+			2
+
+			@author Evan Kleist           
 		'''
 		pass
 
@@ -605,6 +633,8 @@ class QuizUnitTests(TestCase):
 			2           quiz           false                    Quiz with first question 0, not 1
 			3           quiz           false                    Quiz with duplicate ordering
 			4           quiz           false                    Quiz with last question not last order
+
+			@author Evan Kleist
 		'''
 		quiz = Quiz.objects.get(slug=self.quizSlug1)
 		questions = quiz.questions.all()
@@ -645,7 +675,9 @@ class QuizUnitTests(TestCase):
 
 			Case no.    Input          Expected Output          Remark
 			1           
-			2           
+			2     
+
+			@author Evan Kleist      
 		'''
 		pass
 
@@ -678,6 +710,8 @@ class QuizViewTests(TestCase):
 			2           url = /course/badCourse/page/quizSlug1/                      404                     404 is a bad link error
 			3           url = /course/courseSlug/page/badQuiz/                       404                     404 is a bad link error
 			4           url = /course/badCourse/page/badQuiz/                        404                     404 is a bad link error
+
+			@author Evan Kleist
 		'''
 
 		# Case 1 - A good course and a good quiz should display properly		
@@ -707,6 +741,8 @@ class QuizViewTests(TestCase):
 			            user logged in, not enrolled                                 denied.html
 			3           url = /course/courseSlug/page/quizSlug1/                     200                     User logged in, enrolled, course private
 			            user logged in, enrolled                                     viewQuiz.html
+	
+			@author Evan Kleist
 		'''
 		courseSlug = "QuizViewTests_Course2"
 		quizSlug = "QuizViewTests_Quiz3"
@@ -745,6 +781,8 @@ class QuizViewTests(TestCase):
 			            user logged in, enrolled                                     denied.html
 			4           url = /course/courseSlug/page/quizSlug1/                     200                     User logged in, enrolled, prereqs
 			            user logged in, enrolled                                     viewQuiz.html
+
+			@author Evan Kleist
 		'''
 
 		pass
@@ -758,6 +796,8 @@ class QuizViewTests(TestCase):
 			2           url = /course/badCourse/page/quizSlug1/submitQuiz/                 404                     404 is a bad link error
 			3           url = /course/courseSlug/page/badQuiz/submitQuiz/                  404                     404 is a bad link error
 			4           url = /course/badCourse/page/badQuiz/submitQuiz/                   404                     404 is a bad link error
+		
+			@author Evan Kleist
 		'''
 
 		# Case 1 - A good course and a good quiz should display properly		
@@ -789,6 +829,8 @@ class QuizViewTests(TestCase):
 			                                                                         score = 0
 			4           url = /course/courseSlug/page/quizSlug1/submitQuiz/                                  User logged in, enrolled, course private, with POST
 			            user logged in, enrolled                                     submitQuiz.html
+	
+		@author Evan Kleist
 		'''
 		courseSlug = "QuizViewTests_Course2"
 		quizSlug = "QuizViewTests_Quiz3"
@@ -822,6 +864,8 @@ class QuizViewTests(TestCase):
 			2           url = /course/badCourse/page/quizSlug1/submitQuiz/                 404                     404 is a bad link error
 			3           url = /course/courseSlug/page/badQuiz/submitQuiz/                  404                     404 is a bad link error
 			4           url = /course/badCourse/page/badQuiz/submitQuiz/                   404                     404 is a bad link error
+		
+			@author Evan Kleist
 		'''
 
 		pass
@@ -831,6 +875,7 @@ class QuizViewTests(TestCase):
 			Test the urls to make sure that submitting a quiz with 
 			bad data is properly handeled
 
+			@author Evan Kleist
 		'''
 		pass
 
@@ -843,6 +888,8 @@ class QuizViewTests(TestCase):
 			2           url = /course/badCourse/page/quizSlug1/edit/                 404                     404 is a bad link error
 			3           url = /course/courseSlug/page/badQuiz/edit/                  404                     404 is a bad link error
 			4           url = /course/badCourse/page/badQuiz/edit/                   404                     404 is a bad link error
+		
+			@author Evan Kleist
 		'''
 
 		# Case 1 - A good course and a good quiz should display properly		
@@ -870,6 +917,8 @@ class QuizViewTests(TestCase):
 			2           url = /course/badCourse/page/quizSlug1/edit/                 404                     404 is a bad link error
 			3           url = /course/courseSlug/page/badQuiz/edit/                  404                     404 is a bad link error
 			4           url = /course/badCourse/page/badQuiz/edit/                   404                     404 is a bad link error
+		
+			@author Evan Kleist
 		'''
 
 		pass
@@ -883,6 +932,8 @@ class QuizViewTests(TestCase):
 			2           url = /course/badCourse/page/quizSlug1/edit/                 404                     404 is a bad link error
 			3           url = /course/courseSlug/page/badQuiz/edit/                  404                     404 is a bad link error
 			4           url = /course/badCourse/page/badQuiz/edit/                   404                     404 is a bad link error
+		
+			@author Evan Kleist
 		'''
 
 		pass
@@ -891,6 +942,9 @@ class QuizViewTests(TestCase):
 		'''
 			Test that will make sure the quiz deletion confirmation
 			 dialogue is working properly
+
+		
+			@author Evan Kleist
 		'''
 		pass
 
@@ -898,17 +952,23 @@ class QuizViewTests(TestCase):
 		'''
 			Test that will make sure the question deletion
 			confirmation dialogue is working properly
+
+			@author Evan Kleist
 		'''
 		pass
 
 	def testAddPathView(self):
 		'''
 			Test that will make sure add path view is working properly
+
+			@author Evan Kleist
 		'''
 		pass
 	def testEditPathView(self):
 		'''
 			Test that will make sure the edit path view is working properly
+
+			@author Evan Kleist
 		'''
 		pass
 

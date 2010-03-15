@@ -1,3 +1,13 @@
+'''
+Views file for page related view
+
+Contains the show_page function
+
+@author Evan Kleist
+@author Russell Mezzetta
+@author James Pearson
+'''
+
 from django.shortcuts import render_to_response
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.contrib.auth.decorators import login_required
@@ -17,16 +27,6 @@ from django.contrib.auth.decorators import login_required
 from home.views import master_rtr, custom_403, custom_404
 from pages.page import movePage, movePageToParent
 
-'''
-Views file for page related view
-
-Contains the show_page function
-
-@author Evan Kleist
-@author Russell Mezzetta
-@author James Pearson
-'''
-
 @login_required
 def show_page_preview(request, course_slug, page_slug):
 	'''
@@ -34,6 +34,8 @@ def show_page_preview(request, course_slug, page_slug):
 	view the published copy.
 	NOTE: only used by lesson currently, quiz could me modified to work like 
 	this as well
+
+	@author Russell Mezzetta
 	'''
 	return show_page(request, course_slug, page_slug, preview=True)
 
@@ -42,6 +44,9 @@ def show_page(request, course_slug, page_slug, preview=False):
 	This "view" does error checking to verify that the input course/page exist
 	Then it checks that the user has view permissions if they are required
 	Finally it invokes the lesson or quiz view depending on the type of page
+
+	@author Russell Mezzetta
+	@author Evan Kleist
 	'''
 	#check if the course is a real course in the database	
 	try: 
@@ -106,6 +111,9 @@ def edit_page(request, course_slug, page_slug):
 	'''
 	This view verifies that a valid course/page pair is given, then verifies that the user has edit permissions,
 	finally it calls the quiz/lesson edit view depending on what kind of page is given.
+
+	@author Russell Mezzetta
+	@author Evan Kleist
 	'''
 	#check if the course is a real course in the database	
 	try: 
@@ -150,9 +158,10 @@ def edit_page(request, course_slug, page_slug):
 @login_required
 def move_page(request, course_slug, page_slug):
 	'''
-	@author Russell Mezzetta
 	This view allows instructors to move pages around	in a course.
 	@pre request is a Request object, other two args are strings, request.user.is_authenticated()
+
+	@author Russell Mezzetta
 	'''
 	#check to make sure that we are not trying to move a course-page
 	if course_slug == page_slug:

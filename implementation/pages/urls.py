@@ -1,4 +1,10 @@
-''' URL to View Regular Expression mappings '''
+''' 
+URL to View Regular Expression mappings 
+
+@author Evan Kleist
+@author Russell Mezzetta
+@author Mark Gius
+'''
 from django.conf.urls.defaults import *
 from django.views.generic.simple import direct_to_template
 

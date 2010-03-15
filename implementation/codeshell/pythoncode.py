@@ -7,6 +7,9 @@ function that will abstract all that garbage out
 
 POTENTIAL SECURITY RISK: These functions do not currently protect against 
 importing python modules.
+
+@author Mark Gius
+@author James Pearson
 '''
 
 

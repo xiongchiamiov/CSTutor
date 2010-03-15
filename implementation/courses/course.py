@@ -37,7 +37,10 @@ def CreateCourse(name, user, private, slug=None):
 	return newcourse
 
 def renameCourse(course, newName):
-	''' Renames a course
+	''' 
+	Renames a course
+
+	@author Matt Tytel
 	'''
 	if len(newName.strip()) < 1:
 		return {'message':"Name change failed: name must be non-empty"}
@@ -86,7 +89,8 @@ def removeUser(self, user):
 	'''
 		Removes the specified user from the course
 
-		@author ?
+		@author Mark Gius
+		@author Jon Inloes
 	'''
 	#print 'removing a user'
 	try:
@@ -97,11 +101,12 @@ def removeUser(self, user):
 
 def removeCourse(course_slug):
 	'''
-	@author Russell Mezzetta
 	Removes this course and all of its pages, statistics, and enrollments
 	from the database
 	@pre course_slug is a string
 	@post if course_slug points to a valid course, it will be removed from the database along with all related objects.
+
+	@author Russell Mezzetta
 	'''
 	try:
 		c = Course.objects.get(slug=course_slug)
@@ -111,6 +116,11 @@ def removeCourse(course_slug):
 		return None
 
 def setPrivate(self):
+	'''
+	Sets the private bit for a course
+
+	@author Mark Gius
+	'''
 	self.private = True
 	self.save()
 

@@ -1,3 +1,12 @@
+'''
+Views for the lesson package.
+
+@author Matthew Tytel
+@author Russell Mezzetta
+@author Evan Kleist
+@author John Hartquist
+'''
+
 from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.core.urlresolvers import reverse
@@ -12,20 +21,13 @@ from django.contrib.auth.decorators import login_required
 import urlparse
 import re
 
-'''
-@author Matthew Tytel
-@author Russell Mezzetta
-@author Evan Kleist
-@author John Hartquist
-'''
-
 @login_required
 def create_lesson(request, course_slug, page_slug):
 	'''
-	@author Matthew Tytel
-
 	Creates a new lesson and shows the user the edit page but
 	does not save the lesson to the database
+
+	@author Matthew Tytel
 	'''
 	#enforcing permissions
 	try:
@@ -71,8 +73,9 @@ def create_lesson(request, course_slug, page_slug):
 
 def show_lesson(request, course_slug, page_slug, lessonPage, preview=False):
 	'''
-	@author Russell Mezzetta
 	This view displays a lesson to the user
+
+	@author Russell Mezzetta
 	'''
 	# To get lessonConent now, you need to retreieve the page from the database, cast it to a lesson, and get the "text" attribute
 	#shouldn't have to try/except because previous calls should guarentee the page exists	
@@ -139,10 +142,11 @@ def show_lesson(request, course_slug, page_slug, lessonPage, preview=False):
 @login_required
 def edit_lesson(request, course_slug, page_slug):
 	'''
-	@author Russell Mezzetta
-	@author John Hartquist
 	This view displays the lesson editing page
 	This view is only accessed through edit_page. Therefore permission have already been checked.
+
+	@author Russell Mezzetta
+	@author John Hartquist
 	'''
 	
 	#common dictionary fields

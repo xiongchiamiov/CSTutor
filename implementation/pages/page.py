@@ -1,5 +1,5 @@
 '''
-page.py file for page related operations.
+This file contains page related operations.
 
 Contains operations for all pages
 The operations on page involve representing a linked structure (the page heirarchy) in a database. In order to accomplish this, we give each page a left and right integer value. These two numbers help us to create a sibling/child relationship between pages in order to construct the proper organization as seen in the navigation bar.
@@ -99,10 +99,9 @@ def insertPage(self, insertAfter):
 		 This creates the page as the next sibling of the insertAfter page
 
 		 Returns the inserted page after committing it
-		 @author Mark Gius
 
 		 @post: ValidateTree(self.course) == True
-
+		 @author Mark Gius
 	'''
 	return insertPageAfterNum(self, insertAfter.course, insertAfter.right)
 

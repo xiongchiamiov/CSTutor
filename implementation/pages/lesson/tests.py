@@ -17,6 +17,8 @@ class LessonTests(TestCase):
 	and verifying that expected behavior results.
 	
 	TODO FIXTURE!!!
+
+	@author Russell Mezzetta
 	'''
 
 	def setUp(self):

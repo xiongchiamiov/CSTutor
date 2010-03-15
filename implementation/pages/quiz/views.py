@@ -21,9 +21,12 @@ from pages.page import insertLastChildPage
 from django.core.exceptions import ObjectDoesNotExist
 
 def create_quiz(request, course_slug, page_slug):
-	''' create_Quiz View
-		@author John Hartquist
+	''' 
+		create_Quiz View
+
 		This view will create a quiz and take the user to the quiz editor screen.
+
+		@author John Hartquist
 	'''
 	#enforcing permissions
 	try:
@@ -62,6 +65,8 @@ def show_quiz(request, course, page_slug):
 		If the user is trying to view the working_copy, they are shown the
 		regular copy instead. This is to prevent a student from looking
 		at unpublished quizzes
+
+		@author Evan Kleist
 	'''
 	page_slug = safeSlug(page_slug)
 	quiz = Quiz.objects.get(slug=page_slug)
@@ -81,6 +86,8 @@ def delete_quiz(request, course_slug, page_slug):
 	''' delete_quiz View
 		This view confirms deletion of a quiz. The user can then choose
 		 to delete the quiz or cancel
+
+		@author Evan Kleist
 	'''
 	page_slug = safeSlug(page_slug)
 	quiz = Quiz.objects.get(slug=page_slug)
@@ -92,6 +99,8 @@ def add_path(request, course_slug, page_slug, errors):
 	''' add_path View
 		This view allows you to add a path to the quiz. The user can then choose
 		 to save the path or cancel
+
+		@author Evan Kleist
 	'''
 	page_slug = safeSlug(page_slug)
 	quiz = Quiz.objects.get(slug=page_slug)
@@ -109,6 +118,8 @@ def edit_path(request, course_slug, page_slug, errors):
 	''' edit_path View
 		This view allows you to edit an existing path for the quiz. The user can then choose
 		 to save the path or cancel
+
+		@author Evan Kleist
 	'''
 	page_slug = safeSlug(page_slug)
 	quiz = Quiz.objects.get(slug=page_slug + "_workingCopy")
@@ -130,6 +141,8 @@ def remove_question(request, course_slug, page_slug, qNum):
 	''' remove_question View
 		This view confirms deletion of a question. The user can then choose
 		 to delete the question or cancel
+
+		@author Evan Kleist
 	'''
 	page_slug = safeSlug(page_slug)
 	quiz = Quiz.objects.get(slug=page_slug + "_workingCopy")
@@ -142,6 +155,8 @@ def submitQuiz(request, course_slug, page_slug):
 	''' submitQuiz View
 		This view will submit a quiz and create a statistic in the database. It will give the user
 		their score and then direct the user to the appropriate path
+
+		@author Evan Kleist
 	'''
 	page_slug = safeSlug(page_slug)
 
@@ -199,6 +214,8 @@ def edit_quiz(request, course_slug, page_slug):
 
 		Note 1) Pressing "New Multiple Choice Question" will discard any changes made to the quiz, returning it 
 				to its previous state but with a new multiple choice question appended at the end
+
+		@author Evan Kleist
 	'''
 	page_slug = safeSlug(page_slug)
 	# Make sure the course actually exists in the database

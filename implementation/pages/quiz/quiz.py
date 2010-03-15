@@ -16,7 +16,9 @@ from stats.models import Stat
 
 def addCodeQuestion(self):
 	'''
-		Takes a quiz and adds a blank code question to it
+	Takes a quiz and adds a blank code question to it
+
+	@author Evan Kleist
 	'''
 	questions = self.questions.all()
 	newQuestion = CodeQuestion(order=(len(questions)+1), quiz=self)
@@ -25,7 +27,9 @@ def addCodeQuestion(self):
 
 def addMultipleChoiceQuestion(self):
 	'''
-		Takes a quiz and adds a blank multiple choice question to it, as well as 2 blank answers
+	Takes a quiz and adds a blank multiple choice question to it, as well as 2 blank answers
+
+	@author Evan Kleist
 	'''
 	questions = self.questions.all()
 	newQuestion = MultipleChoiceQuestion(order=(len(questions)+1), quiz=self)
@@ -40,6 +44,8 @@ def addPath(self, request, course_slug):
 		and adds a path to the quiz
 
 		pre: must be a POST and contain the post data
+
+		@author Evan Kleist
 	'''
 	errors = []
 	try:
@@ -86,6 +92,8 @@ def checkPrerequisites(self, user):
 		have been met. If the user has edit permissions on the course,
 		then it returns true. Otherwise, it returns true if all prereqs
 		have been met and false if not.
+	
+		@author Evan Kleist
 	'''
 	prereqs = self.prerequisites.all()
 	if (len(prereqs) > 0):
@@ -109,6 +117,8 @@ def checkPrerequisites(self, user):
 def copyQuiz(quiz1, quiz2):
 	'''
 		Takes two quizzes and copies the contents of quiz1 into quiz2
+
+		@author Evan Kleist
 	'''
 
 	# Copy Title
@@ -163,6 +173,8 @@ def matchPath(self, score):
 		This function takes a quiz and a "score" on the quiz, represented as a percentage,
 		and returns the quiz path that the score matches. If no matching path
 		is found, it raises the NoMatchingPath exception.
+
+		@author Evan Kleist
 	'''
 	paths = self.paths.all()
 
@@ -178,6 +190,8 @@ def editPath(self, request, course_slug):
 	'''
 		Takes a working copy of a quiz, a request containing post data, and a course_slug
 		and edits the matching path of the quiz
+
+		@author Evan Kleist
 	'''
 	errors = []
 	path = int(request.POST["path"])
@@ -249,6 +263,8 @@ def editPath(self, request, course_slug):
 def publishQuiz(self):
 	''' 
 		Takes a working copy of a quiz and copies it over to the published copy
+
+		@author Evan Kleist
 	'''
 	errors = validateQuiz(self)
 	if (len(errors) == 0):
@@ -264,6 +280,8 @@ def removePath(self, request):
 	'''
 		Takes a working copy of a quiz and a request containing post data and
 		removes the path from the quiz
+
+		@author Evan Kleist
 	'''
 	errors = []
 	course = self.course
@@ -302,6 +320,8 @@ def removeQuiz(self):
 	'''
 		Removes a quiz from the database, as well as all related 
 		objects
+
+		@author Evan Kleist
 	'''
 	questions = self.questions.all()
 	prerequisites = self.prerequisites.all()
@@ -339,6 +359,8 @@ def reorderQuestions(self):
 	'''
 		Takes a quiz, retrieves its questions, and then reorders the 
 		questions into a valid state.
+
+		@author Evan Kleist
 	'''
 	questions = self.questions.all().order_by("order")
 	qNum = 1
@@ -354,6 +376,8 @@ def reorderQuestions(self):
 def revertQuiz(self):
 	'''
 		Takes a working copy of a quiz and reverts it to its published version
+
+		@author Evan Kleist
 	'''
 	publishedSlug = safeSlug(self.slug)
 	publishedQuiz = Quiz.objects.get(slug=publishedSlug)
@@ -367,6 +391,8 @@ def safeSlug(page_slug):
 	'''
 		Takes a quiz slug and makes sure they are not trying to directly access
 		the working copy. If so, it returns the slug to the published copy
+
+		@author Evan Kleist
 	'''
 
 	if (page_slug.endswith("_workingCopy") != False and page_slug.find("_workingCopy") <= len(page_slug) - 12 and page_slug != "_workingCopy"):
@@ -380,6 +406,8 @@ def saveQuiz(request, course, pid):
 		Takes a request, a course, and a page id. It then pulls the 
 		quiz from the post data and updates the elements in the 
 		database. Before saving, it validates for proper data
+
+		@author Evan Kleist
 	'''
 	data = {}
 	errors = []
@@ -451,6 +479,8 @@ def scoreQuiz(self, request, course_slug, quiz_slug):
 		the form contained in the request and compares it to the 
 		correct answers specified in the quiz. Generates a statistic 
 		for a quiz, adds it to the database and returns their score.
+
+		@author Evan Kleist
 	'''
 	questions = self.questions.all()
 	course = Course.objects.get(slug=course_slug)
@@ -493,6 +523,8 @@ def validateQuestionOrder(self):
 		a unique ordering, and are ordered from 1 -> # of questions
 
 		Returns True if the above constraints are met, False otherwise
+
+		@author Evan Kleist
 	'''
 	
 	questions = self.questions.all()
@@ -509,6 +541,8 @@ def validateQuiz(self):
 		Takes a working copy of a quiz and makes sure all of the data
 		is valid. It returns an array containg the errors or an emtpy
 		array if no errors were found
+		
+		@author Evan Kleist
 	'''
 	errors = []
 	questions = self.questions.all()

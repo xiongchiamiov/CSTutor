@@ -42,6 +42,8 @@ class PageTests(TestCase):
                                               6 PageTestPage3 9
                                                         |
                                                   7 PageTestPage4 8
+
+	@author Mark Gius
 	'''
 	fixtures = ['PageTests']
 	courseName = 'PageTestsCourse'
@@ -62,7 +64,9 @@ class PageTests(TestCase):
 		
 		case no.    inputs           expected output    remark
 		1           Valid Course     True
-		2           Invalid Course   False  
+		2           Invalid Course   False 
+
+		@author Mark Gius 
 		'''
 		pages = Page.objects.filter(course__name=self.courseName)
 		usedNumbers = set([page.left for page in pages]) |\
@@ -75,6 +79,8 @@ class PageTests(TestCase):
 	def test_noPrevPage(self):
 		'''
 		Tests trying to get the "previous" page of a page that has no previous
+
+		@author Mark Gius
 		'''
 		indexPage = Page.objects.get(slug='PageTestsIndexPage')
 		self.assertEquals(getPrevPage(indexPage), None)
@@ -83,6 +89,8 @@ class PageTests(TestCase):
 		'''
 		Tests adding a new page to the tree as a sibling of an existing
 		page
+
+		@author Mark Gius
 		'''
 		olderSibling = Page.objects.get(slug='PageTestsPage1')
 		youngerSibling = getNextPage(olderSibling)
@@ -102,6 +110,8 @@ class PageTests(TestCase):
 	def test_insertChildPage(self):
 		'''
 		Tests adding a new page to the tree as a child of an existing page
+
+		@author Mark Gius
 		'''
 		parent = Page.objects.get(slug='PageTestsPage1')
 		youngerUncle = getNextPage(parent)
@@ -122,6 +132,8 @@ class PageTests(TestCase):
 	def test_insertLastChildPage(self):
 		''' 
 		Tests adding a new page to the tree as the last child of an existing page
+
+		@author Mark Gius
 		'''
 		parent = Page.objects.get(slug="PageTestsIndexPage")
 		newPage = Page(slug="testAddPageAsYoungestChild", name="testAddPageAsYoungestChild")
@@ -138,6 +150,8 @@ class PageTests(TestCase):
 	def test_removeParent(self):
 		'''
 		Tests removing a parent page from the tree (child pages inherited by grandparent)
+
+		@author Mark Gius
 		'''
 		toRemovePage = Page.objects.get(slug='PageTestsPage3')
 		removePage(toRemovePage)
@@ -153,6 +167,8 @@ class PageTests(TestCase):
 	def test_removeFirstChild(self):
 		'''
 		Tests removing the first child of a tree
+
+		@author Mark Gius
 		'''
 
 		toRemovePage = Page.objects.get(slug='PageTestsPage1')
@@ -169,6 +185,8 @@ class PageTests(TestCase):
 	def test_removeMiddleChild(self):
 		'''
 		Tests removing the middle child of a tree
+
+		@author Mark Gius
 		'''
 		toRemovePage = Page.objects.get(slug='PageTestsPage2')
 		removePage(toRemovePage)
@@ -184,6 +202,8 @@ class PageTests(TestCase):
 	def test_removeLastChild(self):
 		'''
 		Tests removing the last child of a tree
+
+		@author Mark Gius
 		'''
 		toRemovePage = Page.objects.get(slug='PageTestsPage5')
 		removePage(toRemovePage)
@@ -202,6 +222,8 @@ class PageTests(TestCase):
 		
 		case no.    inputs         expected output       remark
 		1           page,page      ValidateTree == True
+
+		@author Mark Gius
 		'''
 		#test that a move doesn't break page->lesson linkage
 		#currently moving a page will disassociate it from its lesson or quiz
@@ -228,13 +250,14 @@ class PageTests(TestCase):
 	def test_move_page_view(self):
 		'''
 		Tests the basic functionality of the move_page view
-		@author Russell Mezzetta
 
 		case    input                                                                expected output
 		1       try to view move with anonymous user                                 user redirected to login
 		2       try to view move with user2(no edit perm)                            page forbidden
 		3       User1(has edit perm) move PageTestPage5 to sibling of PageTestPage2  Successful Move
 		4       User1(has edit perm) move PageTestPage5 to be child of PageTestPage2 Successful Move
+
+		@author Russell Mezzetta
 		'''
 		c = Client()
 		page2 = "PageTestsPage2"
