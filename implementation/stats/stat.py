@@ -1,3 +1,5 @@
+# vim: set noet:
+
 '''
 This file contains operations associated with statistics.
 
@@ -179,74 +181,28 @@ def getUserBestAggregates(course):
 def getUserBestScore(user, quiz):
 	'''
 	Gets the best score for a given user on a given quiz. Takes a user and 
-    the page where a quiz is located. Returns the percentage of the best
-    score.
+	the page where a quiz is located. Returns the percentage of the best
+	score.
 
+	Note these special conditions:
+	1. If there are no quizes, this function returns 0%
+	2. If there is an empty quiz, this function returns 100%
+
+	@precondition quiz and user exist
+	@precondition (Quiz.objects.get(quiz)!=NULL) AND 
+	               Quiz.objects.get(course) != NULL)
+	@postcondition we get the user's best score for the given quiz
 	@author Andrew J. Musselman
 	'''
-	stat = Stats.objects.filter(page=quiz, user=user).sort("-score")[0]
-	return (stat.score/stat.maxScore)
+	try:
+		stat = Stat.objects.filter(page=quiz, user=user).order_by("-score")[0]
+	except IndexError: #If there are NO stats
+		return 0
 
-def getUserLatestScore(user,quiz):
-	'''
-	Gets the latest score for a given user on a given quiz.
+	if(stat.maxscore <= 0):
+		return 1
+		#Return 100% if the user takes a quiz with no questions
+	else:
+		return (stat.score/stat.maxscore)
 
-	@author Andrew J. Musselman
-	'''
-	pass
-
-def getUserAverageScore(user,quiz):
-	'''
-	Gets the average score for a given user on a given quiz.
-	Note that weighting makes no sense for this use case, as the max score for a
-	quiz should be the same each time you take it.
-
-	@author Andrew J. Musselman
-	'''
-	pass
-
-def getCourseLatestAverage(course, quiz):
-	'''
-	Gets the average score for the the latest quiz results for a given quiz.
-	Note that weighting makes no sense for this use case, as the max score for a
-	quiz should be the same each time you take it.
-
-	@author Andrew J. Musselman
-	'''
-	pass
-
-def getCourseBestAverage(course, quiz):
-	'''
-	Gets the average score of the best quiz results for a given quiz.
-	Note that weighting makes no sense for this use case, as the max score for a
-	quiz should be the same each time you take it.
-
-	@author Andrew J. Musselman
-	'''
-	pass
-
-def getCourseAggregates(course):
-	'''
-	Calculate aggragte stats for all users in a particular course
-
-	@author Andrew J. Musselman
-	'''
-	pass
-
-
-def removeStat(stat, user):
-	'''
-	Removes a stat from a user
-
-	@author Andrew J. Musselman
-	'''
-	pass
-
-def purgeDeadStats():
-	'''
-	Removes stats that have no associated Page/User
-
-	@author Andrew J. Musselman
-	'''
-	pass 
 

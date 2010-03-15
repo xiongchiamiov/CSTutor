@@ -199,4 +199,39 @@ class StatsTests(TestCase):
 		#There are two users with stats results in this course.
 		self.assertEquals(len(aggregatesList),2)
 		
+	
+	def test_getUserBestScore(self):
+		'''
+		Tests the getUserBestScore function.
+		
+		In this test, we attempt to use a well-formed stat.
 
+		Inputs: The user 'fakeuser' as grabbed from the database
+		        The quiz 'samplequiz' as grabbed from the database
+				The course 'gene-fishers-cpe102-fall-08' from the database
+				And the score of 0
+		Outputs: A score of 0
+		'''
+
+		user = User.objects.get(username = 'fakeuser')
+		quiz = Page.objects.get(pk = '4') #sample quiz 
+		course = Course.objects.get(pk = '1')  
+		score = 0 #A score of 0 is always safe
+		testStat = Stat.CreateStat(course,quiz,user,score)
+		self.assertEquals(getUserBestScore(user,quiz),0)
+
+	def test_nostatsGetUSerBestScore(self):
+		'''
+		Tests the getUserBestScore function. In this test, we have NO stats
+		for the given quiz.
+		Inputs: The user 'fakeuser' as grabbed from the database
+		        The quiz 'samplequiz' as grabbed from the database
+		Outputs: A score of 0
+		'''	
+		user = User.objects.get(username = 'fakeuser')
+		quiz = Page.objects.get(pk = '4') #sample quiz 
+		self.assertEquals(getUserBestScore(user,quiz),0)
+	
+
+
+		
