@@ -8,6 +8,7 @@ Contains operations for Courses
 from courses.models import *
 from courses.enrollment import *
 from pages.lesson.models import Lesson
+from pages.lesson.lesson import saveLessonName
 from pages.models import Page
 
 def CreateCourse(name, user, private, slug=None):
@@ -60,6 +61,14 @@ def renameCourse(course, newName):
 	course.name = newName
 	course.slug = newSlug
 	course.save()
+	#also change the 'index' lesson to reflect name change
+	indexPage = Lesson.objects.get(course = course, left = 1)
+	ret = saveLessonName(indexPage, newName)
+	if 'message' in ret:#indicates failure SHOULD NOT HAPPEN EVER
+		return ret
+	if 'lesson' in ret:#indicates success, should always happen
+		return {'course':course, 'lesson': ret['lesson']}
+	#left this in case a bozo changes saveLessonName
 	return {'course':course}
 
 def addUser(self, user, view = True, edit=False, stats=False, manage=False):

@@ -164,9 +164,10 @@ def edit_lesson(request, course_slug, page_slug):
 		#Saves the working copy of the lesson
 		if "Save" in request.POST:
 			#save the content of the lesson
-			data['lesson'] = saveLessonWorkingCopy(lesson, request.POST['content'])
+			data['lesson'] = lesson = saveLessonWorkingCopy(lesson, request.POST['content'])
 
 			#check if the name changed
+			name_changed = False
 			if lesson.name != request.POST['lessonname']:
 				ret = {}
 
@@ -174,25 +175,36 @@ def edit_lesson(request, course_slug, page_slug):
 					ret = renameCourse(Course.objects.get(slug=course_slug), request.POST['lessonname'])
 					if 'course' in ret:
 						course_slug = ret['course'].slug
-						saveLessonName(lesson, request.POST['lessonname'])
+						data['lesson'] = lesson = ret['lesson']
 				else:
 					ret = saveLessonName(lesson, request.POST['lessonname'])
 				#check if saveLessonName returned error message
 				if 'message' in ret:
 					data['message'] = ret['message']
 					return master_rtr(request, 'page/lesson/edit_lesson.html', data)
-				#else:
-				#	return HttpResponseRedirect(reverse('pages.views.edit_page', args=[course_slug, lesson.slug]))
+				elif 'lesson' in ret:#successful name change
+					data['lesson'] = lesson = ret['lesson']
+					name_changed = True
 			
 			if request.POST['Save'] == "Save":
 				#redirect to this page(redirect b/c name may have changed)
-				return HttpResponseRedirect(reverse('pages.views.edit_page', args=[course_slug, lesson.slug]))
+				if name_changed:
+					return HttpResponseRedirect(reverse('pages.views.edit_page', args=[course_slug, lesson.slug]))
+				else:
+					data['unpublished'] = data['lesson'].workingCopy != data['lesson'].content
+					return master_rtr(request, 'page/lesson/edit_lesson.html', data)
 			elif request.POST['Save'] == "Save/Preview":
 				#redirect to the '/preview' view of this page 
 				#(note lesson slug may have changed)
 				return HttpResponseRedirect(reverse('pages.views.show_page_preview', args=[course_slug, lesson.slug]))
-			else: #request.POST['Save'] == "Save/Publish":
-				#data['lesson'] = 
+			elif request.POST['Save'] == "Publish":
+				data['lesson'] = publishLessonChanges(lesson)
+				if name_changed:
+					return HttpResponseRedirect(reverse('pages.views.edit_page', args=[course_slug, lesson.slug]))
+				else:
+					data['unpublished'] = False
+					return master_rtr(request, 'page/lesson/edit_lesson.html', data)
+			else: #request.POST['Save'] == "Publish/Preview":
 				publishLessonChanges(lesson)
 				return HttpResponseRedirect(reverse('pages.views.show_page', args=[course_slug, lesson.slug]))
 			#return master_rtr(request, 'page/lesson/edit_lesson.html', data)
@@ -217,14 +229,15 @@ def edit_lesson(request, course_slug, page_slug):
 		elif "Move" in request.POST:
 			return HttpResponseRedirect(reverse('pages.views.move_page', args=[course_slug, page_slug]))
 		
+		#REMOVED by Russ, left just in case
 		#Publishes the workingCopy
-		elif "Publish" in request.POST:
+		#elif "Publish" in request.POST:
 			#save any changes made to working copy before saving the same changes 
 			#to the published copy.
-			lesson.workingCopy = request.POST['content']
-			data['lesson'] = publishLessonChanges(lesson)
-			data['unpublished'] = False
-			return master_rtr(request, 'page/lesson/edit_lesson.html', data)
+		#	lesson.workingCopy = request.POST['content']
+		#	data['lesson'] = publishLessonChanges(lesson)
+		#	data['unpublished'] = False
+		#	return master_rtr(request, 'page/lesson/edit_lesson.html', data)
 
 		#Revert the workingCopy to the published copy
 		elif "Revert" in request.POST:
