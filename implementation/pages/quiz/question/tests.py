@@ -12,11 +12,13 @@ class QuestionTests(unittest.TestCase):
 	''' 
 		Unit Tests on Quiz Views.  Tests ensure that all Question
 		related functionality works properly
-		@author EVan Kleist
+		@author Evan Kleist
 	'''	
 	def setUp(self):
 		'''
 			Set up the tests
+
+			@author Evan Kleist
 		'''
 		#TODO - Instead of using a known quiz page, create a quiz 
 		#	page here and test on that page

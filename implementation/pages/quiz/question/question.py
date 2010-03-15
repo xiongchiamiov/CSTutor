@@ -1,5 +1,5 @@
 '''
-question.py fil for quiestion related operations.
+This file contains question related operations.
 
 @author Evan Kleist
 '''
