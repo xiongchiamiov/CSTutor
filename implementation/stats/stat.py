@@ -203,6 +203,6 @@ def getUserBestScore(user, quiz):
 		return 1
 		#Return 100% if the user takes a quiz with no questions
 	else:
-		return (stat.score/stat.maxscore)
+		return (stat.score/stat.maxscore * 100)
 
 
