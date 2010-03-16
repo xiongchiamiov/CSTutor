@@ -82,6 +82,12 @@ class QuizUnitTests(TestCase):
 
 		# Case 3
 		self.failUnlessEqual(newQuestion.text, "")
+
+	def test_addPath(self):
+		pass
+
+	def test_checkPrerequisites(self):
+		pass
 		
 	def test_copyQuiz(self):
 		'''
@@ -102,7 +108,13 @@ class QuizUnitTests(TestCase):
 		self.failUnlessEqual(quiz1.text, quiz3.text)
 		self.failUnlessEqual(quiz1.name, quiz3.name)
 		self.failUnlessEqual(quiz1.hidden, quiz3.hidden)
-		self.failUnlessEqual(list(quiz1.prerequisites.all()), list(quiz3.prerequisites.all()))
+		self.failUnlessEqual(quiz1.prerequisites.all().count(), quiz3.prerequisites.all().count())
+		prereqs2 = iter(quiz3.prerequisites.all())
+		for prereq in quiz1.prerequisites.all():
+			prereq2 = prereqs2.next()
+			self.failUnlessEqual(prereq2.containingQuiz, quiz3)
+			self.failUnlessEqual(prereq.containingQuiz, quiz1)
+			self.failUnlessEqual(prereq.requiredQuiz, prereq2.requiredQuiz)
 		self.failUnlessEqual(quiz1.paths.all().count(), quiz3.paths.all().count())
 		paths2 = iter(quiz3.paths.all())
 		for path in quiz1.paths.all():
@@ -532,7 +544,7 @@ class QuizUnitTests(TestCase):
 		workingQuiz = Quiz.objects.get(slug=self.quizSlug1 + "_workingCopy")
 
 		# Make a change to the working copy of the quiz
-		workingQuiz.name = "modifiedName"
+		workingQuiz.name = "modifiedName22"
 		workingQuiz.hidden = True
 		workingQuiz.save()
 
@@ -554,7 +566,7 @@ class QuizUnitTests(TestCase):
 			Case no.    Input                               Expected Output          Remark
 			1           quizSlug1                           quizSlug1                A "safe" slug
 			2           quizSlug1_workingCopy               quizSlug1                An "unsafe" slug
-			3           quizSlug1_workingCopy_workingCopy   quizSlug1_workingCopy    Special case if a quiz happened to have a name of _workingCopy
+			3           quizSlug1_workingCopy_workingCopy   quizSlug1_workingCopy    Special case if a quiz happened to have a name ending in  _workingCopy
 			4           _workingCopy                        _workingCopy             Special case name _workingCopy
 
 			@author Evan Kleist
@@ -579,9 +591,17 @@ class QuizUnitTests(TestCase):
 		'''
 			Test that saveQuiz actually saves a quiz and updates all of its components
 
-			Case no.    Input          Expected Output          Remark
-			1           
-			2           
+			Case no.  Input                              Expected Output                          Remark
+			1         quizTitle = "QuizUnitTests_Quiz2"  errors = ["Quiz Title already exists!"]  A quiz with a duplicate name
+			2         quizTitle = ""                     errors ["Quiz Title cannot be blank!"]   Blank quiz title
+			3         quizTitle = "New Title"            quiz.name = "New Title"                  Change the title, make quiz hidden, swap question 2 and 3
+			                                             quiz.slug = "new-title"
+			                                             quiz.text = "New Title"
+			          hidden = True                      quiz.hidden = True   
+                   mcq3text = "Question 2"            quiz.question3.text = "Question 2"
+                   mcq3order = 2                      quiz.question3.order = 2
+			          mcq2text = "Question 3"            quiz.question2.text = "Question 3"
+			          mcq2order = 3                      quiz.question2.order = 3
 		'''
 		environ = {
 			'HTTP_COOKIE': self.client.cookies,
@@ -594,35 +614,103 @@ class QuizUnitTests(TestCase):
 			'SERVER_PROTOCOL': 'HTTP/1.1',
 		}
 		environ.update(self.client.defaults)
-
+		quizSlug = self.quizSlug1
 		customRequest = WSGIRequest(environ)
 
-		# Make a request that changes all fo the quiz elements
-		customRequest.POST = {'quizTitle':"New Title"}
+		# Case 1
+		customRequest.POST = {'quizTitle':"QuizUnitTests_Quiz2"}
+		r = saveQuiz(customRequest, self.courseSlug, quizSlug)
+		errors = r["errors"]
+		quizSlug = r["quiz_slug"]
+		self.failUnlessEqual(errors, ["Quiz Title already exists!"])
 
-	def test_saveQuiz_badData(self):
-		'''
-			Test that saveQuiz with bad data does not modify any of its components
+		# Case 2
+		customRequest.POST = {'quizTitle':""}
+		r = saveQuiz(customRequest, self.courseSlug, quizSlug)
+		errors = r["errors"]
+		quizSlug = r["quiz_slug"]
+		self.failUnlessEqual(errors, ["Quiz Title cannot be blank!"])
 
-			Case no.    Input          Expected Output          Remark
-			1           
-			2
-	
-			@author Evan Kleist           
-		'''
-		pass
+		# Case 3
+		customRequest.POST = {'quizTitle':"New Title",
+									 'hidden':"on",
+									 'mcq1text':"Test question 1",
+									 'mcq1order':1,
+									 'mcq1a1':"a1",
+									 'mcq1a1order':1,
+									 'mcq1ac':1,
+									 'mcq1a2':"b1",
+									 'mcq1a2order':2,
+									 'mcq2text':"Test question 3",
+									 'mcq2order':3,
+									 'mcq2a1':"a1",
+									 'mcq2a1order':1,
+									 'mcq2ac':1,
+									 'mcq2a2':"b1",
+									 'mcq2a2order':2,
+									 'mcq3text':"Test question 2",
+									 'mcq3order':2,
+									 'mcq3a1':"a1",
+									 'mcq3a1order':1,
+									 'mcq3ac':1,
+									 'mcq3a2':"b1",
+									 'mcq3a2order':2,
+									}
+		r = saveQuiz(customRequest, self.courseSlug, quizSlug)
+		errors = r["errors"]
+		quizSlug = r["quiz_slug"]
+		quiz = Quiz.objects.get(slug=quizSlug + "_workingCopy")
+		self.failUnlessEqual(quiz.name, "New Title")
+		self.failUnlessEqual(quiz.text, "New Title")
+		self.failUnlessEqual(quiz.slug, "new-title_workingCopy")
+		self.failUnlessEqual(quiz.hidden, True)
+		self.failUnlessEqual(errors, [])
 
 	def test_scoreQuiz(self):
 		'''
 			Test that scoreQuiz correctly returns a score for the submitted quiz
 
 			Case no.    Input          Expected Output          Remark
-			1           
-			2
+			1           quiz2          100                      submitting a blank quiz is 0/0
+			2           quiz1          0                        submitting a quiz without answering anything is 0/3
+			3           quiz1          100                      submitting a quiz with all correct answers is 3/3
 
 			@author Evan Kleist           
 		'''
-		pass
+		environ = {
+			'HTTP_COOKIE': self.client.cookies,
+			'PATH_INFO': '/',
+			'QUERY_STRING': '',
+			'REQUEST_METHOD': 'GET',
+			'SCRIPT_NAME': '',
+			'SERVER_NAME': 'testserver',
+			'SERVER_PORT': 80,
+			'SERVER_PROTOCOL': 'HTTP/1.1',
+		}
+		environ.update(self.client.defaults)
+		quizSlug = self.quizSlug1
+		customRequest = WSGIRequest(environ)
+
+		# Case 1
+		customRequest.POST = {}
+		customRequest.user = False
+		quiz = Quiz.objects.get(slug=self.quizSlug2)
+		score = scoreQuiz(quiz, customRequest, self.courseSlug, quiz.slug)
+		self.failUnlessEqual(score, 0)
+
+		# Case 2
+		customRequest.POST = {}
+		customRequest.user = False
+		quiz = Quiz.objects.get(slug=quizSlug)
+		score = scoreQuiz(quiz, customRequest, self.courseSlug, quiz.slug)
+		self.failUnlessEqual(score, 0)
+
+		# Case 3
+		customRequest.POST = {'mcq1':1, 'mcq2':1, 'mcq3':1}
+		customRequest.user = False
+		quiz = Quiz.objects.get(slug=quizSlug)
+		score = scoreQuiz(quiz, customRequest, self.courseSlug, quiz.slug)
+		self.failUnlessEqual(score, 3)
 
 	def test_validateQuestionOrder(self):
 		'''
@@ -669,18 +757,90 @@ class QuizUnitTests(TestCase):
 		q.order = 3
 		q.save()
 
-	def test_validateQuizFromPost(self):
+	def test_validateQuiz(self):
 		'''
-			Test that validateQuizFromPost correctly handles bad data
+			Test that validateQuizcorrectly handles bad data
 
-			Case no.    Input          Expected Output          Remark
-			1           
-			2     
+			Case no.  Input                         Expected Output                            Remark
+			1         quiz.text = ""                errors = ["Quiz Title can not be blank"]   Blank quiz title
+			2         quiz.prereq = self.quiz2      errors = ["QuizUnitTests_Quiz2 does not    Invalid prerequisite
+			                                                   have a passing path"]
+			3         quiz.question2.text = ""      errors = ["Question cannot have a blank    Blank mcq prompt
+			                                                   prompt"]
+			4         quiz.question2.a1.text = ""   errors = ["Answer must not be blank"]      Blank answer
+			5         quiz.question1.text = ""      errors = ["Code Question prompt must       Blank cq prompt
+			                                                   not be blank"
+			6         quiz.question1.eo = ""        errors = ["Code Question expected output   Blank cq expected output
+			                                                   must not be blank"
+			7         quiz.question1.order = "0"    errors = ["Questions must have a valid     Invalid question ordering
+			                                                   ordering"]
 
 			@author Evan Kleist      
 		'''
-		pass
+		quizSlug = "validatequiz_quiz_workingCopy"
 
+		# Case 1
+		quiz = Quiz.objects.get(slug=quizSlug)
+		quiz.text = ""
+		quiz.save()
+		errors = validateQuiz(quiz)
+		self.failUnlessEqual(errors, ["Quiz Title can not be blank"])
+		revertQuiz(quiz)
+
+		# Case 2
+		newPrereq = Prerequisite(containingQuiz = Quiz.objects.get(slug=quizSlug), requiredQuiz = Quiz.objects.get(slug=self.quizSlug2))
+		newPrereq.save()
+		quiz = Quiz.objects.get(slug=quizSlug)
+		errors = validateQuiz(quiz)
+		self.failUnlessEqual(errors, ["QuizUnitTests_Quiz2 does not have a passing path"])
+		revertQuiz(quiz)
+
+		# Case 3
+		question = quiz.questions.get(order="2")
+		question.text = ""
+		question.save()
+		quiz = Quiz.objects.get(slug=quizSlug)
+		errors = validateQuiz(quiz)
+		self.failUnlessEqual(errors, ["Question cannot have a blank prompt"])
+		revertQuiz(quiz)
+
+
+		# Case 4
+		question = quiz.questions.get(order="2").multiplechoicequestion
+		answer = question.answers.get(order="1")
+		answer.text = ""
+		answer.save()
+		quiz = Quiz.objects.get(slug=quizSlug)
+		errors = validateQuiz(quiz)
+		self.failUnlessEqual(errors, ["Answer must not be blank"])
+		revertQuiz(quiz)
+
+		# Case 5
+		question = quiz.questions.get(order="1").codequestion
+		question.text = ""
+		question.save()
+		quiz = Quiz.objects.get(slug=quizSlug)
+		errors = validateQuiz(quiz)
+		self.failUnlessEqual(errors, ["Code Question prompt must not be blank"])
+		revertQuiz(quiz)
+
+		# Case 6
+		question = quiz.questions.get(order="1").codequestion
+		question.expectedOutput = ""
+		question.save()
+		quiz = Quiz.objects.get(slug=quizSlug)
+		errors = validateQuiz(quiz)
+		self.failUnlessEqual(errors, ["Code Question expected output must not be blank"])
+		revertQuiz(quiz)
+
+		# Case 7
+		question = quiz.questions.get(order="2")
+		question.order = 0
+		question.save()
+		quiz = Quiz.objects.get(slug=quizSlug)
+		errors = validateQuiz(quiz)
+		self.failUnlessEqual(errors, ["Questions must have a valid ordering"])
+		revertQuiz(quiz)
 class QuizViewTests(TestCase):
 	''' 
 		Unit Tests on Quiz Views.  Tests use an emulated Web Client

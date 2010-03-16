@@ -9,7 +9,7 @@
     <field type="BooleanField" name="is_staff">True</field>
     <field type="BooleanField" name="is_active">True</field>
     <field type="BooleanField" name="is_superuser">True</field>
-    <field type="DateTimeField" name="last_login">2010-03-10 02:37:24</field>
+    <field type="DateTimeField" name="last_login">2010-03-16 17:53:12</field>
     <field type="DateTimeField" name="date_joined">2010-01-22 13:16:33</field>
     <field to="auth.group" name="groups" rel="ManyToManyRel"></field>
     <field to="auth.permission" name="user_permissions" rel="ManyToManyRel"></field>
@@ -33,7 +33,7 @@
     <field type="SlugField" name="slug">quizunittest_course</field>
     <field type="TextField" name="name">QuizUnitTest_course</field>
     <field type="IntegerField" name="left">1</field>
-    <field type="IntegerField" name="right">8</field>
+    <field type="IntegerField" name="right">10</field>
   </object>
   <object pk="10013" model="pages.page">
     <field to="courses.course" name="course" rel="ManyToOneRel">10001</field>
@@ -77,6 +77,20 @@
     <field type="IntegerField" name="left">0</field>
     <field type="IntegerField" name="right">0</field>
   </object>
+  <object pk="10019" model="pages.page">
+    <field to="courses.course" name="course" rel="ManyToOneRel">10001</field>
+    <field type="SlugField" name="slug">validatequiz_quiz</field>
+    <field type="TextField" name="name">validateQuiz_Quiz</field>
+    <field type="IntegerField" name="left">8</field>
+    <field type="IntegerField" name="right">9</field>
+  </object>
+  <object pk="10020" model="pages.page">
+    <field to="courses.course" name="course" rel="ManyToOneRel">10001</field>
+    <field type="SlugField" name="slug">validatequiz_quiz_workingCopy</field>
+    <field type="TextField" name="name">validateQuiz_Quiz</field>
+    <field type="IntegerField" name="left">0</field>
+    <field type="IntegerField" name="right">0</field>
+  </object>
   <object pk="10012" model="lesson.lesson">
     <field type="TextField" name="content">Landing page for newcourse&lt;br /&gt;Your content here</field>
     <field type="TextField" name="workingCopy">&lt;p&gt;Sample index page&lt;/p&gt;</field>
@@ -111,16 +125,18 @@
     <field type="BooleanField" name="hidden">False</field>
     <field type="BooleanField" name="upToDate">False</field>
   </object>
+  <object pk="10019" model="quiz.quiz">
+    <field type="TextField" name="text">validateQuiz_Quiz</field>
+    <field type="BooleanField" name="hidden">False</field>
+    <field type="BooleanField" name="upToDate">True</field>
+  </object>
+  <object pk="10020" model="quiz.quiz">
+    <field type="TextField" name="text">validateQuiz_Quiz</field>
+    <field type="BooleanField" name="hidden">False</field>
+    <field type="BooleanField" name="upToDate">False</field>
+  </object>
   <object pk="1" model="quiz.path">
     <field to="quiz.quiz" name="quiz" rel="ManyToOneRel">10014</field>
-    <field type="IntegerField" name="highscore">50</field>
-    <field type="IntegerField" name="lowscore">0</field>
-    <field type="TextField" name="text">sfsdfsfd</field>
-    <field to="pages.page" name="toPage" rel="ManyToOneRel">10013</field>
-    <field type="BooleanField" name="passed">False</field>
-  </object>
-  <object pk="2" model="quiz.path">
-    <field to="quiz.quiz" name="quiz" rel="ManyToOneRel">10013</field>
     <field type="IntegerField" name="highscore">50</field>
     <field type="IntegerField" name="lowscore">0</field>
     <field type="TextField" name="text">sfsdfsfd</field>
@@ -135,13 +151,45 @@
     <field to="pages.page" name="toPage" rel="ManyToOneRel">10013</field>
     <field type="BooleanField" name="passed">True</field>
   </object>
-  <object pk="4" model="quiz.path">
+  <object pk="5" model="quiz.path">
+    <field to="quiz.quiz" name="quiz" rel="ManyToOneRel">10020</field>
+    <field type="IntegerField" name="highscore">100</field>
+    <field type="IntegerField" name="lowscore">0</field>
+    <field type="TextField" name="text"></field>
+    <field to="pages.page" name="toPage" rel="ManyToOneRel">10012</field>
+    <field type="BooleanField" name="passed">True</field>
+  </object>
+  <object pk="6" model="quiz.path">
+    <field to="quiz.quiz" name="quiz" rel="ManyToOneRel">10019</field>
+    <field type="IntegerField" name="highscore">100</field>
+    <field type="IntegerField" name="lowscore">0</field>
+    <field type="TextField" name="text"></field>
+    <field to="pages.page" name="toPage" rel="ManyToOneRel">10012</field>
+    <field type="BooleanField" name="passed">True</field>
+  </object>
+  <object pk="7" model="quiz.path">
+    <field to="quiz.quiz" name="quiz" rel="ManyToOneRel">10013</field>
+    <field type="IntegerField" name="highscore">50</field>
+    <field type="IntegerField" name="lowscore">0</field>
+    <field type="TextField" name="text">sfsdfsfd</field>
+    <field to="pages.page" name="toPage" rel="ManyToOneRel">10013</field>
+    <field type="BooleanField" name="passed">False</field>
+  </object>
+  <object pk="8" model="quiz.path">
     <field to="quiz.quiz" name="quiz" rel="ManyToOneRel">10013</field>
     <field type="IntegerField" name="highscore">100</field>
     <field type="IntegerField" name="lowscore">99</field>
     <field type="TextField" name="text">sfsdfsfd</field>
     <field to="pages.page" name="toPage" rel="ManyToOneRel">10013</field>
     <field type="BooleanField" name="passed">True</field>
+  </object>
+  <object pk="1" model="quiz.prerequisite">
+    <field to="quiz.quiz" name="containingQuiz" rel="ManyToOneRel">10014</field>
+    <field to="quiz.quiz" name="requiredQuiz" rel="ManyToOneRel">10019</field>
+  </object>
+  <object pk="2" model="quiz.prerequisite">
+    <field to="quiz.quiz" name="containingQuiz" rel="ManyToOneRel">10013</field>
+    <field to="quiz.quiz" name="requiredQuiz" rel="ManyToOneRel">10019</field>
   </object>
   <object pk="10010" model="question.question">
     <field type="TextField" name="text">&lt;p&gt;Test question 1&lt;/p&gt;</field>
@@ -158,17 +206,37 @@
     <field type="IntegerField" name="order">3</field>
     <field to="quiz.quiz" name="quiz" rel="ManyToOneRel">10014</field>
   </object>
-  <object pk="10013" model="question.question">
+  <object pk="10016" model="question.question">
+    <field type="TextField" name="text">&lt;p&gt;cq1text&lt;/p&gt;</field>
+    <field type="IntegerField" name="order">1</field>
+    <field to="quiz.quiz" name="quiz" rel="ManyToOneRel">10020</field>
+  </object>
+  <object pk="10017" model="question.question">
+    <field type="TextField" name="text">&lt;p&gt;mcq1text&lt;/p&gt;</field>
+    <field type="IntegerField" name="order">2</field>
+    <field to="quiz.quiz" name="quiz" rel="ManyToOneRel">10020</field>
+  </object>
+  <object pk="10018" model="question.question">
+    <field type="TextField" name="text">&lt;p&gt;cq1text&lt;/p&gt;</field>
+    <field type="IntegerField" name="order">1</field>
+    <field to="quiz.quiz" name="quiz" rel="ManyToOneRel">10019</field>
+  </object>
+  <object pk="10019" model="question.question">
+    <field type="TextField" name="text">&lt;p&gt;mcq1text&lt;/p&gt;</field>
+    <field type="IntegerField" name="order">2</field>
+    <field to="quiz.quiz" name="quiz" rel="ManyToOneRel">10019</field>
+  </object>
+  <object pk="10020" model="question.question">
     <field type="TextField" name="text">&lt;p&gt;Test question 1&lt;/p&gt;</field>
     <field type="IntegerField" name="order">1</field>
     <field to="quiz.quiz" name="quiz" rel="ManyToOneRel">10013</field>
   </object>
-  <object pk="10014" model="question.question">
+  <object pk="10021" model="question.question">
     <field type="TextField" name="text">&lt;p&gt;Test question 2&lt;/p&gt;</field>
     <field type="IntegerField" name="order">2</field>
     <field to="quiz.quiz" name="quiz" rel="ManyToOneRel">10013</field>
   </object>
-  <object pk="10015" model="question.question">
+  <object pk="10022" model="question.question">
     <field type="TextField" name="text">&lt;p&gt;Test question 3&lt;/p&gt;</field>
     <field type="IntegerField" name="order">3</field>
     <field to="quiz.quiz" name="quiz" rel="ManyToOneRel">10013</field>
@@ -179,11 +247,31 @@
   </object>
   <object pk="10012" model="question.multiplechoicequestion">
   </object>
-  <object pk="10013" model="question.multiplechoicequestion">
+  <object pk="10017" model="question.multiplechoicequestion">
   </object>
-  <object pk="10014" model="question.multiplechoicequestion">
+  <object pk="10019" model="question.multiplechoicequestion">
   </object>
-  <object pk="10015" model="question.multiplechoicequestion">
+  <object pk="10020" model="question.multiplechoicequestion">
+  </object>
+  <object pk="10021" model="question.multiplechoicequestion">
+  </object>
+  <object pk="10022" model="question.multiplechoicequestion">
+  </object>
+  <object pk="10016" model="question.codequestion">
+    <field type="TextField" name="beforeCode"></field>
+    <field type="BooleanField" name="showBeforeCode">False</field>
+    <field type="TextField" name="editableCode"></field>
+    <field type="TextField" name="afterCode"></field>
+    <field type="BooleanField" name="showAfterCode">False</field>
+    <field type="TextField" name="expectedOutput">cq1eo</field>
+  </object>
+  <object pk="10018" model="question.codequestion">
+    <field type="TextField" name="beforeCode"></field>
+    <field type="BooleanField" name="showBeforeCode">False</field>
+    <field type="TextField" name="editableCode"></field>
+    <field type="TextField" name="afterCode"></field>
+    <field type="BooleanField" name="showAfterCode">False</field>
+    <field type="TextField" name="expectedOutput">cq1eo</field>
   </object>
   <object pk="1" model="question.answer">
     <field to="question.multiplechoicequestion" name="question" rel="ManyToOneRel">10010</field>
@@ -221,38 +309,62 @@
     <field type="IntegerField" name="order">2</field>
     <field type="TextField" name="text">b3</field>
   </object>
-  <object pk="7" model="question.answer">
-    <field to="question.multiplechoicequestion" name="question" rel="ManyToOneRel">10013</field>
+  <object pk="13" model="question.answer">
+    <field to="question.multiplechoicequestion" name="question" rel="ManyToOneRel">10017</field>
+    <field type="BooleanField" name="correct">True</field>
+    <field type="IntegerField" name="order">1</field>
+    <field type="TextField" name="text">a</field>
+  </object>
+  <object pk="14" model="question.answer">
+    <field to="question.multiplechoicequestion" name="question" rel="ManyToOneRel">10017</field>
+    <field type="BooleanField" name="correct">False</field>
+    <field type="IntegerField" name="order">2</field>
+    <field type="TextField" name="text">b</field>
+  </object>
+  <object pk="15" model="question.answer">
+    <field to="question.multiplechoicequestion" name="question" rel="ManyToOneRel">10019</field>
+    <field type="BooleanField" name="correct">True</field>
+    <field type="IntegerField" name="order">1</field>
+    <field type="TextField" name="text">a</field>
+  </object>
+  <object pk="16" model="question.answer">
+    <field to="question.multiplechoicequestion" name="question" rel="ManyToOneRel">10019</field>
+    <field type="BooleanField" name="correct">False</field>
+    <field type="IntegerField" name="order">2</field>
+    <field type="TextField" name="text">b</field>
+  </object>
+  <object pk="17" model="question.answer">
+    <field to="question.multiplechoicequestion" name="question" rel="ManyToOneRel">10020</field>
     <field type="BooleanField" name="correct">True</field>
     <field type="IntegerField" name="order">1</field>
     <field type="TextField" name="text">a1</field>
   </object>
-  <object pk="8" model="question.answer">
-    <field to="question.multiplechoicequestion" name="question" rel="ManyToOneRel">10013</field>
+  <object pk="18" model="question.answer">
+    <field to="question.multiplechoicequestion" name="question" rel="ManyToOneRel">10020</field>
     <field type="BooleanField" name="correct">False</field>
     <field type="IntegerField" name="order">2</field>
     <field type="TextField" name="text">b1</field>
   </object>
-  <object pk="9" model="question.answer">
-    <field to="question.multiplechoicequestion" name="question" rel="ManyToOneRel">10014</field>
+  <object pk="19" model="question.answer">
+    <field to="question.multiplechoicequestion" name="question" rel="ManyToOneRel">10021</field>
     <field type="BooleanField" name="correct">True</field>
     <field type="IntegerField" name="order">1</field>
     <field type="TextField" name="text">a2</field>
   </object>
-  <object pk="10" model="question.answer">
-    <field to="question.multiplechoicequestion" name="question" rel="ManyToOneRel">10014</field>
+  <object pk="20" model="question.answer">
+    <field to="question.multiplechoicequestion" name="question" rel="ManyToOneRel">10021</field>
     <field type="BooleanField" name="correct">False</field>
     <field type="IntegerField" name="order">2</field>
     <field type="TextField" name="text">b2</field>
   </object>
-  <object pk="11" model="question.answer">
-    <field to="question.multiplechoicequestion" name="question" rel="ManyToOneRel">10015</field>
+  <object pk="21" model="question.answer">
+    <field to="question.multiplechoicequestion" name="question" rel="ManyToOneRel">10022</field>
     <field type="BooleanField" name="correct">True</field>
     <field type="IntegerField" name="order">1</field>
     <field type="TextField" name="text">a3</field>
   </object>
-  <object pk="12" model="question.answer">
-    <field to="question.multiplechoicequestion" name="question" rel="ManyToOneRel">10015</field>
+  <object pk="22" model="question.answer">
+    <field to="question.multiplechoicequestion" name="question" rel="ManyToOneRel">10022</field>
     <field type="BooleanField" name="correct">False</field>
     <field type="IntegerField" name="order">2</field>
     <field type="TextField" name="text">b3</field>

@@ -167,7 +167,7 @@ def copyQuiz(quiz1, quiz2):
 			newQ = CodeQuestion(text = q.text, order = q.order, quiz = quiz2, beforeCode = q.beforeCode, showBeforeCode = q.showBeforeCode, editableCode = q.editableCode, afterCode = q.afterCode, showAfterCode = q.showAfterCode, expectedOutput = q.expectedOutput)
 			newQ.save()
 
-		quiz2.save()
+	quiz2.save()
 
 def matchPath(self, score):
 	'''
@@ -269,9 +269,9 @@ def publishQuiz(self):
 	'''
 	errors = validateQuiz(self)
 	if (len(errors) == 0):
+		print "working quiz name " + self.name
 		publishedSlug = safeSlug(self.slug)
 		publishedQuiz = Quiz.objects.get(slug=publishedSlug, course=self.course)
-	
 		copyQuiz(self, publishedQuiz)
 		publishedQuiz.upToDate = True
 		publishedQuiz.save()
@@ -288,7 +288,7 @@ def removePath(self, request):
 	course = self.course
 	path = self.paths.get(lowscore = request.POST["path"])
 	# See if there is still a passing path
-	paths = self.prerequisites.all()
+	paths = self.paths.all()
 	passingPath = False
 	for p in paths:
 		if (p.passed == True and not p.lowscore == path.lowscore ):
@@ -416,61 +416,57 @@ def saveQuiz(request, course_slug, pid):
 	quiz = Page.objects.get(slug=(pid + "_workingCopy"), course=course).quiz
 	publishedQuiz = Page.objects.get(slug=pid, course=course).quiz
 
-	if (request.method != "POST"):
-		errors.append("Trying to save quiz from a non POST request")
+	# Title - Make sure its not a duplicate in the course
+	try:
+		quiz2 = Quiz.objects.get(slug=slugify(request.POST["quizTitle"]) + "_workingCopy", course=course)
+		if (quiz2.pk != quiz.pk):
+			errors.append("Quiz Title already exists!")
+	except Quiz.DoesNotExist:
+		pass
 
-	else:
-		# Title - Make sure its not a duplicate in the course
-		try:
-			quiz2 = Quiz.objects.get(slug=slugify(request.POST["quizTitle"] + "_workingCopy"), course=course)
-			if (quiz2.pk != quiz.pk):
-				errors.append("Quiz Title already exists!")
-		except Quiz.DoesNotExist:
-			pass
+	# Title - Make sure its not blank
+	if (len(request.POST["quizTitle"]) == 0):
+		errors.append("Quiz Title cannot be blank!")
 
-		# Title - Make sure its not blank
-		if (len(request.POST["quizTitle"]) == 0):
-			errors.append("Quiz Title cannot be blank!")
-
-		if (len(errors) == 0):
-			quiz.text = request.POST["quizTitle"]
-			quiz.name = request.POST["quizTitle"]
-			publishedQuiz.slug = slugify(quiz.name)
-			quiz.slug = publishedQuiz.slug + "_workingCopy"
-			if "hidden" in request.POST:
-				quiz.hidden = True
+	if (len(errors) == 0):
+		quiz.text = request.POST["quizTitle"]
+		quiz.name = request.POST["quizTitle"]
+		publishedQuiz.slug = slugify(quiz.name)
+		quiz.slug = publishedQuiz.slug + "_workingCopy"
+		if "hidden" in request.POST:
+			quiz.hidden = True
+		else:
+			quiz.hidden = False
+		# Delete current prerequisites
+		for p in quiz.prerequisites.all():
+			p.delete()
+		if "prereqs" in request.POST:
+			# Create prerequisites
+			for p in request.POST.getlist("prereqs"):
+				reqQuiz = Course.objects.get(slug=course_slug).pages.get(slug=p).quiz
+				newPrereq = Prerequisite(containingQuiz=quiz, requiredQuiz=reqQuiz)
+				newPrereq.save()
+			
+		questions = quiz.questions.all()
+		for q in questions:
+			if (isMultipleChoiceQuestion(q)):
+				q = q.multiplechoicequestion
+				for a in q.answers.all():
+					a.text = request.POST['mcq%sa%s' % (q.order, a.order)]
+					a.correct = (("mcq%sac" % q.order) in request.POST and request.POST["mcq%sac" % q.order] == str(a.order))
+					a.save()
+				q.text = request.POST['mcq%stext' % q.order]
+				q.order = request.POST['mcq%sorder' % q.order]
 			else:
-				quiz.hidden = False
-			# Delete current prerequisites
-			for p in quiz.prerequisites.all():
-				p.delete()
-			if "prereqs" in request.POST:
-				# Create prerequisites
-				for p in request.POST.getlist("prereqs"):
-					reqQuiz = Course.objects.get(slug=course_slug).pages.get(slug=p).quiz
-					newPrereq = Prerequisite(containingQuiz=quiz, requiredQuiz=reqQuiz)
-					newPrereq.save()
-				
-			questions = quiz.questions.all()
-			for q in questions:
-				if (isMultipleChoiceQuestion(q)):
-					q = q.multiplechoicequestion
-					for a in q.answers.all():
-						a.text = request.POST['mcq%sa%s' % (q.order, a.order)]
-						a.correct = (("mcq%sac" % q.order) in request.POST and request.POST["mcq%sac" % q.order] == str(a.order))
-						a.save()
-					q.text = request.POST['mcq%stext' % q.order]
-					q.order = request.POST['mcq%sorder' % q.order]
-				else:
-					q = q.codequestion
-					q.text = request.POST['cq%stext' % q.order]
-					q.expectedOutput = request.POST['cq%seo' % q.order]
-					q.order = request.POST['cq%sorder' % q.order]
-				q.save()
+				q = q.codequestion
+				q.text = request.POST['cq%stext' % q.order]
+				q.expectedOutput = request.POST['cq%seo' % q.order]
+				q.order = request.POST['cq%sorder' % q.order]
+			q.save()
 
-			publishedQuiz.upToDate = False
-			quiz.save()
-			publishedQuiz.save()
+		publishedQuiz.upToDate = False
+		quiz.save()
+		publishedQuiz.save()
 
 	data = {"quiz_slug":publishedQuiz.slug, "errors":errors}
 	return data
@@ -514,7 +510,7 @@ def scoreQuiz(self, request, course_slug, quiz_slug):
 				pass
 			
 
-	if (not request.user.is_anonymous()):
+	if (request.user and not request.user.is_anonymous()):
 		Stat.CreateStat(course, self, request.user, score)
 	
 	return score
@@ -557,7 +553,6 @@ def validateQuiz(self):
 
 	# Prerequisites - Make sure the required quiz(s) have a "passing" path
 	for prereq in self.prerequisites.all():
-		print prereq + "\n"
 		requiredQuiz = prereq.requiredQuiz
 		foundPath = False
 		for path in requiredQuiz.paths.all():
@@ -579,8 +574,8 @@ def validateQuiz(self):
 			if (len(answers) < 2):
 				errors.append("Answer must have at least two possible answers")
 
+			foundCorrect = False
 			for a in answers:
-				foundCorrect = False
 				# Answer must not be blank
 				if (len(a.text) == 0):
 					errors.append("Answer must not be blank")
