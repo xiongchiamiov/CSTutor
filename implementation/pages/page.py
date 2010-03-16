@@ -22,7 +22,8 @@ def getNextPage(self):
    # however it does this at the database level
 	try:
 		p = Page.objects.filter(course__exact=self.course)\
-		                .filter(left__gt=self.left).order_by('left')[0]
+		                .filter(left__gt=self.left).exclude(left__lte=0).exclude(right__lte=0)\
+                      .order_by('left')[0]
 	except IndexError:
 		p = None
 	return p
@@ -38,7 +39,8 @@ def getPrevPage(self):
    # returns the first object whose left is less than mine
 	try:
   		p = Page.objects.filter(course__exact=self.course)\
-	                   .filter(left__lt=self.left).order_by('-left')[0]
+	                   .filter(left__lt=self.left).exclude(left__lte=0).exclude(right__lte=0)\
+                      .order_by('-left')[0]
 	# how could this happen?
 	#except KeyError:
 	#	p = None

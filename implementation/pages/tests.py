@@ -28,7 +28,8 @@ class PageTests(TestCase):
          --------------------------------------------------------
 			FIXTURE:
 			Contains 1 course.
-			Contains 2 users: testuser1 has full permission, testuser2 has everything but edit.
+			Contains 2 users: testuser1 has full permission, testuser2 has everything but edit,
+                           testuser3 has no enrollments.
 
          Page structure for these Phases 1-3 (from PageTests Fixture):
 
@@ -43,6 +44,8 @@ class PageTests(TestCase):
                                                         |
                                                   7 PageTestPage4 8
 
+	PageTestPage5 is a quiz, all else are lessons.
+	
 	@author Mark Gius
 	'''
 	fixtures = ['PageTests']
@@ -50,6 +53,7 @@ class PageTests(TestCase):
 	user1 = "testuser1"
 	password = "password"
 	user2 = "testuser2"
+	user3 = "testuser3"
 
 	def validateTree(self):
 		'''
@@ -68,7 +72,7 @@ class PageTests(TestCase):
 
 		@author Mark Gius 
 		'''
-		pages = Page.objects.filter(course__name=self.courseName)
+		pages = Page.objects.filter(course__name=self.courseName).exclude(left__lte=0).exclude(right__lte=0)
 		usedNumbers = set([page.left for page in pages]) |\
 						  set([page.right for page in pages])
 
@@ -227,7 +231,7 @@ class PageTests(TestCase):
 		'''
 		#test that a move doesn't break page->lesson linkage
 		#currently moving a page will disassociate it from its lesson or quiz
-		pageToMove = Lesson.objects.get(slug='PageTestsPage5')
+		pageToMove = Lesson.objects.get(slug='PageTestsPage4')
 		newSibling = Lesson.objects.get(slug='PageTestsPage2')
 		r = movePage(pageToMove, newSibling)
 
@@ -239,7 +243,7 @@ class PageTests(TestCase):
 			self.assertTrue(False)#any exception should indicate failure
 
 		#get a new copy of pageToMove from the database and test it
-		r = Page.objects.get(slug='PageTestsPage5')
+		r = Page.objects.get(slug='PageTestsPage4')
 		try:
 			r.lesson
 		except:
@@ -256,6 +260,10 @@ class PageTests(TestCase):
 		2       try to view move with user2(no edit perm)                            page forbidden
 		3       User1(has edit perm) move PageTestPage5 to sibling of PageTestPage2  Successful Move
 		4       User1(has edit perm) move PageTestPage5 to be child of PageTestPage2 Successful Move
+		5       User1(has edit perm) move PageTestPage2 to be child of PageTestPage5 Successful Move
+		6       User1(has edit perm) move PageTestPage2 to sibling of PageTestPage5  Successful Move
+		7       User1 try to move PageTestsIndexPage                                 page forbidden error msg
+		8       User1 try to move a page that doesn't exist                          page forbidden error msg
 
 		@author Russell Mezzetta
 		'''
@@ -286,3 +294,29 @@ class PageTests(TestCase):
 		response = c.post("/course/" + self.courseName + "/page/" + page5 + "/move/", {'siblingOrChild': 'child', 'referencePageID': page2})
 		self.assertRedirects(response, "/course/" + self.courseName + "/page/" + page5 + "/edit/")
 
+		#move testpage2 to sibling of testpage5
+		response = c.post("/course/" + self.courseName + "/page/" + page2 + "/move/", {'siblingOrChild': 'sibling', 'referencePageID': page5})
+		self.assertRedirects(response, "/course/" + self.courseName + "/page/" + page2 + "/edit/")
+
+		#move testpage2 to child of testpage5
+		response = c.post("/course/" + self.courseName + "/page/" + page2 + "/move/", {'siblingOrChild': 'child', 'referencePageID': page5})
+		self.assertRedirects(response, "/course/" + self.courseName + "/page/" + page2 + "/edit/")
+
+		#try to move the index page
+		response = c.get("/course/%s/page/%s/move/" % (self.courseName, 'PageTestsIndexPage'))
+		self.assertContains(response, "You may not move the home page of a course", status_code=404)
+
+		#try to move a page that doesn't exist
+		response = c.get("/course/%s/page/%s/move/" % (self.courseName, 'IDONTEXIST'))
+		self.assertContains(response, "The course: %s does not contain the page: IDONTEXIST." % (self.courseName), status_code=404)
+
+		#try to move a (don't care) page from a non-existant course
+		response = c.get("/course/IDONTEXIST/page/DONTCARE/move/")
+		self.assertContains(response, "The course: IDONTEXIST does not exist", status_code=404)
+
+		#log user out, log in as user3 (no enrollments). Try to move a page...coverage :)
+		c.get('/logout/')
+		response = c.post("/login/", {'username': self.user3, 'password': self.password})
+		self.assertEquals(response.status_code, 302)
+		response = c.get("/course/" + self.courseName + "/page/" + page5 + "/move/")
+		self.assertContains(response, "User is not enrolled in the course", status_code=403)

@@ -163,9 +163,6 @@ def move_page(request, course_slug, page_slug):
 
 	@author Russell Mezzetta
 	'''
-	#check to make sure that we are not trying to move a course-page
-	if course_slug == page_slug:
-		return custom_404(request, "You may not move a course's home page")
 
 	#check if the course is a real course in the database 
 	data = {}
@@ -190,6 +187,10 @@ def move_page(request, course_slug, page_slug):
 	except Page.DoesNotExist:
 		return custom_404(request, "ERROR: BAD URL: The course: %s does not contain the page: %s." % (course_slug, page_slug))
 
+	#check to make sure that we are not trying to move a course-page
+	if data['page'].left == 1:
+		return custom_404(request, "You may not move the home page of a course")
+
 	#save a list of all pages in the course EXCEPT the given page and exclude 
 	#ignored page values (left<=0 or right<=0)
 	data['pagelist'] = data['course'].pages.all().exclude(slug=page_slug).exclude(left__lte=0).exclude(right__lte=0).order_by('left')
@@ -202,9 +203,9 @@ def move_page(request, course_slug, page_slug):
 				if p.slug == request.POST['referencePageID']:
 					refPage = p
 					break
-			#verify that the refPage was found
-			if refPage == None:
-				return HttpResponse("error, the previously selected page somehow is no longer in the list of pages in this course")
+			#refPage should never be none....
+			#if refPage == None:
+			#	return HttpResponse("error, the previously selected page somehow is no longer in the list of pages in this course")
 			
 			#movePage should be passed lessons or quizzes, 
 			#cast refPage and data['page'] appropriately
@@ -212,19 +213,19 @@ def move_page(request, course_slug, page_slug):
 			try: #to cast to a lesson
 				p1 = p1.lesson
 			except Lesson.DoesNotExist:
-				try: #to cast to a quiz 
+				#try: #to cast to a quiz 
 					p1 = p1.quiz
-				except Quiz.DoesNotExist:
-					print "warning -- move_page view, page neither quiz nor lesson"
+				#except Quiz.DoesNotExist:
+				#	print "warning -- move_page view, page neither quiz nor lesson"
 
 			p2 = refPage
 			try: #to cast to a lesson
 				p2 = p2.lesson
 			except Lesson.DoesNotExist:
-				try: #to cast to a quiz 
+				#try: #to cast to a quiz 
 					p2 = p2.quiz
-				except Quiz.DoesNotExist:
-					print "warning -- move_page view, page neither quiz nor lesson"
+				#except Quiz.DoesNotExist:
+					#print "warning -- move_page view, page neither quiz nor lesson"
 
 			if request.POST['siblingOrChild'] == "sibling":
 				#move page to be the first sibling of refPage

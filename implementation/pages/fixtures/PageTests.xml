@@ -62,8 +62,22 @@
       <field type="IntegerField" name="left">10</field>
       <field type="IntegerField" name="right">11</field>
    </object>
-	<object pk="106" model="lesson.lesson">
-		<field type="TextField" name="content">PageTestsPage5</field>
+	<object pk="106" model="quiz.quiz">
+      <field type="TextField" name="text">PageTestsPage5Quiz</field>
+      <field type="BooleanField" name="hidden">False</field>
+      <field type="BooleanField" name="upToDate">True</field>
+	</object>
+   <object pk="107" model="pages.page">
+      <field to="courses.course" name="course" rel="ManyToOneRel">100</field>
+      <field type="SlugField" name="slug">PageTestsPage5_workingCopy</field>
+      <field type="TextField" name="name">testPage5</field>
+      <field type="IntegerField" name="left">0</field>
+      <field type="IntegerField" name="right">0</field>
+   </object>
+	<object pk="107" model="quiz.quiz">
+      <field type="TextField" name="text">PageTestsPage5Quiz</field>
+      <field type="BooleanField" name="hidden">False</field>
+      <field type="BooleanField" name="upToDate">True</field>
 	</object>
 	<object pk="107" model="auth.user">
       <field type="CharField" name="username">testuser1</field>
@@ -97,6 +111,19 @@
       <field type="BooleanField" name="is_staff">True</field>
       <field type="BooleanField" name="is_active">True</field>
       <field type="BooleanField" name="is_superuser">True</field>
+      <field to="auth.group" name="groups" rel="ManyToManyRel"></field>
+      <field to="auth.permission" name="user_permissions" rel="ManyToManyRel"></field>
+   </object>
+	<object pk="110" model="auth.user">
+      <field type="CharField" name="username">testuser3</field>
+      <field type="CharField" name="first_name">first</field>
+      <field type="CharField" name="last_name">last</field>
+      <field type="CharField" name="email">testuser3email</field>
+      <!-- password is "password" -->
+      <field type="CharField" name="password">sha1$afeda$648e804b09a7bf98dbac6b7da13d6dbe0c7716f6</field>
+      <field type="BooleanField" name="is_staff">False</field>
+      <field type="BooleanField" name="is_active">True</field>
+      <field type="BooleanField" name="is_superuser">False</field>
       <field to="auth.group" name="groups" rel="ManyToManyRel"></field>
       <field to="auth.permission" name="user_permissions" rel="ManyToManyRel"></field>
    </object>
