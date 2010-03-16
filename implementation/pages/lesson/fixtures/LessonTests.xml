@@ -87,8 +87,8 @@
       <field type="TextField" name="workingCopy">public test course index</field>
    </object>
    <object pk="101" model="lesson.lesson">
-      <field type="TextField" name="content">public test course index</field>
-      <field type="TextField" name="workingCopy">public test course index</field>
+      <field type="TextField" name="content">public lesson content</field>
+      <field type="TextField" name="workingCopy">public lesson content</field>
    </object>
    <object pk="102" model="lesson.lesson">
       <field type="TextField" name="content">public test course public lesson</field>

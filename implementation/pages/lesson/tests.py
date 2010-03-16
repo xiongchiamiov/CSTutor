@@ -49,6 +49,13 @@ class LessonTests(TestCase):
 		'''
 		Tests a relatively simple function which takes a lesson and copies the
 		published copy into the working copy
+		
+		case		input										output
+		----		-----										------
+		1			lesson with								lesson with
+					content="public lesson content"	content="public lesson content"
+					workingCopy="xxx"						workingCopy="public lesson content"
+
 		@author Russell Mezzetta
 		'''
 		l = Lesson.objects.get(course=self.course, slug=self.lessonPage)
@@ -63,6 +70,13 @@ class LessonTests(TestCase):
 		'''
 		Tests a function which takes a lesson and copies the working copy to the
 		published copy
+		
+		case		input										output
+		----		-----										------
+		1			lesson with								lesson with
+					content="yyy"							content="xxx"
+					workingCopy="xxx"						workingCopy="xxx"
+		
 		@author Russell Mezzetta
 		'''
 		l = Lesson.objects.get(course=self.course, slug=self.lessonPage)
@@ -77,6 +91,34 @@ class LessonTests(TestCase):
 		Tests a function which attempts to save a lesson as a new name. It
 		returns None if the name is already taken, otherwise it returns the
 		lesson with the updated name/slug
+
+		case		input										output
+		----		-----										------
+		1			lesson with								{'message': 'Name change failed: name must be non-empty'}
+					name="publiclesson"
+					slug="publiclesson"
+					newName=""
+
+		2			lesson with								{'message': 'Name change failed. A page with that name already exists in this course'}
+					name=lessonPage
+					slug=lessonPage
+					newName=quizPage
+
+		3			lesson with								lesson with
+					name=lessonPage						name="name-is-not-taken"
+					slug=lessonPage						slug="name-is-not-taken"
+					newName="name-is-not-taken"
+
+		4			lesson with								lesson with
+					name='name-is-not-taken'			name="x"
+					slug='name-is-not-taken'			slug="x"
+					newName="x"
+
+		5			lesson with								lesson with
+					name='x'									name="xx"
+					slug='x'									slug="xx"
+					newName="xx"
+
 		@author Russell Mezzetta
 		'''
 		l = Lesson.objects.get(course=self.course, slug=self.lessonPage)
@@ -102,6 +144,14 @@ class LessonTests(TestCase):
 	def test_saveLessonWorkingCopy(self):
 		'''
 		Tests a simple function that saves the working copy of a lesson
+
+		case		input											output
+		----		-----											------
+		1			lesson with									lesson with
+					content="public lesson content"		content="public lesson content"
+					workingCopy="public lesson content"	workingCopy="abcd"
+					newWorkingCopy="abcd"
+
 		@author Russell Mezzetta
 		'''
 		l = Lesson.objects.get(course=self.course, slug=self.lessonPage)
