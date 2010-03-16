@@ -11,6 +11,9 @@ from django.test import TestCase
 from django.test.client import Client
 from django.contrib.auth.models import User
 from users.user import registerNewUser, loginWrapper
+from django.core.urlresolvers import reverse
+from courses.models import Course
+
 
 class UserTests(TestCase):
 	'''
@@ -448,12 +451,12 @@ class UserTests(TestCase):
 		self.failUnlessEqual(self.client.session['rememberme'], True)
 		self.failUnlessEqual(self.client.session['username'], self.user1)
 		
-		#test user revisiting page (only for coverage purposes we can't actually test that the textfield is populated)
+		#logout, then check that login page prefills the username
 		self.client.get('/logout/')
 		response = self.client.get('/login')
 		self.failUnlessEqual(response.status_code, 200)
-		#want to check if the username is being prefilled but can't figure out how
-		#self.assertContains(response, self.user1, status_code=200)
+		#note: response.context is a list, response.context[0] is a dictionary
+		self.failUnlessEqual(response.context[0]['loginusername'], self.user1)
 
 	def testMostBasicLoginView(self):
 		'''
@@ -465,22 +468,212 @@ class UserTests(TestCase):
 		@author Russell Mezzetta
 		'''
 		
-		#valid login
 		response = self.client.get('/login/')
 		self.assertContains(response, "CSTutor Login", status_code=200)
 
-	def testLoginThenRedirect(self):
-		'''
-		Tests the @login_required decorator.
-		The decorator forces a get request to login with a 'next' key in the dictionary that has a value of the destination url to redirect to.
-		This is mainly for coverage.
-		
-		case#    input          	expected output   remark
-		-----    -----          	---------------   ------
-		1			user=user1			status_code 302	redirected to profile page after sucessful login
-					password=password
-					next='/profile/'
+	#I'd really like to be able to test this but i don't think it is possible in
+	# django 1.0 to craft request with get and post data.
+	#def testLoginThenRedirect(self):
+	#	'''
+	#	Tests the @login_required decorator.
+	#	The decorator forces a get request to login with a 'next' key in the dictionary that has a value of the destination url to redirect to.
+	#	This test is mainly for coverage, it's actually an awkward test.
+	#	
+	#	case#    input          	expected output   remark
+	#	-----    -----          	---------------   ------
+	#	1			user=user1			status_code 302	redirected to profile page after sucessful login
+	#				password=password
+	#				next='/profile/'
 
+	#	@author Russell Mezzetta
+	#	'''
+		#response = self.client.get('/create-course')
+		#import pdb; pdb.set_trace()
+		#print "\n" + response.request.GET['next']
+		#response = self.client.post('/login/', {'username': self.user1, 'password': self.password} 'next': '/profile/'})
+		#self.assertEqual(response.status_code, 302)
+	def testViewHistorySavedAfterLogout(self):
+		'''
+		After viewing a page, data about the page is saved in the session.
+		When the user logs out this data should be saved for next time they log in.
+		This test makes sure that the data is saved.
+
+		case#    input          						expected output   								remark
+		-----    -----          						---------------   								------
+		1			'/login/'								status_code 302									successful login
+					user = user1
+					password = password
+
+		2			'/course/%s/page/%s/'				status_code 200									visit public_course's index page
+					(public_course, public_course)	session['lastCourseSlug']=public_course
+																session['lastPageSlug']=public_course
+																session['lastPageEdit']=False
+
+		3			'/logout/'								status_code 200									after log out session still good
+																session['lastCourseSlug']=public_course
+																session['lastPageSlug']=public_course
+																session['lastPageEdit']=False
+
+		@Russell Mezzetta
+		'''
+		#valid login
+		response = self.client.post('/login/', {'username': self.user1, 'password': self.password})
+		self.failUnlessEqual(response.content.find("CSTutor Login"), -1)
+		self.failUnlessEqual(response.status_code, 302)
+		
+		#visit a page so the view history gets saved to session
+		response = self.client.get('/course/%s/page/%s/' % (self.public_course,self.public_course))
+		self.failUnlessEqual(response.status_code, 200)
+		#print client.session
+		#verify session content
+		self.failUnlessEqual(self.client.session['lastCourseSlug'], self.public_course)
+		self.failUnlessEqual(self.client.session['lastPageSlug'], self.public_course)
+		self.failUnlessEqual(self.client.session['lastPageEdit'], False)
+		
+		#log user out and verify the contents of session still remain
+		self.client.get('/logout/')
+		self.failUnlessEqual(self.client.session['lastCourseSlug'], self.public_course)
+		self.failUnlessEqual(self.client.session['lastPageSlug'], self.public_course)
+		self.failUnlessEqual(self.client.session['lastPageEdit'], False)
+
+	def testRegisterNewUserView(self):
+		'''
+		Tests the registerNewUser view
+		
+		case#    input                 expected output     											remark
+		-----    -----                 ---------------     											------
+		1        username=""           errormsg="The username field is empty"   				"all empty string params"
+		         pass=""
+		         pass2=""
+		         first=""
+		         last=""
+		         email=""
+		
+		2        username="NewUser"    errormsg="The password field is empty"					"password missing"
+		         pass=""
+		         pass2=""
+		         first=""
+		         last=""
+		         email=""
+		
+		3        username="NewUser"    errormsg="Either first or last name field is empty	"firstname missing"
+		         pass="pass1"
+		         pass2="pass1"
+		         first=""
+		         last="lastname"
+		         email=""
+		
+		4        username="NewUser"    errormsg="Either first or last name field is empty	"lastname missing"
+		         pass="pass1"
+		         pass2="pass1"
+		         first="firstname"
+		         last=""
+		         email=""
+		
+		5        username="NewUser"    errormsg="Passwords do not match"							"mismatched passwords"
+		         pass="pass1"
+		         pass2="pass2"
+		         first="john"
+		         last="smith"
+		         email=""
+		
+		6        username="NewUser"    user added, redirect to login page							"valid user registration"
+		         pass="password"
+		         pass2="password"
+		         first="john"
+		         last="smith"
+		         email="newuser@email.com"
+		
+		7        username="NewUser"    errormsg="That username is already taken"				"try to add an already-existing username"
+		         pass="something"
+		         pass2="something"
+		         first="johnny"
+		         last="smithy"
+		         email="other@email.com"
+		8			none						status_code 200													"GET view"
+		
 		@author Russell Mezzetta
 		'''
-		self.assertEqual(True, True)
+		#pass in all empty strings
+		data = {'username': '', 'password': '', 'verifypassword': '',\
+					'firstname': '', 'lastname': '', 'email': ''}
+		response = self.client.post('/login/register-new-account/', data)
+		self.assertContains(response, "The username field is empty")
+
+		#try a username no password
+		data = {'username': 'NewUser', 'password': '', 'verifypassword': '',\
+					'firstname': '', 'lastname': '', 'email': ''}
+		response = self.client.post('/login/register-new-account/', data)
+		self.assertContains(response, "The password field is empty")
+		
+		#try a user/pass/last with no first name
+		data = {'username': 'NewUser', 'password': 'pass1', 'verifypassword': 'pass1',\
+					'firstname': '', 'lastname': 'lastname', 'email': ''}
+		response = self.client.post('/login/register-new-account/', data)
+		self.assertContains(response, "Either first name or last name field is empty")
+		
+		#try a user/pass/first with no last name
+		data = {'username': 'NewUser', 'password': 'pass1', 'verifypassword': 'pass1',\
+					'firstname': 'firstname', 'lastname': '', 'email': ''}
+		response = self.client.post('/login/register-new-account/', data)
+		self.assertContains(response, "Either first name or last name field is empty")
+		
+		#try mismatched passwords
+		data = {'username': 'NewUser', 'password': 'pass1', 'verifypassword': 'pass2',\
+					'firstname': 'first', 'lastname': 'last', 'email': ''}
+		response = self.client.post('/login/register-new-account/', data)
+		self.assertContains(response, "Passwords do not match")
+
+		#add a user
+		data = {'username': 'NewUser', 'password': 'password', 'verifypassword': 'password',\
+					'firstname': 'first', 'lastname': 'last', 'email': 'newuser@email.com'}
+		response = self.client.post('/login/register-new-account/', data, follow=False)
+		self.assertRedirects(response, reverse('users.views.show_login'))
+		#check that user is in the Users list
+		self.assertEqual(User.objects.filter(username = 'NewUser').count(), 1)
+		
+		#try to add a user with the same name as another user(from previous successful test)
+		data = {'username': 'NewUser', 'password': 'password', 'verifypassword': 'password',\
+					'firstname': 'first', 'lastname': 'last', 'email': 'newuser@email.com'}
+		response = self.client.post('/login/register-new-account/', data, follow=False)
+		self.assertContains(response, "That username is already taken")
+		
+		#Just view the page
+		response = self.client.get('/login/register-new-account/')
+		self.assertEqual(response.status_code, 200)
+
+	def testRegisterNewUserViewAnonCourses(self):
+		'''
+		Tests to make sure that the courses joined by an anonymous user are added to the user's
+		course list when the anonymous user registers
+		
+		case#    input                expected output     											remark
+		-----    -----                ---------------     											------
+		1			'/join-course/'		status_code = 200
+					public_course			contains 'You have been temporarily added to"
+
+		2        username=""				errormsg="The username field is empty"   				"all empty string params"
+		         pass=""
+		         pass2=""
+		         first=""
+		         last=""
+		         email=""
+	
+		@author Russell Mezzetta
+		'''
+		pubCourse = Course.objects.get(slug = self.public_course)
+		#anonymous user joins public_course
+		response = self.client.post('/submit_join_course_request', {'courseid':pubCourse.id})
+		self.assertEqual(response.status_code, 200)
+		self.assertContains(response, "You have been temporarily added to %s" % (pubCourse.name))
+
+		#register the anonymous user
+		data = {'username': 'NewUser', 'password': 'password', 'verifypassword': 'password',\
+					'firstname': 'first', 'lastname': 'last', 'email': 'newuser@email.com'}
+		response = self.client.post('/login/register-new-account/', data, follow=False)
+		self.assertRedirects(response, reverse('users.views.show_login'))
+		#check that user is in the Users list
+		self.assertEqual(User.objects.filter(username = 'NewUser').count(), 1)
+		#check that user has an enrollment to the course
+		self.assertEqual(User.objects.get(username='NewUser').enrollments.all()[0].course, pubCourse)
+

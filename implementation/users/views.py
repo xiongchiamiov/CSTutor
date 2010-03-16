@@ -182,7 +182,6 @@ def show_register_new_user(request):
 	
 	@author Russell Mezzetta
 	'''
-	print "in show_register_new_user"
 	if request.method == 'POST':
 		#form was submitted
 		username = request.POST['username']
