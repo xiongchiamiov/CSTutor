@@ -10,6 +10,7 @@ from courses.enrollment import *
 from pages.lesson.models import Lesson
 from pages.lesson.lesson import saveLessonName
 from pages.models import Page
+import StringIO
 
 def CreateCourse(name, user, private, slug=None):
 	''' Creates a new course
@@ -133,7 +134,42 @@ def setPrivate(self):
 	self.private = True
 	self.save()
 
+def addUsersFromFile(course, files):
+	'''
+	Adds users from a text file to a course
 
+	pre: none
+	post: for each username in files
+				enrollment.username.view = true
+
+	@author Jon Inloes
+	'''
+
+	failedList = []
+	for k,v, in files.iteritems():#request.FILES.iteritems():
+		#print k, v
+		infile = files[k]#request.FILES[k]
+
+		output = StringIO.StringIO(infile.read())
+
+		for line in output:
+			name = line.strip()
+			#print line.strip()
+			try:
+				#if the user exists add it
+				user = User.objects.get(username=name)
+				addUser(course, user)
+
+			except User.DoesNotExist:
+				#if the user does not exist add it to the failed list
+				failedList.append(name);
+				#return master_rtr(request, 'adduser/failed.html', \
+				#		               {'course_slug':course_slug, \
+				#		                'course': course})
+					
+	#print failedList
+
+	return failedList
 # Everything below here is probably supposed to be in views.py -mgius
 # commented out by mgius on 2/16/10
 #def removeCourse(request):

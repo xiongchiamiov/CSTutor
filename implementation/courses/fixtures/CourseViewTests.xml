@@ -106,6 +106,48 @@
       <field to="auth.group" name="groups" rel="ManyToManyRel"></field>
       <field to="auth.permission" name="user_permissions" rel="ManyToManyRel"></field>
    </object>
+	<object pk="105" model="auth.user">
+      <field type="CharField" name="username">jinloes</field>
+      <field type="CharField" name="first_name">Jon</field>
+      <field type="CharField" name="last_name">Inloes</field>
+      <field type="CharField" name="email"></field>
+      <field type="CharField" name="password">sha1$afeda$648e804b09a7bf98dbac6b7da13d6dbe0c7716f6</field>
+      <field type="BooleanField" name="is_staff">False</field>
+      <field type="BooleanField" name="is_active">True</field>
+      <field type="BooleanField" name="is_superuser">False</field>
+      <field type="DateTimeField" name="last_login">2010-01-22 13:14:05</field>
+      <field type="DateTimeField" name="date_joined">2010-01-22 13:14:05</field>
+      <field to="auth.group" name="groups" rel="ManyToManyRel"></field>
+      <field to="auth.permission" name="user_permissions" rel="ManyToManyRel"></field>
+   </object>
+	<object pk="110" model="auth.user">
+      <field type="CharField" name="username">mgius</field>
+      <field type="CharField" name="first_name">Mark</field>
+      <field type="CharField" name="last_name">Gius</field>
+      <field type="CharField" name="email"></field>
+      <field type="CharField" name="password">sha1$afeda$648e804b09a7bf98dbac6b7da13d6dbe0c7716f6</field>
+      <field type="BooleanField" name="is_staff">False</field>
+      <field type="BooleanField" name="is_active">True</field>
+      <field type="BooleanField" name="is_superuser">False</field>
+      <field type="DateTimeField" name="last_login">2010-01-22 13:14:05</field>
+      <field type="DateTimeField" name="date_joined">2010-01-22 13:14:05</field>
+      <field to="auth.group" name="groups" rel="ManyToManyRel"></field>
+      <field to="auth.permission" name="user_permissions" rel="ManyToManyRel"></field>
+   </object>
+	<object pk="111" model="auth.user">
+      <field type="CharField" name="username">pearson</field>
+      <field type="CharField" name="first_name">James</field>
+      <field type="CharField" name="last_name">Pearson</field>
+      <field type="CharField" name="email"></field>
+      <field type="CharField" name="password">sha1$afeda$648e804b09a7bf98dbac6b7da13d6dbe0c7716f6</field>
+      <field type="BooleanField" name="is_staff">False</field>
+      <field type="BooleanField" name="is_active">True</field>
+      <field type="BooleanField" name="is_superuser">False</field>
+      <field type="DateTimeField" name="last_login">2010-01-22 13:14:05</field>
+      <field type="DateTimeField" name="date_joined">2010-01-22 13:14:05</field>
+      <field to="auth.group" name="groups" rel="ManyToManyRel"></field>
+      <field to="auth.permission" name="user_permissions" rel="ManyToManyRel"></field>
+   </object>
 	<!-- enrolls the admin user in the Public course -->
    <object pk="201" model="courses.enrollment">
       <field to="auth.user" name="user" rel="ManyToOneRel">104</field>

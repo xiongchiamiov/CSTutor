@@ -19,8 +19,6 @@ from django.template.defaultfilters import slugify
 from home.views import master_rtr
 from django.contrib.auth.decorators import login_required
 from pages.views import show_page
-import StringIO
-
 
 @login_required
 def create_course(request):
@@ -378,9 +376,6 @@ def show_chat(request, course_slug):
 def add_from_file(request, course_slug):
 	'''
 	Adds usernames from a text file
-	pre: none
-	post: for each username in request.FILES
-				enrollment.username.view = true
 
 	@author Jon Inloes
 	'''
@@ -389,28 +384,8 @@ def add_from_file(request, course_slug):
 	failedList = []
 
 	if enrollment.manage:
-		for k,v, in request.FILES.iteritems():
-			#print k, v
-			infile = request.FILES[k]
-
-			output = StringIO.StringIO(infile.read())
-		
-			for line in output:
-				name = line.strip()
-				#print line.strip()
-				try:
-					#if the user exists add it
-					user = User.objects.get(username=name)
-					addUser(course, user)
-
-				except User.DoesNotExist:
-					#if the user does not exist print error message
-					failedList.append(name);
-					#return master_rtr(request, 'adduser/failed.html', \
-					#		               {'course_slug':course_slug, \
-					#		                'course': course})
-					
-		print failedList
+		#call addUsersFromFile if the user has manage permission
+		failedList = addUsersFromFile(course, request.FILES) 
 		request.session['badusers']=failedList
 		return HttpResponseRedirect(reverse('courses.views.show_roster', \
 	                                    args=[course_slug]))

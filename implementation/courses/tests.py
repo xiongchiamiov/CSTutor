@@ -14,6 +14,7 @@ from django.test.client import Client
 from django.contrib.auth.models import User
 from courses.models import Course
 from courses.models import Enrollment
+from courses.course import *
 
 class CourseTests(TestCase):
 	''' 
@@ -839,6 +840,123 @@ class CourseViewTests(TestCase):
 		response = self.client.get('/course/' + slug + '/roster/adduser/cancel/')
 		self.failUnlessEqual(response.status_code, 302, 'redirection to the roster page failed')
 
+	def testAddUsersFromFile(self):
+		'''
+		Tests the addUsersFromFile of courses.py
+
+		Case #	Inputs											Outputs					Remark
+		1			adminUsername = 'enrollmentTestAdmin'	userExists = true		username1, username2, and username 3 exist in the enrollment list
+					password = 'password'
+					slug = 'PageViewsPublicCourse'
+					username1 = 'mgius'
+					username2 = 'jinloes'
+					username3 = 'pearson'
+
+		2			adminUsername = 'enrollmentTestAdmin'	userExists = true		username1 and username 2 exist in the failed list
+					password = 'password'
+					slug = 'PageViewsPublicCourse'
+					username1 = 'badusername1'
+					username2 = 'badusername2'
+
+		3			slug = 'PageViewsPublicCourse'
+					adminUsername = 'PageViewsPublicUser'	template is rendered	
+					username = 'temp'
+					password = 'password'
+					template = 'roster/invalid_permissions.html'
+
+		@author Jon Inloes
+		'''
+		pass
+
+	def testAddUsersFromFileCase1(self):
+		'''
+		Test addUsersFromFile case 1
+		
+		@author Jon Inloes
+		'''
+
+		adminUsername = 'enrollmentTestAdmin'
+		password = 'password'
+		slug = 'PageViewsPublicCourse'
+		username1 = 'mgius'
+		username2 = 'jinloes'
+		username3 = 'pearson'
+
+		course = Course.objects.get(slug=slug)
+
+		files = {'key1': file('./courses/usernames1.txt', 'r'), 'key2': file('./courses/usernames2.txt')}
+
+		addUsersFromFile(course, files)
+
+		#Test to make sure the user is enrolled
+		userExists = True				
+		try:
+			enrollment = Enrollment.objects.get(user__username__exact=username1, course__slug__exact=slug)
+
+			enrollment2 = Enrollment.objects.get(user__username__exact=username2, course__slug__exact=slug)
+
+			enrollment3 = Enrollment.objects.get(user__username__exact=username3, course__slug__exact=slug)
+
+		except Enrollment.DoesNotExist:
+			userExists = False
+	
+		self.failUnlessEqual(userExists, True, 'the user should exist in the database')
+
+	def testAddUsersFromFileCase2(self):
+		'''
+		Test addUsersFromFile case 2
+		
+		@author Jon Inloes
+		'''
+
+		adminUsername = 'enrollmentTestAdmin'
+		password = 'password'
+		slug = 'PageViewsPublicCourse'
+		username1 = 'badusername1'
+		username2 = 'badusername2'
+
+		course = Course.objects.get(slug=slug)
+
+		files = {'key1': file('./courses/usernames1.txt', 'r'), 'key2': file('./courses/usernames2.txt')}
+
+		failedList = addUsersFromFile(course, files)
+
+		self.assertEquals(2, len(failedList), 'List length should be 2')
+
+		#Test to make sure the user is enrolled
+		userExists = True				
+		try:
+			failedList.index(username1)
+			failedList.index(username2)
+
+		except Enrollment.DoesNotExist:
+			userExists = False
+	
+		self.failUnlessEqual(userExists, True, 'failed list did not contain a name it should have')
+
+	def testAddUsersFromFileCase3(self):
+		'''
+		Test add users from file case 3
+		
+		@author Jon Inloes	
+		'''
+		slug = 'PageViewsPublicCourse'
+		adminUsername = 'PageViewsPublicUser'
+		username = 'temp'
+		password = 'password'
+		template = 'roster/invalid_permissions.html'
+
+		#logs in and checks to make sure the login was successful
+		self.failUnlessEqual(self.client.login(username=adminUsername, password=password), True)
+		
+
+		#tries to add a user		
+		response = self.client.post('/course/' + slug + '/roster/adduser/addFromFile/', {'username': username, 'command': 'add'})
+		self.failUnlessEqual(response.status_code, 200, 'redirection to the roster page failed')
+
+		#asserts that invalid_permissions.html page was rendered because the logged in user did not have valid permission to add a user
+		self.assertTemplateUsed(response, template)
+	
 # I don't know why, but for some reason join_course_request is returning a 
 # 302.  Why?
 #	def testPrivateEnrollment(self):
