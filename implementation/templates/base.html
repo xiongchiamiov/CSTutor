@@ -11,6 +11,23 @@
 	<link rel="stylesheet" href="/media/css/themes/{{THEME}}.css" type="text/css" />
 	<script type="text/javascript" src="/media/js/jquery.min.js"></script>
 	<script type="text/javascript">
+		// jquery.escape 1.0 - escape strings for use in jQuery selectors
+		// http://ianloic.com/tag/jquery.escape
+		// Copyright 2009 Ian McKellar <http://ian.mckellar.org/>
+		// Just like jQuery you can use it under either the MIT license or the GPL
+		// (see: http://docs.jquery.com/License)
+		(function() {
+		escape_re = /[#;&,\.\+\*~':"!\^\$\[\]\(\)=>|\/\\]/;
+		jQuery.escape = function jQuery$escape(s) {
+		  var left = s.split(escape_re, 1)[0];
+		  if (left == s) return s;
+		  return left + '\\' + 
+			s.substr(left.length, 1) + 
+			jQuery.escape(s.substr(left.length+1));
+		}
+		})();
+	</script>
+	<script type="text/javascript">
 		$(document).ready(function() {
 			// no collapsibles at the end of the line
 			$('#page-list li').each(function() {
@@ -38,6 +55,19 @@
 			
 			// now collapse everything to begin with
 			$('#page-list li ul').hide();
+			
+			// oh, except whatever page we're on, and its parents
+			var anchor = $('a[href='+$.escape(window.location.pathname)+']');
+			// anchor.parent() gets us the <li> we're on,
+			// but we don't really want to expand that,
+			// so we go up another one
+			var parent = anchor.parent().parent().parent();
+			while (parent.is('li')) {
+				// simulate a click (expand and stuff)
+				parent.children('img').click();
+				// up two because of the nested <ul>s
+				parent = parent.parent().parent();
+			}
 		});
 	</script>
    {% block meta %}
