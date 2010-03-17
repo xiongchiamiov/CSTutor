@@ -35,7 +35,7 @@ class QuizUnitTests(TestCase):
 		self.quizSlug2 = 'quizunittests_quiz2'
 		self.quizSlug3 = 'quizunittests_quiz3'
 
-	"""def test_addCodeQuestion(self):
+	def test_addCodeQuestion(self):
 		'''
 			Test that adding a code question to a quiz works as expected
 
@@ -230,14 +230,15 @@ class QuizUnitTests(TestCase):
 		# Case 4
 		quiz = Quiz.objects.get(slug="checkprerequisites_quiz")
 		user = User.objects.get(username="testuser")
-		response = self.client.post(reverse('pages.quiz.views.submitQuiz', args=[self.courseSlug, self.quizSlug1]), {})
+		Stat.CreateStat(quiz.course, Quiz.objects.get(slug="quizunittests_quiz1"), user, 0)
 		result = checkPrerequisites(quiz, user)
 		self.failUnlessEqual(result, False)
 
 		# Case 5
-		quiz = Quiz.objects.get(slug="checkprerequisites_quiz")
 		user = User.objects.get(username="testuser")
-		response = self.client.post(reverse('pages.quiz.views.submitQuiz', args=[self.courseSlug, self.quizSlug1]), {'mcq1':1, 'mcq2':1, 'mcq3':1})
+		quiz = Quiz.objects.get(slug="checkprerequisites_quiz")
+		Stat.CreateStat(quiz.course, Quiz.objects.get(slug="quizunittests_quiz1"), user, 3)
+		quiz = Quiz.objects.get(slug="checkprerequisites_quiz")
 		result = checkPrerequisites(quiz, user)
 		self.failUnlessEqual(result, True)
 
@@ -592,7 +593,7 @@ class QuizUnitTests(TestCase):
 
 		# Case 1
 		try:
-			Quiz.objects.get(slug=self.quizSlug2)
+			Quiz.objects.get(slug="copyquiz_quiz")
 			self.failUnlessEqual(0, 1, "The quiz was not deleted")
 		except Quiz.DoesNotExist:
 			self.failUnlessEqual(1, 1)
@@ -620,7 +621,7 @@ class QuizUnitTests(TestCase):
 
 		# Case 4
 		try:
-			Quiz.objects.get(slug=(self.quizSlug2 + "_workingCopy"))
+			Quiz.objects.get(slug=("copyquiz_quiz_workingCopy"))
 			self.failUnlessEqual(0, 1, "The working_copy was not deleted")
 		except Quiz.DoesNotExist:
 			self.failUnlessEqual(1, 1)
@@ -649,17 +650,17 @@ class QuizUnitTests(TestCase):
 		# Case 7
 		for p in prereqs:
 			try:
-				quiz.prerequisites.get(containingQuiz = p.containingQuiz, requiredQuiz = p.requiredQuiz)
+				quiz.prerequisites.get(requiredQuiz = p.requiredQuiz)
 				self.failUnlessEqual(0, 1, "A prerequisite still exists in the database")
-			except Answer.DoesNotExist:
+			except Prerequisite.DoesNotExist:
 				self.failUnlessEqual(1, 1)
 
 		# Case 8
 		for p in prereqs2:
 			try:
-				quiz2.prerequisites.get(containingQuiz = p.containingQuiz, requiredQuiz = p.requiredQuiz)
+				quiz2.prerequisites.get(requiredQuiz = p.requiredQuiz)
 				self.failUnlessEqual(0, 1, "A prerequisite still exists in the database")
-			except Answer.DoesNotExist:
+			except Prerequisite.DoesNotExist:
 				self.failUnlessEqual(1, 1)
 
 		# Case 9
@@ -667,7 +668,7 @@ class QuizUnitTests(TestCase):
 			try:
 				quiz.paths.get(lowscore = p.lowscore)
 				self.failUnlessEqual(0, 1, "A path still exists in the database")
-			except Answer.DoesNotExist:
+			except Path.DoesNotExist:
 				self.failUnlessEqual(1, 1)
 
 		# Case 10
@@ -675,7 +676,7 @@ class QuizUnitTests(TestCase):
 			try:
 				quiz2.paths.get(lowscore = p.lowscore)
 				self.failUnlessEqual(0, 1, "A path still exists in the database")
-			except Answer.DoesNotExist:
+			except Path.DoesNotExist:
 				self.failUnlessEqual(1, 1)
 
 
@@ -944,7 +945,7 @@ class QuizUnitTests(TestCase):
 
 		# Case 5
 		quiz = Quiz.objects.get(slug = self.quizSlug2)
-		self.failUnlessEqual(validateQuestionOrder(quiz), True)"""
+		self.failUnlessEqual(validateQuestionOrder(quiz), True)
 
 	def test_validateQuiz(self):
 		'''
@@ -965,7 +966,7 @@ class QuizUnitTests(TestCase):
 			                                                   ordering"]
 			8         quiz.question2.answers < 2    errors = ["Question must have at least     Only one answer for mcq
 			                                                   two possible answers"
-			x        validatequiz_quiz              []                                         Valid quiz
+			10        validatequiz_quiz             []                                         Valid quiz
 
 			@author Evan Kleist      
 		'''
@@ -1051,7 +1052,7 @@ class QuizUnitTests(TestCase):
 		self.failUnlessEqual(errors, ["Question must have a correct answer"])
 		revertQuiz(quiz)
 
-		# Case x
+		# Case 10
 		newPrereq = Prerequisite(containingQuiz = Quiz.objects.get(slug=quizSlug), requiredQuiz = Quiz.objects.get(slug=self.quizSlug2))
 		newPrereq.save()
 		quiz = Quiz.objects.get(slug=quizSlug)
@@ -1059,7 +1060,7 @@ class QuizUnitTests(TestCase):
 		self.failUnlessEqual(errors, [])
 		revertQuiz(quiz)
 
-class QuizViewTests(TestCase):
+"""class QuizViewTests(TestCase):
 	''' 
 		Unit Tests on Quiz Views.  Tests use an emulated Web Client
 		to simulate a user making requests via the web interface
@@ -1075,38 +1076,84 @@ class QuizViewTests(TestCase):
 			Set up the tests
 		'''
 		self.client = Client()
-		self.courseSlug = 'QuizViewTests_Course1'
-		self.quizSlug1 = 'QuizViewTests_Quiz1'
-		self.quizSlug2 = 'QuizViewTests_Quiz2'
+		self.publicCourse = 'quizviewtests_public'
+		self.privateCourse = 'quizviewtests_private'
+		self.quiz1 = 'quiz1'
+		self.hiddenquiz = 'hiddenquiz'
 
-	def testPublicQuizUrl(self):
+	def test_show_quiz(self):
 		'''
 			Test that the urls to a known public quiz page works properly
 
 			Case no.    Input                                                        Expected Output         Remark
-			1           url = /course/courseSlug/page/quizSlug1/                     200                     302 is a found code
-			2           url = /course/badCourse/page/quizSlug1/                      404                     404 is a bad link error
-			3           url = /course/courseSlug/page/badQuiz/                       404                     404 is a bad link error
+			1           url = /course/publicCourse/page/quiz1/                       200                     302 is a found code
+			2           url = /course/badCourse/page/quiz1/                          404                     404 is a bad link error
+			3           url = /course/publicCourse/page/badQuiz/                     404                     404 is a bad link error
 			4           url = /course/badCourse/page/badQuiz/                        404                     404 is a bad link error
+			5           url = /course/publicCourse/page/hiddenquiz/                  200                     User not logged in
+			                                                                         template=denied.html
 
 			@author Evan Kleist
 		'''
 
-		# Case 1 - A good course and a good quiz should display properly		
-		response = self.client.get('/course/' + self.courseSlug + '/page/' + self.quizSlug1 + '/')
+		# Case 1 - A good course and a good quiz should display properly	
+		response = self.client.get(reverse('pages.views.show_page', args=[self.publicCourse, self.quiz1]))
 		self.failUnlessEqual(response.status_code, 200)
 
 		# Case 2 - A bad course and a good quiz should display an error
-		response = self.client.get('/course/' + 'badClass' + '/page/' + self.quizSlug1 + '/')
+		response = self.client.get(reverse('pages.views.show_page', args=["bad-course", self.quiz1]))
 		self.failUnlessEqual(response.status_code, 404) 
 
 		# Case 3 - A good course and a bad quiz should display an error
-		response = self.client.get('/course/' + self.courseSlug + '/page/' + 'badQuiz' + '/')
+		response = self.client.get(reverse('pages.views.show_page', args=[self.publicCourse, "badquiz"]))
 		self.failUnlessEqual(response.status_code, 404) 
 
 		# Case 4 - A bad course and a bad quiz should display an error
-		response = self.client.get('/course/' + 'badClass' + '/page/' + 'badQuiz' + '/')
+		response = self.client.get(reverse('pages.views.show_page', args=["bad-course", "badquiz"]))
 		self.failUnlessEqual(response.status_code, 404)
+
+		# Case 5
+		response = self.client.get(reverse('pages.views.show_page', args=[self.publicCourse, self.hiddenquiz]))
+		self.failUnlessEqual(response.status_code, 200)
+		self.assertTemplateUsed(response, "page/denied.html")
+
+	def test_delete_quiz(self):
+		'''
+			Test that the urls to a known public quiz page works properly
+
+			Case no.    Input                                                        Expected Output         Remark
+			1           user =                                         
+
+			@author Evan Kleist
+		'''
+
+		# Case 1
+		self.client.login(username="user_notEnrolled", password="password")
+		response = self.client.post('/course/'+self.publicCourse+'/page/'+self.quiz1+'/edit/', {"Delete":"true"})
+		self.assertTemplateUsed(response, "page/denied.html")
+		self.client.logout()
+
+		# Case 2
+		self.client.login(username="user_enrolled", password="password")
+		response = self.client.post('/course/'+self.publicCourse+'/page/'+self.quiz1+'/edit/', {"Delete":"true"})
+		self.assertTemplateUsed(response, "page/denied.html")
+		self.client.logout()
+
+		# Case 3
+		self.client.login(username="ekleist", password="password")
+		response = self.client.post('/course/'+self.publicCourse+'/page/'+self.quiz1+'/edit/', {"Delete":"true"})
+		self.assertTemplateUsed(response, "page/quiz/delete_quiz.html")
+		self.client.logout()
+
+		# Case 4
+		response = self.client.post('/course/'+self.publicCourse+'/page/'+self.quiz1+'/edit/', {"Delete":"true"})
+		self.assertEquals(response.status_code, 302)
+
+		# Case 4
+		self.client.login(username="ekleist", password="password")
+		response = self.client.post('/course/'+self.publicCourse+'/page/'+self.quiz1+'/edit/', {"ConfirmDelete":"true"})
+		self.assertEquals(response.status_code, 302)
+		self.client.logout()
 
 	def testPrivateQuizUrl(self):
 		'''
@@ -1143,8 +1190,6 @@ class QuizViewTests(TestCase):
 		self.failUnlessEqual(self.client.login(username=enrolledUser, password=enrolledUserPwd), True)
 		response = self.client.get('/course/' + courseSlug + '/page/' + quizSlug + '/')
 		self.assertTemplateUsed(response, "page/quiz/viewQuiz.html")
-		
-		pass
 
 	def testHiddenQuizUrl(self):
 		'''
@@ -1162,8 +1207,20 @@ class QuizViewTests(TestCase):
 
 			@author Evan Kleist
 		'''
+		# Case 1		
+		response = self.client.get('/course/' + courseSlug + '/page/' + quizSlug + '/')
+		self.assertTemplateUsed(response, "page/denied.html")
 
-		pass
+		# Case 2
+		self.failUnlessEqual(self.client.login(username=unenrolledUser, password=unenrolledUserPwd), True)
+		response = self.client.get('/course/' + courseSlug + '/page/' + quizSlug + '/')
+		self.assertTemplateUsed(response, "page/denied.html")
+
+		# Case 3
+		self.client.logout()
+		self.failUnlessEqual(self.client.login(username=enrolledUser, password=enrolledUserPwd), True)
+		response = self.client.get('/course/' + courseSlug + '/page/' + quizSlug + '/')
+		self.assertTemplateUsed(response, "page/quiz/viewQuiz.html")
 
 	def testSubmitPublicQuizUrl(self):
 		'''
@@ -1348,5 +1405,5 @@ class QuizViewTests(TestCase):
 
 			@author Evan Kleist
 		'''
-		pass
+		pass"""
 

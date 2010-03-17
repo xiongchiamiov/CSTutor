@@ -3,7 +3,8 @@ Views file for quiz related views
 
 This file contains methods for creating a quiz and showing a quiz. More methods will be added to this file in time.
 
-@author Evan Kleist
+@author Evan Kleist(All but 1 view)
+@authot John Hartquist(1 view)
 '''
 
 from django.core.urlresolvers import reverse

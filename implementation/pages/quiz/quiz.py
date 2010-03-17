@@ -1,7 +1,7 @@
 '''
-quiz.py fil for quiz related operations.
+quiz.py for quiz related operations.
 
-Contains operations for all lessons
+Contains operations that act on a quiz
 
 @author Evan Kleist
 '''
@@ -17,7 +17,9 @@ from stats.stat import getUserBestScore
 
 def addCodeQuestion(self):
 	'''
-	Takes a quiz and adds a blank code question to it
+	Adds a new code question to a quiz
+
+	Takes the quiz being operated on
 
 	@author Evan Kleist
 	'''
@@ -28,8 +30,9 @@ def addCodeQuestion(self):
 
 def addMultipleChoiceQuestion(self):
 	'''
-	Takes a quiz and adds a blank multiple choice question to it, as well as 2 blank answers
+	Adds a blank multiple choice question to a quiz, as well as 2 blank answers
 
+	Takes the quiz being operated on
 	@author Evan Kleist
 	'''
 	questions = self.questions.all()
@@ -41,8 +44,15 @@ def addMultipleChoiceQuestion(self):
 
 def addPath(self, request, course_slug):
 	'''
-		Takes a working copy of a quiz, a request containing post data, and a course_slug
-		and adds a path to the quiz
+		Adds a new path to a quiz. Calling this method from anything
+		other than the Add Path Form will cause an exception.
+
+		Parameters:
+		   self - the quiz being operated on
+		   request - an HttpRequest that contains POST data representing the
+		             new path to be added. This data is obtained by the form
+		             displayed when the add path button is pressed.
+		   course_slug - the course slug for the course that the quiz belongs to
 
 		pre: must be a POST and contain the post data
 
@@ -88,11 +98,16 @@ def addPath(self, request, course_slug):
 
 def checkPrerequisites(self, user):
 	'''
-		This function takes a quiz and a user. It then loooks the user's
-		statistics up and makes sure all of the quizzes prerequisites
-		have been met. If the user has edit permissions on the course,
-		then it returns true. Otherwise, it returns true if all prereqs
-		have been met and false if not.
+		Looks up the user's statistics up and makes sure all of the quizzes 
+		prerequisites havee been met by the user. If the user has edit 
+		permissions on the course,	then it returns true. This is because a
+		editor should stil be able to view questions of the quiz they can edit.
+		If prerequisites have not been met or the user is not an editor, it 
+		returns false
+
+		Parameters:
+		   self - the quiz being operated on
+		   user - the user being checked on
 	
 		@author Evan Kleist
 	'''
@@ -115,7 +130,11 @@ def checkPrerequisites(self, user):
 
 def copyQuiz(quiz1, quiz2):
 	'''
-		Takes two quizzes and copies the contents of quiz1 into quiz2
+		Copies the contents of quiz1 into quiz2
+
+		Parameters:
+		   quiz1 - the quiz being copied from
+			quiz2 - the quiz being copied to
 
 		@author Evan Kleist
 	'''
@@ -169,9 +188,14 @@ def copyQuiz(quiz1, quiz2):
 
 def matchPath(self, score):
 	'''
-		This function takes a quiz and a "score" on the quiz, represented as a percentage,
-		and returns the quiz path that the score matches. If no matching path
-		is found, it raises the NoMatchingPath exception.
+		This functions takes a quiz and a score and rubs the two together to
+		produce the matching path by looking at all of the quizzes paths. A 
+		path is matched by lowscore <= score <highscore. If no matching path
+		is found, it raises the NoMatchingPath exception
+
+		Parameters:
+		   self - the quiz being operated on
+		   score - the score, represented as a percentage 0-100
 
 		@author Evan Kleist
 	'''
@@ -187,8 +211,15 @@ def matchPath(self, score):
 
 def editPath(self, request, course_slug):
 	'''
-		Takes a working copy of a quiz, a request containing post data, and a course_slug
-		and edits the matching path of the quiz
+		Edits an existing path on a quiz. If this function is called from anything
+		other than the Edit Path form, it will result in an exception.
+
+		Parameters:
+		   self - the quiz being operated on
+		   request - an HttpRequest that contains POST data representing the
+		             edited fields of the path. This data is obtained by 
+			          the form displayed when the Edit Path button is pressed.
+		   course_slug - the course slug for the course that the path belongs to
 
 		@author Evan Kleist
 	'''
@@ -261,7 +292,12 @@ def editPath(self, request, course_slug):
 
 def publishQuiz(self):
 	''' 
-		Takes a working copy of a quiz and copies it over to the published copy
+		Publishes the contents of a working copy of a quiz over to the live copy.
+		Sets the published copy to be "Up To Date".
+
+		Parameters:
+		   self - the quiz being operated on. This can be either the working copy
+		          or the published copy and the function will act the exact same
 
 		@author Evan Kleist
 	'''
@@ -276,8 +312,14 @@ def publishQuiz(self):
 
 def removePath(self, request):
 	'''
-		Takes a working copy of a quiz and a request containing post data and
-		removes the path from the quiz
+		Removes a path from a quiz. If this function is called from anything
+		other than the quiz editor form, it will result in an exception.
+
+		Parameters:
+		   self - the quiz being operated on
+		   request - an HttpRequest that contains POST data representing the
+		              path to be removed. This data is obtained by the form
+		             displayed when the remove path button is pressed.
 
 		@author Evan Kleist
 	'''
@@ -316,8 +358,13 @@ def removePath(self, request):
 
 def removeQuiz(self):
 	'''
-		Removes a quiz from the database, as well as all related 
-		objects
+		Removes a quiz from the databass. It will recursivly delete all related
+		objects including paths, prerequisites, questions, and answers and the working copy.
+		Statistics will be left in the database for data integrity purposes
+		but will be unreachable by the program.
+
+		Parameters:
+		   self - the quiz being operated on
 
 		@author Evan Kleist
 	'''
@@ -355,8 +402,11 @@ def removeQuiz(self):
 
 def reorderQuestions(self):
 	'''
-		Takes a quiz, retrieves its questions, and then reorders the 
-		questions into a valid state.
+		Retreieves a quizzes questions and reorders them into
+		a valid state.
+
+		Parameters:
+		   self - the quiz being operated on
 
 		@author Evan Kleist
 	'''
@@ -369,7 +419,13 @@ def reorderQuestions(self):
 
 def revertQuiz(self):
 	'''
-		Takes a working copy of a quiz and reverts it to its published version
+		Reverts a working copy of a quiz back to its respective
+		published copy. Calling this function on a published copy
+		will copy the published copy onto itself, resulting in no
+		visible effect.
+
+		Parameters:
+		   self - the quiz being operated on
 
 		@author Evan Kleist
 	'''
@@ -383,8 +439,11 @@ def revertQuiz(self):
 
 def safeSlug(page_slug):
 	'''
-		Takes a quiz slug and makes sure they are not trying to directly access
-		the working copy. If so, it returns the slug to the published copy
+		Strips off the trailing "_workingCopy" on a quiz, if it exists. Useful to
+		make sure a user isnt trying to directly access a working copy of a quiz.
+
+		Parameters:
+		   page_slug - the slug to make "safe"
 
 		@author Evan Kleist
 	'''
@@ -397,9 +456,16 @@ def safeSlug(page_slug):
 
 def saveQuiz(request, course_slug, pid):
 	'''
-		Takes a request, a course, and a page id. It then pulls the 
-		quiz from the post data and updates the elements in the 
-		database. Before saving, it validates for proper data
+		Saves the data contained in the request to the working copy
+		of a quiz. Calling this function from anything other than
+		the quiz editor form will result in an exception.
+
+		Parameters:
+		   request - an HttpRequest that contains POST data representing the
+		             quiz to be saved. This data is obtained by the form
+		             displayed when the Save button is pressed.
+		   course_slug - the course slug for the course that the quiz belongs to
+			pid - the page slug for the quiz being worked on
 
 		@author Evan Kleist
 	'''
@@ -463,10 +529,20 @@ def saveQuiz(request, course_slug, pid):
 
 def scoreQuiz(self, request, course_slug, quiz_slug):
 	'''
-		Takes a quiz and a request. Pulls the submitted answers from 
-		the form contained in the request and compares it to the 
-		correct answers specified in the quiz. Generates a statistic 
-		for a quiz, adds it to the database and returns their score.
+		Pulls the submitted answers from the form contained in the 
+		request and compares it to the correct answers specified 
+		in the quiz. Generates a statistic for a quiz, adds it 
+		to the database and returns their score. Calling this
+		function from anything other than the Show Quiz form
+		will result in an exception
+
+		Parameters:
+		   self - the quiz being operated on
+		   request - an HttpRequest that contains POST data representing the
+		             answers for the quiz. This data is obtained by the form
+		             displayed when a quiz is viewed.
+		   course_slug - the course slug for the course that the quiz belongs to
+		   quiz_slug - the quiz slug for the quiz being submitted
 
 		@author Evan Kleist
 	'''
@@ -503,10 +579,13 @@ def scoreQuiz(self, request, course_slug, quiz_slug):
 
 def validateQuestionOrder(self):
 	'''
-		Takes in a quiz, and verifies that all of its questions have
-		a unique ordering, and are ordered from 1 -> # of questions
+		Verifies that all of a quizzes questions have a unique ordering, 
+		and are ordered from 1 -> # of questions
 
 		Returns True if the above constraints are met, False otherwise
+
+		Parameters:
+		   self - the quiz being operated on
 
 		@author Evan Kleist
 	'''
@@ -522,10 +601,16 @@ def validateQuestionOrder(self):
 
 def validateQuiz(self):
 	'''
-		Takes a working copy of a quiz and makes sure all of the data
-		is valid. It returns an array containg the errors or an emtpy
-		array if no errors were found
-		
+		Validates a quiz to make sure all of its data is valid. Quiz Title must
+		be an string > 0 characters and must not be a duplicate. Any
+		prerequisites must have a corresponding passing path, otherwise
+		the quiz would be unreachable. All question prompts cannot be blank.
+		No answer can be blank. A multiple choice question must have >=
+		2 answers and 1 must be correct. Questions must have a valid ordering.
+
+		Parameters:
+		   self - the quiz being operated on
+
 		@author Evan Kleist
 	'''
 	errors = []
