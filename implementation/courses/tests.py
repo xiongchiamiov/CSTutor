@@ -16,6 +16,7 @@ from courses.models import Course
 from courses.models import Enrollment
 from courses.course import *
 from users.user import registerNewUser
+from pages.lesson.lesson import saveNewLesson
 
 class CourseTests(TestCase):
 	''' 
@@ -42,22 +43,22 @@ class CourseTests(TestCase):
 
 		2.				slug = not-a-class				404
 
-
-
 			@author Matthew Tytel
 		'''
 		name = "newCourse"
 		registerNewUser("NewUser", "password", "password", "first", "last", "newuser@email.com")
 		user = User.objects.get(username = "NewUser")
+		
 		course = CreateCourse(name, user, False)
 		course2 = Course.objects.get(slug=course.slug)
+		
 		self.assertEquals(name, course.name)
 		self.assertEquals(name, course2.name)
 		self.assertEquals(False, course.private)
 		self.assertEquals(False, course2.private)
 		self.assertEquals(course.slug, course2.slug)
 	
-	def test_RemoveCourse(self):
+	def test_RenameCourse(self):
 		'''
 			Test RemoveCourse function (might not be defined yet)
 
@@ -67,7 +68,35 @@ class CourseTests(TestCase):
 
 			@author Mark Gius
 		'''
-		pass
+		name = "newCourse"
+		newname = "newCourse2"
+		dupname = "newDupCourse"
+		lessname = "lessonName"
+
+		registerNewUser("NewUser", "password", "password", "first", "last", "newuser@email.com")
+		user = User.objects.get(username = "NewUser")
+		
+		course = CreateCourse(name, user, False)
+		CreateCourse(dupname, user, False)
+
+		ret = renameCourse(course, "")
+		self.assertEquals(ret['message'], "Name change failed: name must be non-empty")
+
+		ret = renameCourse(course, dupname)
+		self.assertEquals(ret['message'], "Name change failed. A course with that name already exists")
+
+		saveNewLesson(lessname, "content", course, course.slug)
+		ret = renameCourse(course, lessname)
+		self.assertEquals(ret['message'], "Name change failed. A page with that name already exists in this course")
+
+		ret = renameCourse(course, newname)
+		course2 = Course.objects.get(slug=course.slug)
+		
+		self.assertEquals(newname, course.name)
+		self.assertEquals(newname, course2.name)
+		self.assertEquals(False, course.private)
+		self.assertEquals(False, course2.private)
+		self.assertEquals(course.slug, course2.slug)
 
 	def test_addPage(self):
 		'''

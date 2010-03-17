@@ -67,8 +67,9 @@ def renameCourse(course, newName):
 	#also change the 'index' lesson to reflect name change
 	indexPage = Lesson.objects.get(course = course, left = 1)
 	ret = saveLessonName(indexPage, newName)
-	if 'message' in ret:#indicates failure SHOULD NOT HAPPEN EVER
-		return ret
+
+	if 'message' in ret:
+		return {'message':ret['message']}
 	if 'lesson' in ret:#indicates success, should always happen
 		return {'course':course, 'lesson': ret['lesson']}
 	#left this in case a bozo changes saveLessonName
