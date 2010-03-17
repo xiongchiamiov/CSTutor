@@ -2,6 +2,7 @@
 Unit tests for Lesson functions
 
 @author Russell Mezzetta
+@author Matthew Tytel
 """
 
 from django.test import TestCase

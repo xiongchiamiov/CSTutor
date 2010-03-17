@@ -60,11 +60,9 @@ class CourseTests(TestCase):
 	
 	def test_RenameCourse(self):
 		'''
-			Test RemoveCourse function (might not be defined yet)
+			Test renameCourse function
 
-			Verifies that the course is removed from the database
-			and all sub pages, enrollments and roster are removed
-			as well
+			Verifies that the course is renamed in the database
 
 			@author Matthew Tytel
 		'''
@@ -98,22 +96,41 @@ class CourseTests(TestCase):
 		self.assertEquals(False, course2.private)
 		self.assertEquals(course.slug, course2.slug)
 
-	def test_addPage(self):
+	def test_RemoveCourse(self):
 		'''
-			Tests addPage function
+			Test RemoveCourse function (might not be defined yet)
 
-			Verifies that the page is successfully added to the course
+			Verifies that the course is removed from the database
+			and all sub pages, enrollments and roster are removed
+			as well
 
-			@author Mark Gius
+			Case			Description
+			1				Test removing a page that doesn't exist
+			2				Test removing an existing page
+			3				Test if the page is gone
+
+			@author Matthew Tytel
 		'''
-		pass
+		name = "newCourse"
+		
+		self.assertEquals(removeCourse(slugify(name)), None)
+		
+		registerNewUser("NewUser", "password", "password", "first", "last", "newuser@email.com")
+		user = User.objects.get(username = "NewUser")
+		course = CreateCourse(name, user, False)
+		
+		self.assertEquals(course.name, removeCourse(slugify(name)).name)
 
-	def test_addUser(self):
-		''' Tests for addUser function
+		self.assertEquals(removeCourse(slugify(name)), None)
 
-			 Tests adding a user of various levels of permission levels
+	def test_setPrivate(self):
+		''' 
+			Tests setPrivate function
 
-			@author Mark Gius
+			Tests if the setPrivate function will correctly set the private
+			value
+
+			@author Matthew Tytel
 		'''
 		pass
 	
@@ -125,15 +142,6 @@ class CourseTests(TestCase):
 		'''
 		pass
 	
-	def test_remove(self):
-		'''
-			Tests function to remove a course and it's associated pages,
-			enrollments, and stats from the database
-
-			@author Mark Gius
-		'''
-		pass
-
 class CourseViewTests(TestCase):
 	''' 
 		Unit Tests on Course Views.  Tests use an emulated Web Client
