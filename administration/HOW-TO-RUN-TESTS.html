@@ -33,7 +33,7 @@ cannot be tested because it requires an uploaded file that cannot be simulated b
 
 </p>
 
-<p><b>Un-coverable tests Russel Mezzetta:</b></p>
+<p><b>Un-coverable tests Russell Mezzetta:</b></p>
 <p>In users/views.py the "show_login" view cannot test
 one line because this version of Django does not let you craft request objects
 which contain both GET and POST data.</br></br> Rest assured that the test is trivial. It would test that Django's @login_required decorator properly passes a GET dictionary containing a key 'next' with the value of the next url to redirect to after succesful login. This functionality has been shown to work through user testing.
