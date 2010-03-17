@@ -39,7 +39,7 @@ The demoEditor's password is "password"
       <field type="SlugField" name="slug">cstutor-demo</field>
       <field type="TextField" name="name">CSTutor Demo</field>
       <field type="IntegerField" name="left">1</field>
-      <field type="IntegerField" name="right">24</field>
+      <field type="IntegerField" name="right">26</field>
    </object>
    <object pk="101" model="pages.page">
       <field to="courses.course" name="course" rel="ManyToOneRel">100</field>
@@ -108,15 +108,26 @@ The demoEditor's password is "password"
       <field to="courses.course" name="course" rel="ManyToOneRel">100</field>
       <field type="SlugField" name="slug">editing-quizzes-and-lessons</field>
       <field type="TextField" name="name">Editing Quizzes and Lessons</field>
-      <field type="IntegerField" name="left">22</field>
-      <field type="IntegerField" name="right">23</field>
+      <field type="IntegerField" name="left">24</field>
+      <field type="IntegerField" name="right">25</field>
    </object>
    <object pk="111" model="pages.page">
       <field to="courses.course" name="course" rel="ManyToOneRel">100</field>
       <field type="SlugField" name="slug">viewing-lesson</field>
       <field type="TextField" name="name">Viewing lesson</field>
       <field type="IntegerField" name="left">20</field>
-      <field type="IntegerField" name="right">21</field>
+      <field type="IntegerField" name="right">23</field>
+   </object>
+   <object pk="112" model="pages.page">
+      <field to="courses.course" name="course" rel="ManyToOneRel">100</field>
+      <field type="SlugField" name="slug">code-lesson</field>
+      <field type="TextField" name="name">code lesson</field>
+      <field type="IntegerField" name="left">21</field>
+      <field type="IntegerField" name="right">22</field>
+   </object>
+   <object pk="112" model="lesson.lesson">
+      <field type="TextField" name="content">&lt;p&gt;Some pages have a code shell embedded in them.  Check it out! Try running this sample python program.&lt;/p&gt;&lt;code&gt;print &quot;Hello World&quot;&lt;/code&gt;</field>
+      <field type="TextField" name="workingCopy">&lt;p&gt;Some pages have a code shell embedded in them.  Check it out! Try running this sample python program.&lt;/p&gt;&lt;code&gt;print &quot;Hello World&quot;&lt;/code&gt;</field>
    </object>
    <object pk="100" model="lesson.lesson">
       <field type="TextField" name="content">&lt;p&gt;This is a sample course that demonstrates the features of CSTutor.&lt;/p&gt;</field>

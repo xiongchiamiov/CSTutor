@@ -99,6 +99,7 @@ INSTALLED_APPS = (
 	'include.db',
 	'users',
 	'home',
+	'codeshell',
 )
 
 if DEBUG:

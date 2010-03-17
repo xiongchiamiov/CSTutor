@@ -1,5 +1,5 @@
 '''
-Documentation for TinyMCE
+Documentation for TinyMCE, an LGPL WYSIWYG XHTML editor
 
 Here is a link to the site's documentation:
 http://tinymce.moxiecode.com/documentation.php
