@@ -14,6 +14,14 @@ from models import *
 from pages.models import Page
 
 def CreateLesson(name):
+	'''
+	Convenience function to create a lesson 
+	
+	Creates a lesson whose slug is a "slugified" version of the passed name.
+	Does not commit the created lesson to the database
+
+	@author Mark Gius
+	'''
 	return Lesson(slug=slugify(name), name=name)
 
 def saveLesson(request, course, pid):
@@ -57,6 +65,12 @@ def saveNewLesson(request, course, parent_slug):
 	return -1
 
 def removeLesson(request, course, pid):
+	'''
+	Removes a lesson from the database.  Except it fucking does it wrong.
+
+	TODO: This needs to not return 0 or -1, and it needs to use removePage
+	@author John Hartquist
+	'''
 	if (request.method != "POST"):
 		return -1
 	if "confirmRemove" in request.POST:
