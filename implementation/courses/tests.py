@@ -404,14 +404,6 @@ class CourseViewTests(TestCase):
 		#asserts that invalid_permissions.html page was rendered because the logged in user did not have valid permission to add a user
 		self.assertTemplateUsed(response, template)
 
-
-	def testUpdateCourse(self):
-		'''
-		Tests changes to course data
-
-		'''
-		pass
-
 	def testUpdateRoster(self):
 		'''
 		Tests the updating the roster
