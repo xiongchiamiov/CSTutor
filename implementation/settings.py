@@ -10,6 +10,7 @@ DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 THEME = 'light'
+THEME_LIST = ('light', 'dark')
 
 ADMINS = (
 	# ('Your Name', 'your_email@domain.com'),
