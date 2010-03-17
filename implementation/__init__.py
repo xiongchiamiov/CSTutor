@@ -21,6 +21,9 @@
 	system-level integration testing, and supports regression testing. 
 	In other words, it can simluate front-end user interaction as well as back-end function testing.
 
+	Our integration test plan is to run the websever and if any code is broken it will display an 
+	error. 
+
 @author Russell Mezzetta
 @author Jon Inloes
 @author Mark Gius
