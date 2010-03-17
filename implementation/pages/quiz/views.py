@@ -1,7 +1,11 @@
 '''
 Views file for quiz related views
 
-This file contains methods for creating a quiz and showing a quiz. More methods will be added to this file in time.
+This file contains views for creating, showing, editing, and submitting a quiz.
+While a user is in the edit view, they can invoke additional views in
+this file including deleting a quiz, deleting a question, adding a path,
+and editing a path. All other quiz operations are invoked by the respective
+button press on the gui for the quiz editor.
 
 @author Evan Kleist(All but 1 view)
 @authot John Hartquist(1 view)
@@ -69,7 +73,10 @@ def show_quiz(request, course_slug, page_slug):
 
 		If the user is trying to view the working_copy, they are shown the
 		regular copy instead. This is to prevent a student from looking
-		at unpublished quizzes
+		at unpublished quizzes.
+
+		Verifies student has met all prerequisites before displaying questions,
+		if the quiz is hidden.
 
 		@author Evan Kleist
 	'''
@@ -91,7 +98,9 @@ def show_quiz(request, course_slug, page_slug):
 def delete_quiz(request, course_slug, page_slug):
 	''' delete_quiz View
 		This view confirms deletion of a quiz. The user can then choose
-		 to delete the quiz or cancel
+		to delete the quiz or cancel. If the user deletes the quiz, they
+		are redirected to the course index page. If the user selects
+		cancel, they are redirected back to the quiz editor.
 
 		@author Evan Kleist
 	'''
@@ -105,7 +114,8 @@ def delete_quiz(request, course_slug, page_slug):
 def add_path(request, course_slug, page_slug, errors):
 	''' add_path View
 		This view allows you to add a path to the quiz. The user can then choose
-		 to save the path or cancel
+		to save the path or cancel. Upon submission or cancelation, the user
+		is returned to the quiz editor.
 
 		@author Evan Kleist
 	'''
@@ -123,8 +133,9 @@ def add_path(request, course_slug, page_slug, errors):
 
 def edit_path(request, course_slug, page_slug, errors):
 	''' edit_path View
-		This view allows you to edit an existing path for the quiz. The user can then choose
-		 to save the path or cancel
+		This view allows you to edit an existing path for the quiz. The user 
+		can then choose to save the path or cancel. Upon submission or 
+		cancelation, the user is returned back to the edit quiz view.
 
 		@author Evan Kleist
 	'''
@@ -147,7 +158,8 @@ def edit_path(request, course_slug, page_slug, errors):
 def remove_question(request, course_slug, page_slug, qNum):
 	''' remove_question View
 		This view confirms deletion of a question. The user can then choose
-		 to delete the question or cancel
+		to delete the question or cancel. Upon confirmation,
+		the user is returned back to the quiz editor.
 
 		@author Evan Kleist
 	'''
@@ -161,8 +173,11 @@ def remove_question(request, course_slug, page_slug, qNum):
 
 def submitQuiz(request, course_slug, page_slug):
 	''' submitQuiz View
-		This view will submit a quiz and create a statistic in the database. It will give the user
-		their score and then direct the user to the appropriate path
+		This view is related to the show_quiz view. It first checks to make sure
+		the user has met any prerequisites before being bale to submit the quiz.
+		It also verifies the quiz and course actually exist in the database. It 
+		then displays a page displaying their score, and the corresponding path
+		for their score, if one exists.
 
 		@author Evan Kleist
 	'''
@@ -217,11 +232,10 @@ def submitQuiz(request, course_slug, page_slug):
 
 def edit_quiz(request, course_slug, page_slug):
 	''' edit_quiz View
-		This view allows an instructor or other priviledged user to edit a quiz. The instructor can add, modify,
-		or remove questions and other quiz attributes. The modified quiz is then submitted to the database.
-
-		Note 1) Pressing "New Multiple Choice Question" will discard any changes made to the quiz, returning it 
-				to its previous state but with a new multiple choice question appended at the end
+		This view allows an instructor or other priviledged user to edit a quiz.
+		The instructor can add, modify, or remove questions using their
+		respective fields/buttons. The user can also add, remove, and edit other
+		quiz attributes. The modified quiz is then submitted to the database.
 
 		@author Evan Kleist
 	'''
