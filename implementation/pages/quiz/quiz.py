@@ -13,6 +13,7 @@ from pages.page import removePage
 from stats.models import Stat
 from codeshell.pythoncode import *
 from stats.models import Stat
+from stats.stat import getUserBestScore
 
 def addCodeQuestion(self):
 	'''
@@ -67,7 +68,7 @@ def addPath(self, request, course_slug):
 		if (highScore < 0 or highScore > 100):
 			errors.append("High Score must be between 0 and 100")
 		if (highScore < lowScore):
-			errors.append("Low Score must be less than or equal too High Score")
+			errors.append("Low Score must be less than or equal to High Score")
 	except ValueError:
 		errors.append("High Score must be an integer")
 
@@ -103,11 +104,6 @@ def checkPrerequisites(self, user):
 		if (not enrollment.edit):
 			for p in prereqs:
 				requiredQuiz = p.requiredQuiz
-				"""try:
-					stat = Stat.objects.filter(course=self.course, page=requiredQuiz, user=user).order_by("-score")[0]
-				except IndexError:
-					return False
-				score = stat.score / stat.maxscore * 100"""
 				score = getUserBestScore(user, requiredQuiz)
 				path = matchPath(requiredQuiz, score)
 				if (path.passed == False):
@@ -269,7 +265,6 @@ def publishQuiz(self):
 	'''
 	errors = validateQuiz(self)
 	if (len(errors) == 0):
-		print "working quiz name " + self.name
 		publishedSlug = safeSlug(self.slug)
 		publishedQuiz = Quiz.objects.get(slug=publishedSlug, course=self.course)
 		copyQuiz(self, publishedQuiz)

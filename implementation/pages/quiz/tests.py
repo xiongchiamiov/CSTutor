@@ -7,10 +7,13 @@ This file contains tests for the Quiz package.
 from django.test import TestCase
 from django.test.client import Client
 from django.contrib.auth.models import User
+from django.contrib.auth.models import AnonymousUser
 from pages.quiz.models import *
 from pages.quiz.quiz import *
 from pages.quiz.question.models import *
 from django.core.handlers.wsgi import WSGIRequest
+from users.models import *
+from django.core.urlresolvers import reverse
 
 class QuizUnitTests(TestCase):
 	'''
@@ -29,6 +32,7 @@ class QuizUnitTests(TestCase):
 		self.courseSlug = 'quizunittest_course'
 		self.quizSlug1 = 'quizunittests_quiz1'
 		self.quizSlug2 = 'quizunittests_quiz2'
+		self.quizSlug3 = 'quizunittests_quiz3'
 
 	def test_addCodeQuestion(self):
 		'''
@@ -84,11 +88,158 @@ class QuizUnitTests(TestCase):
 		self.failUnlessEqual(newQuestion.text, "")
 
 	def test_addPath(self):
-		pass
+		'''
+			Test that addPath successfulyl adds a path
+			or returns the appropriate errors
+
+			Case no.    Input               Expected Output                                    Remark
+			1           lowscore = -1       errors = ["Low Score must be between 0 and 100"]   Low Score < 0
+			2           lowscore = 101      errors = ["Low Score must be between 0 and 100",   Low Score > 100
+			                                          "Low Score must be less than or equal 
+			                                           to High Score"]
+			3           lowscore = "a"      errors = ["Low Score must be an integer"]          Low Score invalid
+			4           highscore = -1      errors = ["High Score must be between 0 and 100"   High Score < 0
+			                                         , "Low Score must be less than or equal
+			                                            to High Score"]
+			5           highscore = 101     errors = ["High Score must be between 0 and 100"]  High Score > 100
+			6           lowscore = 50       errors = ["Low Score must be less than or equal    High Score < Low Score
+			            highscore = 0                  to High Score"]
+			7           highscore = "abc"   errors = ["High Score must be an integer"]         High Score invalid
+			8           lowscore = 0        errors = []                                        Successfully add path
+			            highscore = 100     quiz.paths.contains(newPath)
+			            toPage = quiz1
+			            dialogue = "test"
+			            passing = True
+			9           lowscore = 0        errors = ["A path that matches this range          Duplicate path
+			            highscore = 100                exists already"]
+			            toPage = quiz1
+			            dialogue = "test"
+			            passing = True
+
+			@author Evan Kleist
+		'''
+		quiz = Quiz.objects.get(slug = self.quizSlug3 + "_workingCopy")
+		environ = {
+			'HTTP_COOKIE': self.client.cookies,
+			'PATH_INFO': '/',
+			'QUERY_STRING': '',
+			'REQUEST_METHOD': 'GET',
+			'SCRIPT_NAME': '',
+			'SERVER_NAME': 'testserver',
+			'SERVER_PORT': 80,
+			'SERVER_PROTOCOL': 'HTTP/1.1',
+		}
+		environ.update(self.client.defaults)
+
+		customRequest = WSGIRequest(environ)
+		
+		# Case 1
+		customRequest.POST = {'LowScore':-1, 'HighScore':100, 'pathPage':self.quizSlug1, 'passing':'on', 'dialogue':'test'}
+		errors = addPath(quiz, customRequest, self.courseSlug)
+		self.failUnlessEqual(errors, ["Low Score must be between 0 and 100"])
+
+		# Case 2
+		customRequest.POST = {'LowScore':101, 'HighScore':100, 'pathPage':self.quizSlug1, 'passing':'on', 'dialogue':'test'}
+		errors = addPath(quiz, customRequest, self.courseSlug)
+		self.failUnlessEqual(errors, ["Low Score must be between 0 and 100", "Low Score must be less than or equal to High Score"])
+
+		# Case 3
+		customRequest.POST = {'LowScore':"a", 'HighScore':100, 'pathPage':self.quizSlug1, 'passing':'on', 'dialogue':'test'}
+		errors = addPath(quiz, customRequest, self.courseSlug)
+		self.failUnlessEqual(errors, ["Low Score must be an integer"])
+
+		# Case 4
+		customRequest.POST = {'LowScore':0, 'HighScore':-1, 'pathPage':self.quizSlug1, 'passing':'on', 'dialogue':'test'}
+		errors = addPath(quiz, customRequest, self.courseSlug)
+		self.failUnlessEqual(errors, ["High Score must be between 0 and 100", "Low Score must be less than or equal to High Score"])
+
+		# Case 5
+		customRequest.POST = {'LowScore':0, 'HighScore':101, 'pathPage':self.quizSlug1, 'passing':'on', 'dialogue':'test'}
+		errors = addPath(quiz, customRequest, self.courseSlug)
+		self.failUnlessEqual(errors, ["High Score must be between 0 and 100"])
+
+		# Case 6
+		customRequest.POST = {'LowScore':50, 'HighScore':0, 'pathPage':self.quizSlug1, 'passing':'on', 'dialogue':'test'}
+		errors = addPath(quiz, customRequest, self.courseSlug)
+		self.failUnlessEqual(errors, ["Low Score must be less than or equal to High Score"])
+
+		# Case 7
+		customRequest.POST = {'LowScore':0, 'HighScore':"abc", 'pathPage':self.quizSlug1, 'passing':'on', 'dialogue':'test'}
+		errors = addPath(quiz, customRequest, self.courseSlug)
+		self.failUnlessEqual(errors, ["High Score must be an integer"])
+
+		# Case 8
+		customRequest.POST = {'LowScore':0, 'HighScore':100, 'pathPage':self.quizSlug1, 'passing':'on', 'dialogue':'test'}
+		errors = addPath(quiz, customRequest, self.courseSlug)
+		self.failUnlessEqual(errors, [])
+		try:
+			path = quiz.paths.get(lowscore = 0)
+			self.failUnlessEqual(1,1)
+		except Path.DoesNotExist:
+			self.failUnlessEqual(0,1, "The path didnt get added")
+		self.failUnlessEqual(path.lowscore, 0)
+		self.failUnlessEqual(path.highscore, 100)
+		self.failUnlessEqual(path.text, "test")
+		self.failUnlessEqual(path.passed, True)
+		self.failUnlessEqual(path.toPage, Page.objects.get(slug=self.quizSlug1))
+
+		# Case 9
+		customRequest.POST = {'LowScore':0, 'HighScore':100, 'pathPage':self.quizSlug1, 'passing':'on', 'dialogue':'test'}
+		errors = addPath(quiz, customRequest, self.courseSlug)
+		self.failUnlessEqual(errors, ["A path that matches this range exists already"])
 
 	def test_checkPrerequisites(self):
-		pass
+		'''
+			Test that 
+
+			Case no.  Input                                        Expected Output   Remark
+			1         quiz = quiz1                                 True              No prerequisites
+			2         quiz = checkPrerequisites_quiz               False             User not logged in, quiz has prereqs
+			          user = anonymous
+			3         quiz = checkPrerequisites_quiz               False             User logged in, hasnt submitted quiz
+			          user = testuser
+			4         quiz = checkPrerequisites_quiz               False             User logged in, failed quiz
+			          user = testuser
+			5         quiz = checkPrerequisites_quiz               True              User logged in, passed quiz
+			          user = testuser
+
+			@author Evan Kleist
+		'''
+		self.client.login(username="testuser", password="password")
+		url = "/course/" + self.courseSlug + "/page/" + self.quizSlug1 + "/submitQuiz/"
 		
+		# Case 1
+		quiz = Quiz.objects.get(slug=self.quizSlug2)
+		user = AnonymousUser()
+		result = checkPrerequisites(quiz, user)
+		self.failUnlessEqual(result, True)
+
+		# Case 2
+		quiz = Quiz.objects.get(slug="checkprerequisites_quiz")
+		user = AnonymousUser()
+		result = checkPrerequisites(quiz, user)
+		self.failUnlessEqual(result, False)
+
+		# Case 3
+		quiz = Quiz.objects.get(slug="checkprerequisites_quiz")
+		user = User.objects.get(username="testuser")
+		result = checkPrerequisites(quiz, user)
+		self.failUnlessEqual(result, False)
+
+		# Case 4
+		quiz = Quiz.objects.get(slug="checkprerequisites_quiz")
+		user = User.objects.get(username="testuser")
+		response = self.client.post(reverse('pages.quiz.views.submitQuiz', args=[self.courseSlug, self.quizSlug1]), {})
+		result = checkPrerequisites(quiz, user)
+		self.failUnlessEqual(result, False)
+
+		# Case 5
+		quiz = Quiz.objects.get(slug="checkprerequisites_quiz")
+		user = User.objects.get(username="testuser")
+		response = self.client.post(reverse('pages.quiz.views.submitQuiz', args=[self.courseSlug, self.quizSlug1]), {'mcq1':1, 'mcq2':1, 'mcq3':1})
+		result = checkPrerequisites(quiz, user)
+		self.failUnlessEqual(result, True)
+
 	def test_copyQuiz(self):
 		'''
 			Test that copyQuiz actually copies over all the 
@@ -214,13 +365,12 @@ class QuizUnitTests(TestCase):
 			8           highscore = "abc"           errors = ["High Score must be an integer"]          High Score is a string
 			            lowscore = 70
 
-			9           highscore = ""              errors = ["High Score must be an integer"]          High Score not specified
-			            lowscore = 70
-
-			10          lowscore = 1                errors = [], path.lowscore = 1                      Successfully edited path
+			9           lowscore = 1                errors = [], path.lowscore = 1                      Successfully edited path
 			            highscore = 49              path.highscore = 49
 			            dialogue = "test"           path.dialogue = "test"
 			            passing = False             path.passed = False
+			10          passing = False             errors = []                                         Other quizzes require this quiz as a prerequisite and other passing path exists
+			11          passing = False             len(errors) == 2                                    Other quizzes require this quiz as a prerequisite and no other passing path exists
 
 			@author Evan Kleist
 		'''
@@ -277,7 +427,7 @@ class QuizUnitTests(TestCase):
 		self.failUnlessEqual(errors, ["High Score must be between 0 and 100"])
 
 		# Case 8
-		customRequest.POST = {'path':0, 'path':0, 'LowScore':70, 'HighScore':"abc", 'pathPage':quiz.slug, 'dialogue':""}
+		customRequest.POST = {'path':0, 'LowScore':70, 'HighScore':"abc", 'pathPage':quiz.slug, 'dialogue':""}
 		errors = editPath(quiz, customRequest, self.courseSlug)
 		self.failUnlessEqual(errors, ["High Score must be an integer"])
 
@@ -292,6 +442,22 @@ class QuizUnitTests(TestCase):
 		self.failUnlessEqual(editedPath.text, "test")
 		self.failUnlessEqual(editedPath.toPage.quiz, quiz)
 		self.failUnlessEqual(editedPath.passed, False)
+
+		# Case 10
+		customRequest.POST = {'path':1, 'LowScore':1, 'HighScore':49, 'pathPage':quiz.slug, 'dialogue':"test", 'passing':'on'}
+		editPath(quiz, customRequest, self.courseSlug)
+		customRequest.POST = {'path':99, 'LowScore':99, 'HighScore':100, 'pathPage':quiz.slug, 'dialogue':""}
+		errors = editPath(quiz, customRequest, self.courseSlug)
+		self.failUnlessEqual(errors, [])
+
+		# Case 11
+		customRequest.POST = {'path':99, 'LowScore':99, 'HighScore':100, 'pathPage':quiz.slug, 'dialogue':"", 'passing':'on'}
+		editPath(quiz, customRequest, self.courseSlug)
+		customRequest.POST = {'path':1, 'LowScore':1, 'HighScore':49, 'pathPage':quiz.slug, 'dialogue':"test"}
+		editPath(quiz, customRequest, self.courseSlug)
+		customRequest.POST = {'path':99, 'LowScore':99, 'HighScore':100, 'pathPage':quiz.slug, 'dialogue':""}
+		errors = editPath(quiz, customRequest, self.courseSlug)
+		self.failUnlessEqual(len(errors), 2)
 
 	"""def test_publishQuiz(self):
 		'''

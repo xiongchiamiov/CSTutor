@@ -9,8 +9,22 @@
     <field type="BooleanField" name="is_staff">True</field>
     <field type="BooleanField" name="is_active">True</field>
     <field type="BooleanField" name="is_superuser">True</field>
-    <field type="DateTimeField" name="last_login">2010-03-16 17:53:12</field>
+    <field type="DateTimeField" name="last_login">2010-03-16 19:15:08</field>
     <field type="DateTimeField" name="date_joined">2010-01-22 13:16:33</field>
+    <field to="auth.group" name="groups" rel="ManyToManyRel"></field>
+    <field to="auth.permission" name="user_permissions" rel="ManyToManyRel"></field>
+  </object>
+  <object pk="8" model="auth.user">
+    <field type="CharField" name="username">testuser</field>
+    <field type="CharField" name="first_name">Test</field>
+    <field type="CharField" name="last_name">User</field>
+    <field type="CharField" name="email"></field>
+    <field type="CharField" name="password">sha1$abfc3$983736b293c20565a4d709cec4b130acea64303c</field>
+    <field type="BooleanField" name="is_staff">False</field>
+    <field type="BooleanField" name="is_active">True</field>
+    <field type="BooleanField" name="is_superuser">False</field>
+    <field type="DateTimeField" name="last_login">2010-03-16 19:18:42</field>
+    <field type="DateTimeField" name="date_joined">2010-03-16 19:18:36</field>
     <field to="auth.group" name="groups" rel="ManyToManyRel"></field>
     <field to="auth.permission" name="user_permissions" rel="ManyToManyRel"></field>
   </object>
@@ -28,12 +42,21 @@
     <field type="BooleanField" name="manage">True</field>
     <field type="DateTimeField" name="lastAction">2010-03-10 02:18:20</field>
   </object>
+  <object pk="4" model="courses.enrollment">
+    <field to="auth.user" name="user" rel="ManyToOneRel">8</field>
+    <field to="courses.course" name="course" rel="ManyToOneRel">10001</field>
+    <field type="BooleanField" name="view">True</field>
+    <field type="BooleanField" name="edit">False</field>
+    <field type="BooleanField" name="stats">False</field>
+    <field type="BooleanField" name="manage">False</field>
+    <field type="DateTimeField" name="lastAction">2010-03-16 19:18:50</field>
+  </object>
   <object pk="10012" model="pages.page">
     <field to="courses.course" name="course" rel="ManyToOneRel">10001</field>
     <field type="SlugField" name="slug">quizunittest_course</field>
     <field type="TextField" name="name">QuizUnitTest_course</field>
     <field type="IntegerField" name="left">1</field>
-    <field type="IntegerField" name="right">10</field>
+    <field type="IntegerField" name="right">12</field>
   </object>
   <object pk="10013" model="pages.page">
     <field to="courses.course" name="course" rel="ManyToOneRel">10001</field>
@@ -91,6 +114,20 @@
     <field type="IntegerField" name="left">0</field>
     <field type="IntegerField" name="right">0</field>
   </object>
+  <object pk="10021" model="pages.page">
+    <field to="courses.course" name="course" rel="ManyToOneRel">10001</field>
+    <field type="SlugField" name="slug">checkprerequisites_quiz</field>
+    <field type="TextField" name="name">checkPrerequisites_Quiz</field>
+    <field type="IntegerField" name="left">10</field>
+    <field type="IntegerField" name="right">11</field>
+  </object>
+  <object pk="10022" model="pages.page">
+    <field to="courses.course" name="course" rel="ManyToOneRel">10001</field>
+    <field type="SlugField" name="slug">checkprerequisites_quiz_workingCopy</field>
+    <field type="TextField" name="name">checkPrerequisites_Quiz</field>
+    <field type="IntegerField" name="left">0</field>
+    <field type="IntegerField" name="right">0</field>
+  </object>
   <object pk="10012" model="lesson.lesson">
     <field type="TextField" name="content">Landing page for newcourse&lt;br /&gt;Your content here</field>
     <field type="TextField" name="workingCopy">&lt;p&gt;Sample index page&lt;/p&gt;</field>
@@ -132,6 +169,16 @@
   </object>
   <object pk="10020" model="quiz.quiz">
     <field type="TextField" name="text">validateQuiz_Quiz</field>
+    <field type="BooleanField" name="hidden">False</field>
+    <field type="BooleanField" name="upToDate">False</field>
+  </object>
+  <object pk="10021" model="quiz.quiz">
+    <field type="TextField" name="text">checkPrerequisites_Quiz</field>
+    <field type="BooleanField" name="hidden">False</field>
+    <field type="BooleanField" name="upToDate">True</field>
+  </object>
+  <object pk="10022" model="quiz.quiz">
+    <field type="TextField" name="text">checkPrerequisites_Quiz</field>
     <field type="BooleanField" name="hidden">False</field>
     <field type="BooleanField" name="upToDate">False</field>
   </object>
@@ -183,6 +230,14 @@
     <field to="pages.page" name="toPage" rel="ManyToOneRel">10013</field>
     <field type="BooleanField" name="passed">True</field>
   </object>
+  <object pk="9" model="quiz.path">
+    <field to="quiz.quiz" name="quiz" rel="ManyToOneRel">10017</field>
+    <field type="IntegerField" name="highscore">100</field>
+    <field type="IntegerField" name="lowscore">99</field>
+    <field type="TextField" name="text">sfsdfsfd</field>
+    <field to="pages.page" name="toPage" rel="ManyToOneRel">10013</field>
+    <field type="BooleanField" name="passed">True</field>
+  </object>
   <object pk="1" model="quiz.prerequisite">
     <field to="quiz.quiz" name="containingQuiz" rel="ManyToOneRel">10014</field>
     <field to="quiz.quiz" name="requiredQuiz" rel="ManyToOneRel">10019</field>
@@ -190,6 +245,18 @@
   <object pk="2" model="quiz.prerequisite">
     <field to="quiz.quiz" name="containingQuiz" rel="ManyToOneRel">10013</field>
     <field to="quiz.quiz" name="requiredQuiz" rel="ManyToOneRel">10019</field>
+  </object>
+  <object pk="5" model="quiz.prerequisite">
+    <field to="quiz.quiz" name="containingQuiz" rel="ManyToOneRel">10022</field>
+    <field to="quiz.quiz" name="requiredQuiz" rel="ManyToOneRel">10013</field>
+  </object>
+  <object pk="6" model="quiz.prerequisite">
+    <field to="quiz.quiz" name="containingQuiz" rel="ManyToOneRel">10021</field>
+    <field to="quiz.quiz" name="requiredQuiz" rel="ManyToOneRel">10013</field>
+  </object>
+  <object pk="7" model="quiz.prerequisite">
+    <field to="quiz.quiz" name="containingQuiz" rel="ManyToOneRel">10017</field>
+    <field to="quiz.quiz" name="requiredQuiz" rel="ManyToOneRel">10013</field>
   </object>
   <object pk="10010" model="question.question">
     <field type="TextField" name="text">&lt;p&gt;Test question 1&lt;/p&gt;</field>
@@ -241,6 +308,21 @@
     <field type="IntegerField" name="order">3</field>
     <field to="quiz.quiz" name="quiz" rel="ManyToOneRel">10013</field>
   </object>
+  <object pk="10023" model="question.question">
+    <field type="TextField" name="text">&lt;p&gt;q1&lt;/p&gt;</field>
+    <field type="IntegerField" name="order">1</field>
+    <field to="quiz.quiz" name="quiz" rel="ManyToOneRel">10022</field>
+  </object>
+  <object pk="10024" model="question.question">
+    <field type="TextField" name="text">&lt;p&gt;q1&lt;/p&gt;</field>
+    <field type="IntegerField" name="order">1</field>
+    <field to="quiz.quiz" name="quiz" rel="ManyToOneRel">10021</field>
+  </object>
+  <object pk="10025" model="question.question">
+    <field type="TextField" name="text">&lt;p&gt;q1&lt;/p&gt;</field>
+    <field type="IntegerField" name="order">1</field>
+    <field to="quiz.quiz" name="quiz" rel="ManyToOneRel">10017</field>
+  </object>
   <object pk="10010" model="question.multiplechoicequestion">
   </object>
   <object pk="10011" model="question.multiplechoicequestion">
@@ -256,6 +338,10 @@
   <object pk="10021" model="question.multiplechoicequestion">
   </object>
   <object pk="10022" model="question.multiplechoicequestion">
+  </object>
+  <object pk="10023" model="question.multiplechoicequestion">
+  </object>
+  <object pk="10024" model="question.multiplechoicequestion">
   </object>
   <object pk="10016" model="question.codequestion">
     <field type="TextField" name="beforeCode"></field>
@@ -273,6 +359,7 @@
     <field type="BooleanField" name="showAfterCode">False</field>
     <field type="TextField" name="expectedOutput">cq1eo</field>
   </object>
+
   <object pk="1" model="question.answer">
     <field to="question.multiplechoicequestion" name="question" rel="ManyToOneRel">10010</field>
     <field type="BooleanField" name="correct">True</field>
@@ -368,5 +455,29 @@
     <field type="BooleanField" name="correct">False</field>
     <field type="IntegerField" name="order">2</field>
     <field type="TextField" name="text">b3</field>
+  </object>
+  <object pk="23" model="question.answer">
+    <field to="question.multiplechoicequestion" name="question" rel="ManyToOneRel">10023</field>
+    <field type="BooleanField" name="correct">True</field>
+    <field type="IntegerField" name="order">1</field>
+    <field type="TextField" name="text">a</field>
+  </object>
+  <object pk="24" model="question.answer">
+    <field to="question.multiplechoicequestion" name="question" rel="ManyToOneRel">10023</field>
+    <field type="BooleanField" name="correct">False</field>
+    <field type="IntegerField" name="order">2</field>
+    <field type="TextField" name="text">b</field>
+  </object>
+  <object pk="25" model="question.answer">
+    <field to="question.multiplechoicequestion" name="question" rel="ManyToOneRel">10024</field>
+    <field type="BooleanField" name="correct">True</field>
+    <field type="IntegerField" name="order">1</field>
+    <field type="TextField" name="text">a</field>
+  </object>
+  <object pk="26" model="question.answer">
+    <field to="question.multiplechoicequestion" name="question" rel="ManyToOneRel">10024</field>
+    <field type="BooleanField" name="correct">False</field>
+    <field type="IntegerField" name="order">2</field>
+    <field type="TextField" name="text">b</field>
   </object>
 </django-objects>
