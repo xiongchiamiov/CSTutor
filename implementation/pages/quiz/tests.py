@@ -491,8 +491,8 @@ class QuizUnitTests(TestCase):
 			Test that removing a path works as expected
 
 			Case no.    Input          Expected Output                   Remark
+			1           path99         len(errors) == 2                  Cant remove the only passing path if other quizzes require it as a prerequisite
 			1           path0          errors = [], Path.DoesNotExist    Path no longer exists
-			2           path100        error
 
 			@author Evan Kleist
 		'''
@@ -512,6 +512,11 @@ class QuizUnitTests(TestCase):
 		customRequest = WSGIRequest(environ)
 
 		# Case 1
+		customRequest.POST = {'path':99}
+		errors = removePath(quiz, customRequest)
+		self.failUnlessEqual(len(errors), 2)
+		
+		# Case 2
 		path = quiz.paths.get(lowscore = 0)
 		customRequest.POST = {'path':0}
 		errors = removePath(quiz, customRequest)
@@ -769,6 +774,7 @@ class QuizUnitTests(TestCase):
                    mcq3order = 2                      quiz.question3.order = 2
 			          mcq2text = "Question 3"            quiz.question2.text = "Question 3"
 			          mcq2order = 3                      quiz.question2.order = 3
+			@author Evan Kleist
 		'''
 		environ = {
 			'HTTP_COOKIE': self.client.cookies,
