@@ -218,40 +218,6 @@ class CourseViewTests(TestCase):
 		#asserts that inval_permissions.html page was rendered because the logged in user did not have valid permission
 		self.assertTemplateUsed(response, template)
 
-	def testShowRosterCase4(self):
-		'''
-		show roster test case 4
-
-		@author Jon Inloes
-		'''
-		pass
-		#slug = 'PageViewsPublicCourse'
-		#adminUsername = 'enrollmentTestAdmin'
-		#password = 'password'
-		#template = 'roster/index.html'
-
-		#logs in and checks to make sure the login was successful
-		#self.failUnlessEqual(self.client.login(username=adminUsername, password=password), True)
-
-
-		#response = self.client.get('/course/'+ slug + '/roster/')
-
-		#self.client.request.FILES['badusers']='badusernames.txt'
-
-		#response = self.client.get('/course/'+ slug + '/roster/adduser/addFromFile/')
-
-		#self.client.post('/course/' + slug + '/roster/adduser/', {'username': username, 'command': 'add'})
-		#asserts that failed.html page was rendered because a the username did not exist
-		#self.assertTemplateUsed(response, template)
-		
-		#Displays the roster and checks to make sure it was successful		
-		#response = self.client.get('/course/' + slug + '/roster/')
-		#self.failUnlessEqual(response.status_code, 200, 'redirection to the roster page failed')
-
-		#Displays the roster and checks to make sure it was successful		
-		#response = self.client.get('/course/' + slug + '/roster/')
-		#self.failUnlessEqual(response.status_code, 200, 'redirection to the roster page failed')
-
 	def testEnrollUser(self):
 		'''
 		Tests enrolling a user in a course through the view

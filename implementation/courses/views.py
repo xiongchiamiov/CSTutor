@@ -70,17 +70,21 @@ def show_roster(request, course_slug):
 
 	failedList = []
 
+	#if there are users that failed to be added from a previous command, then retrieve the list 
 	if request.session.has_key('badusers'):
 		failedList = request.session['badusers']
 		del request.session['badusers']
 	
+	#retreive the current course
 	try:
 		course = Course.objects.get(slug=course_slug)	
 	except Course.DoesNotExist:
 		raise Http404
 	
+	#retrieve the logged in user
 	enrollment = request.user.enrollments.get(course=course)
 	
+	#check the logged in user's enrollment permissions
 	if enrollment.manage:
 		enrollments = course.roster.all();
 
@@ -112,10 +116,13 @@ def add_user(request, course_slug):
 	
 	@author Jon Inloes
 	'''
-	course = Course.objects.get(slug=course_slug)	
+	#retrieve the course
+	course = Course.objects.get(slug=course_slug)
+
+	#retrieve the currently logged in user
 	enrollment = request.user.enrollments.get(course=course)
 
-
+	#check the logged in user's permissions
 	if enrollment.manage:	
 		#if the request method was a post determine the command that was given
 		if request.method == 'POST':
@@ -171,9 +178,13 @@ def update_roster(request, course_slug):
 		@author Jon Inloes
 	'''
 
+	#retrieve the course
 	course = Course.objects.get(slug=course_slug)
+
+	#retrieve the currently logged in user
 	enrollment = request.user.enrollments.get(course=course)
 
+	#check the logged in user's permissions
 	if enrollment.manage:
 		editList =  request.POST.getlist('edit')
 		manageList = request.POST.getlist('manage')
@@ -263,15 +274,20 @@ def manage_pending_requests(request, course_slug):
 	@author Jon Inloes
 	'''
 	
+	#retrieve the course
 	course = Course.objects.get(slug=course_slug)
+
+	#retrieve the logged in user
 	enrollment = request.user.enrollments.get(course=course)
 
+	#check the logged in user's permissions
 	if enrollment.manage:
 		acceptList =  request.POST.getlist('accept')
 		denyList = request.POST.getlist('deny')	
 		course = Course.objects.select_related(depth=2).get(slug=course_slug)
 		enrollments = course.roster.all()
 
+		#for each enrollment in the accept list set the view permission to true
 		for enrollment in enrollments:
 			user = enrollment.user
 			try:
@@ -374,6 +390,7 @@ def show_chat(request, course_slug):
 	@author Jon Inloes
 	'''
 
+	#retrieve the current course
 	try:	
 		course = Course.objects.get(slug=course_slug)
 	except Course.DoesNotExist:
