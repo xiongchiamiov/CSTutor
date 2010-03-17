@@ -25,21 +25,20 @@ def CreateLesson(name):
 	'''
 	return Lesson(slug=slugify(name), name=name)
 
-def saveNewLesson(request, course, parent_slug):
+def saveNewLesson(lesson_name, content, course, parent_slug):
 	'''
 	Saves a new lesson's content and name
 	
 	@author Matthew Tytel
 	'''
-	if request.method == "POST" and "Save" in request.POST:
-		try:
-			Lesson.objects.get(slug=slugify(request.POST["lessonname"]))
-		except Lesson.DoesNotExist:
-			lesson = CreateLesson(request.POST["lessonname"])
-			lesson.content = request.POST["content"]
-			lesson.workingCopy = lesson.content
-			insertChildPage(lesson, Lesson.objects.get(slug=parent_slug))
-			return 0
+	try:
+		Lesson.objects.get(slug=slugify(lesson_name))
+	except Lesson.DoesNotExist:
+		lesson = CreateLesson(lesson_name)
+		lesson.content = content
+		lesson.workingCopy = lesson.content
+		insertChildPage(lesson, Lesson.objects.get(slug=parent_slug))
+		return 0
 	
 	return -1
 

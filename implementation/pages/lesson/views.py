@@ -55,7 +55,7 @@ def create_lesson(request, course_slug, page_slug):
 								 'message':'Lesson names must be non-empty',
 								 'lesson':lesson, 'new':True})
 
-		if saveNewLesson(request, course_slug, page_slug) == 0:
+		if saveNewLesson(request.POST['lessonname'], request.POST['content'], course_slug, page_slug) == 0:
 			return HttpResponseRedirect(reverse('pages.views.show_page', args=[course_slug, lesson.slug]))
 		else:
 			return master_rtr(request, 'page/lesson/edit_lesson.html', \
