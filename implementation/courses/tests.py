@@ -93,12 +93,10 @@ class CourseViewTests(TestCase):
 		Unit Tests on Course Views.  Tests use an emulated Web Client
 		to simulate a user making requests via the web interface
 
-		Test fixtures include two courses, one private and one public, and
-		a set of users.  One user who is enrolled in the private course,
-		one user who is enrolled in the public course, and one user who
-		is enrolled in neither. Another user is an admin for a course, which
-		allows a roster to be managed. There is also a user that is not enrolled
-		in any courses, so he can be enrolled in a course.
+		Test fixtures include three courses, one private and two public, and
+		a set of users.  One user, enrollmentTestAdmin, is an admin for courses, which
+		allows rosters to be managed. The other users exist to test managing a roster.
+		Some of these users are enrolled in courses and some are not.
 
 		@author Jon Inloes
 		@author Mark Gius
