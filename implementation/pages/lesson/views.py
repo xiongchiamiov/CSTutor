@@ -169,6 +169,8 @@ def edit_lesson(request, course_slug, page_slug):
 			if "private" in request.POST:
 				course.private = True
 			else:
+				if course.private:
+					Enrollment.objects.filter(course=course).update(view=True)
 				course.private = False
 			data['private'] = course.private
 			course.save()
