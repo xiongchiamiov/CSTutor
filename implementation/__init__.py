@@ -21,8 +21,13 @@
 	system-level integration testing, and supports regression testing. 
 	In other words, it can simluate front-end user interaction as well as back-end function testing.
 
-	Our integration test plan is to run the websever and if any code is broken it will display an 
-	error. 
+	Integration Test Plan
+
+    *	Build the database
+    *	Write the code
+    *	Run the server and browse the webpages
+
+All our functionality is based off other functionality. If we run the test server, then it will give us error messages if some functionality is broken. For example, if code is broken in some part of the program, then the server will give us a detailed error message of what code is broken.
 
 @author Russell Mezzetta
 @author Jon Inloes
