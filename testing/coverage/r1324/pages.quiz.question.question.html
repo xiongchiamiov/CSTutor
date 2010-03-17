@@ -44,7 +44,7 @@ pre.code {
 <body>
 <pre class="code">
 <span class="string">'''
-question.py fil for quiestion related operations.
+This file contains question related operations.
 
 @author Evan Kleist
 '''</span><span class="text">
@@ -65,8 +65,8 @@ question.py fil for quiestion related operations.
 </span><span class="notcovered"><span class="keyword">def</span> <span class="name">isMultipleChoiceQuestion</span><span class="operator">(</span><span class="name">self</span><span class="operator">)</span><span class="operator">:</span></span><span class="text">
 </span>        <span class="keyword">try</span><span class="operator">:</span><span class="text">
 </span>                <span class="name">self</span> <span class="operator">=</span> <span class="name">self</span><span class="operator">.</span><span class="name">multiplechoicequestion</span><span class="text">
-</span><span class="notcovered">        <span class="keyword">except</span> <span class="name">MultipleChoiceQuestion</span><span class="operator">.</span><span class="name">DoesNotExist</span><span class="operator">:</span></span><span class="text">
-</span><span class="notcovered">                <span class="keyword">return</span> <span class="name">False</span></span><span class="text">
+</span>        <span class="keyword">except</span> <span class="name">MultipleChoiceQuestion</span><span class="operator">.</span><span class="name">DoesNotExist</span><span class="operator">:</span><span class="text">
+</span>                <span class="keyword">return</span> <span class="name">False</span><span class="text">
 </span>        <span class="keyword">return</span> <span class="name">True</span><span class="text">
 </span><span class="text">
 </span><span class="notcovered"><span class="keyword">def</span> <span class="name">addAnswer</span><span class="operator">(</span><span class="name">self</span><span class="operator">)</span><span class="operator">:</span></span><span class="text">

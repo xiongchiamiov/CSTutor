@@ -43,18 +43,18 @@ pre.code {
 </head>
 <body>
 <pre class="code">
-<span class="notcovered"><span class="keyword">from</span> <span class="name">django</span><span class="operator">.</span><span class="name">db</span> <span class="keyword">import</span> <span class="name">models</span></span><span class="text">
-</span><span class="notcovered"><span class="keyword">from</span> <span class="name">pages</span><span class="operator">.</span><span class="name">models</span> <span class="keyword">import</span> <span class="name">Page</span></span><span class="text">
-</span><span class="notcovered"><span class="keyword">from</span> <span class="name">courses</span><span class="operator">.</span><span class="name">models</span> <span class="keyword">import</span> <span class="name">Course</span></span><span class="text">
-</span><span class="notcovered"></span><span class="text">
-</span><span class="notcovered"><span class="string">'''
+<span class="string">'''
 Models file for Quiz related classes
 
 Contains the Overall "Quiz" class, plus the Classes that are primarily
 contained within a Quiz, such as Path.
 
 @author Evan Kleist
-'''</span></span><span class="text">
+'''</span><span class="text">
+</span><span class="text">
+</span><span class="notcovered"><span class="keyword">from</span> <span class="name">django</span><span class="operator">.</span><span class="name">db</span> <span class="keyword">import</span> <span class="name">models</span></span><span class="text">
+</span><span class="notcovered"><span class="keyword">from</span> <span class="name">pages</span><span class="operator">.</span><span class="name">models</span> <span class="keyword">import</span> <span class="name">Page</span></span><span class="text">
+</span><span class="notcovered"><span class="keyword">from</span> <span class="name">courses</span><span class="operator">.</span><span class="name">models</span> <span class="keyword">import</span> <span class="name">Course</span></span><span class="text">
 </span><span class="notcovered"></span><span class="text">
 </span><span class="notcovered"><span class="keyword">class</span> <span class="name">Quiz</span><span class="operator">(</span><span class="name">Page</span><span class="operator">)</span><span class="operator">:</span></span><span class="text">
 </span><span class="notcovered">        <span class="string">'''
@@ -62,6 +62,8 @@ contained within a Quiz, such as Path.
 
         A quiz is a specific type of Page.  It contains a number of questions of
         various types.
+
+        @author Evan Kleist
         '''</span></span><span class="text">
 </span><span class="notcovered">        <span class="name">text</span> <span class="operator">=</span> <span class="name">models</span><span class="operator">.</span><span class="name">TextField</span><span class="operator">(</span><span class="operator">)</span></span><span class="text">
 </span><span class="notcovered">        <span class="comment"># paths implied from Path
@@ -73,11 +75,20 @@ contained within a Quiz, such as Path.
 </span><span class="notcovered"></span><span class="text">
 </span><span class="notcovered">        <span class="operator">@</span><span class="name">staticmethod</span></span><span class="text">
 </span><span class="notcovered">        <span class="keyword">def</span> <span class="name">createQuiz</span><span class="operator">(</span><span class="name">text_</span><span class="operator">,</span> <span class="name">hidden_</span><span class="operator">,</span> <span class="name">course_</span><span class="operator">,</span> <span class="name">parent_</span><span class="operator">,</span> <span class="operator">)</span><span class="operator">:</span></span><span class="text">
-</span><span class="notcovered">                <span class="string">''' Creates a new Quiz object, and returns it unsaved '''</span></span><span class="text">
+</span><span class="notcovered">                <span class="string">'''
+                Creates a new Quiz object, and returns it unsaved
+
+                @author Evan Kleist
+                '''</span></span><span class="text">
 </span><span class="notcovered">                <span class="name">q</span> <span class="operator">=</span> <span class="name">Quiz</span><span class="operator">(</span><span class="name">text</span><span class="operator">=</span><span class="name">text_</span><span class="operator">,</span> <span class="name">hidden</span> <span class="operator">=</span> <span class="name">hidden_</span><span class="operator">)</span></span><span class="text">
 </span><span class="notcovered">                <span class="keyword">return</span> <span class="name">q</span></span><span class="text">
 </span><span class="notcovered"></span><span class="text">
 </span><span class="notcovered">        <span class="keyword">def</span> <span class="name">__unicode__</span><span class="operator">(</span><span class="name">self</span><span class="operator">)</span><span class="operator">:</span></span><span class="text">
+</span><span class="notcovered">                <span class="string">'''
+                Like toString in java
+                
+                @author Evan Kleist
+                '''</span></span><span class="text">
 </span><span class="notcovered">                <span class="keyword">return</span> <span class="name">self</span><span class="operator">.</span><span class="name">text</span></span><span class="text">
 </span><span class="notcovered"></span><span class="text">
 </span><span class="notcovered">        <span class="operator">@</span><span class="name">models</span><span class="operator">.</span><span class="name">permalink</span></span><span class="text">
@@ -92,6 +103,8 @@ contained within a Quiz, such as Path.
         A path determines where a student is sent after taking a quiz.  It contains
         a high and low score (path matches low &lt;= score &lt; high)
         and an optional message to display to a student.
+
+        @author Evan Kleist
         '''</span></span><span class="text">
 </span><span class="notcovered">        <span class="name">quiz</span> <span class="operator">=</span> <span class="name">models</span><span class="operator">.</span><span class="name">ForeignKey</span><span class="operator">(</span><span class="name">Quiz</span><span class="operator">,</span> <span class="name">related_name</span><span class="operator">=</span><span class="string">'paths'</span><span class="operator">)</span></span><span class="text">
 </span><span class="notcovered">        <span class="name">highscore</span> <span class="operator">=</span> <span class="name">models</span><span class="operator">.</span><span class="name">IntegerField</span><span class="operator">(</span><span class="operator">)</span></span><span class="text">
@@ -101,6 +114,11 @@ contained within a Quiz, such as Path.
 </span><span class="notcovered">        <span class="name">passed</span> <span class="operator">=</span> <span class="name">models</span><span class="operator">.</span><span class="name">BooleanField</span><span class="operator">(</span><span class="operator">)</span></span><span class="text">
 </span><span class="notcovered"></span><span class="text">
 </span><span class="notcovered">        <span class="keyword">def</span> <span class="name">__unicode__</span><span class="operator">(</span><span class="name">self</span><span class="operator">)</span><span class="operator">:</span></span><span class="text">
+</span><span class="notcovered">                <span class="string">'''
+                Like toString in java
+
+                @author Evan Kleist
+                '''</span></span><span class="text">
 </span><span class="notcovered">                <span class="keyword">return</span> <span class="string">u'Path on Quiz '</span> <span class="operator">+</span> <span class="name">unicode</span><span class="operator">(</span><span class="name">self</span><span class="operator">.</span><span class="name">quiz</span><span class="operator">)</span></span><span class="text">
 </span><span class="notcovered"></span><span class="text">
 </span><span class="notcovered"><span class="keyword">class</span> <span class="name">NoMatchingPath</span><span class="operator">(</span><span class="name">Exception</span><span class="operator">)</span><span class="operator">:</span></span><span class="text">
@@ -112,11 +130,18 @@ contained within a Quiz, such as Path.
         Model for a Prerequisite.
 
         A prerequsite is a quiz that must be "passed" before being able to submit the quiz. If a quiz is hidden, the prerequisites must also be met before being able to view the quiz. It contains the page being required, and a link to the quiz it belongs to
+
+        @author Evan Kleist
         '''</span></span><span class="text">
 </span><span class="notcovered">        <span class="name">containingQuiz</span> <span class="operator">=</span> <span class="name">models</span><span class="operator">.</span><span class="name">ForeignKey</span><span class="operator">(</span><span class="name">Quiz</span><span class="operator">,</span> <span class="name">related_name</span><span class="operator">=</span><span class="string">'prerequisites'</span><span class="operator">)</span></span><span class="text">
 </span><span class="notcovered">        <span class="name">requiredQuiz</span> <span class="operator">=</span> <span class="name">models</span><span class="operator">.</span><span class="name">ForeignKey</span><span class="operator">(</span><span class="name">Quiz</span><span class="operator">)</span></span><span class="text">
 </span><span class="notcovered"></span><span class="text">
 </span><span class="notcovered">        <span class="keyword">def</span> <span class="name">__unicode__</span><span class="operator">(</span><span class="name">self</span><span class="operator">)</span><span class="operator">:</span></span><span class="text">
+</span><span class="notcovered">                <span class="string">'''
+                Link toString in java
+
+                @author Evan Kleist
+                '''</span></span><span class="text">
 </span><span class="notcovered">                <span class="keyword">return</span> <span class="string">u'Prerequsite on Quiz '</span> <span class="operator">+</span> <span class="name">unicode</span><span class="operator">(</span><span class="name">self</span><span class="operator">.</span><span class="name">containingQuiz</span><span class="operator">)</span><span class="text"></span></span>
 </pre></body>
 </html>

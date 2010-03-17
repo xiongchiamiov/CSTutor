@@ -43,7 +43,17 @@ pre.code {
 </head>
 <body>
 <pre class="code">
-<span class="keyword">from</span> <span class="name">django</span><span class="operator">.</span><span class="name">shortcuts</span> <span class="keyword">import</span> <span class="name">render_to_response</span><span class="text">
+<span class="string">'''
+Views file for page related view
+
+Contains the show_page function
+
+@author Evan Kleist
+@author Russell Mezzetta
+@author James Pearson
+'''</span><span class="text">
+</span><span class="text">
+</span><span class="keyword">from</span> <span class="name">django</span><span class="operator">.</span><span class="name">shortcuts</span> <span class="keyword">import</span> <span class="name">render_to_response</span><span class="text">
 </span><span class="keyword">from</span> <span class="name">django</span><span class="operator">.</span><span class="name">http</span> <span class="keyword">import</span> <span class="name">HttpResponse</span><span class="operator">,</span> <span class="name">HttpResponseRedirect</span><span class="operator">,</span> <span class="name">Http404</span><span class="text">
 </span><span class="keyword">from</span> <span class="name">django</span><span class="operator">.</span><span class="name">contrib</span><span class="operator">.</span><span class="name">auth</span><span class="operator">.</span><span class="name">decorators</span> <span class="keyword">import</span> <span class="name">login_required</span><span class="text">
 </span><span class="keyword">from</span> <span class="name">django</span><span class="operator">.</span><span class="name">core</span><span class="operator">.</span><span class="name">urlresolvers</span> <span class="keyword">import</span> <span class="name">reverse</span><span class="text">
@@ -62,16 +72,6 @@ pre.code {
 </span><span class="keyword">from</span> <span class="name">home</span><span class="operator">.</span><span class="name">views</span> <span class="keyword">import</span> <span class="name">master_rtr</span><span class="operator">,</span> <span class="name">custom_403</span><span class="operator">,</span> <span class="name">custom_404</span><span class="text">
 </span><span class="keyword">from</span> <span class="name">pages</span><span class="operator">.</span><span class="name">page</span> <span class="keyword">import</span> <span class="name">movePage</span><span class="operator">,</span> <span class="name">movePageToParent</span><span class="text">
 </span><span class="text">
-</span><span class="string">'''
-Views file for page related view
-
-Contains the show_page function
-
-@author Evan Kleist
-@author Russell Mezzetta
-@author James Pearson
-'''</span><span class="text">
-</span><span class="text">
 </span><span class="operator">@</span><span class="name">login_required</span><span class="text">
 </span><span class="keyword">def</span> <span class="name">show_page_preview</span><span class="operator">(</span><span class="name">request</span><span class="operator">,</span> <span class="name">course_slug</span><span class="operator">,</span> <span class="name">page_slug</span><span class="operator">)</span><span class="operator">:</span><span class="text">
 </span>        <span class="string">'''
@@ -79,6 +79,8 @@ Contains the show_page function
         view the published copy.
         NOTE: only used by lesson currently, quiz could me modified to work like 
         this as well
+
+        @author Russell Mezzetta
         '''</span><span class="text">
 </span><span class="notcovered">        <span class="keyword">return</span> <span class="name">show_page</span><span class="operator">(</span><span class="name">request</span><span class="operator">,</span> <span class="name">course_slug</span><span class="operator">,</span> <span class="name">page_slug</span><span class="operator">,</span> <span class="name">preview</span><span class="operator">=</span><span class="name">True</span><span class="operator">)</span></span><span class="text">
 </span><span class="text">
@@ -87,6 +89,9 @@ Contains the show_page function
         This "view" does error checking to verify that the input course/page exist
         Then it checks that the user has view permissions if they are required
         Finally it invokes the lesson or quiz view depending on the type of page
+
+        @author Russell Mezzetta
+        @author Evan Kleist
         '''</span><span class="text">
 </span>        <span class="comment">#check if the course is a real course in the database   
 </span>        <span class="keyword">try</span><span class="operator">:</span> <span class="text">
@@ -97,7 +102,7 @@ Contains the show_page function
 </span>        <span class="text">
 </span>        <span class="comment">#check if the page is a real page in the database
 </span>        <span class="keyword">try</span><span class="operator">:</span><span class="text">
-</span>                <span class="name">page</span> <span class="operator">=</span> <span class="name">Page</span><span class="operator">.</span><span class="name">objects</span><span class="operator">.</span><span class="name">get</span><span class="operator">(</span><span class="name">slug</span><span class="operator">=</span><span class="name">page_slug</span><span class="operator">)</span><span class="text">
+</span>                <span class="name">page</span> <span class="operator">=</span> <span class="name">Page</span><span class="operator">.</span><span class="name">objects</span><span class="operator">.</span><span class="name">get</span><span class="operator">(</span><span class="name">slug</span><span class="operator">=</span><span class="name">page_slug</span><span class="operator">,</span> <span class="name">course</span><span class="operator">=</span><span class="name">course</span><span class="operator">)</span><span class="text">
 </span>        <span class="keyword">except</span> <span class="name">Page</span><span class="operator">.</span><span class="name">DoesNotExist</span><span class="operator">:</span><span class="text">
 </span>                <span class="comment">#return HttpResponse("ERROR: BAD URL: The course: %s does not contain the page: %s." % (course_slug, page_slug))
 </span>                <span class="keyword">raise</span> <span class="name">Http404</span><span class="text">
@@ -151,6 +156,9 @@ Contains the show_page function
 </span>        <span class="string">'''
         This view verifies that a valid course/page pair is given, then verifies that the user has edit permissions,
         finally it calls the quiz/lesson edit view depending on what kind of page is given.
+
+        @author Russell Mezzetta
+        @author Evan Kleist
         '''</span><span class="text">
 </span>        <span class="comment">#check if the course is a real course in the database   
 </span>        <span class="keyword">try</span><span class="operator">:</span> <span class="text">
@@ -181,27 +189,25 @@ Contains the show_page function
 </span>                <span class="name">request</span><span class="operator">.</span><span class="name">session</span><span class="operator">[</span><span class="string">'lastPageSlug'</span><span class="operator">]</span> <span class="operator">=</span> <span class="name">page_slug</span><span class="text">
 </span>                <span class="name">request</span><span class="operator">.</span><span class="name">session</span><span class="operator">[</span><span class="string">'lastPageEdit'</span><span class="operator">]</span> <span class="operator">=</span> <span class="name">True</span><span class="text">
 </span>                <span class="keyword">return</span> <span class="name">edit_lesson</span><span class="operator">(</span><span class="name">request</span><span class="operator">,</span> <span class="name">course_slug</span><span class="operator">,</span> <span class="name">page_slug</span><span class="operator">)</span><span class="text">
-</span><span class="notcovered">        <span class="keyword">except</span> <span class="name">Lesson</span><span class="operator">.</span><span class="name">DoesNotExist</span><span class="operator">:</span></span><span class="text">
-</span><span class="notcovered">                <span class="keyword">try</span><span class="operator">:</span></span><span class="text">
-</span><span class="notcovered">                        <span class="name">page</span> <span class="operator">=</span> <span class="name">page</span><span class="operator">.</span><span class="name">quiz</span></span><span class="text">
-</span><span class="notcovered">                        <span class="comment">#save this data to session
-</span>                        <span class="name">request</span><span class="operator">.</span><span class="name">session</span><span class="operator">[</span><span class="string">'lastCourseSlug'</span><span class="operator">]</span> <span class="operator">=</span> <span class="name">course_slug</span></span><span class="text">
-</span><span class="notcovered">                        <span class="name">request</span><span class="operator">.</span><span class="name">session</span><span class="operator">[</span><span class="string">'lastPageSlug'</span><span class="operator">]</span> <span class="operator">=</span> <span class="name">page_slug</span></span><span class="text">
-</span><span class="notcovered">                        <span class="name">request</span><span class="operator">.</span><span class="name">session</span><span class="operator">[</span><span class="string">'lastPageEdit'</span><span class="operator">]</span> <span class="operator">=</span> <span class="name">True</span></span><span class="text">
-</span><span class="notcovered">                        <span class="keyword">return</span> <span class="name">edit_quiz</span><span class="operator">(</span><span class="name">request</span><span class="operator">,</span> <span class="name">course_slug</span><span class="operator">,</span> <span class="name">page_slug</span><span class="operator">)</span></span><span class="text">
+</span>        <span class="keyword">except</span> <span class="name">Lesson</span><span class="operator">.</span><span class="name">DoesNotExist</span><span class="operator">:</span><span class="text">
+</span>                <span class="keyword">try</span><span class="operator">:</span><span class="text">
+</span>                        <span class="name">page</span> <span class="operator">=</span> <span class="name">page</span><span class="operator">.</span><span class="name">quiz</span><span class="text">
+</span>                        <span class="comment">#save this data to session
+</span>                        <span class="name">request</span><span class="operator">.</span><span class="name">session</span><span class="operator">[</span><span class="string">'lastCourseSlug'</span><span class="operator">]</span> <span class="operator">=</span> <span class="name">course_slug</span><span class="text">
+</span>                        <span class="name">request</span><span class="operator">.</span><span class="name">session</span><span class="operator">[</span><span class="string">'lastPageSlug'</span><span class="operator">]</span> <span class="operator">=</span> <span class="name">page_slug</span><span class="text">
+</span>                        <span class="name">request</span><span class="operator">.</span><span class="name">session</span><span class="operator">[</span><span class="string">'lastPageEdit'</span><span class="operator">]</span> <span class="operator">=</span> <span class="name">True</span><span class="text">
+</span>                        <span class="keyword">return</span> <span class="name">edit_quiz</span><span class="operator">(</span><span class="name">request</span><span class="operator">,</span> <span class="name">course_slug</span><span class="operator">,</span> <span class="name">page_slug</span><span class="operator">)</span><span class="text">
 </span><span class="notcovered">                <span class="keyword">except</span> <span class="name">Quiz</span><span class="operator">.</span><span class="name">DoesNotExist</span><span class="operator">:</span></span><span class="text">
 </span><span class="notcovered">                        <span class="keyword">return</span> <span class="name">Http404</span></span><span class="text">
 </span><span class="text">
 </span><span class="operator">@</span><span class="name">login_required</span><span class="text">
 </span><span class="keyword">def</span> <span class="name">move_page</span><span class="operator">(</span><span class="name">request</span><span class="operator">,</span> <span class="name">course_slug</span><span class="operator">,</span> <span class="name">page_slug</span><span class="operator">)</span><span class="operator">:</span><span class="text">
 </span>        <span class="string">'''
-        @author Russell Mezzetta
         This view allows instructors to move pages around       in a course.
         @pre request is a Request object, other two args are strings, request.user.is_authenticated()
+
+        @author Russell Mezzetta
         '''</span><span class="text">
-</span>        <span class="comment">#check to make sure that we are not trying to move a course-page
-</span>        <span class="keyword">if</span> <span class="name">course_slug</span> <span class="operator">==</span> <span class="name">page_slug</span><span class="operator">:</span><span class="text">
-</span><span class="notcovered">                <span class="keyword">return</span> <span class="name">custom_404</span><span class="operator">(</span><span class="name">request</span><span class="operator">,</span> <span class="string">"You may not move a course's home page"</span><span class="operator">)</span></span><span class="text">
 </span><span class="text">
 </span>        <span class="comment">#check if the course is a real course in the database 
 </span>        <span class="name">data</span> <span class="operator">=</span> <span class="operator">{</span><span class="operator">}</span><span class="text">
@@ -209,22 +215,26 @@ Contains the show_page function
 </span>        <span class="name">data</span><span class="operator">[</span><span class="string">'page_slug'</span><span class="operator">]</span> <span class="operator">=</span> <span class="name">page_slug</span><span class="text">
 </span>        <span class="keyword">try</span><span class="operator">:</span><span class="text">
 </span>                <span class="name">data</span><span class="operator">[</span><span class="string">'course'</span><span class="operator">]</span> <span class="operator">=</span> <span class="name">Course</span><span class="operator">.</span><span class="name">objects</span><span class="operator">.</span><span class="name">get</span><span class="operator">(</span><span class="name">slug</span><span class="operator">=</span><span class="name">course_slug</span><span class="operator">)</span><span class="text">
-</span><span class="notcovered">        <span class="keyword">except</span> <span class="name">Course</span><span class="operator">.</span><span class="name">DoesNotExist</span><span class="operator">:</span></span><span class="text">
-</span><span class="notcovered">                <span class="keyword">return</span> <span class="name">custom_404</span><span class="operator">(</span><span class="name">request</span><span class="operator">,</span> <span class="string">"BAD URL: The course: %s does not exist"</span> <span class="operator">%</span> <span class="operator">(</span><span class="name">course_slug</span><span class="operator">)</span><span class="operator">)</span></span><span class="text">
+</span>        <span class="keyword">except</span> <span class="name">Course</span><span class="operator">.</span><span class="name">DoesNotExist</span><span class="operator">:</span><span class="text">
+</span>                <span class="keyword">return</span> <span class="name">custom_404</span><span class="operator">(</span><span class="name">request</span><span class="operator">,</span> <span class="string">"BAD URL: The course: %s does not exist"</span> <span class="operator">%</span> <span class="operator">(</span><span class="name">course_slug</span><span class="operator">)</span><span class="operator">)</span><span class="text">
 </span>        <span class="text">
 </span>        <span class="comment">#check that user has edit permissions on the course
 </span>        <span class="keyword">try</span><span class="operator">:</span><span class="text">
 </span>                <span class="name">e</span> <span class="operator">=</span> <span class="name">request</span><span class="operator">.</span><span class="name">user</span><span class="operator">.</span><span class="name">enrollments</span><span class="operator">.</span><span class="name">get</span><span class="operator">(</span><span class="name">course</span> <span class="operator">=</span> <span class="name">data</span><span class="operator">[</span><span class="string">'course'</span><span class="operator">]</span><span class="operator">)</span><span class="text">
 </span>                <span class="keyword">if</span> <span class="keyword">not</span> <span class="name">e</span><span class="operator">.</span><span class="name">edit</span><span class="operator">:</span><span class="text">
 </span>                        <span class="keyword">return</span> <span class="name">custom_403</span><span class="operator">(</span><span class="name">request</span><span class="operator">,</span> <span class="string">"User does not have edit permissions on the course"</span><span class="operator">)</span><span class="text">
-</span><span class="notcovered">        <span class="keyword">except</span> <span class="name">ObjectDoesNotExist</span><span class="operator">:</span></span><span class="text">
-</span><span class="notcovered">                <span class="keyword">return</span> <span class="name">custom_403</span><span class="operator">(</span><span class="name">request</span><span class="operator">,</span> <span class="string">"User is not enrolled in the course"</span><span class="operator">)</span></span><span class="text">
+</span>        <span class="keyword">except</span> <span class="name">ObjectDoesNotExist</span><span class="operator">:</span><span class="text">
+</span>                <span class="keyword">return</span> <span class="name">custom_403</span><span class="operator">(</span><span class="name">request</span><span class="operator">,</span> <span class="string">"User is not enrolled in the course"</span><span class="operator">)</span><span class="text">
 </span>        <span class="text">
 </span>        <span class="comment">#check if the page is a real page in the database
 </span>        <span class="keyword">try</span><span class="operator">:</span><span class="text">
 </span>                <span class="name">data</span><span class="operator">[</span><span class="string">'page'</span><span class="operator">]</span> <span class="operator">=</span> <span class="name">Page</span><span class="operator">.</span><span class="name">objects</span><span class="operator">.</span><span class="name">get</span><span class="operator">(</span><span class="name">slug</span><span class="operator">=</span><span class="name">page_slug</span><span class="operator">)</span><span class="text">
-</span><span class="notcovered">        <span class="keyword">except</span> <span class="name">Page</span><span class="operator">.</span><span class="name">DoesNotExist</span><span class="operator">:</span></span><span class="text">
-</span><span class="notcovered">                <span class="keyword">return</span> <span class="name">custom_404</span><span class="operator">(</span><span class="name">request</span><span class="operator">,</span> <span class="string">"ERROR: BAD URL: The course: %s does not contain the page: %s."</span> <span class="operator">%</span> <span class="operator">(</span><span class="name">course_slug</span><span class="operator">,</span> <span class="name">page_slug</span><span class="operator">)</span><span class="operator">)</span></span><span class="text">
+</span>        <span class="keyword">except</span> <span class="name">Page</span><span class="operator">.</span><span class="name">DoesNotExist</span><span class="operator">:</span><span class="text">
+</span>                <span class="keyword">return</span> <span class="name">custom_404</span><span class="operator">(</span><span class="name">request</span><span class="operator">,</span> <span class="string">"ERROR: BAD URL: The course: %s does not contain the page: %s."</span> <span class="operator">%</span> <span class="operator">(</span><span class="name">course_slug</span><span class="operator">,</span> <span class="name">page_slug</span><span class="operator">)</span><span class="operator">)</span><span class="text">
+</span><span class="text">
+</span>        <span class="comment">#check to make sure that we are not trying to move a course-page
+</span>        <span class="keyword">if</span> <span class="name">data</span><span class="operator">[</span><span class="string">'page'</span><span class="operator">]</span><span class="operator">.</span><span class="name">left</span> <span class="operator">==</span> <span class="number">1</span><span class="operator">:</span><span class="text">
+</span>                <span class="keyword">return</span> <span class="name">custom_404</span><span class="operator">(</span><span class="name">request</span><span class="operator">,</span> <span class="string">"You may not move the home page of a course"</span><span class="operator">)</span><span class="text">
 </span><span class="text">
 </span>        <span class="comment">#save a list of all pages in the course EXCEPT the given page and exclude 
 </span>        <span class="comment">#ignored page values (left&lt;=0 or right&lt;=0)
@@ -238,29 +248,29 @@ Contains the show_page function
 </span>                                <span class="keyword">if</span> <span class="name">p</span><span class="operator">.</span><span class="name">slug</span> <span class="operator">==</span> <span class="name">request</span><span class="operator">.</span><span class="name">POST</span><span class="operator">[</span><span class="string">'referencePageID'</span><span class="operator">]</span><span class="operator">:</span><span class="text">
 </span>                                        <span class="name">refPage</span> <span class="operator">=</span> <span class="name">p</span><span class="text">
 </span>                                        <span class="keyword">break</span><span class="text">
-</span>                        <span class="comment">#verify that the refPage was found
-</span>                        <span class="keyword">if</span> <span class="name">refPage</span> <span class="operator">==</span> <span class="name">None</span><span class="operator">:</span><span class="text">
-</span><span class="notcovered">                                <span class="keyword">return</span> <span class="name">HttpResponse</span><span class="operator">(</span><span class="string">"error, the previously selected page somehow is no longer in the list of pages in this course"</span><span class="operator">)</span></span><span class="text">
+</span>                        <span class="comment">#refPage should never be none....
+</span>                        <span class="comment">#if refPage == None:
+</span>                        <span class="comment">#       return HttpResponse("error, the previously selected page somehow is no longer in the list of pages in this course")
 </span>                        <span class="text">
 </span>                        <span class="comment">#movePage should be passed lessons or quizzes, 
 </span>                        <span class="comment">#cast refPage and data['page'] appropriately
 </span>                        <span class="name">p1</span> <span class="operator">=</span> <span class="name">data</span><span class="operator">[</span><span class="string">'page'</span><span class="operator">]</span><span class="text">
 </span>                        <span class="keyword">try</span><span class="operator">:</span> <span class="comment">#to cast to a lesson</span><span class="text">
 </span>                                <span class="name">p1</span> <span class="operator">=</span> <span class="name">p1</span><span class="operator">.</span><span class="name">lesson</span><span class="text">
-</span><span class="notcovered">                        <span class="keyword">except</span> <span class="name">Lesson</span><span class="operator">.</span><span class="name">DoesNotExist</span><span class="operator">:</span></span><span class="text">
-</span><span class="notcovered">                                <span class="keyword">try</span><span class="operator">:</span> <span class="comment">#to cast to a quiz </span></span><span class="text">
-</span><span class="notcovered">                                        <span class="name">p1</span> <span class="operator">=</span> <span class="name">p1</span><span class="operator">.</span><span class="name">quiz</span></span><span class="text">
-</span><span class="notcovered">                                <span class="keyword">except</span> <span class="name">Quiz</span><span class="operator">.</span><span class="name">DoesNotExist</span><span class="operator">:</span></span><span class="text">
-</span><span class="notcovered">                                        <span class="keyword">print</span> <span class="string">"warning -- move_page view, page neither quiz nor lesson"</span></span><span class="text">
+</span>                        <span class="keyword">except</span> <span class="name">Lesson</span><span class="operator">.</span><span class="name">DoesNotExist</span><span class="operator">:</span><span class="text">
+</span>                                <span class="comment">#try: #to cast to a quiz 
+</span>                                        <span class="name">p1</span> <span class="operator">=</span> <span class="name">p1</span><span class="operator">.</span><span class="name">quiz</span><span class="text">
+</span>                                <span class="comment">#except Quiz.DoesNotExist:
+</span>                                <span class="comment">#       print "warning -- move_page view, page neither quiz nor lesson"
 </span><span class="text">
 </span>                        <span class="name">p2</span> <span class="operator">=</span> <span class="name">refPage</span><span class="text">
 </span>                        <span class="keyword">try</span><span class="operator">:</span> <span class="comment">#to cast to a lesson</span><span class="text">
 </span>                                <span class="name">p2</span> <span class="operator">=</span> <span class="name">p2</span><span class="operator">.</span><span class="name">lesson</span><span class="text">
-</span><span class="notcovered">                        <span class="keyword">except</span> <span class="name">Lesson</span><span class="operator">.</span><span class="name">DoesNotExist</span><span class="operator">:</span></span><span class="text">
-</span><span class="notcovered">                                <span class="keyword">try</span><span class="operator">:</span> <span class="comment">#to cast to a quiz </span></span><span class="text">
-</span><span class="notcovered">                                        <span class="name">p2</span> <span class="operator">=</span> <span class="name">p2</span><span class="operator">.</span><span class="name">quiz</span></span><span class="text">
-</span><span class="notcovered">                                <span class="keyword">except</span> <span class="name">Quiz</span><span class="operator">.</span><span class="name">DoesNotExist</span><span class="operator">:</span></span><span class="text">
-</span><span class="notcovered">                                        <span class="keyword">print</span> <span class="string">"warning -- move_page view, page neither quiz nor lesson"</span></span><span class="text">
+</span>                        <span class="keyword">except</span> <span class="name">Lesson</span><span class="operator">.</span><span class="name">DoesNotExist</span><span class="operator">:</span><span class="text">
+</span>                                <span class="comment">#try: #to cast to a quiz 
+</span>                                        <span class="name">p2</span> <span class="operator">=</span> <span class="name">p2</span><span class="operator">.</span><span class="name">quiz</span><span class="text">
+</span>                                <span class="comment">#except Quiz.DoesNotExist:
+</span>                                        <span class="comment">#print "warning -- move_page view, page neither quiz nor lesson"
 </span><span class="text">
 </span>                        <span class="keyword">if</span> <span class="name">request</span><span class="operator">.</span><span class="name">POST</span><span class="operator">[</span><span class="string">'siblingOrChild'</span><span class="operator">]</span> <span class="operator">==</span> <span class="string">"sibling"</span><span class="operator">:</span><span class="text">
 </span>                                <span class="comment">#move page to be the first sibling of refPage

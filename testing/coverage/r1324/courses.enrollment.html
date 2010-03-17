@@ -44,21 +44,21 @@ pre.code {
 <body>
 <pre class="code">
 <span class="string">'''
-course.py file for page related operations.
+Contains operations for Enrollments.
 
-Contains operations for Courses
-
-@author: Matthew Tytel
+@author Matthew Tytel
 
 '''</span><span class="text">
-</span><span class="keyword">from</span> <span class="name">courses</span><span class="operator">.</span><span class="name">models</span> <span class="keyword">import</span> <span class="operator">*</span><span class="text">
-</span><span class="text">
-</span><span class="keyword">def</span> <span class="name">CreateEnrollment</span><span class="operator">(</span><span class="name">user</span><span class="operator">,</span> <span class="name">course</span><span class="operator">,</span> \
-                     <span class="name">view</span><span class="operator">=</span><span class="name">True</span><span class="operator">,</span> <span class="name">edit</span><span class="operator">=</span><span class="name">False</span><span class="operator">,</span> <span class="name">stats</span><span class="operator">=</span><span class="name">False</span><span class="operator">,</span> <span class="name">manage</span><span class="operator">=</span><span class="name">False</span><span class="operator">)</span><span class="operator">:</span><span class="text">
+</span><span class="notcovered"><span class="keyword">from</span> <span class="name">courses</span><span class="operator">.</span><span class="name">models</span> <span class="keyword">import</span> <span class="operator">*</span></span><span class="text">
+</span><span class="notcovered"></span><span class="text">
+</span><span class="notcovered"><span class="keyword">def</span> <span class="name">CreateEnrollment</span><span class="operator">(</span><span class="name">user</span><span class="operator">,</span> <span class="name">course</span><span class="operator">,</span> \
+                     <span class="name">view</span><span class="operator">=</span><span class="name">True</span><span class="operator">,</span> <span class="name">edit</span><span class="operator">=</span><span class="name">False</span><span class="operator">,</span> <span class="name">stats</span><span class="operator">=</span><span class="name">False</span><span class="operator">,</span> <span class="name">manage</span><span class="operator">=</span><span class="name">False</span><span class="operator">)</span><span class="operator">:</span></span><span class="text">
 </span>        <span class="string">''' Creates a new Enrollment in a course
 
             Takes in a user, course, and the four permission bits and
             sets returns an unsaved enrollment object.
+
+                @author Matthew Tytel
         '''</span><span class="text">
 </span>        <span class="keyword">return</span> <span class="name">Enrollment</span><span class="operator">(</span><span class="name">user</span><span class="operator">=</span><span class="name">user</span><span class="operator">,</span> <span class="name">course</span><span class="operator">=</span><span class="name">course</span><span class="operator">,</span> \
                           <span class="name">view</span><span class="operator">=</span><span class="name">view</span><span class="operator">,</span> <span class="name">edit</span><span class="operator">=</span><span class="name">edit</span><span class="operator">,</span> <span class="name">stats</span><span class="operator">=</span><span class="name">stats</span><span class="operator">,</span> <span class="name">manage</span><span class="operator">=</span><span class="name">manage</span><span class="operator">)</span><span class="text"></span>

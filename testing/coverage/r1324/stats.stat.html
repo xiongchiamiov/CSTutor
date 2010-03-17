@@ -43,8 +43,10 @@ pre.code {
 </head>
 <body>
 <pre class="code">
-<span class="string">'''
-stats.py
+<span class="comment"># vim: set noet:
+</span><span class="text">
+</span><span class="string">'''
+This file contains operations associated with statistics.
 
 Contains a number of functions that manage and calculate user statistics. 
 @author Andrew J. Musselman
@@ -61,6 +63,8 @@ Contains a number of functions that manage and calculate user statistics.
         @precondition User.models.get(user.id) = user
         @postcondition There should be no stats assoicated with the user in the DB
         @postcondition Stat.models.filter(user=user) = null set
+
+        @author Andrew J. Musselman
         '''</span><span class="text">
 </span>        <span class="name">Stat</span><span class="operator">.</span><span class="name">objects</span><span class="operator">.</span><span class="name">filter</span><span class="operator">(</span><span class="name">user</span><span class="operator">=</span><span class="name">user</span><span class="operator">)</span><span class="operator">.</span><span class="name">delete</span><span class="operator">(</span><span class="operator">)</span><span class="operator">;</span><span class="text">
 </span><span class="text">
@@ -70,6 +74,8 @@ Contains a number of functions that manage and calculate user statistics.
         Get the a list of all user statistics in from a given course. A user 
         may have many stats for each quiz, since a user may take a quiz
         many times
+
+        @author Andrew J. Musselman
         '''</span></span><span class="text">
 </span><span class="notcovered">        <span class="name">statsList</span> <span class="operator">=</span> <span class="name">Stats</span><span class="operator">.</span><span class="name">object</span><span class="operator">.</span><span class="name">get</span><span class="operator">(</span><span class="name">course</span><span class="operator">=</span><span class="name">course</span><span class="operator">)</span></span><span class="text">
 </span><span class="notcovered">        <span class="keyword">return</span> <span class="name">statsList</span></span><span class="text">
@@ -78,6 +84,8 @@ Contains a number of functions that manage and calculate user statistics.
 </span>        <span class="string">'''
         Get the list of the best statistics for every quiz in a given course.
         There will be at most ONE stat per quiz per user.  
+
+        @author Andrew J. Musselman
         '''</span><span class="text">
 </span>        <span class="name">cursor</span> <span class="operator">=</span> <span class="name">connection</span><span class="operator">.</span><span class="name">cursor</span><span class="operator">(</span><span class="operator">)</span><span class="text">
 </span>        <span class="name">cursor</span><span class="operator">.</span><span class="name">execute</span><span class="operator">(</span><span class="string">'''SELECT id, course_id, user_id, page_id, score, 
@@ -115,6 +123,8 @@ Contains a number of functions that manage and calculate user statistics.
                             aggrigateDict['result_max'] =  max(best scores)
                             aggrigateDict['result_min'] =  min(best scores)
                             aggrigateDict['result_count'] = count(best scores)
+
+        @author Andrew J. Musselman
         '''</span><span class="text">
 </span>        <span class="name">cursor</span> <span class="operator">=</span> <span class="name">connection</span><span class="operator">.</span><span class="name">cursor</span><span class="operator">(</span><span class="operator">)</span><span class="text">
 </span>        <span class="name">cursor</span><span class="operator">.</span><span class="name">execute</span><span class="operator">(</span><span class="string">'''SELECT pages_page.slug,
@@ -170,11 +180,13 @@ Contains a number of functions that manage and calculate user statistics.
                             aggrigateDict['result_max'] =  max(best scores)
                             aggrigateDict['result_min'] =  min(best scores)
                             aggrigateDict['result_count'] = count(best scores)
+
+        @author Andrew J. Musselman
         '''</span><span class="text">
 </span><span class="text">
 </span>        <span class="name">cursor</span> <span class="operator">=</span> <span class="name">connection</span><span class="operator">.</span><span class="name">cursor</span><span class="operator">(</span><span class="operator">)</span><span class="text">
 </span>        <span class="name">cursor</span><span class="operator">.</span><span class="name">execute</span><span class="operator">(</span><span class="string">'''SELECT user_id, username,
-                                                count(*),
+                                                count(),
                             max(Cast(score as FLOAT)/cast(maxscore as Float)),
                             min(Cast(score as FLOAT)/cast(maxscore as Float)),
                             avg(Cast(score as FLOAT)/cast(maxscore as Float))
@@ -210,81 +222,32 @@ Contains a number of functions that manage and calculate user statistics.
 </span>                <span class="name">aggrigateList</span><span class="operator">.</span><span class="name">append</span><span class="operator">(</span><span class="name">aggrigateDict</span><span class="operator">)</span><span class="text">
 </span>        <span class="keyword">return</span> <span class="name">aggrigateList</span><span class="operator">;</span> <span class="text">
 </span><span class="text">
-</span><span class="notcovered"><span class="keyword">def</span> <span class="name">getUserAggregate</span><span class="operator">(</span><span class="name">user</span><span class="operator">,</span> <span class="name">course</span><span class="operator">)</span><span class="operator">:</span></span><span class="text">
-</span><span class="notcovered">        <span class="string">'''
-        Calculates aggregate stats for a single user in a particular
-        course
-        '''</span></span><span class="text">
-</span><span class="notcovered">        <span class="keyword">pass</span></span><span class="text">
-</span><span class="notcovered"></span><span class="text">
-</span><span class="notcovered"><span class="keyword">def</span> <span class="name">getUserLatestWeightedAverage</span><span class="operator">(</span><span class="name">user</span><span class="operator">,</span> <span class="name">couse</span><span class="operator">)</span><span class="operator">:</span></span><span class="text">
-</span><span class="notcovered">        <span class="string">'''
-        Calculates the weighted average of the users latest scores that the
-        user has posted for each quiz. This does not count quizzes the user 
-        hasn't taken yet.
-        '''</span></span><span class="text">
-</span><span class="notcovered">        <span class="keyword">pass</span></span><span class="text">
-</span><span class="notcovered"></span><span class="text">
-</span><span class="notcovered"><span class="keyword">def</span> <span class="name">getUserBestWeightedAverage</span><span class="operator">(</span><span class="name">user</span><span class="operator">,</span> <span class="name">course</span><span class="operator">)</span><span class="operator">:</span></span><span class="text">
-</span><span class="notcovered">        <span class="string">'''
-        Calculates the weighted average of the best scores that the user has posted
-        for each quiz. This does not count quizzes the user hasn't taken yet
-        '''</span></span><span class="text">
-</span><span class="notcovered">        <span class="keyword">pass</span></span><span class="text">
-</span><span class="notcovered"></span><span class="text">
+</span><span class="text">
 </span><span class="notcovered"><span class="keyword">def</span> <span class="name">getUserBestScore</span><span class="operator">(</span><span class="name">user</span><span class="operator">,</span> <span class="name">quiz</span><span class="operator">)</span><span class="operator">:</span></span><span class="text">
-</span><span class="notcovered">        <span class="string">'''
-        Gets the best score for a given user on a given quiz
-        '''</span></span><span class="text">
-</span><span class="notcovered">        <span class="keyword">pass</span></span><span class="text">
-</span><span class="notcovered"></span><span class="text">
-</span><span class="notcovered"><span class="keyword">def</span> <span class="name">getUserLatestScore</span><span class="operator">(</span><span class="name">user</span><span class="operator">,</span><span class="name">quiz</span><span class="operator">)</span><span class="operator">:</span></span><span class="text">
-</span><span class="notcovered">        <span class="string">'''
-        Gets the latest score for a given user on a given quiz.
-        '''</span></span><span class="text">
-</span><span class="notcovered">        <span class="keyword">pass</span></span><span class="text">
-</span><span class="notcovered"></span><span class="text">
-</span><span class="notcovered"><span class="keyword">def</span> <span class="name">getUserAverageScore</span><span class="operator">(</span><span class="name">user</span><span class="operator">,</span><span class="name">quiz</span><span class="operator">)</span><span class="operator">:</span></span><span class="text">
-</span><span class="notcovered">        <span class="string">'''
-        Gets the average score for a given user on a given quiz.
-        Note that weighting makes no sense for this use case, as the max score for a
-        quiz should be the same each time you take it.
-        '''</span></span><span class="text">
-</span><span class="notcovered">        <span class="keyword">pass</span></span><span class="text">
-</span><span class="notcovered"></span><span class="text">
-</span><span class="notcovered"><span class="keyword">def</span> <span class="name">getCourseLatestAverage</span><span class="operator">(</span><span class="name">course</span><span class="operator">,</span> <span class="name">quiz</span><span class="operator">)</span><span class="operator">:</span></span><span class="text">
-</span><span class="notcovered">        <span class="string">'''
-        Gets the average score for the the latest quiz results for a given quiz.
-        Note that weighting makes no sense for this use case, as the max score for a
-        quiz should be the same each time you take it.
-        '''</span></span><span class="text">
-</span><span class="notcovered">        <span class="keyword">pass</span></span><span class="text">
-</span><span class="notcovered"></span><span class="text">
-</span><span class="notcovered"><span class="keyword">def</span> <span class="name">getCourseBestAverage</span><span class="operator">(</span><span class="name">course</span><span class="operator">,</span> <span class="name">quiz</span><span class="operator">)</span><span class="operator">:</span></span><span class="text">
-</span><span class="notcovered">        <span class="string">'''
-        Gets the average score of the best quiz results for a given quiz.
-        Note that weighting makes no sense for this use case, as the max score for a
-        quiz should be the same each time you take it.
-        '''</span></span><span class="text">
-</span><span class="notcovered">        <span class="keyword">pass</span></span><span class="text">
-</span><span class="notcovered"></span><span class="text">
-</span><span class="notcovered"><span class="keyword">def</span> <span class="name">getCourseAggregates</span><span class="operator">(</span><span class="name">course</span><span class="operator">)</span><span class="operator">:</span></span><span class="text">
-</span><span class="notcovered">        <span class="string">'''
-        Calculate aggragte stats for all users in a particular course
-        '''</span></span><span class="text">
-</span><span class="notcovered">        <span class="keyword">pass</span></span><span class="text">
-</span><span class="notcovered"></span><span class="text">
-</span><span class="notcovered"></span><span class="text">
-</span><span class="notcovered"><span class="keyword">def</span> <span class="name">removeStat</span><span class="operator">(</span><span class="name">stat</span><span class="operator">,</span> <span class="name">user</span><span class="operator">)</span><span class="operator">:</span></span><span class="text">
-</span><span class="notcovered">        <span class="string">'''
-        Removes a stat from a user
-        '''</span></span><span class="text">
-</span><span class="notcovered">        <span class="keyword">pass</span></span><span class="text">
-</span><span class="notcovered"></span><span class="text">
-</span><span class="notcovered"><span class="keyword">def</span> <span class="name">purgeDeadStats</span><span class="operator">(</span><span class="operator">)</span><span class="operator">:</span></span><span class="text">
-</span><span class="notcovered">        <span class="string">'''
-        Removes stats that have no associated Page/User
-        '''</span></span><span class="text">
-</span><span class="notcovered">        <span class="keyword">pass</span><span class="text"></span></span>
+</span>        <span class="string">'''
+        Gets the best score for a given user on a given quiz. Takes a user and 
+        the page where a quiz is located. Returns the percentage of the best
+        score.
+
+        Note these special conditions:
+        1. If there are no quizes, this function returns 0%
+        2. If there is an empty quiz, this function returns 100%
+
+        @precondition quiz and user exist
+        @precondition (Quiz.objects.get(quiz)!=NULL) AND 
+                       Quiz.objects.get(course) != NULL)
+        @postcondition we get the user's best score for the given quiz
+        @author Andrew J. Musselman
+        '''</span><span class="text">
+</span>        <span class="keyword">try</span><span class="operator">:</span><span class="text">
+</span>                <span class="name">stat</span> <span class="operator">=</span> <span class="name">Stat</span><span class="operator">.</span><span class="name">objects</span><span class="operator">.</span><span class="name">filter</span><span class="operator">(</span><span class="name">page</span><span class="operator">=</span><span class="name">quiz</span><span class="operator">,</span> <span class="name">user</span><span class="operator">=</span><span class="name">user</span><span class="operator">)</span><span class="operator">.</span><span class="name">order_by</span><span class="operator">(</span><span class="string">"-score"</span><span class="operator">)</span><span class="operator">[</span><span class="number">0</span><span class="operator">]</span><span class="text">
+</span>        <span class="keyword">except</span> <span class="name">IndexError</span><span class="operator">:</span> <span class="comment">#If there are NO stats</span><span class="text">
+</span>                <span class="keyword">return</span> <span class="number">0</span><span class="text">
+</span><span class="text">
+</span>        <span class="keyword">if</span><span class="operator">(</span><span class="name">stat</span><span class="operator">.</span><span class="name">maxscore</span> <span class="operator">&lt;=</span> <span class="number">0</span><span class="operator">)</span><span class="operator">:</span><span class="text">
+</span><span class="notcovered">                <span class="keyword">return</span> <span class="number">1</span></span><span class="text">
+</span>                <span class="comment">#Return 100% if the user takes a quiz with no questions
+</span>        <span class="keyword">else</span><span class="operator">:</span><span class="text">
+</span>                <span class="keyword">return</span> <span class="operator">(</span><span class="name">stat</span><span class="operator">.</span><span class="name">score</span><span class="operator">/</span><span class="name">stat</span><span class="operator">.</span><span class="name">maxscore</span> <span class="operator">*</span> <span class="number">100</span><span class="operator">)</span><span class="text"></span>
 </pre></body>
 </html>

@@ -50,7 +50,9 @@ Contains the Overall "Page" class, plus the Classes that are primarily
 contained within a Page, such as Quiz and Lesson. In addition it contains
 classes for path, question, codeQuestion, multipleChoiceQuestion, and answer.
 
-Author(s): Russell Mezzetta, Mark Gius, James Pearson
+@author Russell Mezzetta
+@author Mark Gius
+@author James Pearson
 
 '''</span><span class="text">
 </span><span class="notcovered"><span class="keyword">from</span> <span class="name">django</span><span class="operator">.</span><span class="name">db</span> <span class="keyword">import</span> <span class="name">models</span></span><span class="text">
@@ -65,6 +67,10 @@ Author(s): Russell Mezzetta, Mark Gius, James Pearson
         A single unit of a course
 
         A page contains links to other pages based on the Course flow.
+
+        @author Russell Mezzetta
+        @author Mark Gius
+        @author James Pearson
         '''</span></span><span class="text">
 </span><span class="notcovered">        <span class="name">course</span> <span class="operator">=</span> <span class="name">models</span><span class="operator">.</span><span class="name">ForeignKey</span><span class="operator">(</span><span class="name">Course</span><span class="operator">,</span> <span class="name">related_name</span><span class="operator">=</span><span class="string">'pages'</span><span class="operator">)</span></span><span class="text">
 </span><span class="notcovered">        <span class="name">slug</span> <span class="operator">=</span> <span class="name">models</span><span class="operator">.</span><span class="name">SlugField</span><span class="operator">(</span><span class="name">unique</span><span class="operator">=</span><span class="name">False</span><span class="operator">)</span></span><span class="text">
@@ -73,10 +79,24 @@ Author(s): Russell Mezzetta, Mark Gius, James Pearson
 </span><span class="notcovered">        <span class="name">right</span> <span class="operator">=</span> <span class="name">models</span><span class="operator">.</span><span class="name">IntegerField</span><span class="operator">(</span><span class="name">db_index</span><span class="operator">=</span><span class="name">True</span><span class="operator">)</span></span><span class="text">
 </span><span class="notcovered"></span><span class="text">
 </span><span class="notcovered">        <span class="keyword">def</span> <span class="name">__unicode__</span><span class="operator">(</span><span class="name">self</span><span class="operator">)</span><span class="operator">:</span></span><span class="text">
+</span>                <span class="string">'''
+                Like toString in java
+
+                @author Russell Mezzetta
+                @author Mark Gius
+                @author James Pearson
+                '''</span><span class="text">
 </span>                <span class="keyword">return</span> <span class="name">self</span><span class="operator">.</span><span class="name">name</span><span class="text">
 </span><span class="text">
 </span><span class="notcovered">        <span class="operator">@</span><span class="name">models</span><span class="operator">.</span><span class="name">permalink</span></span><span class="text">
 </span><span class="notcovered">        <span class="keyword">def</span> <span class="name">get_absolute_url</span><span class="operator">(</span><span class="name">self</span><span class="operator">)</span><span class="operator">:</span></span><span class="text">
+</span><span class="notcovered">                <span class="string">'''
+                Constructs a url based on an in memory object.
+
+                deprecated      
+
+                @author Mark Gius
+                '''</span></span><span class="text">
 </span><span class="notcovered">                <span class="keyword">return</span> <span class="operator">(</span><span class="string">'page.views.show_page'</span><span class="operator">,</span> <span class="operator">[</span><span class="name">self</span><span class="operator">.</span><span class="name">course</span><span class="operator">.</span><span class="name">slug</span><span class="operator">,</span> <span class="name">self</span><span class="operator">.</span><span class="name">slug</span><span class="operator">]</span><span class="operator">)</span><span class="text"></span></span>
 </pre></body>
 </html>

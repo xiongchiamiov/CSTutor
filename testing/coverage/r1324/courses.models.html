@@ -52,8 +52,6 @@ contained within a Course, such as Page, Quiz, Lesson, and Roster.
 @author Andrew Mussellman
 @author Jon Inloes
 @author Mark Gius
-SVN Commit Info:
-$Id: models.py 1243 2010-03-05 02:05:34Z rmezzett $
 '''</span><span class="text">
 </span><span class="keyword">from</span> <span class="name">django</span><span class="operator">.</span><span class="name">db</span> <span class="keyword">import</span> <span class="name">models</span><span class="text">
 </span><span class="keyword">from</span> <span class="name">django</span><span class="operator">.</span><span class="name">contrib</span><span class="operator">.</span><span class="name">auth</span><span class="operator">.</span><span class="name">models</span> <span class="keyword">import</span> <span class="name">User</span><span class="text">
@@ -68,6 +66,8 @@ $Id: models.py 1243 2010-03-05 02:05:34Z rmezzett $
         A course is a set of zero or more pages.  A course is either public or
         private, and contains a roster of authorized users.  Every course has a
         landing page. 
+
+        @author Mark Gius
         '''</span><span class="text">
 </span>        <span class="name">slug</span> <span class="operator">=</span> <span class="name">models</span><span class="operator">.</span><span class="name">SlugField</span><span class="operator">(</span><span class="name">unique</span> <span class="operator">=</span> <span class="name">True</span><span class="operator">)</span><span class="text">
 </span>        <span class="name">name</span> <span class="operator">=</span> <span class="name">models</span><span class="operator">.</span><span class="name">CharField</span><span class="operator">(</span><span class="name">max_length</span> <span class="operator">=</span> <span class="number">255</span><span class="operator">)</span><span class="text">
@@ -80,6 +80,8 @@ $Id: models.py 1243 2010-03-05 02:05:34Z rmezzett $
         
                 Violates code standard because template tags can only call arg-less
                 functions
+
+                @author Mark Gius
                 '''</span><span class="text">
 </span><span class="comment">#               toc = []
 </span><span class="comment">#               pages = [p for p in self.pages.order_by('left')]
@@ -109,6 +111,8 @@ $Id: models.py 1243 2010-03-05 02:05:34Z rmezzett $
 
                 Violates code standard because template tags can only call arg-less
                 functions
+
+                @author Mark Gius
                 '''</span><span class="text">
 </span>                <span class="name">toc</span> <span class="operator">=</span>   <span class="operator">[</span><span class="operator">]</span><span class="text">
 </span>        <span class="text">
@@ -147,6 +151,8 @@ $Id: models.py 1243 2010-03-05 02:05:34Z rmezzett $
 
                  In the case of a Private course, an enrollment relationship is necessary
                  to allow the user to view the course.
+
+                @author Mark Gius
         '''</span><span class="text">
 </span>        <span class="name">user</span> <span class="operator">=</span> <span class="name">models</span><span class="operator">.</span><span class="name">ForeignKey</span><span class="operator">(</span><span class="name">User</span><span class="operator">,</span> <span class="name">related_name</span><span class="operator">=</span><span class="string">'enrollments'</span><span class="operator">)</span><span class="text">
 </span>        <span class="name">course</span> <span class="operator">=</span> <span class="name">models</span><span class="operator">.</span><span class="name">ForeignKey</span><span class="operator">(</span><span class="name">Course</span><span class="operator">,</span> <span class="name">related_name</span><span class="operator">=</span><span class="string">'roster'</span><span class="operator">)</span><span class="text">

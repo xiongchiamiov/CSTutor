@@ -43,7 +43,13 @@ pre.code {
 </head>
 <body>
 <pre class="code">
-<span class="notcovered"><span class="keyword">from</span> <span class="name">django</span><span class="operator">.</span><span class="name">db</span> <span class="keyword">import</span> <span class="name">models</span></span><span class="text">
+<span class="string">'''
+Contains the lesson model
+
+@author Russell Mezzetta
+@author Mark Gius
+'''</span><span class="text">
+</span><span class="notcovered"><span class="keyword">from</span> <span class="name">django</span><span class="operator">.</span><span class="name">db</span> <span class="keyword">import</span> <span class="name">models</span></span><span class="text">
 </span><span class="notcovered"><span class="keyword">from</span> <span class="name">pages</span><span class="operator">.</span><span class="name">models</span> <span class="keyword">import</span> <span class="name">Page</span></span><span class="text">
 </span><span class="notcovered"></span><span class="text">
 </span><span class="notcovered"><span class="comment"># Create your models here.
@@ -55,14 +61,29 @@ pre.code {
         A lesson is a specific type of Page.  It represents a single Topic that
         is represented on a single "Page."  Lessons can include executable code
         segments and images.
+
+        @author Russell Mezzetta
+        @author Mark Gius
         '''</span></span><span class="text">
 </span><span class="notcovered">        <span class="name">content</span> <span class="operator">=</span> <span class="name">models</span><span class="operator">.</span><span class="name">TextField</span><span class="operator">(</span><span class="operator">)</span></span><span class="text">
 </span><span class="notcovered">        <span class="name">workingCopy</span> <span class="operator">=</span> <span class="name">models</span><span class="operator">.</span><span class="name">TextField</span><span class="operator">(</span><span class="operator">)</span></span><span class="text">
 </span><span class="notcovered"></span><span class="text">
 </span><span class="notcovered">        <span class="keyword">def</span> <span class="name">__unicode__</span><span class="operator">(</span><span class="name">self</span><span class="operator">)</span><span class="operator">:</span></span><span class="text">
+</span><span class="notcovered">                <span class="string">'''
+                Like toString in java
+        
+                @author Mark Gius
+                '''</span></span><span class="text">
 </span><span class="notcovered">                <span class="keyword">return</span> <span class="name">self</span><span class="operator">.</span><span class="name">content</span></span><span class="text">
 </span><span class="notcovered"></span>        <span class="text">
 </span><span class="notcovered">        <span class="keyword">def</span> <span class="name">get_absolute_url</span><span class="operator">(</span><span class="name">self</span><span class="operator">)</span><span class="operator">:</span></span><span class="text">
+</span><span class="notcovered">                <span class="string">'''
+                Constructs a url based on an in memory object.
+
+                deprecated      
+
+                @author Mark Gius
+                '''</span></span><span class="text">
 </span><span class="notcovered">                <span class="keyword">return</span> <span class="operator">(</span><span class="string">'pages.lesson.views.show_page'</span><span class="operator">,</span> \
                                   <span class="operator">[</span><span class="name">str</span><span class="operator">(</span><span class="name">self</span><span class="operator">.</span><span class="name">course</span><span class="operator">.</span><span class="name">slug</span><span class="operator">)</span><span class="operator">,</span> <span class="name">self</span><span class="operator">.</span><span class="name">slug</span><span class="operator">]</span><span class="operator">)</span><span class="text"></span></span>
 </pre></body>

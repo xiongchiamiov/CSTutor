@@ -67,6 +67,10 @@ These store and load user statistics.
     This stores an individual users result from a single quiz taken a sigle 
     single time. If a single user takes a quiz mutple times, it will generate
     mutple stats. 
+
+        @author Mark Gius
+        @author Russell Mezzetta
+        @author Andrew J. Musselman
         '''</span></span><span class="text">
 </span><span class="notcovered">        <span class="name">course</span> <span class="operator">=</span> <span class="name">models</span><span class="operator">.</span><span class="name">ForeignKey</span><span class="operator">(</span><span class="name">Course</span><span class="operator">,</span> <span class="name">related_name</span><span class="operator">=</span><span class="string">'stats'</span><span class="operator">)</span></span><span class="text">
 </span><span class="notcovered">        <span class="name">user</span> <span class="operator">=</span> <span class="name">models</span><span class="operator">.</span><span class="name">ForeignKey</span><span class="operator">(</span><span class="name">User</span><span class="operator">,</span> <span class="name">related_name</span><span class="operator">=</span><span class="string">'stats'</span><span class="operator">)</span></span><span class="text">
@@ -88,6 +92,8 @@ These store and load user statistics.
                 We assume you the page you are calling this function with is a quiz.
                 It is an error to call this function with a page that isn't a quiz.
                 Don't do that.
+
+                @author Andrew J. Musselman
                 '''</span><span class="text">
 </span>                <span class="name">maxscore</span> <span class="operator">=</span> <span class="name">page</span><span class="operator">.</span><span class="name">quiz</span><span class="operator">.</span><span class="name">questions</span><span class="operator">.</span><span class="name">count</span><span class="operator">(</span><span class="operator">)</span> <span class="text">
 </span>                <span class="name">s</span> <span class="operator">=</span> <span class="name">Stat</span><span class="operator">(</span><span class="name">course</span><span class="operator">=</span><span class="name">course</span><span class="operator">,</span> <span class="name">page</span><span class="operator">=</span><span class="name">page</span><span class="operator">,</span> <span class="name">user</span><span class="operator">=</span><span class="name">user</span><span class="operator">,</span> <span class="name">score</span><span class="operator">=</span><span class="name">score</span><span class="operator">,</span> <span class="text">
@@ -96,7 +102,11 @@ These store and load user statistics.
 </span>                <span class="keyword">return</span> <span class="name">s</span><span class="text">
 </span><span class="text">
 </span><span class="notcovered">        <span class="keyword">def</span> <span class="name">__unicode__</span><span class="operator">(</span><span class="name">self</span><span class="operator">)</span><span class="operator">:</span></span><span class="text">
-</span><span class="notcovered">                <span class="string">''' Returns the string representation of a stat for debugging. '''</span></span>  <span class="text">
+</span><span class="notcovered">                <span class="string">''' 
+                Returns the string representation of a stat for debugging.
+
+                @author Andrew J. Musselman
+                '''</span></span>  <span class="text">
 </span><span class="notcovered">                <span class="keyword">return</span> <span class="string">u'Stat for User '</span> <span class="operator">+</span> <span class="name">unicode</span><span class="operator">(</span><span class="name">self</span><span class="operator">.</span><span class="name">user</span><span class="operator">)</span> <span class="operator">+</span> <span class="string">u' and Lesson '</span> \
                         <span class="operator">+</span> <span class="name">unicode</span><span class="operator">(</span><span class="name">self</span><span class="operator">.</span><span class="name">page</span><span class="operator">)</span><span class="text"></span></span>
 </pre></body>

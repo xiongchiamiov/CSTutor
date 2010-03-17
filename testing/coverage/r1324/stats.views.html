@@ -63,7 +63,11 @@ pre.code {
 </span><span class="comment"># Create your views here.
 </span><span class="operator">@</span><span class="name">login_required</span><span class="text">
 </span><span class="keyword">def</span> <span class="name">display_course_stats</span><span class="operator">(</span><span class="name">request</span><span class="operator">,</span> <span class="name">course_slug</span><span class="operator">)</span><span class="operator">:</span><span class="text">
-</span>        <span class="string">'''Displays stats for a given course'''</span><span class="text">
+</span>        <span class="string">'''
+        Displays stats for a given course
+
+        @author Andrew J. Musselman
+        '''</span><span class="text">
 </span>        <span class="comment">#Make sure the course is a real course in the DBMS
 </span><span class="notcovered">        <span class="keyword">try</span><span class="operator">:</span></span><span class="text">
 </span><span class="notcovered">                <span class="name">course</span> <span class="operator">=</span> <span class="name">Course</span><span class="operator">.</span><span class="name">objects</span><span class="operator">.</span><span class="name">get</span><span class="operator">(</span><span class="name">slug</span><span class="operator">=</span><span class="name">course_slug</span><span class="operator">)</span></span>   <span class="text">

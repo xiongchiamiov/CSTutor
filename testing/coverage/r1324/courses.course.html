@@ -50,21 +50,23 @@ Contains operations for Courses
 @author: Mark Gius
 
 '''</span><span class="text">
-</span><span class="keyword">from</span> <span class="name">courses</span><span class="operator">.</span><span class="name">models</span> <span class="keyword">import</span> <span class="operator">*</span><span class="text">
-</span><span class="keyword">from</span> <span class="name">courses</span><span class="operator">.</span><span class="name">enrollment</span> <span class="keyword">import</span> <span class="operator">*</span><span class="text">
-</span><span class="keyword">from</span> <span class="name">pages</span><span class="operator">.</span><span class="name">lesson</span><span class="operator">.</span><span class="name">models</span> <span class="keyword">import</span> <span class="name">Lesson</span><span class="text">
-</span><span class="keyword">from</span> <span class="name">pages</span><span class="operator">.</span><span class="name">models</span> <span class="keyword">import</span> <span class="name">Page</span><span class="text">
-</span><span class="text">
-</span><span class="keyword">def</span> <span class="name">CreateCourse</span><span class="operator">(</span><span class="name">name</span><span class="operator">,</span> <span class="name">user</span><span class="operator">,</span> <span class="name">private</span><span class="operator">,</span> <span class="name">slug</span><span class="operator">=</span><span class="name">None</span><span class="operator">)</span><span class="operator">:</span><span class="text">
-</span>        <span class="string">''' Creates a new course
+</span><span class="notcovered"><span class="keyword">from</span> <span class="name">courses</span><span class="operator">.</span><span class="name">models</span> <span class="keyword">import</span> <span class="operator">*</span></span><span class="text">
+</span><span class="notcovered"><span class="keyword">from</span> <span class="name">courses</span><span class="operator">.</span><span class="name">enrollment</span> <span class="keyword">import</span> <span class="operator">*</span></span><span class="text">
+</span><span class="notcovered"><span class="keyword">from</span> <span class="name">pages</span><span class="operator">.</span><span class="name">lesson</span><span class="operator">.</span><span class="name">models</span> <span class="keyword">import</span> <span class="name">Lesson</span></span><span class="text">
+</span><span class="notcovered"><span class="keyword">from</span> <span class="name">pages</span><span class="operator">.</span><span class="name">lesson</span><span class="operator">.</span><span class="name">lesson</span> <span class="keyword">import</span> <span class="name">saveLessonName</span></span><span class="text">
+</span><span class="notcovered"><span class="keyword">from</span> <span class="name">pages</span><span class="operator">.</span><span class="name">models</span> <span class="keyword">import</span> <span class="name">Page</span></span><span class="text">
+</span><span class="notcovered"><span class="keyword">import</span> <span class="name">StringIO</span></span><span class="text">
+</span><span class="notcovered"></span><span class="text">
+</span><span class="notcovered"><span class="keyword">def</span> <span class="name">CreateCourse</span><span class="operator">(</span><span class="name">name</span><span class="operator">,</span> <span class="name">user</span><span class="operator">,</span> <span class="name">private</span><span class="operator">,</span> <span class="name">slug</span><span class="operator">=</span><span class="name">None</span><span class="operator">)</span><span class="operator">:</span></span><span class="text">
+</span><span class="notcovered">        <span class="string">''' Creates a new course
 
                  Takes in the name of the course and a user object, and an optional
                  slug string. Creates a new course, enrolls the user in the course and 
                  assigns all permissions to them.  Returns the course after saving it
                  it.  Have to save it so that enrollment gets an id to link to
-        '''</span><span class="text">
-</span>        <span class="comment"># check for empty string (or default value)
-</span><span class="notcovered">        <span class="keyword">if</span> <span class="keyword">not</span> <span class="name">slug</span><span class="operator">:</span></span><span class="text">
+        '''</span></span><span class="text">
+</span><span class="notcovered">        <span class="comment"># check for empty string (or default value)
+</span>        <span class="keyword">if</span> <span class="keyword">not</span> <span class="name">slug</span><span class="operator">:</span></span><span class="text">
 </span><span class="notcovered">                <span class="name">slug</span> <span class="operator">=</span> <span class="name">slugify</span><span class="operator">(</span><span class="name">name</span><span class="operator">)</span></span><span class="text">
 </span><span class="notcovered"></span><span class="text">
 </span><span class="notcovered">        <span class="name">newcourse</span> <span class="operator">=</span> <span class="name">Course</span><span class="operator">(</span><span class="name">name</span><span class="operator">=</span><span class="name">name</span><span class="operator">,</span> <span class="name">slug</span><span class="operator">=</span><span class="name">slug</span><span class="operator">,</span> <span class="name">private</span><span class="operator">=</span><span class="name">private</span><span class="operator">)</span></span><span class="text">
@@ -80,10 +82,13 @@ Contains operations for Courses
 </span><span class="notcovered">        <span class="name">newpage</span><span class="operator">.</span><span class="name">save</span><span class="operator">(</span><span class="operator">)</span></span><span class="text">
 </span><span class="notcovered"></span><span class="text">
 </span><span class="notcovered">        <span class="keyword">return</span> <span class="name">newcourse</span></span><span class="text">
-</span><span class="text">
-</span><span class="keyword">def</span> <span class="name">renameCourse</span><span class="operator">(</span><span class="name">course</span><span class="operator">,</span> <span class="name">newName</span><span class="operator">)</span><span class="operator">:</span><span class="text">
-</span>        <span class="string">''' Renames a course
-        '''</span><span class="text">
+</span><span class="notcovered"></span><span class="text">
+</span><span class="notcovered"><span class="keyword">def</span> <span class="name">renameCourse</span><span class="operator">(</span><span class="name">course</span><span class="operator">,</span> <span class="name">newName</span><span class="operator">)</span><span class="operator">:</span></span><span class="text">
+</span><span class="notcovered">        <span class="string">''' 
+        Renames a course
+
+        @author Matt Tytel
+        '''</span></span><span class="text">
 </span><span class="notcovered">        <span class="keyword">if</span> <span class="name">len</span><span class="operator">(</span><span class="name">newName</span><span class="operator">.</span><span class="name">strip</span><span class="operator">(</span><span class="operator">)</span><span class="operator">)</span> <span class="operator">&lt;</span> <span class="number">1</span><span class="operator">:</span></span><span class="text">
 </span><span class="notcovered">                <span class="keyword">return</span> <span class="operator">{</span><span class="string">'message'</span><span class="operator">:</span><span class="string">"Name change failed: name must be non-empty"</span><span class="operator">}</span></span><span class="text">
 </span><span class="notcovered"></span><span class="text">
@@ -102,9 +107,17 @@ Contains operations for Courses
 </span><span class="notcovered">        <span class="name">course</span><span class="operator">.</span><span class="name">name</span> <span class="operator">=</span> <span class="name">newName</span></span><span class="text">
 </span><span class="notcovered">        <span class="name">course</span><span class="operator">.</span><span class="name">slug</span> <span class="operator">=</span> <span class="name">newSlug</span></span><span class="text">
 </span><span class="notcovered">        <span class="name">course</span><span class="operator">.</span><span class="name">save</span><span class="operator">(</span><span class="operator">)</span></span><span class="text">
-</span><span class="notcovered">        <span class="keyword">return</span> <span class="operator">{</span><span class="string">'course'</span><span class="operator">:</span><span class="name">course</span><span class="operator">}</span></span><span class="text">
-</span><span class="text">
-</span><span class="keyword">def</span> <span class="name">addUser</span><span class="operator">(</span><span class="name">self</span><span class="operator">,</span> <span class="name">user</span><span class="operator">,</span> <span class="name">view</span> <span class="operator">=</span> <span class="name">True</span><span class="operator">,</span> <span class="name">edit</span><span class="operator">=</span><span class="name">False</span><span class="operator">,</span> <span class="name">stats</span><span class="operator">=</span><span class="name">False</span><span class="operator">,</span> <span class="name">manage</span><span class="operator">=</span><span class="name">False</span><span class="operator">)</span><span class="operator">:</span><span class="text">
+</span><span class="notcovered">        <span class="comment">#also change the 'index' lesson to reflect name change
+</span>        <span class="name">indexPage</span> <span class="operator">=</span> <span class="name">Lesson</span><span class="operator">.</span><span class="name">objects</span><span class="operator">.</span><span class="name">get</span><span class="operator">(</span><span class="name">course</span> <span class="operator">=</span> <span class="name">course</span><span class="operator">,</span> <span class="name">left</span> <span class="operator">=</span> <span class="number">1</span><span class="operator">)</span></span><span class="text">
+</span><span class="notcovered">        <span class="name">ret</span> <span class="operator">=</span> <span class="name">saveLessonName</span><span class="operator">(</span><span class="name">indexPage</span><span class="operator">,</span> <span class="name">newName</span><span class="operator">)</span></span><span class="text">
+</span><span class="notcovered">        <span class="keyword">if</span> <span class="string">'message'</span> <span class="keyword">in</span> <span class="name">ret</span><span class="operator">:</span><span class="comment">#indicates failure SHOULD NOT HAPPEN EVER</span></span><span class="text">
+</span><span class="notcovered">                <span class="keyword">return</span> <span class="name">ret</span></span><span class="text">
+</span><span class="notcovered">        <span class="keyword">if</span> <span class="string">'lesson'</span> <span class="keyword">in</span> <span class="name">ret</span><span class="operator">:</span><span class="comment">#indicates success, should always happen</span></span><span class="text">
+</span><span class="notcovered">                <span class="keyword">return</span> <span class="operator">{</span><span class="string">'course'</span><span class="operator">:</span><span class="name">course</span><span class="operator">,</span> <span class="string">'lesson'</span><span class="operator">:</span> <span class="name">ret</span><span class="operator">[</span><span class="string">'lesson'</span><span class="operator">]</span><span class="operator">}</span></span><span class="text">
+</span><span class="notcovered">        <span class="comment">#left this in case a bozo changes saveLessonName
+</span>        <span class="keyword">return</span> <span class="operator">{</span><span class="string">'course'</span><span class="operator">:</span><span class="name">course</span><span class="operator">}</span></span><span class="text">
+</span><span class="notcovered"></span><span class="text">
+</span><span class="notcovered"><span class="keyword">def</span> <span class="name">addUser</span><span class="operator">(</span><span class="name">self</span><span class="operator">,</span> <span class="name">user</span><span class="operator">,</span> <span class="name">view</span> <span class="operator">=</span> <span class="name">True</span><span class="operator">,</span> <span class="name">edit</span><span class="operator">=</span><span class="name">False</span><span class="operator">,</span> <span class="name">stats</span><span class="operator">=</span><span class="name">False</span><span class="operator">,</span> <span class="name">manage</span><span class="operator">=</span><span class="name">False</span><span class="operator">)</span><span class="operator">:</span></span><span class="text">
 </span>        <span class="string">''' Adds a User to a course 
         
             Takes in a user, and optional boolean values for edit, stats, and
@@ -126,12 +139,13 @@ Contains operations for Courses
 </span>                <span class="keyword">return</span> <span class="name">enrollment</span><span class="text">
 </span>        <span class="comment"># Enrollment already exists
 </span><span class="notcovered">        <span class="keyword">return</span> <span class="name">None</span></span><span class="text">
-</span><span class="text">
-</span><span class="keyword">def</span> <span class="name">removeUser</span><span class="operator">(</span><span class="name">self</span><span class="operator">,</span> <span class="name">user</span><span class="operator">)</span><span class="operator">:</span><span class="text">
+</span><span class="notcovered"></span><span class="text">
+</span><span class="notcovered"><span class="keyword">def</span> <span class="name">removeUser</span><span class="operator">(</span><span class="name">self</span><span class="operator">,</span> <span class="name">user</span><span class="operator">)</span><span class="operator">:</span></span><span class="text">
 </span>        <span class="string">'''
                 Removes the specified user from the course
 
-                @author ?
+                @author Mark Gius
+                @author Jon Inloes
         '''</span><span class="text">
 </span>        <span class="comment">#print 'removing a user'
 </span>        <span class="keyword">try</span><span class="operator">:</span><span class="text">
@@ -140,26 +154,67 @@ Contains operations for Courses
 </span><span class="notcovered">                <span class="keyword">print</span> <span class="string">'remove failed'</span></span>   <span class="text">
 </span>        <span class="keyword">return</span> <span class="name">None</span><span class="text">
 </span><span class="text">
-</span><span class="keyword">def</span> <span class="name">removeCourse</span><span class="operator">(</span><span class="name">course_slug</span><span class="operator">)</span><span class="operator">:</span><span class="text">
-</span>        <span class="string">'''
-        @author Russell Mezzetta
+</span><span class="notcovered"><span class="keyword">def</span> <span class="name">removeCourse</span><span class="operator">(</span><span class="name">course_slug</span><span class="operator">)</span><span class="operator">:</span></span><span class="text">
+</span><span class="notcovered">        <span class="string">'''
         Removes this course and all of its pages, statistics, and enrollments
         from the database
         @pre course_slug is a string
         @post if course_slug points to a valid course, it will be removed from the database along with all related objects.
-        '''</span><span class="text">
+
+        @author Russell Mezzetta
+        '''</span></span><span class="text">
 </span><span class="notcovered">        <span class="keyword">try</span><span class="operator">:</span></span><span class="text">
 </span><span class="notcovered">                <span class="name">c</span> <span class="operator">=</span> <span class="name">Course</span><span class="operator">.</span><span class="name">objects</span><span class="operator">.</span><span class="name">get</span><span class="operator">(</span><span class="name">slug</span><span class="operator">=</span><span class="name">course_slug</span><span class="operator">)</span></span><span class="text">
 </span><span class="notcovered">                <span class="name">c</span><span class="operator">.</span><span class="name">delete</span><span class="operator">(</span><span class="operator">)</span></span><span class="text">
 </span><span class="notcovered">                <span class="keyword">return</span> <span class="name">c</span></span><span class="text">
 </span><span class="notcovered">        <span class="keyword">except</span> <span class="name">Course</span><span class="operator">.</span><span class="name">DoesNotExist</span><span class="operator">:</span></span><span class="text">
 </span><span class="notcovered">                <span class="keyword">return</span> <span class="name">None</span></span><span class="text">
-</span><span class="text">
-</span><span class="keyword">def</span> <span class="name">setPrivate</span><span class="operator">(</span><span class="name">self</span><span class="operator">)</span><span class="operator">:</span><span class="text">
+</span><span class="notcovered"></span><span class="text">
+</span><span class="notcovered"><span class="keyword">def</span> <span class="name">setPrivate</span><span class="operator">(</span><span class="name">self</span><span class="operator">)</span><span class="operator">:</span></span><span class="text">
+</span><span class="notcovered">        <span class="string">'''
+        Sets the private bit for a course
+
+        @author Mark Gius
+        '''</span></span><span class="text">
 </span><span class="notcovered">        <span class="name">self</span><span class="operator">.</span><span class="name">private</span> <span class="operator">=</span> <span class="name">True</span></span><span class="text">
 </span><span class="notcovered">        <span class="name">self</span><span class="operator">.</span><span class="name">save</span><span class="operator">(</span><span class="operator">)</span></span><span class="text">
+</span><span class="notcovered"></span><span class="text">
+</span><span class="notcovered"><span class="keyword">def</span> <span class="name">addUsersFromFile</span><span class="operator">(</span><span class="name">course</span><span class="operator">,</span> <span class="name">files</span><span class="operator">)</span><span class="operator">:</span></span><span class="text">
+</span>        <span class="string">'''
+        Adds users from a text file to a course
+
+        pre: none
+        post: for each username in files
+                                enrollment.username.view = true
+
+        @author Jon Inloes
+        '''</span><span class="text">
 </span><span class="text">
+</span>        <span class="name">failedList</span> <span class="operator">=</span> <span class="operator">[</span><span class="operator">]</span><span class="text">
+</span>        <span class="keyword">for</span> <span class="name">k</span><span class="operator">,</span><span class="name">v</span><span class="operator">,</span> <span class="keyword">in</span> <span class="name">files</span><span class="operator">.</span><span class="name">iteritems</span><span class="operator">(</span><span class="operator">)</span><span class="operator">:</span><span class="comment">#request.FILES.iteritems():</span><span class="text">
+</span>                <span class="comment">#print k, v
+</span>                <span class="name">infile</span> <span class="operator">=</span> <span class="name">files</span><span class="operator">[</span><span class="name">k</span><span class="operator">]</span><span class="comment">#request.FILES[k]</span><span class="text">
 </span><span class="text">
+</span>                <span class="name">output</span> <span class="operator">=</span> <span class="name">StringIO</span><span class="operator">.</span><span class="name">StringIO</span><span class="operator">(</span><span class="name">infile</span><span class="operator">.</span><span class="name">read</span><span class="operator">(</span><span class="operator">)</span><span class="operator">)</span><span class="text">
+</span><span class="text">
+</span>                <span class="keyword">for</span> <span class="name">line</span> <span class="keyword">in</span> <span class="name">output</span><span class="operator">:</span><span class="text">
+</span>                        <span class="name">name</span> <span class="operator">=</span> <span class="name">line</span><span class="operator">.</span><span class="name">strip</span><span class="operator">(</span><span class="operator">)</span><span class="text">
+</span>                        <span class="comment">#print line.strip()
+</span>                        <span class="keyword">try</span><span class="operator">:</span><span class="text">
+</span>                                <span class="comment">#if the user exists add it
+</span>                                <span class="name">user</span> <span class="operator">=</span> <span class="name">User</span><span class="operator">.</span><span class="name">objects</span><span class="operator">.</span><span class="name">get</span><span class="operator">(</span><span class="name">username</span><span class="operator">=</span><span class="name">name</span><span class="operator">)</span><span class="text">
+</span>                                <span class="name">addUser</span><span class="operator">(</span><span class="name">course</span><span class="operator">,</span> <span class="name">user</span><span class="operator">)</span><span class="text">
+</span><span class="text">
+</span>                        <span class="keyword">except</span> <span class="name">User</span><span class="operator">.</span><span class="name">DoesNotExist</span><span class="operator">:</span><span class="text">
+</span>                                <span class="comment">#if the user does not exist add it to the failed list
+</span>                                <span class="name">failedList</span><span class="operator">.</span><span class="name">append</span><span class="operator">(</span><span class="name">name</span><span class="operator">)</span><span class="operator">;</span><span class="text">
+</span>                                <span class="comment">#return master_rtr(request, 'adduser/failed.html', \
+</span>                                <span class="comment">#                              {'course_slug':course_slug, \
+</span>                                <span class="comment">#                               'course': course})
+</span>                                        <span class="text">
+</span>        <span class="comment">#print failedList
+</span><span class="text">
+</span>        <span class="keyword">return</span> <span class="name">failedList</span><span class="text">
 </span><span class="comment"># Everything below here is probably supposed to be in views.py -mgius
 </span><span class="comment"># commented out by mgius on 2/16/10
 </span><span class="comment">#def removeCourse(request):
