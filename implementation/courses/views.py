@@ -325,8 +325,11 @@ def join_course_request(request):
 
 	if course.private:
 		view = False
+		redirect = False
 	else:
 		view = True
+		redirect = True
+
 
 	if request.user.is_authenticated():
 		user = User.objects.get(username=request.user.username)
@@ -338,6 +341,7 @@ def join_course_request(request):
 				message += " is pending."  
 		else:
 			message = "You are already enrolled in %s" % course
+			redirect = False
 	
 	else:
 		#anonymous user is joining course
@@ -345,6 +349,7 @@ def join_course_request(request):
 			
 			if course in request.session['anonCourses']:
 				message = "You are already enrolled in %s" % course
+				redirect = False
 			else:
 				courses = request.session['anonCourses']
 				courses.append(course)
@@ -359,7 +364,8 @@ def join_course_request(request):
 		
 		
 	return master_rtr(request, 'courses/join_course_status.html', \
-	                  {'course':course, 'user':user, 'message':message})
+	                  {'course':course, 'user':user, 'message':message, \
+							 'redirect':redirect })
 
 def show_chat(request, course_slug):
 	''' 

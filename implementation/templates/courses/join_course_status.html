@@ -1,5 +1,14 @@
 {% extends "base.html" %}
 
+{% block meta %}
+{% if redirect %}
+<meta http-equiv="refresh" content="5;url={% url courses.views.show_course course.slug %}"/>
+{% endif %}
+{% endblock meta %}
+
 {% block content %}
 <p>{{message}}</p>
+{% if redirect %}
+<p> You will be redirected to {{course}} in 5 seconds. </p>
+{% endif %}
 {% endblock %}
