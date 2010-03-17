@@ -19,6 +19,8 @@ def CreateCourse(name, user, private, slug=None):
 		 slug string. Creates a new course, enrolls the user in the course and 
 		 assigns all permissions to them.  Returns the course after saving it
 		 it.  Have to save it so that enrollment gets an id to link to
+
+		 @author Mark Gius
 	'''
 	# check for empty string (or default value)
 	if not slug:
@@ -74,15 +76,15 @@ def renameCourse(course, newName):
 
 def addUser(self, user, view = True, edit=False, stats=False, manage=False):
 	''' Adds a User to a course 
-	
-	    Takes in a user, and optional boolean values for edit, stats, and
-	    manage permission, in that order. Creates a new enrollment for that
-	    user and permission level and adds it to the Course.  
+    
+       Takes in a user, and optional boolean values for edit, stats, and
+       manage permission, in that order. Creates a new enrollment for that
+       user and permission level and adds it to the Course.  
 
-		 Returns the  enrollment after saving it to the database, 
-		 or None if the user was already enrolled
+       Returns the  enrollment after saving it to the database, 
+       or None if the user was already enrolled
 
-		 @author Mark Gius
+       @author Mark Gius
 	'''
    # test for user/course enrollment already
 	try:
