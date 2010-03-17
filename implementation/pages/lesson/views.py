@@ -18,6 +18,7 @@ from home.views import master_rtr, custom_403
 from pages.lesson.lesson import *
 from pages.page import getNextPage, getPrevPage
 from django.contrib.auth.decorators import login_required
+from django.core.exceptions import ObjectDoesNotExist
 import urlparse
 import re
 
@@ -102,11 +103,14 @@ def show_lesson(request, course_slug, page_slug, lessonPage, preview=False):
 			if request.POST['confirmQuitCourse'] == "yes":
 				#remove user enrollment for course
 				if request.user.is_authenticated():
-					e = Enrollment.objects.get(user = request.user, course = course)
-					e.delete()
-					#remove all stats for user in course
-					s = Stat.objects.filter(user = request.user, course = course)
-					s.delete()
+					try:
+						e = Enrollment.objects.get(user = request.user, course = course)
+						e.delete()
+						#remove all stats for user in course
+						s = Stat.objects.filter(user = request.user, course = course)
+						s.delete()
+					except Object.DoesNotExist:
+						return HttpResponseRedirect(reverse('home.views.show_homepage'))
 				else:
 					if course in request.session['anonCourses']:
 						#this may look like extra work but it is necessary to get the
