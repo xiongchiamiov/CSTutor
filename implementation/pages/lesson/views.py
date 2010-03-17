@@ -238,7 +238,7 @@ def edit_lesson(request, course_slug, page_slug):
 				if course_slug == page_slug:#remove the course
 					removeCourse(course_slug)
 				else:
-					removeLesson(request, course_slug, page_slug)
+					removeLesson(course_slug, page_slug)
 				return HttpResponseRedirect(reverse('home.views.show_homepage'))
 			else:
 				return master_rtr(request, 'page/lesson/edit_lesson.html', data)

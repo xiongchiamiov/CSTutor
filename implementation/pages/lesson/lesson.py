@@ -42,21 +42,20 @@ def saveNewLesson(lesson_name, content, course, parent_slug):
 	
 	return -1
 
-def removeLesson(request, course, pid):
+def removeLesson(pid, course):
 	'''
 	Removes a lesson from the database.  Except it fucking does it wrong.
 
 	TODO: This needs to not return 0 or -1, and it needs to use removePage
 	@author John Hartquist
+	@author Matthew Tytel
 	'''
-	if (request.method != "POST"):
-		return -1
-	if "confirmRemove" in request.POST:
-		
-		#Lesson.objects.get(slug=pid).delete()
+	try:
 		page = Page.objects.get(slug=pid)
 		removePage(page)
 		return 0
+	except Page.DoesNotExist:
+		return -1
 
 def revertLessonChanges(lesson):
 	'''

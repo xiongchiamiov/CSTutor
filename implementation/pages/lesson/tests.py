@@ -45,6 +45,50 @@ class LessonTests(TestCase):
 		'''
 		self.course = Course.objects.get(slug=self.public_course)
 
+	def test_saveNewLesson(self):
+		'''
+		Tests saving a new lesson
+		
+		case		input										output
+		----		-----										------
+		1			request with lesson name,			0
+					content, course, and page id
+
+		2			request with duplicate lesson		-1
+					name, content, course, and page
+					id
+		@author Matthew Tytel
+		'''
+		self.assertEquals(saveNewLesson("newLessonName", "Content", self.course, self.course.slug), 0)
+		try:
+			lesson = Lesson.objects.get(course=self.course, slug=slugify("newLessonName"))
+		except Lesson.DoesNotExist:
+			self.assertEquals(0, 1, "Did not save lesson to database")
+
+		self.assertEquals(saveNewLesson("newLessonName", "Content", self.course, self.course.slug), -1)
+
+	def test_removeLesson(self):
+		'''
+		Tests removing an existing lesson
+		
+		case		input										output
+		----		-----										------
+		1			request with invalid lesson		-1
+					name and course
+		
+		2			request with lesson name,			0
+					and course
+		@author Matthew Tytel
+		'''
+		self.assertEquals(removeLesson("newLessonName", self.course), -1)
+		self.assertEquals(saveNewLesson("newLessonName", "Content", self.course, self.course.slug), 0)
+		self.assertEquals(removeLesson(slugify("newLessonName"), self.course), 0)
+		try:
+			lesson = Lesson.objects.get(course=self.course, slug=slugify("newLessonName"))
+			self.assertEquals(0, 1, "Did not remove lesson from database")
+		except Lesson.DoesNotExist:
+			pass
+
 	def test_revertLessonChanges(self):
 		'''
 		Tests a relatively simple function which takes a lesson and copies the
