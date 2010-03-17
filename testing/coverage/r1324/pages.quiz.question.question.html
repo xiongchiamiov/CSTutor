@@ -1,0 +1,95 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+  "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>code coverage of question.py</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+
+<style type="text/css">
+pre.code {
+    font-style: Lucida,"Courier New";
+}
+.number {
+    color: #0080C0;
+}
+.operator {
+    color: #000000;
+}
+.string {
+    color: #008000;
+}
+.comment {
+    color: #808080;
+}
+.name {
+    color: #000000;
+}
+.error {
+    color: #FF8080;
+    border: solid 1.5pt #FF0000;
+}
+.keyword {
+    color: #0000FF;
+    font-weight: bold;
+}
+.text {
+    color: #000000;
+}
+.notcovered {
+    background-color: #FFB2B2;
+}
+</style>
+
+</head>
+<body>
+<pre class="code">
+<span class="string">'''
+question.py fil for quiestion related operations.
+
+@author Evan Kleist
+'''</span><span class="text">
+</span><span class="notcovered"><span class="keyword">from</span> <span class="name">django</span><span class="operator">.</span><span class="name">template</span><span class="operator">.</span><span class="name">defaultfilters</span> <span class="keyword">import</span> <span class="name">slugify</span></span><span class="text">
+</span><span class="notcovered"><span class="keyword">from</span> <span class="name">models</span> <span class="keyword">import</span> <span class="operator">*</span></span><span class="text">
+</span><span class="notcovered"></span><span class="text">
+</span><span class="notcovered"><span class="keyword">def</span> <span class="name">removeQuestion</span><span class="operator">(</span><span class="name">self</span><span class="operator">)</span><span class="operator">:</span></span><span class="text">
+</span>        <span class="keyword">if</span> <span class="operator">(</span><span class="name">isMultipleChoiceQuestion</span><span class="operator">(</span><span class="name">self</span><span class="operator">)</span><span class="operator">)</span><span class="operator">:</span><span class="text">
+</span>                <span class="name">self</span> <span class="operator">=</span> <span class="name">self</span><span class="operator">.</span><span class="name">multiplechoicequestion</span><span class="text">
+</span>                <span class="name">answers</span> <span class="operator">=</span> <span class="name">self</span><span class="operator">.</span><span class="name">answers</span><span class="operator">.</span><span class="name">all</span><span class="operator">(</span><span class="operator">)</span><span class="text">
+</span>                <span class="keyword">for</span> <span class="name">a</span> <span class="keyword">in</span> <span class="name">answers</span><span class="operator">:</span><span class="text">
+</span>                        <span class="name">removeAnswer</span><span class="operator">(</span><span class="name">self</span><span class="operator">,</span> <span class="name">a</span><span class="operator">)</span><span class="text">
+</span>        <span class="name">self</span><span class="operator">.</span><span class="name">delete</span><span class="operator">(</span><span class="operator">)</span><span class="text">
+</span><span class="text">
+</span><span class="notcovered"><span class="keyword">def</span> <span class="name">removeAnswer</span><span class="operator">(</span><span class="name">self</span><span class="operator">)</span><span class="operator">:</span></span><span class="text">
+</span><span class="notcovered">        <span class="name">self</span><span class="operator">.</span><span class="name">delete</span><span class="operator">(</span><span class="operator">)</span></span><span class="text">
+</span><span class="notcovered"></span><span class="text">
+</span><span class="notcovered"><span class="keyword">def</span> <span class="name">isMultipleChoiceQuestion</span><span class="operator">(</span><span class="name">self</span><span class="operator">)</span><span class="operator">:</span></span><span class="text">
+</span>        <span class="keyword">try</span><span class="operator">:</span><span class="text">
+</span>                <span class="name">self</span> <span class="operator">=</span> <span class="name">self</span><span class="operator">.</span><span class="name">multiplechoicequestion</span><span class="text">
+</span><span class="notcovered">        <span class="keyword">except</span> <span class="name">MultipleChoiceQuestion</span><span class="operator">.</span><span class="name">DoesNotExist</span><span class="operator">:</span></span><span class="text">
+</span><span class="notcovered">                <span class="keyword">return</span> <span class="name">False</span></span><span class="text">
+</span>        <span class="keyword">return</span> <span class="name">True</span><span class="text">
+</span><span class="text">
+</span><span class="notcovered"><span class="keyword">def</span> <span class="name">addAnswer</span><span class="operator">(</span><span class="name">self</span><span class="operator">)</span><span class="operator">:</span></span><span class="text">
+</span>        <span class="keyword">if</span> <span class="operator">(</span><span class="name">isMultipleChoiceQuestion</span><span class="operator">(</span><span class="name">self</span><span class="operator">)</span><span class="operator">)</span><span class="operator">:</span><span class="text">
+</span>                <span class="name">self</span> <span class="operator">=</span> <span class="name">self</span><span class="operator">.</span><span class="name">multiplechoicequestion</span><span class="text">
+</span>                <span class="name">answers</span> <span class="operator">=</span> <span class="name">self</span><span class="operator">.</span><span class="name">answers</span><span class="operator">.</span><span class="name">all</span><span class="operator">(</span><span class="operator">)</span><span class="text">
+</span>                <span class="name">newAnswer</span> <span class="operator">=</span> <span class="name">Answer</span><span class="operator">(</span><span class="name">question</span><span class="operator">=</span><span class="name">self</span><span class="operator">,</span> <span class="name">correct</span><span class="operator">=</span><span class="name">False</span><span class="operator">,</span> <span class="name">order</span><span class="operator">=</span><span class="operator">(</span><span class="name">len</span><span class="operator">(</span><span class="name">answers</span><span class="operator">)</span><span class="operator">+</span><span class="number">1</span><span class="operator">)</span><span class="operator">)</span><span class="text">
+</span>                <span class="name">newAnswer</span><span class="operator">.</span><span class="name">save</span><span class="operator">(</span><span class="operator">)</span><span class="text">
+</span>                <span class="keyword">return</span> <span class="number">0</span><span class="text">
+</span><span class="notcovered">        <span class="keyword">return</span> <span class="operator">-</span><span class="number">1</span></span><span class="text">
+</span><span class="notcovered"></span><span class="text">
+</span><span class="notcovered"><span class="keyword">def</span> <span class="name">removeAnswer</span><span class="operator">(</span><span class="name">self</span><span class="operator">,</span> <span class="name">answer</span><span class="operator">)</span><span class="operator">:</span></span><span class="text">
+</span>        <span class="name">answer</span><span class="operator">.</span><span class="name">delete</span><span class="operator">(</span><span class="operator">)</span><span class="text">
+</span>        <span class="name">reorderAnswers</span><span class="operator">(</span><span class="name">self</span><span class="operator">)</span><span class="text">
+</span>        <span class="keyword">return</span> <span class="number">0</span><span class="operator">;</span><span class="text">
+</span><span class="text">
+</span><span class="notcovered"><span class="keyword">def</span> <span class="name">reorderAnswers</span><span class="operator">(</span><span class="name">self</span><span class="operator">)</span><span class="operator">:</span></span><span class="text">
+</span>        <span class="name">answers</span> <span class="operator">=</span> <span class="name">self</span><span class="operator">.</span><span class="name">answers</span><span class="operator">.</span><span class="name">all</span><span class="operator">(</span><span class="operator">)</span><span class="operator">.</span><span class="name">order_by</span><span class="operator">(</span><span class="string">"order"</span><span class="operator">)</span><span class="text">
+</span>        <span class="name">aNum</span> <span class="operator">=</span> <span class="number">1</span><span class="text">
+</span>        <span class="keyword">for</span> <span class="name">a</span> <span class="keyword">in</span> <span class="name">answers</span><span class="operator">:</span><span class="text">
+</span>                <span class="name">a</span><span class="operator">.</span><span class="name">order</span> <span class="operator">=</span> <span class="name">aNum</span><span class="text">
+</span>                <span class="name">a</span><span class="operator">.</span><span class="name">save</span><span class="operator">(</span><span class="operator">)</span><span class="text">
+</span>                <span class="name">aNum</span> <span class="operator">=</span> <span class="name">aNum</span> <span class="operator">+</span> <span class="number">1</span><span class="text">
+</span>        <span class="keyword">return</span> <span class="number">0</span><span class="text"></span>
+</pre></body>
+</html>

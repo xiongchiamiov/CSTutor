@@ -1,0 +1,170 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+  "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>code coverage of lesson.py</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+
+<style type="text/css">
+pre.code {
+    font-style: Lucida,"Courier New";
+}
+.number {
+    color: #0080C0;
+}
+.operator {
+    color: #000000;
+}
+.string {
+    color: #008000;
+}
+.comment {
+    color: #808080;
+}
+.name {
+    color: #000000;
+}
+.error {
+    color: #FF8080;
+    border: solid 1.5pt #FF0000;
+}
+.keyword {
+    color: #0000FF;
+    font-weight: bold;
+}
+.text {
+    color: #000000;
+}
+.notcovered {
+    background-color: #FFB2B2;
+}
+</style>
+
+</head>
+<body>
+<pre class="code">
+<span class="string">'''
+lesson.py file for lesson related operations.
+
+Contains helpful wrapper operations for all lessons such as saveLesson, or
+saveLessonName. These are used mainly by the views for convenience and processing of user input.
+
+@author Matthew Tytel
+@author John Hartquist
+@author Russell Mezzetta
+'''</span><span class="text">
+</span><span class="notcovered"><span class="keyword">from</span> <span class="name">django</span><span class="operator">.</span><span class="name">template</span><span class="operator">.</span><span class="name">defaultfilters</span> <span class="keyword">import</span> <span class="name">slugify</span></span><span class="text">
+</span><span class="notcovered"><span class="keyword">from</span> <span class="name">pages</span><span class="operator">.</span><span class="name">page</span> <span class="keyword">import</span> <span class="name">insertChildPage</span></span><span class="text">
+</span><span class="notcovered"><span class="keyword">from</span> <span class="name">models</span> <span class="keyword">import</span> <span class="operator">*</span></span><span class="text">
+</span><span class="notcovered"><span class="keyword">from</span> <span class="name">pages</span><span class="operator">.</span><span class="name">models</span> <span class="keyword">import</span> <span class="name">Page</span></span><span class="text">
+</span><span class="notcovered"></span><span class="text">
+</span><span class="notcovered"><span class="keyword">def</span> <span class="name">CreateLesson</span><span class="operator">(</span><span class="name">name</span><span class="operator">)</span><span class="operator">:</span></span><span class="text">
+</span><span class="notcovered">        <span class="keyword">return</span> <span class="name">Lesson</span><span class="operator">(</span><span class="name">slug</span><span class="operator">=</span><span class="name">slugify</span><span class="operator">(</span><span class="name">name</span><span class="operator">)</span><span class="operator">,</span> <span class="name">name</span><span class="operator">=</span><span class="name">name</span><span class="operator">)</span></span><span class="text">
+</span><span class="notcovered"></span><span class="text">
+</span><span class="notcovered"><span class="keyword">def</span> <span class="name">saveLesson</span><span class="operator">(</span><span class="name">request</span><span class="operator">,</span> <span class="name">course</span><span class="operator">,</span> <span class="name">pid</span><span class="operator">)</span><span class="operator">:</span></span><span class="text">
+</span><span class="notcovered">        <span class="string">'''
+        Saves an existing lesson's content and new name
+
+        @author John Hartquist
+        @author Matthew Tytel
+        '''</span></span><span class="text">
+</span><span class="notcovered">        <span class="keyword">if</span> <span class="name">request</span><span class="operator">.</span><span class="name">method</span> <span class="operator">==</span> <span class="string">"POST"</span> <span class="keyword">and</span> <span class="string">"Save"</span> <span class="keyword">in</span> <span class="name">request</span><span class="operator">.</span><span class="name">POST</span><span class="operator">:</span></span><span class="text">
+</span><span class="notcovered">                <span class="name">lesson</span> <span class="operator">=</span> <span class="name">Lesson</span><span class="operator">.</span><span class="name">objects</span><span class="operator">.</span><span class="name">get</span><span class="operator">(</span><span class="name">slug</span><span class="operator">=</span><span class="name">pid</span><span class="operator">)</span></span><span class="text">
+</span><span class="notcovered"></span>                <span class="text">
+</span><span class="notcovered">                <span class="keyword">if</span> <span class="name">pid</span> <span class="operator">!=</span> <span class="name">request</span><span class="operator">.</span><span class="name">POST</span><span class="operator">[</span><span class="string">"lessonname"</span><span class="operator">]</span><span class="operator">:</span></span><span class="text">
+</span><span class="notcovered">                        <span class="keyword">try</span><span class="operator">:</span></span><span class="text">
+</span><span class="notcovered">                                <span class="name">Lesson</span><span class="operator">.</span><span class="name">objects</span><span class="operator">.</span><span class="name">get</span><span class="operator">(</span><span class="name">slug</span><span class="operator">=</span><span class="name">slugify</span><span class="operator">(</span><span class="name">request</span><span class="operator">.</span><span class="name">POST</span><span class="operator">[</span><span class="string">"lessonname"</span><span class="operator">]</span><span class="operator">)</span><span class="operator">)</span></span><span class="text">
+</span><span class="notcovered">                                <span class="keyword">return</span> <span class="operator">-</span><span class="number">1</span></span><span class="text">
+</span><span class="notcovered">                        <span class="keyword">except</span> <span class="name">Lesson</span><span class="operator">.</span><span class="name">DoesNotExist</span><span class="operator">:</span></span><span class="text">
+</span><span class="notcovered">                                <span class="name">lesson</span><span class="operator">.</span><span class="name">slug</span> <span class="operator">=</span> <span class="name">slugify</span><span class="operator">(</span><span class="name">request</span><span class="operator">.</span><span class="name">POST</span><span class="operator">[</span><span class="string">"lessonname"</span><span class="operator">]</span><span class="operator">)</span></span><span class="text">
+</span><span class="notcovered"></span>                <span class="text">
+</span><span class="notcovered">                <span class="name">lesson</span><span class="operator">.</span><span class="name">workingCopy</span> <span class="operator">=</span> <span class="name">request</span><span class="operator">.</span><span class="name">POST</span><span class="operator">[</span><span class="string">"content"</span><span class="operator">]</span></span><span class="text">
+</span><span class="notcovered">                <span class="name">lesson</span><span class="operator">.</span><span class="name">save</span><span class="operator">(</span><span class="operator">)</span></span><span class="text">
+</span><span class="notcovered">                <span class="keyword">return</span> <span class="number">0</span></span><span class="text">
+</span><span class="notcovered">        <span class="keyword">return</span> <span class="operator">-</span><span class="number">1</span></span><span class="text">
+</span><span class="notcovered"></span><span class="text">
+</span><span class="notcovered"><span class="keyword">def</span> <span class="name">saveNewLesson</span><span class="operator">(</span><span class="name">request</span><span class="operator">,</span> <span class="name">course</span><span class="operator">,</span> <span class="name">parent_slug</span><span class="operator">)</span><span class="operator">:</span></span><span class="text">
+</span><span class="notcovered">        <span class="string">'''
+        Saves a new lesson's content and name
+        
+        @author Matthew Tytel
+        '''</span></span><span class="text">
+</span><span class="notcovered">        <span class="keyword">if</span> <span class="name">request</span><span class="operator">.</span><span class="name">method</span> <span class="operator">==</span> <span class="string">"POST"</span> <span class="keyword">and</span> <span class="string">"Save"</span> <span class="keyword">in</span> <span class="name">request</span><span class="operator">.</span><span class="name">POST</span><span class="operator">:</span></span><span class="text">
+</span><span class="notcovered">                <span class="keyword">try</span><span class="operator">:</span></span><span class="text">
+</span><span class="notcovered">                        <span class="name">Lesson</span><span class="operator">.</span><span class="name">objects</span><span class="operator">.</span><span class="name">get</span><span class="operator">(</span><span class="name">slug</span><span class="operator">=</span><span class="name">slugify</span><span class="operator">(</span><span class="name">request</span><span class="operator">.</span><span class="name">POST</span><span class="operator">[</span><span class="string">"lessonname"</span><span class="operator">]</span><span class="operator">)</span><span class="operator">)</span></span><span class="text">
+</span><span class="notcovered">                <span class="keyword">except</span> <span class="name">Lesson</span><span class="operator">.</span><span class="name">DoesNotExist</span><span class="operator">:</span></span><span class="text">
+</span><span class="notcovered">                        <span class="name">lesson</span> <span class="operator">=</span> <span class="name">CreateLesson</span><span class="operator">(</span><span class="name">request</span><span class="operator">.</span><span class="name">POST</span><span class="operator">[</span><span class="string">"lessonname"</span><span class="operator">]</span><span class="operator">)</span></span><span class="text">
+</span><span class="notcovered">                        <span class="name">lesson</span><span class="operator">.</span><span class="name">content</span> <span class="operator">=</span> <span class="name">request</span><span class="operator">.</span><span class="name">POST</span><span class="operator">[</span><span class="string">"content"</span><span class="operator">]</span></span><span class="text">
+</span><span class="notcovered">                        <span class="name">lesson</span><span class="operator">.</span><span class="name">workingCopy</span> <span class="operator">=</span> <span class="name">lesson</span><span class="operator">.</span><span class="name">content</span></span><span class="text">
+</span><span class="notcovered">                        <span class="name">insertChildPage</span><span class="operator">(</span><span class="name">lesson</span><span class="operator">,</span> <span class="name">Lesson</span><span class="operator">.</span><span class="name">objects</span><span class="operator">.</span><span class="name">get</span><span class="operator">(</span><span class="name">slug</span><span class="operator">=</span><span class="name">parent_slug</span><span class="operator">)</span><span class="operator">)</span></span><span class="text">
+</span><span class="notcovered">                        <span class="keyword">return</span> <span class="number">0</span></span><span class="text">
+</span><span class="notcovered"></span>        <span class="text">
+</span><span class="notcovered">        <span class="keyword">return</span> <span class="operator">-</span><span class="number">1</span></span><span class="text">
+</span><span class="notcovered"></span><span class="text">
+</span><span class="notcovered"><span class="keyword">def</span> <span class="name">removeLesson</span><span class="operator">(</span><span class="name">request</span><span class="operator">,</span> <span class="name">course</span><span class="operator">,</span> <span class="name">pid</span><span class="operator">)</span><span class="operator">:</span></span><span class="text">
+</span><span class="notcovered">        <span class="keyword">if</span> <span class="operator">(</span><span class="name">request</span><span class="operator">.</span><span class="name">method</span> <span class="operator">!=</span> <span class="string">"POST"</span><span class="operator">)</span><span class="operator">:</span></span><span class="text">
+</span><span class="notcovered">                <span class="keyword">return</span> <span class="operator">-</span><span class="number">1</span></span><span class="text">
+</span><span class="notcovered">        <span class="keyword">if</span> <span class="string">"confirmRemove"</span> <span class="keyword">in</span> <span class="name">request</span><span class="operator">.</span><span class="name">POST</span><span class="operator">:</span></span><span class="text">
+</span><span class="notcovered">            <span class="name">Lesson</span><span class="operator">.</span><span class="name">objects</span><span class="operator">.</span><span class="name">get</span><span class="operator">(</span><span class="name">slug</span><span class="operator">=</span><span class="name">pid</span><span class="operator">)</span><span class="operator">.</span><span class="name">delete</span><span class="operator">(</span><span class="operator">)</span></span><span class="text">
+</span><span class="notcovered">            <span class="keyword">return</span> <span class="number">0</span></span><span class="text">
+</span><span class="notcovered"></span><span class="text">
+</span><span class="notcovered"><span class="keyword">def</span> <span class="name">revertLessonChanges</span><span class="operator">(</span><span class="name">lesson</span><span class="operator">)</span><span class="operator">:</span></span><span class="text">
+</span><span class="notcovered">        <span class="string">'''
+        @author Russell Mezzetta
+        This reverts the working copy to the published copy
+        @pre lesson is a Lesson
+        @post lesson'.workingCopy = lesson.content
+        '''</span></span><span class="text">
+</span><span class="notcovered">        <span class="name">lesson</span><span class="operator">.</span><span class="name">workingCopy</span> <span class="operator">=</span> <span class="name">lesson</span><span class="operator">.</span><span class="name">content</span></span><span class="text">
+</span><span class="notcovered">        <span class="name">lesson</span><span class="operator">.</span><span class="name">save</span><span class="operator">(</span><span class="operator">)</span></span><span class="text">
+</span><span class="notcovered">        <span class="keyword">return</span> <span class="name">lesson</span></span><span class="text">
+</span><span class="notcovered"></span><span class="text">
+</span><span class="notcovered"><span class="keyword">def</span> <span class="name">publishLessonChanges</span><span class="operator">(</span><span class="name">lesson</span><span class="operator">)</span><span class="operator">:</span></span><span class="text">
+</span><span class="notcovered">        <span class="string">'''
+        @author Russell Mezzetta
+        This saves the working copy to the published copy
+        @pre lesson is a Lesson
+        @post lesson'.content = lesson.workingCopy
+        '''</span></span><span class="text">
+</span><span class="notcovered">        <span class="name">lesson</span><span class="operator">.</span><span class="name">content</span> <span class="operator">=</span> <span class="name">lesson</span><span class="operator">.</span><span class="name">workingCopy</span></span><span class="text">
+</span><span class="notcovered">        <span class="name">lesson</span><span class="operator">.</span><span class="name">save</span><span class="operator">(</span><span class="operator">)</span></span><span class="text">
+</span><span class="notcovered">        <span class="keyword">return</span> <span class="name">lesson</span></span><span class="text">
+</span><span class="notcovered"></span><span class="text">
+</span><span class="notcovered"><span class="keyword">def</span> <span class="name">saveLessonName</span><span class="operator">(</span><span class="name">lesson</span><span class="operator">,</span> <span class="name">newLessonName</span><span class="operator">)</span><span class="operator">:</span></span><span class="text">
+</span><span class="notcovered">        <span class="string">'''
+        @author Russell Mezzetta
+        This saves the name of the lesson.
+        Returns none on failure, lesson on success, 1 on invalid name
+        @pre lesson is a Lesson, newLessonName is a string
+        @post if newLessonName is non empty and slugify(newLessonName) is not already taken by a page in this course then: lesson.name = newLessonName and lesson.slug = slugify(newLessonName)
+        '''</span></span><span class="text">
+</span><span class="notcovered">        <span class="comment">#check that newLessonName has 1 or more characters
+</span>        <span class="keyword">if</span> <span class="name">len</span><span class="operator">(</span><span class="name">newLessonName</span><span class="operator">)</span> <span class="operator">&lt;</span> <span class="number">1</span><span class="operator">:</span></span><span class="text">
+</span><span class="notcovered">                <span class="keyword">return</span> <span class="operator">{</span><span class="string">'message'</span><span class="operator">:</span><span class="string">"Name change failed: name must be non-empty"</span><span class="operator">}</span></span><span class="text">
+</span><span class="notcovered"></span><span class="text">
+</span><span class="notcovered">        <span class="comment">#check that the newLessonName doesn't already exist in this course
+</span>        <span class="name">newSlug</span> <span class="operator">=</span> <span class="name">slugify</span><span class="operator">(</span><span class="name">newLessonName</span><span class="operator">)</span></span><span class="text">
+</span><span class="notcovered"></span><span class="text">
+</span><span class="notcovered">        <span class="comment">#search the pages in the course to see if the slug is unique
+</span>        <span class="name">notUnique</span> <span class="operator">=</span> <span class="name">Page</span><span class="operator">.</span><span class="name">objects</span><span class="operator">.</span><span class="name">filter</span><span class="operator">(</span><span class="name">course</span><span class="operator">=</span><span class="name">lesson</span><span class="operator">.</span><span class="name">course</span><span class="operator">)</span><span class="operator">.</span><span class="name">filter</span><span class="operator">(</span><span class="name">slug</span><span class="operator">=</span><span class="name">newSlug</span><span class="operator">)</span><span class="operator">.</span><span class="name">count</span><span class="operator">(</span><span class="operator">)</span></span><span class="text">
+</span><span class="notcovered">        <span class="keyword">if</span> <span class="name">notUnique</span><span class="operator">:</span></span><span class="text">
+</span><span class="notcovered">                <span class="keyword">return</span> <span class="operator">{</span><span class="string">'message'</span><span class="operator">:</span><span class="string">"Name change failed. A page with that name already exists in this course"</span><span class="operator">}</span></span><span class="text">
+</span><span class="notcovered"></span><span class="text">
+</span><span class="notcovered">        <span class="name">lesson</span><span class="operator">.</span><span class="name">name</span> <span class="operator">=</span> <span class="name">newLessonName</span></span><span class="text">
+</span><span class="notcovered">        <span class="name">lesson</span><span class="operator">.</span><span class="name">slug</span> <span class="operator">=</span> <span class="name">newSlug</span></span><span class="text">
+</span><span class="notcovered">        <span class="name">lesson</span><span class="operator">.</span><span class="name">save</span><span class="operator">(</span><span class="operator">)</span></span><span class="text">
+</span><span class="notcovered">        <span class="keyword">return</span> <span class="operator">{</span><span class="string">'lesson'</span><span class="operator">:</span><span class="name">lesson</span><span class="operator">}</span></span><span class="text">
+</span><span class="notcovered"></span><span class="text">
+</span><span class="notcovered"><span class="keyword">def</span> <span class="name">saveLessonWorkingCopy</span><span class="operator">(</span><span class="name">lesson</span><span class="operator">,</span> <span class="name">workingCopy</span><span class="operator">)</span><span class="operator">:</span></span><span class="text">
+</span><span class="notcovered">        <span class="string">'''
+        @author Russell Mezzetta
+        This saves the working copy content of the lesson.
+        returns the lesson
+        @pre valid lesson is a Lesson, workingCopy is string
+        @post input page.workingCopy = workingCopy
+        '''</span></span><span class="text">
+</span><span class="notcovered">        <span class="name">lesson</span><span class="operator">.</span><span class="name">workingCopy</span> <span class="operator">=</span> <span class="name">workingCopy</span></span><span class="text">
+</span><span class="notcovered">        <span class="name">lesson</span><span class="operator">.</span><span class="name">save</span><span class="operator">(</span><span class="operator">)</span></span><span class="text">
+</span><span class="notcovered">        <span class="keyword">return</span> <span class="name">lesson</span><span class="text"></span></span>
+</pre></body>
+</html>
