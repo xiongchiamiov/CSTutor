@@ -38,6 +38,10 @@ def create_quiz(request, course_slug, page_slug):
 
 	page_slug = safeSlug(page_slug)
 	
+	
+	print (request.user)
+	
+	
 	if request.method == "POST" and "Create Quiz" in request.POST:
 		course = Course.objects.get(slug=course_slug)
 		name = request.POST['name']
@@ -45,15 +49,19 @@ def create_quiz(request, course_slug, page_slug):
 		if name == "":
 			return master_rtr(request, 'page/quiz/create-quiz.html', {'message': "You may not enter a blank quiz name"})
 		
+		#exists = Quiz.objects.get(slug=slugify(name))
 		try:
+			exists = Quiz.objects.get(slug=slugify(name), course=course)
+			
+			return master_rtr(request, 'page/quiz/create-quiz.html', {'message': "Quiz with this name already exists"})
+		except:
 			newQuiz = Quiz(course=course, name=name, slug=slugify(name), text=name, upToDate=True)
 			insertLastChildPage(newQuiz, Page.objects.get(slug=page_slug, course=course))
-			newQuiz = Quiz.objects.get(slug=newQuiz.slug)		
+			newQuiz = Quiz.objects.get(slug=newQuiz.slug, course=course)		
 			workingCopy = Quiz(course=newQuiz.course, name=newQuiz.name, slug=(newQuiz.slug + "_workingCopy"), text=newQuiz.name, left=0, right=0)
 			workingCopy.save()
 			return HttpResponseRedirect(reverse('pages.views.edit_page', args=[course_slug, newQuiz.slug]))
-		except:
-			return master_rtr(request, 'page/quiz/create-quiz.html', {'message': "Quiz with this name already exists"})
+			
 	else:
 		return master_rtr(request, 'page/quiz/create-quiz.html')
 
