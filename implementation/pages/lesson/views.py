@@ -150,9 +150,12 @@ def edit_lesson(request, course_slug, page_slug):
 	'''
 	
 	#common dictionary fields
-	data={'course_slug':course_slug, 'page_slug':page_slug}
 	lesson = Course.objects.get(slug=course_slug).pages.get(slug=page_slug)
+	course = Course.objects.get(slug=course_slug)
+	data={'course_slug':course_slug, 'page_slug':page_slug, 'private':course.private }
 	
+	
+		
 	try:
 		lesson = lesson.lesson
 	except Lesson.DoesNotExist:
@@ -161,6 +164,15 @@ def edit_lesson(request, course_slug, page_slug):
 	data['unpublished'] = lesson.content != lesson.workingCopy
 	
 	if request.method == "POST":
+		#toggle private or public
+		if (page_slug == course_slug):
+			if "private" in request.POST:
+				course.private = True
+			else:
+				course.private = False
+			data['private'] = course.private
+			course.save()
+		
 		#Saves the working copy of the lesson
 		if "Save" in request.POST:
 			#save the content of the lesson
