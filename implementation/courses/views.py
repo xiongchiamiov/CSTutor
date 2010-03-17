@@ -332,7 +332,10 @@ def join_course_request(request):
 		user = User.objects.get(username=request.user.username)
 
 		if addUser(course, user, view):
-			message = "Congratulations, you have been added to %s" % course
+			message = "Congratulations, you have been added to %s." % course
+			if course.private:
+				message += "  This is a private course, and your enrollment"
+				message += " is pending."  
 		else:
 			message = "You are already enrolled in %s" % course
 	
