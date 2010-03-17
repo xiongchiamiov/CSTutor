@@ -45,7 +45,7 @@ def master_rtr(request, template, data = {}):
 	# get list of themes, both short name and full path
 	#files = glob('static/css/themes/*.css')
 	#data['THEME_LIST'] = [(replace(file, 'static', '/media'), split(split(file, '/')[-1], '.')[0]) for file in files]
-	data['THEME_LIST'] = [("/media/themes/css/%s.css" % theme, theme) for theme in settings.THEME_LIST]
+	data['THEME_LIST'] = [("/media/css/themes/%s.css" % theme, theme) for theme in settings.THEME_LIST]
 
 	return render_to_response(template, data, context_instance=RequestContext(request))
 
