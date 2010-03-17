@@ -230,7 +230,7 @@ class StatsTests(TestCase):
 		'''	
 		user = User.objects.get(username = 'fakeuser')
 		quiz = Page.objects.get(pk = '4') #sample quiz 
-		self.assertEquals(getUserBestScore(user,quiz),0)
+		self.assertEquals(getUserBestScore(user,quiz),-1)
 	
 
 

@@ -185,7 +185,7 @@ def getUserBestScore(user, quiz):
 	score.
 
 	Note these special conditions:
-	1. If there are no quizes, this function returns 0%
+	1. If there are no quizes, this function returns -1
 	2. If there is an empty quiz, this function returns 100%
 
 	@precondition quiz and user exist
@@ -197,7 +197,7 @@ def getUserBestScore(user, quiz):
 	try:
 		stat = Stat.objects.filter(page=quiz, user=user).order_by("-score")[0]
 	except IndexError: #If there are NO stats
-		return 0
+		return -1
 
 	if(stat.maxscore <= 0):
 		return 1

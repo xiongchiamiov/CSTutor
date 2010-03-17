@@ -14,6 +14,7 @@ from pages.quiz.question.models import *
 from django.core.handlers.wsgi import WSGIRequest
 from users.models import *
 from django.core.urlresolvers import reverse
+from django.http import QueryDict
 
 class QuizUnitTests(TestCase):
 	'''
@@ -34,7 +35,7 @@ class QuizUnitTests(TestCase):
 		self.quizSlug2 = 'quizunittests_quiz2'
 		self.quizSlug3 = 'quizunittests_quiz3'
 
-	def test_addCodeQuestion(self):
+	"""def test_addCodeQuestion(self):
 		'''
 			Test that adding a code question to a quiz works as expected
 
@@ -251,7 +252,7 @@ class QuizUnitTests(TestCase):
 
 			@author Evan Kleist
 		'''
-		quiz1 = Quiz.objects.get(slug=self.quizSlug1)
+		quiz1 = Quiz.objects.get(slug="copyquiz_quiz")
 		quiz3 = Quiz.objects.get(slug="quizunittests_quiz3")
 
 		# Case 1
@@ -545,8 +546,8 @@ class QuizUnitTests(TestCase):
 
 			@author Evan Kleist
 		'''
-		quiz = Quiz.objects.get(slug=self.quizSlug2)
-		quiz2 = Quiz.objects.get(slug=(self.quizSlug2 + "_workingCopy"))
+		quiz = Quiz.objects.get(slug="copyquiz_quiz")
+		quiz2 = Quiz.objects.get(slug="copyquiz_quiz_workingCopy")
 		questions = []
 		questions2 = []
 		answers = []
@@ -766,14 +767,14 @@ class QuizUnitTests(TestCase):
 			Case no.  Input                              Expected Output                          Remark
 			1         quizTitle = "QuizUnitTests_Quiz2"  errors = ["Quiz Title already exists!"]  A quiz with a duplicate name
 			2         quizTitle = ""                     errors ["Quiz Title cannot be blank!"]   Blank quiz title
-			3         quizTitle = "New Title"            quiz.name = "New Title"                  Change the title, make quiz hidden, swap question 2 and 3
+			3         quizTitle = "New Title"            quiz.name = "New Title"                  Change the title, make quiz hidden, swap question 1 and 2
 			                                             quiz.slug = "new-title"
 			                                             quiz.text = "New Title"
 			          hidden = True                      quiz.hidden = True   
-                   mcq3text = "Question 2"            quiz.question3.text = "Question 2"
-                   mcq3order = 2                      quiz.question3.order = 2
-			          mcq2text = "Question 3"            quiz.question2.text = "Question 3"
-			          mcq2order = 3                      quiz.question2.order = 3
+                   cq1 = "cq"                         quiz.question1.text = "cq"
+                   cq1order = 2                       quiz.question1.order = 2
+			          mcq2text = "mcq"                   quiz.question2.text = "mcq"
+			          mcq2order = 1                      quiz.question2.order = 1
 			@author Evan Kleist
 		'''
 		environ = {
@@ -787,7 +788,7 @@ class QuizUnitTests(TestCase):
 			'SERVER_PROTOCOL': 'HTTP/1.1',
 		}
 		environ.update(self.client.defaults)
-		quizSlug = self.quizSlug1
+		quizSlug = "copyquiz_quiz"
 		customRequest = WSGIRequest(environ)
 
 		# Case 1
@@ -805,30 +806,24 @@ class QuizUnitTests(TestCase):
 		self.failUnlessEqual(errors, ["Quiz Title cannot be blank!"])
 
 		# Case 3
-		customRequest.POST = {'quizTitle':"New Title",
+		dictionary = {'quizTitle':"New Title",
 									 'hidden':"on",
-									 'mcq1text':"Test question 1",
-									 'mcq1order':1,
-									 'mcq1a1':"a1",
-									 'mcq1a1order':1,
-									 'mcq1ac':1,
-									 'mcq1a2':"b1",
-									 'mcq1a2order':2,
-									 'mcq2text':"Test question 3",
-									 'mcq2order':3,
+									 'prereqs':"checkprerequisites_quiz",
+									 'cq1text':"cq",
+									 'cq1eo':"cqeo",
+									 'cq1order':2,
+									 'mcq2text':"mcq",
+									 'mcq2order':1,
 									 'mcq2a1':"a1",
 									 'mcq2a1order':1,
 									 'mcq2ac':1,
 									 'mcq2a2':"b1",
 									 'mcq2a2order':2,
-									 'mcq3text':"Test question 2",
-									 'mcq3order':2,
-									 'mcq3a1':"a1",
-									 'mcq3a1order':1,
-									 'mcq3ac':1,
-									 'mcq3a2':"b1",
-									 'mcq3a2order':2,
 									}
+		qd = QueryDict({})
+		qd = qd.copy()
+		qd.update(dictionary)
+		customRequest.POST = qd
 		r = saveQuiz(customRequest, self.courseSlug, quizSlug)
 		errors = r["errors"]
 		quizSlug = r["quiz_slug"]
@@ -843,10 +838,12 @@ class QuizUnitTests(TestCase):
 		'''
 			Test that scoreQuiz correctly returns a score for the submitted quiz
 
-			Case no.    Input          Expected Output          Remark
-			1           quiz2          100                      submitting a blank quiz is 0/0
-			2           quiz1          0                        submitting a quiz without answering anything is 0/3
-			3           quiz1          100                      submitting a quiz with all correct answers is 3/3
+			Case no.    Input            Expected Output          Remark
+			1           quiz2            0                        submitting a blank quiz is 0/0
+			2           scorequiz_quiz   0                        submitting a quiz without answering anything is 0/2
+			3           scorequiz_quiz   1                        submitting a quiz with incorrect mcq is 1/2
+			4           scorequiz_quiz   1                        submitting a quiz with incorrect cq is 1/2
+			5           scorequiz_quiz   2                        submitting a quiz with correct cq is 2/2
 
 			@author Evan Kleist           
 		'''
@@ -861,39 +858,54 @@ class QuizUnitTests(TestCase):
 			'SERVER_PROTOCOL': 'HTTP/1.1',
 		}
 		environ.update(self.client.defaults)
-		quizSlug = self.quizSlug1
+		quizSlug = "scorequiz_quiz"
 		customRequest = WSGIRequest(environ)
 
 		# Case 1
 		customRequest.POST = {}
-		customRequest.user = False
+		customRequest.user = AnonymousUser()
 		quiz = Quiz.objects.get(slug=self.quizSlug2)
 		score = scoreQuiz(quiz, customRequest, self.courseSlug, quiz.slug)
 		self.failUnlessEqual(score, 0)
 
 		# Case 2
-		customRequest.POST = {}
-		customRequest.user = False
+		customRequest.POST = {'cq1':""}
+		customRequest.user = User.objects.get(username="testuser")
 		quiz = Quiz.objects.get(slug=quizSlug)
 		score = scoreQuiz(quiz, customRequest, self.courseSlug, quiz.slug)
 		self.failUnlessEqual(score, 0)
 
 		# Case 3
-		customRequest.POST = {'mcq1':1, 'mcq2':1, 'mcq3':1}
-		customRequest.user = False
+		customRequest.POST = {'mcq2':1, 'cq1':"print \"Hello World\""}
+		customRequest.user = User.objects.get(username="testuser")
 		quiz = Quiz.objects.get(slug=quizSlug)
 		score = scoreQuiz(quiz, customRequest, self.courseSlug, quiz.slug)
-		self.failUnlessEqual(score, 3)
+		self.failUnlessEqual(score, 1)
+
+		# Case 4
+		customRequest.POST = {'mcq2':2, 'cq1':"fdsd"}
+		customRequest.user = User.objects.get(username="testuser")
+		quiz = Quiz.objects.get(slug=quizSlug)
+		score = scoreQuiz(quiz, customRequest, self.courseSlug, quiz.slug)
+		self.failUnlessEqual(score, 1)
+
+		# Case 5
+		customRequest.POST = {'mcq2':2, 'cq1':"print \"Hello World\""}
+		customRequest.user = User.objects.get(username="testuser")
+		quiz = Quiz.objects.get(slug=quizSlug)
+		score = scoreQuiz(quiz, customRequest, self.courseSlug, quiz.slug)
+		self.failUnlessEqual(score, 2)
 
 	def test_validateQuestionOrder(self):
 		'''
 			Test that reoderQuestions actually does reorder the questions into a valid state
 
 			Case no.    Input          Expected Output          Remark
-			1           quiz           true                     Quiz with all questions in valid order
-			2           quiz           false                    Quiz with first question 0, not 1
-			3           quiz           false                    Quiz with duplicate ordering
-			4           quiz           false                    Quiz with last question not last order
+			1           quiz1          true                     Quiz with all questions in valid order
+			2           quiz1          false                    Quiz with first question 0, not 1
+			3           quiz1          false                    Quiz with duplicate ordering
+			4           quiz1          false                    Quiz with last question not last order
+			5           quiz2          true                     Quiz with no questions
 
 			@author Evan Kleist
 		'''
@@ -930,6 +942,10 @@ class QuizUnitTests(TestCase):
 		q.order = 3
 		q.save()
 
+		# Case 5
+		quiz = Quiz.objects.get(slug = self.quizSlug2)
+		self.failUnlessEqual(validateQuestionOrder(quiz), True)"""
+
 	def test_validateQuiz(self):
 		'''
 			Test that validateQuizcorrectly handles bad data
@@ -947,6 +963,9 @@ class QuizUnitTests(TestCase):
 			                                                   must not be blank"
 			7         quiz.question1.order = "0"    errors = ["Questions must have a valid     Invalid question ordering
 			                                                   ordering"]
+			8         quiz.question2.answers < 2    errors = ["Question must have at least     Only one answer for mcq
+			                                                   two possible answers"
+			x        validatequiz_quiz              []                                         Valid quiz
 
 			@author Evan Kleist      
 		'''
@@ -961,11 +980,11 @@ class QuizUnitTests(TestCase):
 		revertQuiz(quiz)
 
 		# Case 2
-		newPrereq = Prerequisite(containingQuiz = Quiz.objects.get(slug=quizSlug), requiredQuiz = Quiz.objects.get(slug=self.quizSlug2))
+		newPrereq = Prerequisite(containingQuiz = Quiz.objects.get(slug=quizSlug), requiredQuiz = Quiz.objects.get(slug="scorequiz_quiz"))
 		newPrereq.save()
 		quiz = Quiz.objects.get(slug=quizSlug)
 		errors = validateQuiz(quiz)
-		self.failUnlessEqual(errors, ["QuizUnitTests_Quiz2 does not have a passing path"])
+		self.failUnlessEqual(errors, ["scoreQuiz_quiz does not have a passing path"])
 		revertQuiz(quiz)
 
 		# Case 3
@@ -1014,6 +1033,32 @@ class QuizUnitTests(TestCase):
 		errors = validateQuiz(quiz)
 		self.failUnlessEqual(errors, ["Questions must have a valid ordering"])
 		revertQuiz(quiz)
+
+		# Case 8
+		answer = quiz.questions.get(order="2").multiplechoicequestion.answers.get(order="2")
+		answer.delete()
+		quiz = Quiz.objects.get(slug=quizSlug)
+		errors = validateQuiz(quiz)
+		self.failUnlessEqual(errors, ["Question must have at least two possible answers"])
+		revertQuiz(quiz)
+
+		# Case 9
+		answer = quiz.questions.get(order="2").multiplechoicequestion.answers.get(order="1")
+		answer.correct = False
+		answer.save()
+		quiz = Quiz.objects.get(slug=quizSlug)
+		errors = validateQuiz(quiz)
+		self.failUnlessEqual(errors, ["Question must have a correct answer"])
+		revertQuiz(quiz)
+
+		# Case x
+		newPrereq = Prerequisite(containingQuiz = Quiz.objects.get(slug=quizSlug), requiredQuiz = Quiz.objects.get(slug=self.quizSlug2))
+		newPrereq.save()
+		quiz = Quiz.objects.get(slug=quizSlug)
+		errors = validateQuiz(quiz)
+		self.failUnlessEqual(errors, [])
+		revertQuiz(quiz)
+
 class QuizViewTests(TestCase):
 	''' 
 		Unit Tests on Quiz Views.  Tests use an emulated Web Client

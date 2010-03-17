@@ -38,10 +38,6 @@ def create_quiz(request, course_slug, page_slug):
 
 	page_slug = safeSlug(page_slug)
 	
-	
-	print (request.user)
-	
-	
 	if request.method == "POST" and "Create Quiz" in request.POST:
 		course = Course.objects.get(slug=course_slug)
 		name = request.POST['name']
@@ -363,11 +359,9 @@ def edit_quiz(request, course_slug, page_slug):
 			if (isMultipleChoiceQuestion(q)):
 				q = q.multiplechoicequestion
 				if ("addAnswer%s" % q.order) in request.POST:
-					print "In edit_view, slug " + page_slug + "\n"
 					r = saveQuiz(request, course_slug, page_slug)
 					page_slug = safeSlug(r["quiz_slug"])
 					errors = r["errors"]
-					print str(len(errors)) + " errors \n"
 					if (len(errors) == 0):
 						addAnswer(q)
 						return HttpResponseRedirect(request.path)

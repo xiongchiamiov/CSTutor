@@ -105,6 +105,8 @@ def checkPrerequisites(self, user):
 			for p in prereqs:
 				requiredQuiz = p.requiredQuiz
 				score = getUserBestScore(user, requiredQuiz)
+				if (score == -1):
+					return False
 				path = matchPath(requiredQuiz, score)
 				if (path.passed == False):
 					return False
@@ -364,10 +366,6 @@ def reorderQuestions(self):
 		q.order = qNum
 		q.save()
 		qNum = qNum + 1
-	# Sanity check to make sure the question ordering is still valid
-	if (validateQuestionOrder(self)):
-		return 0
-	return -1
 
 def revertQuiz(self):
 	'''
@@ -428,10 +426,7 @@ def saveQuiz(request, course_slug, pid):
 		quiz.name = request.POST["quizTitle"]
 		publishedQuiz.slug = slugify(quiz.name)
 		quiz.slug = publishedQuiz.slug + "_workingCopy"
-		if "hidden" in request.POST:
-			quiz.hidden = True
-		else:
-			quiz.hidden = False
+		quiz.hidden = "hidden" in request.POST
 		# Delete current prerequisites
 		for p in quiz.prerequisites.all():
 			p.delete()
@@ -496,12 +491,8 @@ def scoreQuiz(self, request, course_slug, quiz_slug):
 				if (theirResult == expectedResult):
 					score = score + 1
 
-			except SyntaxError, e:
-				# Need to do something helpful, doing nothing for now
-			  	pass
-
 			except Exception, e:
-				# Need to do something helpful as well, doing nothing for now
+				# Something went wrong with their code, could be bad syntax, invalid command, etc
 				pass
 			
 
@@ -567,7 +558,7 @@ def validateQuiz(self):
 			
 			# Question must have at least two possible answers
 			if (len(answers) < 2):
-				errors.append("Answer must have at least two possible answers")
+				errors.append("Question must have at least two possible answers")
 
 			foundCorrect = False
 			for a in answers:
