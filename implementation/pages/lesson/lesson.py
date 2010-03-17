@@ -25,28 +25,6 @@ def CreateLesson(name):
 	'''
 	return Lesson(slug=slugify(name), name=name)
 
-def saveLesson(request, course, pid):
-	'''
-	Saves an existing lesson's content and new name
-
-	@author John Hartquist
-	@author Matthew Tytel
-	'''
-	if request.method == "POST" and "Save" in request.POST:
-		lesson = Lesson.objects.get(slug=pid)
-		
-		if pid != request.POST["lessonname"]:
-			try:
-				Lesson.objects.get(slug=slugify(request.POST["lessonname"]))
-				return -1
-			except Lesson.DoesNotExist:
-				lesson.slug = slugify(request.POST["lessonname"])
-		
-		lesson.workingCopy = request.POST["content"]
-		lesson.save()
-		return 0
-	return -1
-
 def saveNewLesson(request, course, parent_slug):
 	'''
 	Saves a new lesson's content and name
