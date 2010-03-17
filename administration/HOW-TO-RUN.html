@@ -28,30 +28,10 @@ The SHA1 fingerprint for this certificate is
 <p>
 Test data has been loaded.  Several users exist that can be logged in.  Of note
 are the "mgius" user, who is the course owner of the CPE102 course, and "jinloes"
-who is the course owner of the CPE103 course. 
+who is the course owner of the CPE103 course. The password for both of these 
+users is "password"
 </p>
 
-<p>
-Creating new users/courses works, and creating new lessons is working as well.
-</p>
-
-<p>
-Debugging output has been left enabled, so "error" pages will include ugly
-python stack traces.
-</p>
-
-<h3>Known Bugs</h3>
-
-<p>
-Our ticket tracker is available at <a href="https://autotutor.csc.calpoly.edu/trac/report/1">https://autotutor.csc.calpoly.edu/trac/report/1</a>
-if you would like to view all open issues.  Notable issues for this release include:
-</p>
-
-<ul>
-<li>
-Permissions are only half implemented.  Many operations that should be priviledged are currently not.
-</li>
-</ul>
 
 <h2>Setting up project using Apache and mod_python on Linux</h2>
 
@@ -80,8 +60,8 @@ Edit your apache configuration file and add the following directives.
 </p>
 
 <pre>
-Alias /cstutor/media /var/www/trunk/implementation/static
-Alias /cstutor /var/www/trunk/implementation
+Alias /cstutor/media /opt/cstutor/implementation/static
+Alias /cstutor /opt/cstutor/implementation
 
 &lt;LocationMatch ^/cstutor&gt;
 SetHandler python-program
@@ -148,13 +128,22 @@ non Apache + mod_python hosting solution, please consult the Django
 <ol>
 	<li> Install Django
 		<ul>
-		<li> Download the tar from http://www.djangoproject.com/download/</li>
-		<li> Run these commands where you download it:</li>
-		<li> tar xzvf Django-1.1.1.tar.gz</li>
-		<li> cd Django-1.1.1</li>
-		<li> sudo python setup.py install<br />
-			  NOTE: These instructions are also in the link above
-		</li>
+			<li> Mac / Linux
+				<ul>
+				<li> Download the tar from http://www.djangoproject.com/download/</li>
+				<li> Run these commands where you download it:</li>
+				<li> tar xzvf Django-1.1.1.tar.gz</li>
+				<li> cd Django-1.1.1</li>
+				<li> sudo python setup.py install<br />
+					  NOTE: These instructions are also in the link above
+				</li>
+				</ul>
+			</li>
+			<li> Debian
+				<ul>
+				<li> sudo apt-get install python-django </li>
+				</ul>
+			</li>
 		</ul>
 	</li>
 	<li>Install Django Debug Toolbar
