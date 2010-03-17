@@ -15,6 +15,8 @@ from pages.lesson.models import Lesson
 from pages.quiz.models import Quiz
 from django.core.exceptions import ObjectDoesNotExist
 import datetime
+from glob import glob
+from string import replace, split
 
 def master_rtr(request, template, data = {}):
 	'''
@@ -39,6 +41,10 @@ def master_rtr(request, template, data = {}):
 			data['courses'] = []
 	
 	data['THEME'] = settings.THEME
+	
+	# get list of themes, both short name and full path
+	files = glob('static/css/themes/*.css')
+	data['THEME_LIST'] = [(replace(file, 'static', '/media'), split(split(file, '/')[-1], '.')[0]) for file in files]
 
 	return render_to_response(template, data, context_instance=RequestContext(request))
 
