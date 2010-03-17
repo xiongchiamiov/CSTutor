@@ -459,7 +459,7 @@ class QuizUnitTests(TestCase):
 		errors = editPath(quiz, customRequest, self.courseSlug)
 		self.failUnlessEqual(len(errors), 2)
 
-	"""def test_publishQuiz(self):
+	def test_publishQuiz(self):
 		'''
 			Test that publishQuiz actually copies over all the 
 			quizzes contents to the published version and doesnt
@@ -480,10 +480,11 @@ class QuizUnitTests(TestCase):
 		publishQuiz(workingQuiz)
 
 		# Make sure the changes are now in the live quiz
-		quiz = Quiz.objects.get(slug = self.quizSlug1)
-		self.failUnlessEqual(quiz.name, "modifiedName")
+		quiz = Quiz.objects.get(slug=slugify("modifiedName"))
+		self.failUnlessEqual(quiz.name, workingQuiz.name)
+		self.failUnlessEqual(quiz.name, workingQuiz.name)
 		self.failUnlessEqual(quiz.hidden, True)
-		self.failUnlessEqual(quiz.upToDate, True)"""
+		self.failUnlessEqual(quiz.upToDate, True)
 
 	def test_removePath(self):
 		'''
