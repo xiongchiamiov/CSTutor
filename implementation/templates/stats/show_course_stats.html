@@ -6,7 +6,7 @@
 
 {% block content %}
     <h2>{{course}} Statistics</h2>
-	<h3>Per-Quiz Statistics (best scores)</h3>
+	<h3>Per-Quiz Statistics (all scores)</h3>
 	<table>
 		<thead>
 			<th>Quiz</th>
@@ -15,8 +15,8 @@
 			<th>Low Score</th>
 			<th>Average Score</th>
 		</thead>
-		<tr>
 		{% for quizAggregate in bestQuizAggregates %}
+		<tr>
 			<td>
 				{{ quizAggregate.page_name }}
 			</td>
@@ -32,14 +32,14 @@
 			<td>
 				{{ quizAggregate.result_avg|floatformat:"-3" }}%
 			</td>
-		{% endfor %}
 		</tr>
+		{% endfor %}
 	</table>
-	<h3>Per-Student Statistics (best scores)</h3>
+	<h3>Per-Student Statistics (all scores)</h3>
     <table>
         <thead>
             <th>Student</th>
-			<th>Quizzes Taken</th>
+			<th>Total Quiz Attempts</th>
             <th>Average</th>
             <th>Min</th>
 			<th>Max</th>

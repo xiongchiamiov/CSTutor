@@ -32,8 +32,8 @@ def display_course_stats(request, course_slug):
 	#make sure the user has premissions to view stats.
 	enrollment = request.user.enrollments.get(course=course)
 	if enrollment.stats:
-		bestQuizAggregates = getQuizBestAggregates(course)
-		bestUserAggregates = getUserBestAggregates(course)
+		bestQuizAggregates = getQuizAllAggregates(course)
+		bestUserAggregates = getUserAllAggregates(course)
 		stat_data = {'course':course,\
 		             'bestQuizAggregates':bestQuizAggregates,\
 					 'bestUserAggregates':bestUserAggregates, \

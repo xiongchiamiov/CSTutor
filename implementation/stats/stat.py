@@ -63,7 +63,7 @@ def getBestCourseStats(course):
 	rawList = cursor.fetchall()
 	return rawList
 	
-def getQuizBestAggregates(course):
+def getQuizAllAggregates(course):
 	'''	
 	Gets the aggrigate data for each quiz in a course. This should return
 	a list of dictionaries, one for each quiz in the course. Each dictionary
@@ -74,10 +74,10 @@ def getQuizBestAggregates(course):
 	@postcondition for quiz in course.enrollmet:
 						aggrigateDist['page_name'] = (page_name)
 	                    aggrigateDict['result_avg'] = 
-						     (sum(best scores)/count(best scores)
-	                    aggrigateDict['result_max'] =  max(best scores)
-	                    aggrigateDict['result_min'] =  min(best scores)
-	                    aggrigateDict['result_count'] = count(best scores)
+						     (sum(all scores)/count(all scores)
+	                    aggrigateDict['result_max'] =  max(all scores)
+	                    aggrigateDict['result_min'] =  min(all scores)
+	                    aggrigateDict['result_count'] = count(all scores)
 
 	@author Andrew J. Musselman
 	'''
@@ -88,41 +88,30 @@ def getQuizBestAggregates(course):
 	                    max(Cast(score as FLOAT)/cast(maxscore as Float)),
 	                    min(Cast(score as FLOAT)/cast(maxscore as Float)),
 	                    avg(Cast(score as FLOAT)/cast(maxscore as Float))
-                   FROM (stats_stat 
-                         INNER JOIN (select MAX(Cast(Score as FLOAT) 
-	                /cast (maxscore as Float)) as inner_maxscore,
-                              user_id as inner_user_id, 
-	                      page_id as inner_page_id,
-		              innerStats.course_id as inner_course_id
-                              FROM stats_stat as innerStats 
-	                          WHERE innerStats.course_id=%s 
-	                          GROUP BY user_id, page_id, course_id) as
-							      best_score
-	                          ON (Cast(score as FLOAT) / cast (maxscore as FLOAT)) = 
-				         inner_maxscore and
-	                         user_id = inner_user_id AND 
-	                         page_id = inner_page_id and 
-	                         course_id = inner_course_id ) as best_stats
+                   FROM stats_stat 
 	                INNER JOIN pages_page ON
 	                    pages_page.id = page_id
-	                    WHERE best_stats.inner_course_id = %s
+	                    WHERE stats_stat.course_id = %s
 	                    GROUP BY page_id,pages_page.slug,pages_page.name ;
-	               ''',[course.id,course.id] )
+	               ''',[course.id] )
 	rawList = cursor.fetchall()
 	aggrigateList = []
 	for listItem in rawList:
 		aggrigateDict = {'page_slug':listItem[0],
 		                 'page_name':listItem[1],
 		                 'result_count':listItem[2],
-		                 'result_max':listItem[3]*100,
-		                 'result_min':listItem[4]*100,
-		                 'result_avg':listItem[5]*100}
+		                 'result_max':listItem[3],
+		                 'result_min':listItem[4],
+		                 'result_avg':listItem[5]}
+		aggrigateDict['result_max'] = aggrigateDict['result_max']*100
+		aggrigateDict['result_min'] = aggrigateDict['result_min']*100
+		aggrigateDict['result_avg'] = aggrigateDict['result_avg']*100
 		aggrigateList.append(aggrigateDict)
 	return aggrigateList; 
 
-def getUserBestAggregates(course):
+def getUserAllAggregates(course):
 	'''
-	Calculates the aggregate stats for the best results for each user
+	Calculates the aggregate stats for all results for each user
 	in a course. This will run even if there are no stats.
 	@precondition Course exists
 	@precondition Course.objects.get(course) != null
@@ -131,10 +120,10 @@ def getUserBestAggregates(course):
 	@postcondition for user in course.enrollmet:
 						aggrigateDist['user_id'] = (user.id)
 	                    aggrigateDict['result_avg'] = 
-						     (sum(best scores)/count(best scores)
-	                    aggrigateDict['result_max'] =  max(best scores)
-	                    aggrigateDict['result_min'] =  min(best scores)
-	                    aggrigateDict['result_count'] = count(best scores)
+						     (sum(all scores)/count(all scores)
+	                    aggrigateDict['result_max'] =  max(all scores)
+	                    aggrigateDict['result_min'] =  min(all scores)
+	                    aggrigateDict['result_count'] = count(all scores)
 
 	@author Andrew J. Musselman
 	'''
@@ -145,35 +134,24 @@ def getUserBestAggregates(course):
 	                    max(Cast(score as FLOAT)/cast(maxscore as Float)),
 	                    min(Cast(score as FLOAT)/cast(maxscore as Float)),
 	                    avg(Cast(score as FLOAT)/cast(maxscore as Float))
-                   FROM (stats_stat 
-                         INNER JOIN (select MAX(Cast(Score as FLOAT) 
-	                /cast (maxscore as Float)) as inner_maxscore,
-                              user_id as inner_user_id, 
-	                      page_id as inner_page_id,
-		              innerStats.course_id as inner_course_id
-                              FROM stats_stat as innerStats 
-	                          WHERE innerStats.course_id=%s 
-	                          GROUP BY user_id, page_id, course_id) as
-							      best_score
-	                          ON (Cast(score as FLOAT) / cast (maxscore as FLOAT)) = 
-				         inner_maxscore and
-	                         user_id = inner_user_id AND 
-	                         page_id = inner_page_id and 
-	                         course_id = inner_course_id ) as best_stats
-	                INNER JOIN auth_user ON
+                   FROM stats_stat 
+                         INNER JOIN auth_user ON
 					    user_id = auth_user.id    
-	                WHERE best_stats.inner_course_id = %s
+	                WHERE stats_stat.course_id = %s
 	                    GROUP BY user_id,username ;
-	               ''',[course.id,course.id] )
+	               ''',[course.id] )
 	rawList = cursor.fetchall()
 	aggrigateList = []
 	for listItem in rawList:
 		aggrigateDict = {'user_id':listItem[0],
 		                 'user_name':listItem[1],
 		                 'result_count':listItem[2],
-		                 'result_max':listItem[3]*100,
-		                 'result_min':listItem[4]*100,
-		                 'result_avg':listItem[5]*100}
+		                 'result_max':listItem[3],
+		                 'result_min':listItem[4],
+		                 'result_avg':listItem[5]}
+		aggrigateDict['result_max'] = aggrigateDict['result_max']*100
+		aggrigateDict['result_min'] = aggrigateDict['result_min']*100
+		aggrigateDict['result_avg'] = aggrigateDict['result_avg']*100
 		aggrigateList.append(aggrigateDict)
 	return aggrigateList; 
 

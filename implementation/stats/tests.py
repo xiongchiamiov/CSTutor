@@ -130,9 +130,9 @@ class StatsTests(TestCase):
 		# THIS TEST IS NOT FINISHED!!! FIXME
 		#Test disabled, I may not even need this code. 
 	
-	def test_NumGetQuizBestAggregates(self):
+	def test_NumGetQuizAggregates(self):
 		'''
-		Tesets the getBestQuizBestAggregates. This function is supposed to 
+		Tesets the getQuizAllAggregates. This function is supposed to 
 		calculate the aggregates of the best results of each user on each
 		quiz. It returns a list of dictionaries, one for each quiz, that 
 		describes various aggrigates of the best user scores.
@@ -146,15 +146,15 @@ class StatsTests(TestCase):
 		@author Andrew J. Musselman
 		'''
 		course = Course.objects.get(pk = '4')
-		aggregatesList = getQuizBestAggregates(course);
+		aggregatesList = getQuizAllAggregates(course);
 		#There there are two quiz in the test database for this course. So,
 		# there should only be one element in the list.
 		self.assertEquals(len(aggregatesList),2)
 		
 
-	def test_avgGetBesqQuizAggregates(self):
+	def test_avgGetallQuizAggregates(self):
 		'''
-		Tests the getQuizBestAggregates function. This particular
+		Tests the getQuizAllAggregates function. This particular
 		test checks the value of the returned average for each quiz.
 
 		Inputs: The course 'testcourseno1' from the database
@@ -166,7 +166,7 @@ class StatsTests(TestCase):
 		@author Andrew J. Musselman
 		'''
 		course = Course.objects.get(pk = '4')
-		aggregatesList = getQuizBestAggregates(course)
+		aggregatesList = getQuizAllAggregates(course)
 
 		#Now, we loop though the quizes 
 		for aggregates in aggregatesList:
@@ -180,7 +180,7 @@ class StatsTests(TestCase):
 				self.assertEquals(aggregates['result_avg'],10*100)
 	
 
-	def test_numGetBestUserAggregates(self):
+	def test_numGetAllUserAggregates(self):
 		'''
 		Tests the per-user aggregates function. This particular test
 		checks that the proper number of results is returned
@@ -194,7 +194,7 @@ class StatsTests(TestCase):
 		@author Andrew J. Musselman
 		'''
 		course = Course.objects.get(pk = '4')
-		aggregatesList = getUserBestAggregates(course) 
+		aggregatesList = getUserAllAggregates(course) 
 
 		#There are two users with stats results in this course.
 		self.assertEquals(len(aggregatesList),2)
@@ -220,7 +220,7 @@ class StatsTests(TestCase):
 		testStat = Stat.CreateStat(course,quiz,user,score)
 		self.assertEquals(getUserBestScore(user,quiz),0)
 
-	def test_nostatsGetUSerBestScore(self):
+	def test_nostatsGetUserBestScore(self):
 		'''
 		Tests the getUserBestScore function. In this test, we have NO stats
 		for the given quiz.
@@ -231,7 +231,3 @@ class StatsTests(TestCase):
 		user = User.objects.get(username = 'fakeuser')
 		quiz = Page.objects.get(pk = '4') #sample quiz 
 		self.assertEquals(getUserBestScore(user,quiz),-1)
-	
-
-
-		
