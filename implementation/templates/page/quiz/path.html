@@ -17,7 +17,7 @@
 		<td>High Score:&nbsp;<input type="text" size="3" name="HighScore" value="{{path.highscore}}" /></td>
 	</tr>
 	<tr>
-		<td colspan="2">Page<br><select name="pathPage">
+		<td colspan="2">Page (user is shown this as the next page)<br><select name="pathPage">
 		{% for p in pages %}
 			{% if path %}
 				<option value="{{p.slug}}" selected="selected">{{p.name}}</option>
