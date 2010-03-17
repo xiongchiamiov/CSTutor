@@ -51,7 +51,13 @@
 	});
 </script>
 <form method="post" action="">
-Lesson Name: <input type="text" name="lessonname" value="{{lesson.name}}"/> 
+Lesson Name: <input type="text" name="lessonname" value="{{lesson.name}}"/><br />
+Private: 
+{% if private %}
+<input type="checkbox" name="private" checked>
+{% else %}
+<input type="checkbox" name="private">
+{% endif %}
 {% if unpublished %}
 <p style="float: right;">Not Published </p>
 {% endif %}
