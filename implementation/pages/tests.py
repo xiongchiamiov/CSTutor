@@ -57,20 +57,20 @@ class PageTests(TestCase):
 
 	def validateTree(self):
 		'''
-		Verifies that the left/right indexes of the test Course are valid
+      Verifies that the left/right indexes of the test Course are valid
 
-		The indexes are valid if for every page in a course, all left/rights are
-		unique, the lowest left is 1, and the highest right is the number
-		of pages multiplied by two.
+      The indexes are valid if for every page in a course, all left/rights are
+      unique, the lowest left is 1, and the highest right is the number
+      of pages multiplied by two.
 
-		@Post: True if all left/right indexes are unique, and the index range is
-		 		 1 -> (# of pages) * 2 inclusive, otherwise False
-		
-		case no.    inputs           expected output    remark
-		1           Valid Course     True
-		2           Invalid Course   False 
+      @Post: True if all left/right indexes are unique, and the index range is
+              1 -> (# of pages) * 2 inclusive, otherwise False
+      
+      case no.    inputs           expected output    remark
+      1           Valid Course     True
+      2           Invalid Course   False 
 
-		@author Mark Gius 
+      @author Mark Gius 
 		'''
 		pages = Page.objects.filter(course__name=self.courseName).exclude(left__lte=0).exclude(right__lte=0)
 		usedNumbers = set([page.left for page in pages]) |\
@@ -82,19 +82,27 @@ class PageTests(TestCase):
 
 	def test_noPrevPage(self):
 		'''
-		Tests trying to get the "previous" page of a page that has no previous
+      Tests trying to get the "previous" page of a page that has no previous
 
-		@author Mark Gius
+      case no.    inputs           expected output    remark
+      1           Page with no      None
+                  Previous Page
+
+      @author Mark Gius
 		'''
 		indexPage = Page.objects.get(slug='PageTestsIndexPage')
 		self.assertEquals(getPrevPage(indexPage), None)
 
 	def test_insertPage(self):
 		'''
-		Tests adding a new page to the tree as a sibling of an existing
-		page
+      Tests adding a new page to the tree as a sibling of an existing
+      page
 
-		@author Mark Gius
+      case no.    inputs           expected output    remark
+      1           Page             ValidCourse,
+                                   Page inserted as sibling
+
+      @author Mark Gius
 		'''
 		olderSibling = Page.objects.get(slug='PageTestsPage1')
 		youngerSibling = getNextPage(olderSibling)
@@ -114,6 +122,10 @@ class PageTests(TestCase):
 	def test_insertChildPage(self):
 		'''
 		Tests adding a new page to the tree as a child of an existing page
+
+      case no.    inputs           expected output    remark
+      1           Page             ValidCourse,
+                                   Page inserted as child
 
 		@author Mark Gius
 		'''
@@ -137,6 +149,11 @@ class PageTests(TestCase):
 		''' 
 		Tests adding a new page to the tree as the last child of an existing page
 
+      case no.    inputs           expected output    remark
+      1           Page             ValidCourse,
+                                   Page inserted as 
+                                   last child
+
 		@author Mark Gius
 		'''
 		parent = Page.objects.get(slug="PageTestsIndexPage")
@@ -155,6 +172,11 @@ class PageTests(TestCase):
 		'''
 		Tests removing a parent page from the tree (child pages inherited by grandparent)
 
+      case no.    inputs           expected output    remark
+      1           Page             ValidCourse,
+                                   Page and all children
+                                   removed
+
 		@author Mark Gius
 		'''
 		toRemovePage = Page.objects.get(slug='PageTestsPage3')
@@ -171,6 +193,10 @@ class PageTests(TestCase):
 	def test_removeFirstChild(self):
 		'''
 		Tests removing the first child of a tree
+
+      case no.    inputs           expected output    remark
+      1           Page             ValidCourse,
+                                   Page removed
 
 		@author Mark Gius
 		'''
@@ -190,6 +216,10 @@ class PageTests(TestCase):
 		'''
 		Tests removing the middle child of a tree
 
+      case no.    inputs           expected output    remark
+      1           Page             ValidCourse,
+                                   Page removed
+
 		@author Mark Gius
 		'''
 		toRemovePage = Page.objects.get(slug='PageTestsPage2')
@@ -206,6 +236,10 @@ class PageTests(TestCase):
 	def test_removeLastChild(self):
 		'''
 		Tests removing the last child of a tree
+
+      case no.    inputs           expected output    remark
+      1           Page             ValidCourse,
+                                   Page removed
 
 		@author Mark Gius
 		'''
