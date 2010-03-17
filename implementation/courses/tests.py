@@ -884,7 +884,7 @@ class CourseViewTests(TestCase):
 
 		course = Course.objects.get(slug=slug)
 
-		files = {'key1': file('./courses/usernames1.txt', 'r'), 'key2': file('./courses/usernames2.txt')}
+		files = {'key1': file('courses/fixtures/usernames1.txt', 'r'), 'key2': file('courses/fixtures/usernames2.txt')}
 
 		addUsersFromFile(course, files)
 
@@ -917,7 +917,7 @@ class CourseViewTests(TestCase):
 
 		course = Course.objects.get(slug=slug)
 
-		files = {'key1': file('./courses/usernames1.txt', 'r'), 'key2': file('./courses/usernames2.txt')}
+		files = {'key1': file('courses/fixtures/usernames1.txt', 'r'), 'key2': file('courses/fixtures/usernames2.txt')}
 
 		failedList = addUsersFromFile(course, files)
 
