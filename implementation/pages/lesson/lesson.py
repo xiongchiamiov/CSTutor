@@ -12,6 +12,7 @@ from django.template.defaultfilters import slugify
 from pages.page import insertChildPage
 from models import *
 from pages.models import Page
+from pages.page import removePage
 
 def CreateLesson(name):
 	'''
@@ -74,8 +75,11 @@ def removeLesson(request, course, pid):
 	if (request.method != "POST"):
 		return -1
 	if "confirmRemove" in request.POST:
-	    Lesson.objects.get(slug=pid).delete()
-	    return 0
+		
+		#Lesson.objects.get(slug=pid).delete()
+		page = Page.objects.get(slug=pid)
+		removePage(page)
+		return 0
 
 def revertLessonChanges(lesson):
 	'''
