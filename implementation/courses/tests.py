@@ -66,7 +66,7 @@ class CourseTests(TestCase):
 			and all sub pages, enrollments and roster are removed
 			as well
 
-			@author Mark Gius
+			@author Matthew Tytel
 		'''
 		name = "newCourse"
 		newname = "newCourse2"
