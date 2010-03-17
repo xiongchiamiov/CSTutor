@@ -13,7 +13,7 @@ from django.contrib.auth.models import User
 from users.user import registerNewUser, loginWrapper
 from django.core.urlresolvers import reverse
 from courses.models import Course
-
+from users.user import getLastViewed
 
 class UserTests(TestCase):
 	'''
@@ -492,10 +492,9 @@ class UserTests(TestCase):
 		#print "\n" + response.request.GET['next']
 		#response = self.client.post('/login/', {'username': self.user1, 'password': self.password} 'next': '/profile/'})
 		#self.assertEqual(response.status_code, 302)
-	def testViewHistorySavedAfterLogout(self):
+	def testViewHistorySaved(self):
 		'''
-		After viewing a page, data about the page is saved in the session.
-		When the user logs out this data should be saved for next time they log in.
+		After viewing a page, data about the page is saved.
 		This test makes sure that the data is saved.
 
 		case#    input          						expected output   								remark
@@ -505,14 +504,10 @@ class UserTests(TestCase):
 					password = password
 
 		2			'/course/%s/page/%s/'				status_code 200									visit public_course's index page
-					(public_course, public_course)	session['lastCourseSlug']=public_course
-																session['lastPageSlug']=public_course
-																session['lastPageEdit']=False
+					(public_course, public_course)	UserLastViewed.courseSlug=public_course
+																UserLastViewed.pageSlug=public_course
+																UserLastViewed.editBool=False
 
-		3			'/logout/'								status_code 200									after log out session still good
-																session['lastCourseSlug']=public_course
-																session['lastPageSlug']=public_course
-																session['lastPageEdit']=False
 
 		@Russell Mezzetta
 		'''
@@ -524,17 +519,11 @@ class UserTests(TestCase):
 		#visit a page so the view history gets saved to session
 		response = self.client.get('/course/%s/page/%s/' % (self.public_course,self.public_course))
 		self.failUnlessEqual(response.status_code, 200)
-		#print client.session
-		#verify session content
-		self.failUnlessEqual(self.client.session['lastCourseSlug'], self.public_course)
-		self.failUnlessEqual(self.client.session['lastPageSlug'], self.public_course)
-		self.failUnlessEqual(self.client.session['lastPageEdit'], False)
-		
-		#log user out and verify the contents of session still remain
-		self.client.get('/logout/')
-		self.failUnlessEqual(self.client.session['lastCourseSlug'], self.public_course)
-		self.failUnlessEqual(self.client.session['lastPageSlug'], self.public_course)
-		self.failUnlessEqual(self.client.session['lastPageEdit'], False)
+		#verify lastViewed
+		(c,p,e) = getLastViewed(User.objects.get(username=self.user1))
+		self.failUnlessEqual(c, self.public_course)
+		self.failUnlessEqual(p, self.public_course)
+		self.failUnlessEqual(e, False)
 
 	def testRegisterNewUserView(self):
 		'''

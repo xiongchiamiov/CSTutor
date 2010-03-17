@@ -17,6 +17,7 @@ from django.core.exceptions import ObjectDoesNotExist
 import datetime
 from glob import glob
 from string import replace, split
+from users.user import getLastViewed
 
 def master_rtr(request, template, data = {}):
 	'''
@@ -64,11 +65,9 @@ def show_homepage(request):
 		data['loginDate'] = "%s/%s/%s" % (lastLogin.month, lastLogin.day, lastLogin.year)
 		data['loginTime'] = "%s:%s:%s" % (lastLogin.hour, lastLogin.minute, lastLogin.second)
 		
-		#check for last course / lesson in session
-		if 'lastCourseSlug' in request.session and 'lastPageSlug' in request.session and 'lastPageEdit' in request.session:
-			lastCourseSlug = request.session['lastCourseSlug']
-			lastPageSlug = request.session['lastPageSlug']
-			lastPageEdit = request.session['lastPageEdit']
+		#check if user has last viewed data (last page viewed)
+		(lastCourseSlug, lastPageSlug, editBool) = getLastViewed(request.user)
+		if lastCourseSlug != None:
 			try:
 				#may not still exist!
 				c = Course.objects.get(slug=lastCourseSlug)
@@ -93,10 +92,10 @@ def show_homepage(request):
 
 				data['lastCourse'] = c
 				data['lastPage'] = p
-				data['lastPageEdit'] = lastPageEdit
+				data['lastPageEdit'] = editBool
 			except ObjectDoesNotExist:
 				#course or lesson no longer exists
-				data['lastPageNoLongerExists'] = True
+				pass	
 
 		#get the number of courses the user is enrolled in
 		enrolled = request.user.enrollments.all()

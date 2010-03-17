@@ -79,20 +79,12 @@ def show_logout(request):
 	if request.user.is_authenticated() == True:
 		if 'rememberme' in request.session:
 		   username = request.user.username
-		if 'lastCourseSlug' in request.session and 'lastPageSlug' in request.session and 'lastPageEdit' in request.session:
-			lastCourseSlug = request.session['lastCourseSlug']
-			lastPageSlug = request.session['lastPageSlug']
-			lastPageEdit = request.session['lastPageEdit']
 
 	#logout flushes the contents of the session/cookie
 	logout(request)
 	if username != None:
 		request.session['username'] = username
 		request.session['rememberme'] = True
-	if lastCourseSlug != None:
-		request.session['lastCourseSlug'] = lastCourseSlug
-		request.session['lastPageSlug'] = lastPageSlug
-		request.session['lastPageEdit'] = lastPageEdit
 
 	return master_rtr(request, 'user/logout.html')
 

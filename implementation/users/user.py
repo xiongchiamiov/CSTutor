@@ -9,7 +9,7 @@ Example functions include, login, registerNewUser, logout, profiles....
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.forms.fields import email_re
-
+from users.models import UserLastViewed
 
 def updateEmail(request):
 	'''
@@ -162,3 +162,48 @@ def loginWrapper(request, username, password):
 		#print "invalid login"
 		return 1
 
+def saveLastViewed(user, courseSlug, pageSlug, editBool=False):
+	'''
+	This login wrapper logs the user in.
+	pre: 	user is a User object
+			courseSlug is a string
+			pageSlug is a string
+			editBool is a boolean
+
+	returns a tuple (courseSlug, pageSlug, editBool)
+
+	@author Russell Mezzetta
+	'''
+
+	if user.lastviewed.all().count() == 0:
+		#user doesn't have a last viewed yet
+		UserLastViewed(user=user,\
+							courseSlug=courseSlug,\
+							pageSlug=pageSlug,\
+							editBool=editBool).save()
+	else:
+		lv = user.lastviewed.all()[0]
+		lv.courseSlug=courseSlug
+		lv.pageSlug=pageSlug
+		lv.editBool=editBool
+		lv.save()
+
+	return (courseSlug, pageSlug, editBool)
+
+def getLastViewed(user):
+	'''
+	This login wrapper logs the user in.
+	pre: 	user is a User object
+
+	returns a tuple (courseSlug, pageSlug, editBool) on success
+						 (none, none, none) on failure
+
+	@author Russell Mezzetta
+	'''
+
+	if user.lastviewed.all().count() == 0:
+		#user doesn't have a last viewed yet
+		return (None, None, None)
+	else:
+		lv = user.lastviewed.all()[0]
+		return (lv.courseSlug, lv.pageSlug, lv.editBool)

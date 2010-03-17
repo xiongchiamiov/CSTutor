@@ -26,6 +26,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.decorators import login_required
 from home.views import master_rtr, custom_403, custom_404
 from pages.page import movePage, movePageToParent
+from users.user import saveLastViewed
 
 @login_required
 def show_page_preview(request, course_slug, page_slug):
@@ -89,19 +90,15 @@ def show_page(request, course_slug, page_slug, preview=False):
 	try:
 		page = page.lesson
 		if request.user.is_authenticated():
-			#save this data to session
-			request.session['lastCourseSlug'] = course_slug
-			request.session['lastPageSlug'] = page_slug
-			request.session['lastPageEdit'] = False
+			#save this data to UserLastViewed object
+			saveLastViewed(request.user, course_slug, page_slug, False)
 		return show_lesson(request, course_slug, page_slug, page, preview)
 	except Lesson.DoesNotExist:
 		try:
 			page = page.quiz
 			if request.user.is_authenticated():
-				#save this data to session
-				request.session['lastCourseSlug'] = course_slug
-				request.session['lastPageSlug'] = page_slug
-				request.session['lastPageEdit'] = False
+				#save this data to UserLastViewed object
+				saveLastViewed(request.user, course_slug, page_slug, False)
 			return show_quiz(request, course_slug, page_slug)
 		except Quiz.DoesNotExist:
 			raise Http404
@@ -139,18 +136,14 @@ def edit_page(request, course_slug, page_slug):
 	#cast the page to a lesson or quiz then call show on it
 	try:
 		page = page.lesson
-		#save this data to session
-		request.session['lastCourseSlug'] = course_slug
-		request.session['lastPageSlug'] = page_slug
-		request.session['lastPageEdit'] = True
+		#save this data to UserLastViewed object
+		saveLastViewed(request.user, course_slug, page_slug, True)
 		return edit_lesson(request, course_slug, page_slug)
 	except Lesson.DoesNotExist:
 		try:
 			page = page.quiz
-			#save this data to session
-			request.session['lastCourseSlug'] = course_slug
-			request.session['lastPageSlug'] = page_slug
-			request.session['lastPageEdit'] = True
+			#save this data to UserLastViewed object
+			saveLastViewed(request.user, course_slug, page_slug, True)
 			return edit_quiz(request, course_slug, page_slug)
 		except Quiz.DoesNotExist:
 			return Http404
