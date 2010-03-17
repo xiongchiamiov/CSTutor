@@ -36,6 +36,10 @@ code {
 	line-height: 100%;
 }
 
+#left-nav {
+	overflow: auto;
+}
+
 #left-nav li {
 	list-style: none;
 	margin-top: .2em;
