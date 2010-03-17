@@ -1,5 +1,7 @@
 '''
-This file contains tests for the Quiz package. 
+This file contains tests for the Quiz package.
+
+All tests are ran by the django test runner
 
 @author Evan Kleist
 '''
@@ -18,7 +20,43 @@ from django.http import QueryDict
 
 class QuizUnitTests(TestCase):
 	'''
-		Unit Tests on backend quiz operations.
+		Unit Tests on backend quiz operations. This class contains
+		tests for 100% code coverage of quiz.py
+
+		Test Fixtures are described as follows
+		
+		USERS
+		--------------------------------
+		ekleist - Used as the user capable of editing course content.
+		          Not actually used in the tests, but used in the creation
+		          of the test fixtures
+		testuser - User used in checkPrerequisites and scoreQuiz. This user
+		           is enrolled in the course and is the subject of prerequisite
+		           testing and quiz scoring
+		--------------------------------
+
+		COURSES
+		--------------------------------
+		QuizUnitTests_Course - The container course for all of the used quizzes
+		--------------------------------
+
+		QUIZZES
+		--------------------------------
+		QuizUnitTests_Quiz1 - A quiz containing 3 multiple choice questions, 
+			                   a passing and non-passing path, and a prerequisite.
+		                      It is the primary quiz used in most tests
+		QuizUnitTests_Quiz2 - A blank quiz
+		QuizUnitTests_Quiz3 - A second blank quiz
+		validateQuiz_Quiz - A quiz with 1 code question and 1 multiple choice
+		                    question. It is the basic quiz used in validating
+		                    a quiz for improper data
+		checkPrerequisites_Quiz - A quiz with a prerequisite used in testing
+		                          prerequisites
+		copyQuiz_Quiz - A quiz containing one of every element used in testing
+		                copyQuiz to make sure every element is successfully copied
+		scoreQuiz_Quiz - A quiz with a sample MCQ and CQ used to test for
+		                 proper grading of questions
+		--------------------------------
 
 		@author Evan Kleist
 	'''
@@ -37,7 +75,9 @@ class QuizUnitTests(TestCase):
 
 	def test_addCodeQuestion(self):
 		'''
-			Test that adding a code question to a quiz works as expected
+			Test that adding a code question to a quiz works as expected.
+			Ensures that only one new question was added, the question was
+			added as the last question, and that the "new" question is blank
 
 			Case no.    Input                                     Expected Output                           Remark
 			1           questionCount, newQuestionCount           questionCount + 1 == questionCount        Ensure that 1 new question has been added
@@ -63,7 +103,9 @@ class QuizUnitTests(TestCase):
 
 	def test_addMultipleChoiceQuestion(self):
 		'''
-			Test that adding a multiple choice question to a quiz works as expected
+			Test that adding a multiple choice question to a quiz works as expected. 
+			Ensures that only one new question was added, the question was
+			added as the last question, and that the "new" question is blank
 
 			Case no.    Input                                     Expected Output                           Remark
 			1           questionCount, newQuestionCount           questionCount + 1 == questionCount        Ensure that 1 new question has been added
@@ -91,7 +133,13 @@ class QuizUnitTests(TestCase):
 	def test_addPath(self):
 		'''
 			Test that addPath successfulyl adds a path
-			or returns the appropriate errors
+			or returns the appropriate errors.
+
+			Ensures that addPath validates data to the following criteria:
+			   isInt(LowScore) && isInt (HighScore)
+			   0 < Low Score <= High Score <= 100
+			   New Path does not conflict with an existing pah
+			
 
 			Case no.    Input               Expected Output                                    Remark
 			1           lowscore = -1       errors = ["Low Score must be between 0 and 100"]   Low Score < 0
@@ -191,7 +239,12 @@ class QuizUnitTests(TestCase):
 
 	def test_checkPrerequisites(self):
 		'''
-			Test that 
+			Test that prerequisites are properly checked and the correct
+			boolean is returned. Tests with AnonymousUsers and well as
+			logged in users with varying degrees of prerequisites
+			satisfied. Tests that checkPrerequisites only returns true if
+			either the quiz has no prerequisites or ALL prerequisites
+			have been met
 
 			Case no.  Input                                        Expected Output   Remark
 			1         quiz = quiz1                                 True              No prerequisites
@@ -244,12 +297,13 @@ class QuizUnitTests(TestCase):
 
 	def test_copyQuiz(self):
 		'''
-			Test that copyQuiz actually copies over all the 
-			quizzes contents to the published version and doesnt
-			leave any fragments in database
+			Test that copyQuiz copies over EVERY element of the quiz.
+			This includes related objects questions, answers, paths,
+			and prerequisites. Essentially quiz1 shoudl equal quiz2
+			in every aspect except for its slug and primary key.
 
 			Case no.    Input          Expected Output   Remark
-			1           quiz1, quiz3   quiz1 == quiz3    Copy the contents of quiz1 to quiz3  
+			1           quiz1, quiz3   quiz1 == quiz3    Copy the contents of quiz1 to quiz3 and make sure its a replica
 
 			@author Evan Kleist
 		'''
@@ -338,7 +392,17 @@ class QuizUnitTests(TestCase):
 
 	def test_editPath(self):
 		'''
-			Test that editing a path works as expected
+			Test that editing a successfully edits a path or returns
+			a list of errors. Errors originate from the POST data being submitted
+			being validated against the following criteria:
+
+			   0 <= Low Score <= High Score <= 100
+				Low Score and High Score must both be integers
+				Path cannot overlap into an existing path (except itself)
+				If changing a path to go from passing to not passing, ensure that
+				   either an alternate passing path exists OR no other quizzes
+			      require this quiz as a prerequisite. If both of these conditions
+			      are not met, it could lead to an unreachable quiz.
 
 			Case no.    Input                       Expected Output                                     Remark
 			1           lowscore = -1               errors = ["Low Score must be between 0 and 100"]    Negative low score
@@ -463,9 +527,22 @@ class QuizUnitTests(TestCase):
 
 	def test_publishQuiz(self):
 		'''
-			Test that publishQuiz actually copies over all the 
-			quizzes contents to the published version and doesnt
-			leave any fragments in database
+			Test that publishQuiz copies content over from the workingCopy of a
+			quiz to its corresponding published copy. Also test to make sure the
+			published copy is set to be "Up TO Date"
+
+			Note: publishQuiz calls copyQuiz() which is tested prior to this test.
+			This means that assuming copyQuiz works properly, I do not need to
+			check every single field of the quiz. I arbitrarily selected some
+			random fields and changed them and made sure they changes were
+			reflected in the published copy. If they were, and copyQuiz works
+			properly, then I know that ANY changes made would be copied over.
+
+			Case no.    Input                               Expected Output        Remark
+			1           workingQuiz.name = "modifiedName"   quiz == workingQuiz    Make sure modified fields are copied over
+			            workingQuiz.text = "modifiedName"   quiz.upToDate == True
+			            workingQuiz.slug = "modifiedname"
+			            workingQuiz.hidden = True
 
 			@author Evan Kleist
 		'''
@@ -484,13 +561,14 @@ class QuizUnitTests(TestCase):
 		# Make sure the changes are now in the live quiz
 		quiz = Quiz.objects.get(slug=slugify("modifiedName"))
 		self.failUnlessEqual(quiz.name, workingQuiz.name)
-		self.failUnlessEqual(quiz.name, workingQuiz.name)
+		self.failUnlessEqual(quiz.text, workingQuiz.text)
 		self.failUnlessEqual(quiz.hidden, True)
 		self.failUnlessEqual(quiz.upToDate, True)
 
 	def test_removePath(self):
 		'''
-			Test that removing a path works as expected
+			Test that removing a successfully removes a path or returns
+			a list containing any errors that occured
 
 			Case no.    Input          Expected Output                   Remark
 			1           path99         len(errors) == 2                  Cant remove the only passing path if other quizzes require it as a prerequisite
@@ -531,7 +609,9 @@ class QuizUnitTests(TestCase):
 
 	def test_removeQuiz(self):
 		'''
-			Test that removing a quiz actually removes it and all its associated data
+			Test that removing a quiz actually removes it and all its associated
+			data. No item should be left in the database after a remove for both
+			the quiz and its working copy
 
 			Case no.    Input          Expected Output            Remark
 			1           quiz           Quiz.DoesNotExist          Make sure the quiz does not exist anymore
@@ -682,7 +762,9 @@ class QuizUnitTests(TestCase):
 
 	def test_reorderQuestions(self):
 		'''
-			Test that reoderQuestions actually does reorder the questions into a valid state
+			Arbitraily make question ordering invalid and test that
+		   reoderQuestions actually does reorder the questions
+			into a valid state as specified by validateQuestionOrder().
 
 			Case no.    Input          Expected Output          Remark
 			1           quiz           false                    Make sure the questions are not in order
@@ -709,9 +791,17 @@ class QuizUnitTests(TestCase):
 
 	def test_revertQuiz(self):
 		'''
-			Test that revertQuiz actually reverts all the 
-			working copies contents to the published version and doesnt
-			leave any fragments in database  
+			Arbitrarily change some of a quizes workingCopy content
+			and test that revert quiz successfully reverts it to its
+			published state.
+
+			Note: Since this method calls another tested method copyQuiz()
+			I do not need to test for every field of the quiz. That
+			is done in another test.
+
+			Case no.    Input                                 Expected Output                       Remark
+			1           workingQuiz.name = "modifiedName22"   workingQuiz.name == quiz.name         Test that some arbitrary fields
+			            workingQuiz.hidden = True             workingQuiz.hidden == quiz.hidden     are successfully reverted
 			
 			@author Evan Kleist     
 		'''
@@ -735,7 +825,11 @@ class QuizUnitTests(TestCase):
 
 	def test_safeSlug(self):
 		'''
-			Test that safeSlug actually returns a safe slug when expected to
+			Test that safeSlug will strip the trailing "_workingCopy" from a slug,
+			if one exists. If it doesnt, it should return and unmodified slug.
+			Also covers the special case where a quiz name happens to end in
+			"_workingCopy" by chance and that this doesn't also get stripped
+			from the slug
 
 			Case no.    Input                               Expected Output          Remark
 			1           quizSlug1                           quizSlug1                A "safe" slug
@@ -763,7 +857,9 @@ class QuizUnitTests(TestCase):
 
 	def test_saveQuiz(self):
 		'''
-			Test that saveQuiz actually saves a quiz and updates all of its components
+			Test that saveQuiz actually saves a quiz and updates all
+			of its components or returns any appropriate errors
+			indicating a failure.
 
 			Case no.  Input                              Expected Output                          Remark
 			1         quizTitle = "QuizUnitTests_Quiz2"  errors = ["Quiz Title already exists!"]  A quiz with a duplicate name
@@ -899,7 +995,9 @@ class QuizUnitTests(TestCase):
 
 	def test_validateQuestionOrder(self):
 		'''
-			Test that reoderQuestions actually does reorder the questions into a valid state
+			Test that validateQuestionOrder only returns true
+			if the questions are uniquely ordered from
+			1 - # of questions or returns false otherwise.
 
 			Case no.    Input          Expected Output          Remark
 			1           quiz1          true                     Quiz with all questions in valid order
@@ -949,7 +1047,15 @@ class QuizUnitTests(TestCase):
 
 	def test_validateQuiz(self):
 		'''
-			Test that validateQuizcorrectly handles bad data
+			Test that validateQuiz checks all fo a quizzes data and enforces
+			the following validation rules:
+
+			   Quiz Title cannot be blank
+			   All prerequisites must have a corresponding passing path
+			   No quesiton prompt can be blank
+			   No answer can be blank
+			   Questions must be in a valid ordering
+			   Multiple choice questions must have a correct answer
 
 			Case no.  Input                         Expected Output                            Remark
 			1         quiz.text = ""                errors = ["Quiz Title can not be blank"]   Blank quiz title
@@ -1060,7 +1166,16 @@ class QuizUnitTests(TestCase):
 		self.failUnlessEqual(errors, [])
 		revertQuiz(quiz)
 
-"""class QuizViewTests(TestCase):
+"""
+
+	The following test cases were intentionally commented out.
+	I was shooting to get 100% coverage of ALL my code, but realized
+	that I wouldnt have enough time. All functions tested above have 100%
+	coverage. The existing tests below this did not yet have 100% coverage
+	so I didnt want to submit tests that didnt have 100% coverage, as per
+	requirements.
+
+class QuizViewTests(TestCase):
 	''' 
 		Unit Tests on Quiz Views.  Tests use an emulated Web Client
 		to simulate a user making requests via the web interface
