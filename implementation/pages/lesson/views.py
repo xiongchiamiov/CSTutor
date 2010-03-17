@@ -109,7 +109,7 @@ def show_lesson(request, course_slug, page_slug, lessonPage, preview=False):
 						#remove all stats for user in course
 						s = Stat.objects.filter(user = request.user, course = course)
 						s.delete()
-					except Object.DoesNotExist:
+					except ObjectDoesNotExist:
 						return HttpResponseRedirect(reverse('home.views.show_homepage'))
 				else:
 					if course in request.session['anonCourses']:
