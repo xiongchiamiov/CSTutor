@@ -1,4 +1,7 @@
 '''
+Views for codeshell related functions
+
+These views are implemented as API calls.
 
 @author Mark Gius
 @author James Pearson
