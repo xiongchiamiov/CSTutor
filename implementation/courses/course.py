@@ -172,45 +172,4 @@ def addUsersFromFile(course, files):
 	#print failedList
 
 	return failedList
-# Everything below here is probably supposed to be in views.py -mgius
-# commented out by mgius on 2/16/10
-#def removeCourse(request):
-#	'''
-#	Removes a specified course from existence
-#
-#	This operation returns an http response for viewing the deletion of the course
-#	'''
-#	pass
-#
-#
-#def setPrivate(request):
-#	'''
-#	Set's the class to public/private depending on what is specified
-#
-#	This operation returns an http response for viewing the privacy change
-#	'''
-#	pass
-#
-#def search(request):
-#	'''
-#	Searches a specified class for a page
-#
-#	This operation returns an http response for viewing the search results
-#	'''
-#	pass
-#
-#def importCourse(request):
-#	'''
-#	Imports specified information into a Course
-#
-#	This operation returns an http response for viewing the import
-#	'''
-#	pass
-#
-#def exportCourse(request):
-#	'''
-#	Exports the specified Course
-#
-#	This operation returns an http response with the export data
-#	'''
-#	pass
+

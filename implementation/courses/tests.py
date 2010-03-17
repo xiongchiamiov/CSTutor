@@ -15,6 +15,7 @@ from django.contrib.auth.models import User
 from courses.models import Course
 from courses.models import Enrollment
 from courses.course import *
+from users.user import registerNewUser
 
 class CourseTests(TestCase):
 	''' 
@@ -35,10 +36,26 @@ class CourseTests(TestCase):
 
 			Verifies that course is created, and the specified user is
 			enrolled in the course, and the course landing page is created
+		Case no.		Inputs								Output
+		1.				New Valid Course name and		
+						user						
 
-			@author Mark Gius
+		2.				slug = not-a-class				404
+
+
+
+			@author Matthew Tytel
 		'''
-		pass
+		name = "newCourse"
+		registerNewUser("NewUser", "password", "password", "first", "last", "newuser@email.com")
+		user = User.objects.get(username = "NewUser")
+		course = CreateCourse(name, user, False)
+		course2 = Course.objects.get(slug=course.slug)
+		self.assertEquals(name, course.name)
+		self.assertEquals(name, course2.name)
+		self.assertEquals(False, course.private)
+		self.assertEquals(False, course2.private)
+		self.assertEquals(course.slug, course2.slug)
 	
 	def test_RemoveCourse(self):
 		'''
