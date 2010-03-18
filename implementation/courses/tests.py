@@ -123,17 +123,6 @@ class CourseTests(TestCase):
 
 		self.assertEquals(removeCourse(slugify(name)), None)
 
-	def test_setPrivate(self):
-		''' 
-			Tests setPrivate function
-
-			Tests if the setPrivate function will correctly set the private
-			value
-
-			@author Matthew Tytel
-		'''
-		pass
-	
 	def test_removeUser(self):
 		''' 
 			Tests ability to remove users from a course
@@ -185,25 +174,9 @@ class CourseViewTests(TestCase):
 		@author James Pearson
 		@author Jon Inloes
 		'''
-		pass
-
-	def testCourseCase1(self):
-		'''
-		Test case 1 for test course
-
-		@author Jon Inloes
-		'''
-
 		slug = 'PageViewsPublicCourse'
 		statusCode = self.client.get('/course/%s/page/%s/' % (slug,slug)).status_code
 		self.failUnlessEqual(statusCode, 200, "Oopsie!  We got a status code of %s. :/" % statusCode)
-		
-	def testCourseCase2(self):
-		'''
-		Test case 2 for test course
-
-		@author Jon Inloes
-		'''
 
 		slug = 'not-a-class'
 
@@ -550,15 +523,6 @@ class CourseViewTests(TestCase):
 
 		@author Jon Inloes
 		'''
-		pass
-
-	def testAccpetUserCase1(self):
-		'''
-		Test accept user case 1
-		
-		@author Jon Inloes
-		'''
-
 		adminUsername = 'enrollmentTestAdmin'
 		username = 'PrivateUserNotEnrolled'
 		slug = 'PageViewsPrivateCourse'
@@ -579,13 +543,6 @@ class CourseViewTests(TestCase):
 		#verify that the user has been accepted
 		enrollment = Enrollment.objects.get(user__username__exact=username, course__slug__exact=slug)
 		self.failUnlessEqual(enrollment.view, True, 'View for user should be true but was' + str(enrollment.view))
-
-	def testAccpetUserCase2(self):
-		'''
-		Test accept user case 2
-			
-		@author Jon Inloes
-		'''
 
 		slug = 'PageViewsPublicCourse'
 		adminUsername = 'PageViewsPublicUser'
@@ -668,15 +625,6 @@ class CourseViewTests(TestCase):
 
 		@author Jon Inloes
 		'''
-		pass
-	
-	def testSearchUserCase1(self):
-		'''
-		Test search user case 1
-
-		@author Jon Inloes
-		'''
-
 		adminUsername = 'enrollmentTestAdmin'
 		username = 'enrollmentTestAdmin'
 		firstname = 'Test'
@@ -691,13 +639,6 @@ class CourseViewTests(TestCase):
 		response = self.client.post('/course/' + slug + '/roster/adduser/', {'firstname': firstname, 'lastname': lastname, 'command': 'search'})
 		
 		self.assertContains(response, username)
-
-	def testSearchUserCase2(self):
-		'''
-		Test search user case 2
-
-		@author Jon Inloes
-		'''
 
 		adminUsername = 'enrollmentTestAdmin'
 		username = 'badUsername'
@@ -715,6 +656,7 @@ class CourseViewTests(TestCase):
 
 		#assert that the response does not contain the username
 		self.assertNotContains(response, username)
+	
 
 	def testRemoveUser(self):
 		'''
@@ -807,15 +749,6 @@ class CourseViewTests(TestCase):
 
 		@author Jon Inloes
 		'''
-		pass
-	
-	def testChatCase1(self):
-		'''
-		Test chat case 1
-
-		@author Jon Inloes
-		'''
-
 		adminUsername = 'enrollmentTestAdmin'
 		password = 'password'
 		slug = 'PageViewsPublicCourse'
@@ -827,12 +760,6 @@ class CourseViewTests(TestCase):
 		response = self.client.get('/course/' + slug + '/chat/')
 		self.failUnlessEqual(response.status_code, 200, 'redirection to the chat page failed')
 
-	def testChatCase2(self):
-		'''
-		Test chat case 2
-			
-		@author Jon Inloes
-		'''
 		adminUsername = 'enrollmentTestAdmin'
 		password = 'password'
 		slug = 'badcourse'
@@ -840,7 +767,7 @@ class CourseViewTests(TestCase):
 		#Displays the roster and checks to make sure it was successful		
 		response = self.client.get('/course/' + slug + '/chat/')
 		self.failUnlessEqual(response.status_code, 404, 'redirection to the chat page failed')
-
+	
 	def testCancelAdd(self):
 		'''
 		Test that the cancel_add fucntion redirects to the roster page
@@ -893,15 +820,6 @@ class CourseViewTests(TestCase):
 
 		@author Jon Inloes
 		'''
-		pass
-
-	def testAddUsersFromFileCase1(self):
-		'''
-		Test addUsersFromFile case 1
-		
-		@author Jon Inloes
-		'''
-
 		adminUsername = 'enrollmentTestAdmin'
 		password = 'password'
 		slug = 'PageViewsPublicCourse'
@@ -929,13 +847,6 @@ class CourseViewTests(TestCase):
 	
 		self.failUnlessEqual(userExists, True, 'the user should exist in the database')
 
-	def testAddUsersFromFileCase2(self):
-		'''
-		Test addUsersFromFile case 2
-		
-		@author Jon Inloes
-		'''
-
 		adminUsername = 'enrollmentTestAdmin'
 		password = 'password'
 		slug = 'PageViewsPublicCourse'
@@ -961,12 +872,6 @@ class CourseViewTests(TestCase):
 	
 		self.failUnlessEqual(userExists, True, 'failed list did not contain a name it should have')
 
-	def testAddUsersFromFileCase3(self):
-		'''
-		Test add users from file case 3
-		
-		@author Jon Inloes	
-		'''
 		slug = 'PageViewsPublicCourse'
 		adminUsername = 'PageViewsPublicUser'
 		username = 'temp'
@@ -983,32 +888,3 @@ class CourseViewTests(TestCase):
 
 		#asserts that invalid_permissions.html page was rendered because the logged in user did not have valid permission to add a user
 		self.assertTemplateUsed(response, template)
-	
-# I don't know why, but for some reason join_course_request is returning a 
-# 302.  Why?
-#	def testPrivateEnrollment(self):
-#		'''
-#		Tests that a user who is not enrolled can request access to a 
-#		private course
-#
-#		After the user has enrolled in the course, verify that they cannot view
-#		the course.  
-#
-#		After verifying that they cannot view the course, grant them view 
-#		permission and verify that they can view the course
-#		'''
-#		user = User.objects.get(username='PageViewsEnrollmentUser')
-#		privateCourse = Course.objects.get(slug='PageViewsPrivateCourse')
-#
-#      # attempt to enroll in the course
-#		response = self.client.post('/submit_join_course_request', \
-#				                      {'courseid':privateCourse.id})
-#
-#      # check for 200 OK and text pending
-#		self.assertContains(response, "pending")
-#
-#      # verify that the enrollmment exists and that the user has no view 
-#      # permission
-#		enrollment = Enrollment.objects.get(user=user, course=privateCourse)
-#
-#		assertEquals(enrollment.view, False)
