@@ -130,7 +130,7 @@ def getUserAllAggregates(course):
 
 	cursor = connection.cursor()
 	cursor.execute('''SELECT user_id, username,
-						count(),
+						count(*),
 	                    max(Cast(score as FLOAT)/cast(maxscore as Float)),
 	                    min(Cast(score as FLOAT)/cast(maxscore as Float)),
 	                    avg(Cast(score as FLOAT)/cast(maxscore as Float))
