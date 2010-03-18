@@ -468,7 +468,7 @@ Change Orders</FONT></STRONG>
 				<P>2.3.2</P>
 			</TD>
 			<TD WIDTH=366>
-				<P>Quiz editing no longer redirects to a new page. All the
+				<P>Code question editing no longer redirects to a new page. All the
 				editing on done on the quiz edit page</P>
 			</TD>
 			<TD WIDTH=74>
@@ -490,8 +490,7 @@ Change Orders</FONT></STRONG>
 				<P>2.3.2</P>
 			</TD>
 			<TD WIDTH=366>
-				<P>Code question generates correct program output and user
-				inputted program output and compares both outputs</P>
+				<P>Code question now take a correct program instead of "Expected Output." When grading, the correct program as well as the student program are both executes and the output is then compared</P>
 			</TD>
 			<TD WIDTH=74>
 				<P><FONT SIZE=3>JI</FONT></P>
@@ -514,7 +513,49 @@ Change Orders</FONT></STRONG>
 			<TD WIDTH=366>
 				<P>When finish taking a quiz, the results of the quiz are shown
 				instead of automatically redirecting the user to the correct
-				path.</P>
+				path. If there is no path, only the results are shown. If there is a path, the path details are shown with a link to the next page</P>
+			</TD>
+			<TD WIDTH=74>
+				<P><FONT SIZE=3>JI</FONT></P>
+			</TD>
+			<TD WIDTH=68>
+				<P><BR>
+				</P>
+			</TD>
+		</TR>
+	                <TR VALIGN=TOP>
+	                        <TD WIDTH=26 SDVAL="22" SDNUM="1033;">
+	                                <P>22</P>
+	                        </TD>
+	                        <TD WIDTH=39 SDVAL="40253" SDNUM="1033;0;MM/DD/YY">
+	                                <P>03/16/10</P>
+	                        </TD>
+	                        <TD WIDTH=59>
+	                                <H4 STYLE="font-weight: normal">2.3.1.1</H4>
+	                        </TD>
+	                        <TD WIDTH=366>
+	                                <P>Any user can create a course</P>
+	                        </TD>
+	                        <TD WIDTH=74>
+                                <P><FONT SIZE=3>JI</FONT></P>
+	                        </TD>
+	                        <TD WIDTH=68>
+	                                <P><BR>
+	                                </P>
+	                        </TD>
+	                </TR>
+		<TR VALIGN=TOP>
+			<TD WIDTH=26 SDVAL="23" SDNUM="1033;">
+				<P>23</P>
+			</TD>
+			<TD WIDTH=39 SDVAL="40253" SDNUM="1033;0;MM/DD/YY">
+				<P>03/17/10</P>
+			</TD>
+			<TD WIDTH=59>
+				<H4 STYLE="font-weight: normal">2.3.1.1</H4>
+			</TD>
+			<TD WIDTH=366>
+				<P>Any user can create a course</P>
 			</TD>
 			<TD WIDTH=74>
 				<P><FONT SIZE=3>JI</FONT></P>
@@ -525,20 +566,63 @@ Change Orders</FONT></STRONG>
 			</TD>
 		</TR>
 		<TR VALIGN=TOP>
-			<TD WIDTH=26 SDVAL="22" SDNUM="1033;">
-				<P>22</P>
+			<TD WIDTH=26 SDVAL="24" SDNUM="1033;">
+				<P>24</P>
 			</TD>
 			<TD WIDTH=39 SDVAL="40253" SDNUM="1033;0;MM/DD/YY">
 				<P>03/16/10</P>
 			</TD>
 			<TD WIDTH=59>
-				<H4 STYLE="font-weight: normal">2.3.1.1</H4>
+				<H4 STYLE="font-weight: normal">2.3.2</H4>
 			</TD>
 			<TD WIDTH=366>
-				<P>Any user can create a course</P>
+				<P>QUiz data is not validated upon hitting Publish rather then save. This is so the instructor can have an invalid incomplete quiz working copy. It doesnt need to be valid until he tries to push it live. It also executes a save when any quiz altering button is hit, such as remove question, remove answer, add question, add answer...etc, so when you return to the editor the data of your working copy will still be there</P>
 			</TD>
 			<TD WIDTH=74>
-				<P><FONT SIZE=3>JI</FONT></P>
+				<P><FONT SIZE=3>EDK</FONT></P>
+			</TD>
+			<TD WIDTH=68>
+				<P><BR>
+				</P>
+			</TD>
+		</TR>
+		<TR VALIGN=TOP>
+			<TD WIDTH=26 SDVAL="25" SDNUM="1033;">
+				<P>25</P>
+			</TD>
+			<TD WIDTH=39 SDVAL="40253" SDNUM="1033;0;MM/DD/YY">
+				<P>03/16/10</P>
+			</TD>
+			<TD WIDTH=59>
+				<H4 STYLE="font-weight: normal">2.3.2</H4>
+			</TD>
+			<TD WIDTH=366>
+				<P>When viewing a quiz, it checks for prerequisites before displaying the quiz questions per the spec. However, the questions are still displayed to somoene with edit permissions in order to be able to let them edit the quiz. To test prerequisites as an editor, you need to log in as a student account</P>
+			</TD>
+			<TD WIDTH=74>
+				<P><FONT SIZE=3>EDK</FONT></P>
+			</TD>
+			<TD WIDTH=68>
+				<P><BR>
+				</P>
+			</TD>
+		</TR>
+
+		<TR VALIGN=TOP>
+			<TD WIDTH=26 SDVAL="26" SDNUM="1033;">
+				<P>26</P>
+			</TD>
+			<TD WIDTH=39 SDVAL="40253" SDNUM="1033;0;MM/DD/YY">
+				<P>03/16/10</P>
+			</TD>
+			<TD WIDTH=59>
+				<H4 STYLE="font-weight: normal">2.3.2</H4>
+			</TD>
+			<TD WIDTH=366>
+				<P>The spec didnt go into much detail about data validation on quizzes. Here are the rules that are enforced. Quiz Title must be unique and not blank. All quesiton prompts must not be blank. No answer can be blank. Multiple choice questions must have a correct answer. QUestions must be in a valid order. Code quesiton expected output cannot be blank. Any prerequisites (multiple can be selected) must have a corresponding passing path, otherwise the quiz would be unreachable.</P>
+			</TD>
+			<TD WIDTH=74>
+				<P><FONT SIZE=3>EDK</FONT></P>
 			</TD>
 			<TD WIDTH=68>
 				<P><BR>
