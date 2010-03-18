@@ -109,7 +109,7 @@ def removeUser(self, user):
 	try:
 		Enrollment.objects.get(user=user, course=self).delete()
 	except:
-		print 'remove failed'	
+		pass
 	return None
 
 def removeCourse(course_slug):

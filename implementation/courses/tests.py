@@ -140,7 +140,16 @@ class CourseTests(TestCase):
 
 			@author Mark Gius
 		'''
-		pass
+		name = "newCourse"
+		registerNewUser("NewUser", "password", "password", "first", "last", "newuser@email.com")
+		user = User.objects.get(username = "NewUser")
+		course = CreateCourse(name, user, False)
+		
+		removeUser(course, user)
+
+		self.assertEquals(len(course.roster.all()), 0)
+
+		removeUser(course, user)
 	
 class CourseViewTests(TestCase):
 	''' 
