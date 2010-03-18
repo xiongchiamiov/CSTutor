@@ -12,51 +12,6 @@ TEMPLATE_DEBUG = DEBUG
 THEME = 'light'
 THEME_LIST = ('light', 'dark')
 
-COVERAGE = False
-
-COVERAGE_DIR="/home/ekleist/coverage/"
-
-COVERAGE_MODULES = (
-   'courses',
-   'courses.views',
-   'courses.models',
-   'courses.course',
-   'courses.enrollment',
-
-   'home',
-   'home.views',
-
-   'pages',
-   'pages.views',
-   'pages.models',
-   'pages.page',
-
-   'pages.lesson',
-   'pages.lesson.views',
-   'pages.lesson.models',
-   'pages.lesson.lesson',
-
-   'pages.quiz',
-   'pages.quiz.views',
-   'pages.quiz.models',
-   'pages.quiz.quiz',
-
-   'pages.quiz.question',
-   'pages.quiz.question.views',
-   'pages.quiz.question.models',
-   'pages.quiz.question.question',
-
-   'stats',
-   'stats.views',
-   'stats.models',
-   'stats.stat',
-
-   'users',
-   'users.views',
-   'users.user',
-
-)
-
 ADMINS = (
 	# ('Your Name', 'your_email@domain.com'),
 )
