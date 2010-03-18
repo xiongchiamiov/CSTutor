@@ -56,6 +56,11 @@
       <field type="CharField" name="name">PageViewsPublicCourse</field>
       <field type="BooleanField" name="private">False</field>
    </object>
+   <object pk="102" model="courses.course">
+      <field type="SlugField" name="slug">PageViewsPublicCourse2</field>
+      <field type="CharField" name="name">PageViewsPublicCourse2</field>
+      <field type="BooleanField" name="private">False</field>
+   </object>
 	<!-- Enrolls the private user in the private course -->
    <object pk="100" model="courses.enrollment">
       <field to="auth.user" name="user" rel="ManyToOneRel">100</field>

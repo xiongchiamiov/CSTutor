@@ -783,6 +783,14 @@ class CourseViewTests(TestCase):
 		 
 		self.failIfEqual(response.content.find("You are already enrolled"), -1)
 
+		response = self.client.post('/submit_join_course_request/', {'courseid':101 })
+
+		self.assertContains(response, "You are already enrolled")
+
+		response = self.client.post('/submit_join_course_request/', {'courseid':102 })
+
+		self.assertContains(response, "You have been temporarily added")
+
 	def testChat(self):
 		'''
 		Tests that the chat page displays properly

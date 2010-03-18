@@ -371,7 +371,7 @@ def join_course_request(request):
 				courses.append(course)
 				request.session['anonCourses'] = courses
 				message = "You have been temporarily added to %s. Register to make this enrollment permanent" % course
-				print(request.session['anonCourses'])
+				#print(request.session['anonCourses'])
 		else:
 			request.session['anonCourses'] = [course]
 			message = "You have been temporarily added to %s" % str(course)
