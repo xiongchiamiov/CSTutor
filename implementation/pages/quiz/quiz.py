@@ -181,7 +181,7 @@ def copyQuiz(quiz1, quiz2):
 				newA.save()
 		else:
 			q = q.codequestion
-			newQ = CodeQuestion(text = q.text, order = q.order, quiz = quiz2, beforeCode = q.beforeCode, showBeforeCode = q.showBeforeCode, editableCode = q.editableCode, afterCode = q.afterCode, showAfterCode = q.showAfterCode, expectedOutput = q.expectedOutput)
+			newQ = CodeQuestion(text = q.text, order = q.order, quiz = quiz2, expectedOutput = q.expectedOutput)
 			newQ.save()
 
 	quiz2.save()

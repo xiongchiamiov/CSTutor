@@ -603,7 +603,7 @@ ZXhwaXJ5cQxLAHUuZTFiYjdhNjNmYjZhNmVhZWI3ZTUzMTU1NTY4YTBjZGI=
   </object>
   <object pk="1" model="quiz.path">
     <field to="quiz.quiz" name="quiz" rel="ManyToOneRel">5</field>
-    <field type="IntegerField" name="highscore">100</field>
+    <field type="IntegerField" name="highscore">99</field>
     <field type="IntegerField" name="lowscore">0</field>
     <field type="TextField" name="text"></field>
     <field to="pages.page" name="toPage" rel="ManyToOneRel">1</field>
@@ -611,7 +611,7 @@ ZXhwaXJ5cQxLAHUuZTFiYjdhNjNmYjZhNmVhZWI3ZTUzMTU1NTY4YTBjZGI=
   </object>
   <object pk="2" model="quiz.path">
     <field to="quiz.quiz" name="quiz" rel="ManyToOneRel">4</field>
-    <field type="IntegerField" name="highscore">100</field>
+    <field type="IntegerField" name="highscore">99</field>
     <field type="IntegerField" name="lowscore">0</field>
     <field type="TextField" name="text"></field>
     <field to="pages.page" name="toPage" rel="ManyToOneRel">1</field>
@@ -619,7 +619,7 @@ ZXhwaXJ5cQxLAHUuZTFiYjdhNjNmYjZhNmVhZWI3ZTUzMTU1NTY4YTBjZGI=
   </object>
   <object pk="3" model="quiz.path">
     <field to="quiz.quiz" name="quiz" rel="ManyToOneRel">8</field>
-    <field type="IntegerField" name="highscore">100</field>
+    <field type="IntegerField" name="highscore">99</field>
     <field type="IntegerField" name="lowscore">0</field>
     <field type="TextField" name="text"></field>
     <field to="pages.page" name="toPage" rel="ManyToOneRel">6</field>
@@ -627,7 +627,7 @@ ZXhwaXJ5cQxLAHUuZTFiYjdhNjNmYjZhNmVhZWI3ZTUzMTU1NTY4YTBjZGI=
   </object>
   <object pk="4" model="quiz.path">
     <field to="quiz.quiz" name="quiz" rel="ManyToOneRel">7</field>
-    <field type="IntegerField" name="highscore">100</field>
+    <field type="IntegerField" name="highscore">99</field>
     <field type="IntegerField" name="lowscore">0</field>
     <field type="TextField" name="text"></field>
     <field to="pages.page" name="toPage" rel="ManyToOneRel">6</field>

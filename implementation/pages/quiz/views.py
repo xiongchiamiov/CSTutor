@@ -149,7 +149,6 @@ def edit_path(request, course_slug, page_slug, errors):
 			pages.append(p)
 
 	path = quiz.paths.get(lowscore=request.POST["path"])
-
 	return master_rtr(request, 'page/quiz/path.html', \
 			            {'course_slug':course_slug, 'page_slug':page_slug, 'pages':pages, 'path':path, 'errors':errors})
 

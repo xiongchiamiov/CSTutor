@@ -917,51 +917,21 @@ ZXNzaW9uX2V4cGlyeXEMSwB1LjdmZDVjNWY2MzhlZGE1OWNkNDQyYWNmOTQ5N2NmOGU1
   <object pk="10034" model="question.multiplechoicequestion">
   </object>
   <object pk="10016" model="question.codequestion">
-    <field type="TextField" name="beforeCode"></field>
-    <field type="BooleanField" name="showBeforeCode">False</field>
-    <field type="TextField" name="editableCode"></field>
-    <field type="TextField" name="afterCode"></field>
-    <field type="BooleanField" name="showAfterCode">False</field>
     <field type="TextField" name="expectedOutput">cq1eo</field>
   </object>
   <object pk="10018" model="question.codequestion">
-    <field type="TextField" name="beforeCode"></field>
-    <field type="BooleanField" name="showBeforeCode">False</field>
-    <field type="TextField" name="editableCode"></field>
-    <field type="TextField" name="afterCode"></field>
-    <field type="BooleanField" name="showAfterCode">False</field>
     <field type="TextField" name="expectedOutput">cq1eo</field>
   </object>
   <object pk="10026" model="question.codequestion">
-    <field type="TextField" name="beforeCode"></field>
-    <field type="BooleanField" name="showBeforeCode">False</field>
-    <field type="TextField" name="editableCode"></field>
-    <field type="TextField" name="afterCode"></field>
-    <field type="BooleanField" name="showAfterCode">False</field>
     <field type="TextField" name="expectedOutput">cq1</field>
   </object>
   <object pk="10029" model="question.codequestion">
-    <field type="TextField" name="beforeCode"></field>
-    <field type="BooleanField" name="showBeforeCode">False</field>
-    <field type="TextField" name="editableCode"></field>
-    <field type="TextField" name="afterCode"></field>
-    <field type="BooleanField" name="showAfterCode">False</field>
     <field type="TextField" name="expectedOutput">cq1</field>
   </object>
   <object pk="10031" model="question.codequestion">
-    <field type="TextField" name="beforeCode"></field>
-    <field type="BooleanField" name="showBeforeCode">False</field>
-    <field type="TextField" name="editableCode"></field>
-    <field type="TextField" name="afterCode"></field>
-    <field type="BooleanField" name="showAfterCode">False</field>
     <field type="TextField" name="expectedOutput">print "Hello World"</field>
   </object>
   <object pk="10033" model="question.codequestion">
-    <field type="TextField" name="beforeCode"></field>
-    <field type="BooleanField" name="showBeforeCode">False</field>
-    <field type="TextField" name="editableCode"></field>
-    <field type="TextField" name="afterCode"></field>
-    <field type="BooleanField" name="showAfterCode">False</field>
     <field type="TextField" name="expectedOutput">print "Hello World"</field>
   </object>
   <object pk="1" model="question.answer">

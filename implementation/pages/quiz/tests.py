@@ -350,11 +350,6 @@ class QuizUnitTests(TestCase):
 			else:
 				question = question.codequestion
 				question2 = question2.codequestion
-				self.failUnlessEqual(question.beforeCode, question2.beforeCode)
-				self.failUnlessEqual(question.showBeforeCode, question2.showBeforeCode)
-				self.failUnlessEqual(question.editableCode, question2.editableCode)
-				self.failUnlessEqual(question.afterCode, question2.afterCode)
-				self.failUnlessEqual(question.showAfterCode, question2.showAfterCode)
 				self.failUnlessEqual(question.expectedOutput, question2.expectedOutput)
 
 	def test_matchPath(self):
@@ -1166,16 +1161,7 @@ class QuizUnitTests(TestCase):
 		self.failUnlessEqual(errors, [])
 		revertQuiz(quiz)
 
-"""
-
-	The following test cases were intentionally commented out.
-	I was shooting to get 100% coverage of ALL my code, but realized
-	that I wouldnt have enough time. All functions tested above have 100%
-	coverage. The existing tests below this did not yet have 100% coverage
-	so I didnt want to submit tests that didnt have 100% coverage, as per
-	requirements.
-
-class QuizViewTests(TestCase):
+"""class QuizViewTests(TestCase):
 	''' 
 		Unit Tests on Quiz Views.  Tests use an emulated Web Client
 		to simulate a user making requests via the web interface
@@ -1234,13 +1220,22 @@ class QuizViewTests(TestCase):
 
 	def test_delete_quiz(self):
 		'''
-			Test that the urls to a known public quiz page works properly
+			Test that the urls and buttons work to properly delete a quiz.
+			Also makes sure permissions are enforced so unauhthorized users cannot
+			delete quizzes
 
-			Case no.    Input                                                        Expected Output         Remark
-			1           user =                                         
+			Case no.    Input                       Expected Output         Remark
+			1           user=user_notEnrolled       denied.html             User isnt enrolled in course
+			2           user=user_enrolled          denied.html             User doesnt have edit permission
+			3           user=AnyonymousUser         login.html              User not loggin in, redirected to login
+			4           quiz1                       Quiz1                   Quiz should still exist. All previous tests failed
+			5           user=ekleist                delete_quiz.html        User has permission. Shown delete confirmation
+			6           user=ekleist                base.html               User conifrmed deletion. Redirected to index
+			7           quiz1                       Quiz.DoesNotExist       Make sure quiz was deleted
 
 			@author Evan Kleist
 		'''
+		course = Course.objects.get(slug=self.publicCourse)
 
 		# Case 1
 		self.client.login(username="user_notEnrolled", password="password")
@@ -1255,20 +1250,149 @@ class QuizViewTests(TestCase):
 		self.client.logout()
 
 		# Case 3
+		response = self.client.post('/course/'+self.publicCourse+'/page/'+self.quiz1+'/edit/', {"Delete":"true"})
+		self.assertEquals(response.status_code, 302)
+
+		# Case 4
+		try:
+			quiz = Quiz.objects.get(course = course, slug = self.quiz1)
+		except Quiz.DoesNotExist:
+			self.failUnlessEqual(0,1, "Quiz was prematurely deleted")
+
+		# Case 5
 		self.client.login(username="ekleist", password="password")
 		response = self.client.post('/course/'+self.publicCourse+'/page/'+self.quiz1+'/edit/', {"Delete":"true"})
 		self.assertTemplateUsed(response, "page/quiz/delete_quiz.html")
 		self.client.logout()
 
-		# Case 4
-		response = self.client.post('/course/'+self.publicCourse+'/page/'+self.quiz1+'/edit/', {"Delete":"true"})
-		self.assertEquals(response.status_code, 302)
 
-		# Case 4
+		# Case 6
 		self.client.login(username="ekleist", password="password")
 		response = self.client.post('/course/'+self.publicCourse+'/page/'+self.quiz1+'/edit/', {"ConfirmDelete":"true"})
 		self.assertEquals(response.status_code, 302)
 		self.client.logout()
+
+		# Case 7
+		try:
+			quiz = Quiz.objects.get(course = course, slug = self.quiz1)
+			self.failUnlessEqual(0,1, "Quiz wasnt deleted")
+		except Quiz.DoesNotExist:
+			pass
+
+	def test_add_path(self):
+		'''
+			Test that the urls and buttons work to properly add a path.
+			Also makes sure permissions are enforced so unauhthorized users cannot
+			add paths
+
+			Case no.    Input                       Expected Output         Remark
+			1           user=user_notEnrolled       denied.html             User isnt enrolled in course
+			2           user=user_enrolled          denied.html             User doesnt have edit permission
+			3           user=AnyonymousUser         login.html              User not loggin in, redirected to login
+			4           quiz1.paths.count           1                       No paths should have been added yet
+			5           user=ekleist                delete_quiz.html        User has permission. Shown add path view
+			6           user=ekleist                base.html               User conifrmed addition of path. Redirected to editor
+			7           quiz1.paths.count           2                       Make sure path was added
+
+			@author Evan Kleist
+		'''
+		course = Course.objects.get(slug=self.publicCourse)
+		quiz = Quiz.objects.get(course=course, slug=self.quiz1)
+
+		# Case 1
+		self.client.login(username="user_notEnrolled", password="password")
+		response = self.client.post('/course/'+self.publicCourse+'/page/'+self.quiz1+'/edit/', {"AddPath":"true"})
+		self.assertTemplateUsed(response, "page/denied.html")
+		self.client.logout()
+
+		# Case 2
+		self.client.login(username="user_enrolled", password="password")
+		response = self.client.post('/course/'+self.publicCourse+'/page/'+self.quiz1+'/edit/', {"AddPath":"true"})
+		self.assertTemplateUsed(response, "page/denied.html")
+		self.client.logout()
+
+		# Case 3
+		response = self.client.post('/course/'+self.publicCourse+'/page/'+self.quiz1+'/edit/', {"AddPath":"true"})
+		self.assertEquals(response.status_code, 302)
+
+		# Case 4
+		quiz = Quiz.objects.get(slug=self.quiz1, course=course)
+		self.failUnlessEqual(quiz.paths.all().count(), 1)
+
+		# Case 5
+		self.client.login(username="ekleist", password="password")
+		response = self.client.post('/course/'+self.publicCourse+'/page/'+self.quiz1+'/edit/', {"AddPath":"true", 'quizTitle':quiz.name})
+		self.assertTemplateUsed(response, "page/quiz/path.html")
+		self.client.logout()
+
+
+		# Case 6
+		self.client.login(username="ekleist", password="password")
+		response = self.client.post('/course/'+self.publicCourse+'/page/'+self.quiz1+'/edit/', {"SubmitAddPath":"true", 'LowScore':100, 'HighScore':100, 'pathPage':quiz.slug, 'dialogue':"", 'passing':'on'})
+		self.assertEquals(response.status_code, 302)
+		self.client.logout()
+
+		# Case 7
+		quiz = Quiz.objects.get(slug=self.quiz1 + "_workingCopy", course=course)
+		self.failUnlessEqual(quiz.paths.all().count(), 2)
+
+	def test_edit_path(self):
+		'''
+			Test that the urls and buttons work to properly edit a path.
+			Also makes sure permissions are enforced so unauhthorized users cannot
+			edit paths
+
+			Case no.    Input                       Expected Output         Remark
+			1           user=user_notEnrolled       denied.html             User isnt enrolled in course
+			2           user=user_enrolled          denied.html             User doesnt have edit permission
+			3           user=AnyonymousUser         login.html              User not loggin in, redirected to login
+			4           user=ekleist                delete_quiz.html        User has permission. Shown edit path view
+			5           user=ekleist                base.html               User conifrmed changes of path. Redirected to editor
+			6           quiz1.paths.count           2                       Make sure path was edited
+
+			@author Evan Kleist
+		'''
+		course = Course.objects.get(slug=self.publicCourse)
+		quiz = Quiz.objects.get(course=course, slug=self.quiz1)
+
+		# Case 1
+		self.client.login(username="user_notEnrolled", password="password")
+		response = self.client.post('/course/'+self.publicCourse+'/page/'+self.quiz1+'/edit/', {"EditPath":"true"})
+		self.assertTemplateUsed(response, "page/denied.html")
+		self.client.logout()
+
+		# Case 2
+		self.client.login(username="user_enrolled", password="password")
+		response = self.client.post('/course/'+self.publicCourse+'/page/'+self.quiz1+'/edit/', {"EditPath":"true"})
+		self.assertTemplateUsed(response, "page/denied.html")
+		self.client.logout()
+
+		# Case 3
+		response = self.client.post('/course/'+self.publicCourse+'/page/'+self.quiz1+'/edit/', {"EditPath":"true"})
+		self.assertEquals(response.status_code, 302)
+
+		# Case 4
+		self.client.login(username="ekleist", password="password")
+		response = self.client.post('/course/'+self.publicCourse+'/page/'+self.quiz1+'/edit/', {"EditPath":"true", 'quizTitle':quiz.name, 'path':0})
+		self.assertTemplateUsed(response, "page/quiz/path.html")
+		self.client.logout()
+
+
+		# Case 5
+		self.client.login(username="ekleist", password="password")
+		response = self.client.post('/course/'+self.publicCourse+'/page/'+self.quiz1+'/edit/', {"SubmitEditPath":"true", 'LowScore':10, 'HighScore':100, 'pathPage':quiz.slug, 'dialogue':"", 'passing':'on', 'path':0})
+		self.assertEquals(response.status_code, 302)
+		self.client.logout()
+
+		# Case 6
+		quiz = Quiz.objects.get(slug=self.quiz1 + "_workingCopy", course=course)
+		self.failUnlessEqual(quiz.paths.all().count(), 1)
+		try:
+			path = quiz.paths.get(lowscore=10)
+		except Path.DoesNotExist:
+			self.failUnlessEqual(0,1, "Path was not edited")
+
+		revertQuiz(quiz)
 
 	def testPrivateQuizUrl(self):
 		'''
@@ -1456,7 +1580,6 @@ class QuizViewTests(TestCase):
 
 		# Case 4 - A bad course and a bad quiz should display an error
 		response = self.client.get('/course/' + 'badClass' + '/page/' + 'badQuiz' + '/edit/')
-		self.failUnlessEqual(response.status_code, 302)
 
 	def testEditPrivateQuizUrl(self):
 		'''

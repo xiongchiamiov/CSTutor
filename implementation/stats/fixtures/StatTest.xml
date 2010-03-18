@@ -513,11 +513,6 @@
    <object pk="2" model="question.multiplechoicequestion">
    </object>
    <object pk="3" model="question.codequestion">
-      <field type="TextField" name="beforeCode">test1</field>
-      <field type="BooleanField" name="showBeforeCode">True</field>
-      <field type="TextField" name="editableCode">test3</field>
-      <field type="TextField" name="afterCode">test2</field>
-      <field type="BooleanField" name="showAfterCode">True</field>
       <field type="TextField" name="expectedOutput">test3</field>
    </object>
    <!-- These questions are for the getBestCourseStats test -->
