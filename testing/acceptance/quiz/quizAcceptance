@@ -1,3 +1,0 @@
-Show Quiz Page
-'User selects a quiz from the left-hand navigation','The selected quiz page is displayed','','Pass'
-'User submits a quiz by pressing the Submit Quiz button','The submitted quiz is scored and results are displayed','','Pass'
