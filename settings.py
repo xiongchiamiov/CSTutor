@@ -73,7 +73,7 @@ MIDDLEWARE_CLASSES = (
 	'django.middleware.transaction.TransactionMiddleware'
 )
 
-ROOT_URLCONF = 'implementation.urls'
+ROOT_URLCONF = 'urls'
 
 TEMPLATE_DIRS = (
 	# Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".

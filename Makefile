@@ -1,3 +1,5 @@
+DOCDIR=pydoc
+
 help:
 	@echo "Makefile Targets:"
 	@echo ""
@@ -11,12 +13,13 @@ help:
 	@echo "databaseclean : Cleans up the database"
 
 doc:
-	cd ../design/pydoc && python ../../implementation/manage.py makedoc
+	mkdir -p $(DOCDIR)
+	cd $(DOCDIR) && $(CURDIR)/manage.py makedoc
 	@echo ""
 	@echo "################################################"
-	@echo "Documentation written to design/pydoc directory"
+	@echo "Documentation written to $(DOCDIR)"
 	@echo "Note that this is not the documentation module that you see here"
-	@echo "cd ../design/pydoc"
+	@echo "cd $(DOCDIR)"
 	@echo "################################################"
 
 runserver:
@@ -50,10 +53,7 @@ binclean:
 
 cleandoc: docclean
 docclean:
-	find ../design/pydoc -iname '*.html' \
-		-not -name '*chat.html' \
-		-not -name '*index.html' \
-		-delete
+	rm -rf $(DOCDIR)
 
 cleandatabase: databaseclean
 databaseclean:
